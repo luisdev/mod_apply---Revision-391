@@ -15,7 +15,7 @@ function apply_clean_input_value($item, $value)
 function apply_compare_item_value($submit_id, $item_id, $dependvalue)
 function apply_create_item($data)
 function apply_create_pagebreak($apply_id) 
-function apply_create_values($usrid, $time_modified)
+function apply_create_values($userid, $time_modified)
 function apply_delete_all_items($apply_id)
 function apply_delete_all_submit($apply_id) 
 function apply_delete_instance($apply_id) 
@@ -817,11 +817,13 @@ function apply_get_page_to_continue($apply_id)
 // Submit Handling
 //
 
-function apply_get_current_submit($apply_id) //, $tmp=false, $courseid=false, $guestid=false)
+function apply_get_current_submit($apply_id, $user_id=0) //, $tmp=false, $courseid=false, $guestid=false)
 {
 	global $USER, $DB;
 
-	$params = array('apply_id'=>$apply_id, 'user_id'=>$USER->id);
+	if ($user_id==0) $user_id = $USER->id;
+
+	$params = array('apply_id'=>$apply_id, 'user_id'=>$user_id);
 	return $DB->get_record('apply_submit', $params);
 }
 
@@ -877,10 +879,10 @@ function apply_delete_submit($submit_id)
 	$DB->delete_records('apply_value_tmp', array('submit_id'=>$submit->id));
 
 	// ???
-	$completion = new completion_info($course);
-	if ($completion->is_enabled($cm) && $apply->completionsubmit) {
-		$completion->update_state($cm, COMPLETION_INCOMPLETE, $submit->user_id);
-	}
+//	$completion = new completion_info($course);
+//	if ($completion->is_enabled($cm) && $apply->completionsubmit) {
+//		$completion->update_state($cm, COMPLETION_INCOMPLETE, $submit->user_id);
+//	}
 
 	$ret = $DB->delete_records('apply_submit', array('id'=>$submit->id));
 	return ret;
@@ -898,32 +900,6 @@ function apply_clean_input_value($item, $value)
 {
 	$itemobj = apply_get_item_class($item->typ);
 	return $itemobj->clean_input_value($value);
-}
-
-
-
-// return submit_id
-function apply_save_values($user_id)
-{
-	global $DB;
-
-	$submit_id = optional_param('submit_id', 0, PARAM_INT);
-
-	$time = time();
-	$time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
-
-	if ($user_id==0) {
-		return apply_create_values($user_id, $time_modified);
-	}
-
-	$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
-	if (!$submit) {
-		return apply_create_values($user_id, $time_modified);
-	}
-	else {
-		$submit->time_modified = $time_modified;
-		return apply_update_values($submit);
-	}
 }
 
 
@@ -992,17 +968,37 @@ function apply_compare_item_value($submit_id, $item_id, $dependvalue)
 
 
 
-function apply_create_values($usrid, $time_modified, $tmp=false)
+function apply_save_values($apply_id, $submit_id, $user_id, $tmp=false)
+{
+	global $DB, $USER;
+
+	if ($user_id==0) $user_id = $USER->id;
+
+	$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
+	if (!$submit) {
+		$submit_id = apply_create_values($apply_id, $user_id, $time_modified, $tmp);
+	}
+	else {
+		$submit->time_modified = $time_modified;
+		$submit_id = apply_update_values($submit, $tmp);
+	}
+
+	return $submit_id;
+}
+
+
+
+function apply_create_values($apply_id, $user_id, $time_modified, $tmp=false)
 {
 	global $DB;
 
-	$apply_id = optional_param('apply_id', false, PARAM_INT);
-//	$courseid = optional_param('courseid', false, PARAM_INT);
+	$time = time();
+	$time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
 	$tmpstr = $tmp ? '_tmp' : '';
 
 	$submit = new stdClass();
 	$submit->apply_id		= $apply_id;
-	$submit->user_id		= $usrid;
+	$submit->user_id		= $user_id;
 	$submit->time_modified  = $time_modified;
 
 	$submit_id = $DB->insert_record('apply_submit', $submit);
@@ -1047,15 +1043,12 @@ function apply_update_values($submit, $tmp=false)
 {
 	global $DB;
 
-//	$courseid = optional_param('courseid', false, PARAM_INT);
 	$tmpstr = $tmp ? '_tmp' : '';
 
 	$DB->update_record('apply_submit', $submit);
 	$values = $DB->get_records('apply_value'.$tmpstr, array('submit_id'=>$submit->id));
-
-	if (!$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id))) {
-		return false;
-	}
+	$items  = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id));
+	if (!$items) return false;
 
 	foreach ($items as $item) {
 		//
@@ -1115,7 +1108,7 @@ function apply_get_group_values($item, $groupid=false, $ignore_empty=false)
 	if (intval($groupid)>0) {
 		$query = 'SELECT av.* FROM {apply_value} av, {apply_submit} as, {groups_members} gm
 	   				WHERE av.item_id = ? AND av.submit_id = as.id AND as.user_id = gm.userid '.
-					$ignore_empty_select.' AND gm.groupid = ?
+						$ignore_empty_select.' AND gm.groupid = ?
 					ORDER BY av.time_modified';
 		$values = $DB->get_records_sql($query, array($item->id, $groupid));
 	}
@@ -1131,80 +1124,126 @@ function apply_get_group_values($item, $groupid=false, $ignore_empty=false)
 
 
 
-/*
-function apply_set_tmp_values($submit) 
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+//
+// E-Mail
+//
+
+function apply_send_email($cm, $apply, $course, $userid)
 {
-    global $DB;
+	global $CFG, $DB;
 
-    $tmpcpl = new stdClass();
-    foreach ($submit as $key => $value) {
-        $tmpcpl->{$key} = $value;
-    }
-    unset($tmpcpl->id);
-    $tmpcpl->timemodified = time();
-    $tmpcpl->id = $DB->insert_record('apply_completedtmp', $tmpcpl);
-    //get all values of original-completed
-    if (!$values = $DB->get_records('apply_value', array('completed'=>$feedbackcompleted->id))) {
-        return;
-    }
+	if ($apply->email_notification==0) eturn;
 
-    foreach ($values as $value) {
-        unset($value->id);
-        $value->submit_id = $tmpcpl->id;
-        $DB->insert_record('apply_value_tmp', $value);
-    }
-    return $tmpcpl;
+	$user = $DB->get_record('user', array('id'=>$userid));
+	if (isset($cm->groupmode) && empty($course->groupmodeforce)) {
+		$groupmode = $cm->groupmode;
+	} 
+	else {
+		$groupmode = $course->groupmode;
+	}
+	if ($groupmode==SEPARATEGROUPS) {
+		$groups = $DB->get_records_sql_menu("SELECT g.name, g.id FROM {groups} g, {groups_members} m
+												WHERE g.courseid = ? AND g.id = m.groupid AND m.userid = ?
+										   		ORDER BY name ASC", array($course->id, $userid));
+		$groups = array_values($groups);
+		$teachers = apply_get_receivemail_users($cm->id, $groups);
+	}
+	else {
+		$teachers = apply_get_receivemail_users($cm->id);
+	}
+
+	if ($teachers) {
+		$strapplys = get_string('modulenameplural', 'apply');
+		$strapply  = get_string('modulename', 'apply');
+		$strcompleted  = get_string('completed', 'apply');
+		$printusername = fullname($user);
+
+		foreach ($teachers as $teacher) {
+			$info = new stdClass();
+			$info->username = $printusername;
+			$info->apply = format_string($apply->name, true);
+			$info->url= $CFG->wwwroot.'/mod/apply/show_entries.php?id='.$cm->id.'&userid='.$userid.'&do_show=showentries';
+
+			$postsubject = $strcompleted.': '.$info->username.' -> '.$apply->name;
+			$posttext = apply_send_email_text($info, $course);
+
+			if ($teacher->mailformat==1) {
+				$posthtml = apply_send_email_html($info, $course, $cm);
+			}
+			else {
+				$posthtml = '';
+			}
+
+			$eventdata = new stdClass();
+			$eventdata->name			  = 'submission';
+			$eventdata->component		  = 'mod_apply';
+			$eventdata->userfrom		  = $user;
+			$eventdata->userto			  = $teacher;
+			$eventdata->subject			  = $postsubject;
+			$eventdata->fullmessage		  = $posttext;
+			$eventdata->fullmessageformat = FORMAT_PLAIN;
+			$eventdata->fullmessagehtml	  = $posthtml;
+			$eventdata->smallmessage	  = '';
+			message_send($eventdata);
+		}
+	}
 }
-*/
 
 
 
-/*
-function apply_save_tmp_values($feedbackcompletedtmp, $feedbackcompleted, $userid)
+function apply_get_receivemail_users($cmid, $groups=false)
 {
-    global $DB;
+    $context = context_module::instance($cmid);
 
-    $tmpcplid = $feedbackcompletedtmp->id;
-    if ($feedbackcompleted) {
-        //first drop all existing values
-        $DB->delete_records('apply_value', array('completed'=>$feedbackcompleted->id));
-        //update the current completed
-        $feedbackcompleted->timemodified = time();
-        $DB->update_record('apply_completed', $feedbackcompleted);
-    } else {
-        $feedbackcompleted = clone($feedbackcompletedtmp);
-        $feedbackcompleted->id = '';
-        $feedbackcompleted->userid = $userid;
-        $feedbackcompleted->timemodified = time();
-        $feedbackcompleted->id = $DB->insert_record('apply_completed', $feedbackcompleted);
-    }
+    //get_users_by_capability($context, $capability, $fields, $sort, $limitfrom, $limitnum, $groups, $exceptions, $doanything)
+    $ret = get_users_by_capability($context, 'mod/apply:receivemail', '', 'lastname', '', '', $groups, '', false);
 
-    //save all the new values from apply_valuetmp
-    //get all values of tmp-completed
-    $params = array('completed'=>$feedbackcompletedtmp->id);
-    if (!$values = $DB->get_records('apply_valuetmp', $params)) {
-        return false;
-    }
-    foreach ($values as $value) {
-        //check if there are depend items
-        $item = $DB->get_record('apply_item', array('id'=>$value->item));
-        if ($item->dependitem > 0) {
-            $check = apply_compare_item_value($tmpcplid, $item->dependitem, $item->dependvalue, true);
-        } else {
-            $check = true;
-        }
-        if ($check) {
-            unset($value->id);
-            $value->completed = $feedbackcompleted->id;
-            $DB->insert_record('apply_value', $value);
-        }
-    }
-    //drop all the tmpvalues
-    $DB->delete_records('apply_valuetmp', array('completed'=>$tmpcplid));
-    $DB->delete_records('apply_completedtmp', array('id'=>$tmpcplid));
-    return $feedbackcompleted->id;
+    return $ret;
 }
-*/
+
+
+
+function apply_send_email_text($info, $course) 
+{
+    $coursecontext = context_course::instance($course->id);
+    $courseshortname = format_string($course->shortname, true, array('context'=>$coursecontext));
+
+    $posttext  = $courseshortname.' -> '.get_string('modulenameplural', 'apply').' -> '.$info->apply."\n";
+    $posttext .= '---------------------------------------------------------------------'."\n";
+    $posttext .= get_string('emailteachermail', 'apply', $info)."\n";
+    $posttext .= '---------------------------------------------------------------------'."\n";
+
+    return $posttext;
+}
+
+
+
+function apply_send_email_html($info, $course, $cm)
+{
+    global $CFG;
+
+    $coursecontext = context_course::instance($course->id);
+    $courseshortname = format_string($course->shortname, true, array('context'=>$coursecontext));
+    $course_url = $CFG->wwwroot.'/course/view.php?id='.$course->id;
+    $apply_all_url = $CFG->wwwroot.'/mod/apply/index.php?id='.$course->id;
+    $apply_url = $CFG->wwwroot.'/mod/apply/view.php?id='.$cm->id;
+
+    $posthtml = '<p><font face="sans-serif">'.
+        		'<a href="'.$course_url.'">'.$courseshortname.'</a> ->'.
+            	'<a href="'.$apply_all_url.'">'.get_string('modulenameplural', 'apply').'</a> ->'.
+            	'<a href="'.$apply_url.'">'.$info->apply.'</a></font></p>';
+    $posthtml.= '<hr /><font face="sans-serif">';
+    $posthtml.= '<p>'.get_string('emailteachermailhtml', 'apply', $info).'</p>';
+    $posthtml.= '</font><hr />';
+
+    return $posthtml;
+}
+
+
 
 
 
