@@ -35,11 +35,11 @@ if (! $cm = get_coursemodule_from_id('apply', $id)) {
     print_error('invalidcoursemodule');
 }
 
-if (! $course = $DB->get_record("course", array("id"=>$cm->course))) {
+if (! $course = $DB->get_record('course', array('id'=>$cm->course))) {
     print_error('coursemisconf');
 }
 
-if (! $apply = $DB->get_record("apply", array("id"=>$cm->instance))) {
+if (! $apply = $DB->get_record('apply', array('id'=>$cm->instance))) {
     print_error('invalidcoursemodule');
 }
 
@@ -50,10 +50,7 @@ require_login($course, true, $cm);
 require_capability('mod/apply:edititems', $context);
 
 $mform = new mod_apply_delete_item_form();
-$newformdata = array('id'=>$id,
-                    'deleteitem'=>$deleteitem,
-                    'confirmdelete'=>'1');
-$mform->set_data($newformdata);
+$newformdata = array('id'=>$id, 'deleteitem'=>$deleteitem, 'confirmdelete'=>'1'); $mform->set_data($newformdata);
 $formdata = $mform->get_data();
 
 if ($mform->is_cancelled()) {
@@ -67,22 +64,24 @@ if (isset($formdata->confirmdelete) AND $formdata->confirmdelete == 1) {
 
 
 /// Print the page header
-$strapplys = get_string("modulenameplural", "apply");
-$strapply  = get_string("modulename", "apply");
+$strapplys = get_string('modulenameplural', 'apply');
+$strapply  = get_string('modulename', 'apply');
 
 $PAGE->navbar->add(get_string('delete_item', 'apply'));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));
 echo $OUTPUT->header();
 
+
+///////////////////////////////////////////////////////////////////////////
 /// Print the main part of the page
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
+
 echo $OUTPUT->heading(format_text($apply->name));
 echo $OUTPUT->box_start('generalbox errorboxcontent boxaligncenter boxwidthnormal');
 echo $OUTPUT->heading(get_string('confirmdeleteitem', 'apply'));
+
 print_string('relateditemsdeleted', 'apply');
+
 $mform->display();
 echo $OUTPUT->box_end();
 
