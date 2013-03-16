@@ -226,6 +226,15 @@ function apply_init_session()
 
 
 
+/*
+function apply_get_editor_options() 
+{
+	return array('maxfiles' => EDITOR_UNLIMITED_FILES, 'trusttext'=>true);
+}
+*/
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -694,7 +703,9 @@ function apply_get_completeds_group_count($apply, $groupid=false, $courseid=fals
 
 
 ///////////////////////////////////////////////////////////////////////////////////
+//
 // Page Break
+//
 
 function apply_create_pagebreak($apply_id) 
 {
@@ -842,12 +853,84 @@ function apply_get_current_completed($apply_id, $tmp=false, $courseid=false, $gu
 
 
 
-/*
-function apply_get_editor_options() 
+
+///////////////////////////////////////////////////////////////////////////////////
+//
+// Value Handling
+//
+
+function apply_clean_input_value($item, $value) 
 {
-	return array('maxfiles' => EDITOR_UNLIMITED_FILES, 'trusttext'=>true);
+    $itemobj = apply_get_item_class($item->typ);
+    return $itemobj->clean_input_value($value);
 }
-*/
+
+
+
+function apply_save_values($usrid)
+{
+    global $DB;
+
+    $applies_id = optional_param('applies_id', 0, PARAM_INT);
+
+    $time = time();
+    $time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
+
+    if ($usrid == 0) {
+        return apply_create_values($usrid, $time_modified);
+    }
+
+    $appli = $DB->get_record('apply_application', array('id'=>$applies_id));
+    if (!$completed) {
+        return apply_create_values($usrid, $time_modified, $tmp);
+    }
+	else {
+        $completed->time_modified = $time_modified;
+        return apply_update_values($completed, $tmp);
+    }
+}
+
+
+
+function apply_check_values($firstitem, $lastitem)
+{
+    global $DB, $CFG;
+
+    $applyid = optional_param('apply_id', 0, PARAM_INT);
+
+    $select = "apply_id = ?  AND position >= ?  AND position <= ?  AND hasvalue = 1";
+    $params = array($applyid, $firstitem, $lastitem);
+
+    if (!$applyitems = $DB->get_records_select('apply_item', $select, $params)) {
+        return true;
+    }
+
+    foreach ($applyitems as $item) {
+        $itemobj = apply_get_item_class($item->typ);
+        $formvalname = $item->typ . '_' . $item->id;
+
+        if ($itemobj->value_is_array()) {
+            $value = optional_param_array($formvalname, null, PARAM_RAW);
+        } 
+		else {
+            $value = optional_param($formvalname, null, PARAM_RAW);
+        }
+        $value = $itemobj->clean_input_value($value);
+
+        if (is_null($value) AND $item->required==1) {
+            return false;
+        }
+
+        if (!$itemobj->check_value($value, $item)) {
+            return false;
+        }
+    }
+
+    //if no wrong values so we can return true
+    return true;
+}
+
+
 
 
 
