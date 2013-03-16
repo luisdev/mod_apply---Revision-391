@@ -117,25 +117,29 @@ You can view it <a href="{$a->url}">here</a>.';
 $string['entries_saved'] = 'Your answers have been saved. Thank you.';
 $string['export_questions'] = 'Export questions';
 $string['export_to_excel'] = 'Export to Excel';
-$string['apply:addinstance'] = 'Add a new apply';
+
 $string['applyclose'] = 'Close the apply at';
 $string['applycloses'] = 'Apply closes';
+
+$string['apply:addinstance'] = 'Add a new apply';
 $string['apply:complete'] = 'Complete a apply';
+$string['apply:applies'] = 'issue a apply';
 $string['apply:createprivatetemplate'] = 'Create private template';
 $string['apply:createpublictemplate'] = 'Create public template';
 $string['apply:deletesubmissions'] = 'Delete completed submissions';
 $string['apply:deletetemplate'] = 'Delete template';
 $string['apply:edititems'] = 'Edit items';
-$string['apply_is_not_for_anonymous'] = 'apply is not for anonymous';
-$string['apply_is_not_open'] = 'The apply is not open';
 $string['apply:mapcourse'] = 'Map courses to global applys';
-$string['applyopen'] = 'Open the apply at';
-$string['applyopens'] = 'Apply opens';
-$string['apply_options'] = 'Apply options';
 $string['apply:receivemail'] = 'Receive email notification';
 $string['apply:view'] = 'View a apply';
 $string['apply:viewanalysepage'] = 'View the analysis page after submit';
 $string['apply:viewreports'] = 'View reports';
+
+$string['apply_is_not_for_anonymous'] = 'apply is not for anonymous';
+$string['apply_is_not_open'] = 'The apply is not open';
+$string['applyopen'] = 'Open the apply at';
+$string['applyopens'] = 'Apply opens';
+$string['apply_options'] = 'Apply options';
 $string['file'] = 'File';
 $string['filter_by_course'] = 'Filter by course';
 $string['handling_error'] = 'Error occurred in apply module action handling';

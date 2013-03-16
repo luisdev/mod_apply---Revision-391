@@ -31,7 +31,7 @@ apply_init_session();
 
 $id 			= required_param('id', PARAM_INT);
 //$completedid 	= optional_param('completedid', false, PARAM_INT);
-$appliesid		= optional_param('appliesid', false, PARAM_INT);
+$applies_id		= optional_param('applies_id', false, PARAM_INT);
 $preservevalues = optional_param('preservevalues', 0,  PARAM_INT);
 $courseid 	  	= optional_param('courseid', false, PARAM_INT);
 $gopage 		= optional_param('gopage', -1, PARAM_INT);
@@ -84,10 +84,10 @@ if ($gopage<0 AND !$savevalues) {
 if (! $cm = get_coursemodule_from_id('apply', $id)) {
     print_error('invalidcoursemodule');
 }
-if (! $course = $DB->get_record("course", array("id"=>$cm->course))) {
+if (! $course = $DB->get_record('course', array('id'=>$cm->course))) {
     print_error('coursemisconf');
 }
-if (! $apply = $DB->get_record("apply", array("id"=>$cm->instance))) {
+if (! $apply = $DB->get_record('apply', array('id'=>$cm->instance))) {
     print_error('invalidcoursemodule');
 }
 
@@ -110,8 +110,8 @@ if ($course->id==SITEID AND !$courseid) {
 
 //check whether the apply is mapped to the given courseid
 if ($course->id == SITEID AND !has_capability('mod/apply:edititems', $context)) {
-    if ($DB->get_records('apply_sitecourse_map', array('applyid'=>$apply->id))) {
-        $params = array('applyid'=>$apply->id, 'courseid'=>$courseid);
+    if ($DB->get_records('apply_sitecourse_map', array('apply_id'=>$apply->id))) {
+        $params = array('apply_id'=>$apply->id, 'courseid'=>$courseid);
         if (!$DB->get_record('apply_sitecourse_map', $params)) {
             print_error('notavailable', 'apply');
         }
@@ -152,8 +152,8 @@ $completion = new completion_info($course);
 $completion->set_module_viewed($cm);
 
 /// Print the page header
-$strapplys = get_string("modulenameplural", "apply");
-$strapply  = get_string("modulename", "apply");
+$strapplys = get_string('modulenameplural', 'apply');
+$strapply  = get_string('modulename', 'apply');
 
 /*
 if ($course->id == SITEID) {
@@ -279,12 +279,14 @@ if ($apply_can_submit) {
                 }
 */
                 //tracking the submit
+/*
                 $tracking = new stdClass();
                 $tracking->userid = $USER->id;
-                $tracking->apply = $apply->id;
+                $tracking->apply_id = $apply->id;
                 $tracking->completed = $new_completed_id;
                 $DB->insert_record('apply_tracking', $tracking);
                 unset($SESSION->apply->is_started);
+*/
 
                 // Update completion state
                 $completion = new completion_info($course);
@@ -317,21 +319,22 @@ if ($apply_can_submit) {
     }
 
     //get the applyitems after the last shown pagebreak
-    $select = 'apply = ? AND position > ?';
+    $select = 'apply_id = ? AND position > ?';
     $params = array($apply->id, $startposition);
     $applyitems = $DB->get_records_select('apply_item', $select, $params, 'position');
 
     //get the first pagebreak
-    $params = array('apply' => $apply->id, 'typ' => 'pagebreak');
+    $params = array('apply_id' => $apply->id, 'typ' => 'pagebreak');
     if ($pagebreaks = $DB->get_records('apply_item', $params, 'position')) {
         $pagebreaks = array_values($pagebreaks);
         $firstpagebreak = $pagebreaks[0];
     } else {
         $firstpagebreak = false;
     }
-    $maxitemcount = $DB->count_records('apply_item', array('apply'=>$apply->id));
+    $maxitemcount = $DB->count_records('apply_item', array('apply_id'=>$apply->id));
 
     //get the values of completeds before done. Anonymous user can not get these values.
+/*
     if ((!isset($SESSION->apply->is_started)) AND (!isset($savereturn))) {
                           //($apply->anonymous == APPLY_ANONYMOUS_NO)) {
 
@@ -346,6 +349,7 @@ if ($apply_can_submit) {
     } else {
         $applycompletedtmp = apply_get_current_completed($apply->id, true, $courseid);
     }
+*/
 
     /// Print the main part of the page
     ///////////////////////////////////////////////////////////////////////////
@@ -442,7 +446,7 @@ if ($apply_can_submit) {
         //print the items
         if (is_array($applyitems)) {
             echo $OUTPUT->box_start('apply_form');
-            echo '<form action="complete.php" method="post" onsubmit=" ">';
+            echo '<form action="applies.php" method="post" onsubmit=" ">';
             echo '<fieldset>';
             echo '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
             echo $OUTPUT->box_start('apply_anonymousinfo');
@@ -455,7 +459,7 @@ if ($apply_can_submit) {
 
             echo $OUTPUT->box_end();
             //check, if there exists required-elements
-            $params = array('apply' => $apply->id, 'required' => 1);
+            $params = array('apply_id' => $apply->id, 'required' => 1);
             $countreq = $DB->count_records('apply_item', $params);
             if ($countreq > 0) {
                 echo '<span class="apply_required_mark">(*)';
@@ -465,7 +469,7 @@ if ($apply_can_submit) {
             echo $OUTPUT->box_start('apply_items');
 
             unset($startitem);
-            $select = 'apply = ? AND hasvalue = 1 AND position < ?';
+            $select = 'apply_id = ? AND hasvalue = 1 AND position < ?';
             $params = array($apply->id, $startposition);
             $itemnr = $DB->count_records_select('apply_item', $select, $params);
             $lastbreakposition = 0;
