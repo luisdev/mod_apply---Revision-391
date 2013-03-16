@@ -195,7 +195,7 @@ if ($apply_complete_cap) {
 //            }
 //            echo '<a href="'.$completeurl->out().'">'.get_string('continue_the_form', 'apply').'</a>';
 //        } else {
-            echo '<a href="'.$completeurl->out().'">'.get_string('complete_the_form', 'apply').'</a>';
+            echo '<a href="'.$completeurl->out().'">'.get_string('submit_the_form', 'apply').'</a>';
 //        }
     }
 	else {

@@ -31,7 +31,7 @@ apply_init_session();
 
 $id 			= required_param('id', PARAM_INT);
 //$completedid 	= optional_param('completedid', false, PARAM_INT);
-$applies_id		= optional_param('applies_id', false, PARAM_INT);
+$submit_id		= optional_param('submit_id', false, PARAM_INT);
 $preservevalues = optional_param('preservevalues', 0,  PARAM_INT);
 $courseid 	  	= optional_param('courseid', false, PARAM_INT);
 $gopage 		= optional_param('gopage', -1, PARAM_INT);
@@ -162,9 +162,9 @@ if ($course->id == SITEID) {
 }
 */
 
-$PAGE->navbar->add(get_string('apply:applies', 'apply'));
+$PAGE->navbar->add(get_string('apply:submit', 'apply'));
 $urlparams = array('id'=>$cm->id, 'gopage'=>$gopage, 'courseid'=>$course->id);
-$PAGE->set_url('/mod/apply/applies.php', $urlparams);
+$PAGE->set_url('/mod/apply/submit.php', $urlparams);
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));
 echo $OUTPUT->header();
@@ -218,7 +218,7 @@ if ($apply_can_submit) {
         //checken, ob alle required items einen wert haben
         if (apply_check_values($startitempos, $lastitempos)) {
             $userid = $USER->id; //arb
-            if ($applies_id = apply_save_values($USER->id, true)) {
+            if ($submit_id = apply_save_values($USER->id, true)) {
                 if ($userid>0) {
                     add_to_log($course->id, 'apply', 'start_apply', 'view.php?id='.$cm->id, $apply->id, $cm->id, $userid);
                 }
@@ -446,7 +446,7 @@ if ($apply_can_submit) {
         //print the items
         if (is_array($applyitems)) {
             echo $OUTPUT->box_start('apply_form');
-            echo '<form action="applies.php" method="post" onsubmit=" ">';
+            echo '<form action="submit.php" method="post" onsubmit=" ">';
             echo '<fieldset>';
             echo '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
             echo $OUTPUT->box_start('apply_anonymousinfo');
@@ -540,14 +540,14 @@ if ($apply_can_submit) {
             }
             echo $OUTPUT->box_end();
             echo '<input type="hidden" name="id" value="'.$id.'" />';
-            echo '<input type="hidden" name="applyid" value="'.$apply->id.'" />';
+            echo '<input type="hidden" name="apply_id" value="'.$apply->id.'" />';
             echo '<input type="hidden" name="lastpage" value="'.$gopage.'" />';
             if (isset($applycompletedtmp->id)) {
                 $inputvalue = 'value="'.$applycompletedtmp->id.'"';
             } else {
                 $inputvalue = 'value=""';
             }
-            echo '<input type="hidden" name="completedid" '.$inputvalue.' />';
+            echo '<input type="hidden" name="submit_id" '.$inputvalue.' />';
             echo '<input type="hidden" name="courseid" value="'. $courseid . '" />';
             echo '<input type="hidden" name="preservevalues" value="1" />';
             if (isset($startitem)) {
@@ -593,7 +593,8 @@ if ($apply_can_submit) {
             $SESSION->apply->is_started = true;
         }
     }
-} else {
+} 
+else {
     echo $OUTPUT->box_start('generalbox boxaligncenter');
         echo '<h2>';
         echo '<font color="red">';
