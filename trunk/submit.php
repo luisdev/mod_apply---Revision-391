@@ -267,7 +267,7 @@ if ($apply_can_submit) {
 			}
 		}
 		else {
-			$submits = apply_get_current_completed($apply->id, true, $courseid);
+			$submits = apply_get_current_submit($apply->id);
 		}
 	}
 
