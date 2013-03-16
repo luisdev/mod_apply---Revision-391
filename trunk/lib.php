@@ -871,22 +871,22 @@ function apply_save_values($usrid)
 {
     global $DB;
 
-    $applies_id = optional_param('applies_id', 0, PARAM_INT);
+    $app_id = optional_param('app_id', 0, PARAM_INT);
 
     $time = time();
     $time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
 
-    if ($usrid == 0) {
+    if ($usrid==0) {
         return apply_create_values($usrid, $time_modified);
     }
 
-    $appli = $DB->get_record('apply_application', array('id'=>$applies_id));
-    if (!$completed) {
-        return apply_create_values($usrid, $time_modified, $tmp);
+    $appli = $DB->get_record('apply_application', array('id'=>$app_id));
+    if (!$appli) {
+        return apply_create_values($usrid, $time_modified);
     }
 	else {
-        $completed->time_modified = $time_modified;
-        return apply_update_values($completed, $tmp);
+        $appli->time_modified = $time_modified;
+        return apply_update_values($appli);
     }
 }
 
