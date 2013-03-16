@@ -63,11 +63,11 @@ $string['checkbox'] = '多肢選択 - 複数回答 (チェックボックス)';
 $string['check_values'] = '考えられる回答';
 $string['choosefile'] = 'ファイルを選択する';
 $string['chosen_apply_response'] = '選択された申請フォームの回答';
-$string['completed'] = '完了';
-$string['completed_applys'] = '申請書類数';
+$string['submited'] = '送信';
+$string['submited_applys'] = '申請書類数';
 
 //
-$string['complete_the_form'] = '申請する ...';
+$string['submit_the_form'] = '申請する ...';
 
 $string['configallowfullanonymous'] = 'このオプションを有効にした場合，ログインせずに申請フォームを完了することができます．設定はホームページの申請フォームにのみ影響します．';
 $string['confirmdeleteentry'] = '本当にこのエントリを削除してもよろしいですか?';

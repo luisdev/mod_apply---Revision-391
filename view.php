@@ -46,7 +46,6 @@ if (! $apply = $DB->get_record('apply', array('id'=>$cm->instance))) {
 $context = context_module::instance($cm->id);
 
 $apply_complete_cap = false;
-
 if (has_capability('mod/apply:complete', $context)) {
     $apply_complete_cap = true;
 }
@@ -106,7 +105,7 @@ if (has_capability('mod/apply:edititems', $context)) {
 
     echo $OUTPUT->box_start('apply_info');
     echo '<span class="apply_info">';
-    echo get_string('completed_applys', 'apply').': ';
+    echo get_string('submited_applys', 'apply').': ';
     echo '</span>';
     echo '<span class="apply_info_value">';
     echo $submitscount;

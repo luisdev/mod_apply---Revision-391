@@ -72,15 +72,13 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="submit_id"/>
         <FIELD NAME="submit_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="item_id"/>
         <FIELD NAME="item_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="submit_id" NEXT="value"/>
-        <FIELD NAME="value" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="item_id"/>
+        <FIELD NAME="value" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="item_id" NEXT="time_modified"/>
+        <FIELD NAME="time_modified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="value"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for apply_value" NEXT="item_id"/>
         <KEY NAME="item_id" TYPE="foreign" FIELDS="item_id" REFTABLE="apply_item" REFFIELDS="id" PREVIOUS="primary"/>
       </KEYS>
-      <INDEXES>
-        <INDEX NAME="apply_id" UNIQUE="false" FIELDS="apply_id"/>
-      </INDEXES>
     </TABLE>
     <TABLE NAME="apply_template" COMMENT="templates of applystructures" PREVIOUS="apply_value">
       <FIELDS>

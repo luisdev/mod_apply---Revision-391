@@ -115,7 +115,7 @@ function apply_delete_instance($apply_id)
 
 	if (is_array($apply_items)) {
 		foreach ($apply_items as $apply_item) {
-			$DB->delete_records("apply_value", array('item_id'=>$apply_item->id));
+			$DB->delete_records('apply_value', array('item_id'=>$apply_item->id));
 		}
 		if ($del_items = $DB->get_records('apply_item', array('apply_id'=>$apply_id))) {
 			foreach ($del_items as $del_item) {
