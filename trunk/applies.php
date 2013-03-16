@@ -31,7 +31,7 @@ apply_init_session();
 
 $id 			= required_param('id', PARAM_INT);
 //$completedid 	= optional_param('completedid', false, PARAM_INT);
-$app_id			= optional_param('app_id', false, PARAM_INT);
+$applies_id		= optional_param('applies_id', false, PARAM_INT);
 $preservevalues = optional_param('preservevalues', 0,  PARAM_INT);
 $courseid 	  	= optional_param('courseid', false, PARAM_INT);
 $gopage 		= optional_param('gopage', -1, PARAM_INT);
@@ -218,8 +218,8 @@ if ($apply_can_submit) {
         //checken, ob alle required items einen wert haben
         if (apply_check_values($startitempos, $lastitempos)) {
             $userid = $USER->id; //arb
-            if ($app_id = apply_save_values($USER->id, true)) {
-                if ($userid > 0) {
+            if ($applies_id = apply_save_values($USER->id, true)) {
+                if ($userid>0) {
                     add_to_log($course->id, 'apply', 'start_apply', 'view.php?id='.$cm->id, $apply->id, $cm->id, $userid);
                 }
                 if (!$gonextpage AND !$gopreviouspage) {
