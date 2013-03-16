@@ -107,26 +107,26 @@ function apply_update_instance($apply)
 
 
 
-function apply_delete_instance($id) 
+function apply_delete_instance($apply_id) 
 {
 	global $DB;
 
-	$apply_items = $DB->get_records('apply_item', array('apply_id'=>$id));
+	$apply_items = $DB->get_records('apply_item', array('apply_id'=>$apply_id));
 
 	if (is_array($apply_items)) {
 		foreach ($apply_items as $apply_item) {
-			$DB->delete_records("apply_value", array("item_id"=>$apply_item->id));
+			$DB->delete_records("apply_value", array('item_id'=>$apply_item->id));
 		}
-		if ($del_items = $DB->get_records('apply_item', array('apply_id'=>$id))) {
+		if ($del_items = $DB->get_records('apply_item', array('apply_id'=>$apply_id))) {
 			foreach ($del_items as $del_item) {
 				apply_delete_item($del_item->id, false);
 			}
 		}
 	}
 
-	$ret = $DB->delete_records('apply_application', array('apply_id'=>$id));
-	if ($ret) $ret = $DB->delete_records('event', array('modulename'=>'apply', 'instance'=>$id));
-	if ($ret) $ret = $DB->delete_records('apply', array('id'=>$id));
+	$ret = $DB->delete_records('apply_submit', array('apply_id'=>$apply_id));
+	if ($ret) $ret = $DB->delete_records('event', array('modulename'=>'apply', 'instance'=>$apply_id));
+	if ($ret) $ret = $DB->delete_records('apply', array('id'=>$apply_id));
 
 	return $ret;
 }
@@ -344,13 +344,11 @@ function apply_create_item($data)
 
 	$itemobj = apply_get_item_class($data->typ);
 	$item->presentation = ''; //the date comes from postupdate() of the itemobj
-
 	$item->hasvalue = $itemobj->get_hasvalue();
-
-	$item->typ = $data->typ;
+	$item->typ 		= $data->typ;
 	$item->position = $data->position;
+	$item->required = 0;
 
-	$item->required=0;
 	if (!empty($data->required)) {
 		$item->required = $data->required;
 	}
@@ -447,9 +445,9 @@ function apply_delete_all_items($apply_id)
 		apply_delete_item($item->id, false);
 	}
 
-	if ($applications = $DB->get_records('apply_application', array('apply_id'=>$apply->id))) {
-		foreach ($applications as $application) {
-			$DB->delete_records('apply_application', array('id'=>$application->id));
+	if ($submits = $DB->get_records('apply_submit', array('apply_id'=>$apply->id))) {
+		foreach ($submits as $submit) {
+			$DB->delete_records('apply_submit', array('id'=>$submit->id));
 		}
 	}
 }
@@ -485,7 +483,6 @@ function apply_renumber_items($apply_id)
 		}
 	}
 }
-
 
 
 
@@ -607,7 +604,7 @@ function apply_print_item_complete($item, $value=false, $highlightrequire=false)
 
 
 
-function apply_print_item_show_value($item, $value = false)
+function apply_print_item_show_value($item, $value=false)
 {
 	global $CFG;
 
@@ -645,51 +642,33 @@ function apply_get_template_list($course, $onlyownorpublic='')
 
 
 ///////////////////////////////////////////////////////////////////////////////////
+//
 // Groups
+//
 
-function apply_get_completeds_group($apply, $groupid=false, $courseid=false) 
+function apply_get_completeds_group($apply, $groupid=false) 
 {
 	global $CFG, $DB;
 
 	if (intval($groupid)>0) {
-		$query = "SELECT aa.* FROM {apply_application} aa, {groups_members} gm 
-						WHERE aa.apply_id = ?  AND gm.groupid = ?  AND aa.user_id=gm.userid";
+		$query = "SELECT as.* FROM {apply_submit} as, {groups_members} gm 
+						WHERE as.apply_id = ? AND gm.groupid = ?  AND as.user_id = gm.userid";
 		$values = $DB->get_records_sql($query, array($apply->id, $groupid));
 		if ($values) return $values;
 		return false;
 	} 
 	//
 	else {
-		if ($courseid) {
-			$query = "SELECT DISTINCT aa.* FROM {apply_application} aa, {apply_value} av
-							WHERE aa.id = fbv.completed AND aa.apply_id = ? AND av.course_id = ?";
-			$values = $DB->get_records_sql($query, array($apply->id, $courseid));
-			if ($values) return $values;
-			return false;
-		} 
-		else {
-			$values = $DB->get_records('apply_application', array('apply_id'=>$apply->id));
-			if ($values) return $values;
-			return false;
-		}
+		$values = $DB->get_records('apply_submit', array('apply_id'=>$apply->id));
+		if ($values) return $values;
+		return false;
 	}
 }
 
 
 
-function apply_get_completeds_group_count($apply, $groupid=false, $courseid=false) 
+function apply_get_completeds_group_count($apply, $groupid=false) 
 {
-	global $CFG, $DB;
-
-	if ($courseid>0 AND !$groupid<=0) {
-		$sql = "SELECT id, COUNT(item) AS ci FROM {apply_value} WHERE course_id = ? GROUP BY item ORDER BY ci DESC";
-		if ($foundrecs = $DB->get_records_sql($sql, array($courseid))) {
-			$foundrecs = array_values($foundrecs);
-			return $foundrecs[0]->ci;
-		}
-		return false;
-	}
-
 	if ($values = apply_get_completeds_group($apply, $groupid)) {
 		return count($values);
 	} 
@@ -697,7 +676,6 @@ function apply_get_completeds_group_count($apply, $groupid=false, $courseid=fals
 		return false;
 	}
 }
-
 
 
 
@@ -720,10 +698,10 @@ function apply_create_pagebreak($apply_id)
 	$item = new stdClass();
 	$item->apply_id = $apply_id;
 	$item->template = 0;
-	$item->name = '';
+	$item->name 	= '';
 	$item->presentation = '';
 	$item->hasvalue = 0;
-	$item->typ = 'pagebreak';
+	$item->typ 		= 'pagebreak';
 	$item->position = $lastposition + 1;
 	$item->required = 0;
 
@@ -756,37 +734,21 @@ function apply_get_last_break_position($apply_id)
 
 
 
-function apply_get_page_to_continue($apply_id, $courseid=false, $guestid=false)
+function apply_get_page_to_continue($apply_id)
 {
 	global $CFG, $USER, $DB;
-	//is there any break?
 
 	if (!$allbreaks = apply_get_all_break_positions($apply_id)) {
 		return false;
 	}
 
 	$params = array();
-	if ($courseid) {
-		$courseselect = "AND fv.course_id = :courseid";
-		$params['courseid'] = $courseid;
-	} 
-	else {
-		$courseselect = '';
-	}
+	$userselect = "AND as.user_id = :userid";
+	$usergroup  = "GROUP BY as.user_id";
+	$params['user_id'] = $USER->id;
 
-	if ($guestid) {
-		$userselect = "AND fc.guestid = :guestid";
-		$usergroup  = "GROUP BY fc.guestid";
-		$params['guestid'] = $guestid;
-	} 
-	else {
-		$userselect = "AND fc.userid = :userid";
-		$usergroup  = "GROUP BY fc.userid";
-		$params['userid'] = $USER->id;
-	}
-
-	$sql = "SELECT MAX(fi.position) FROM {apply_completedtmp} fc, {apply_valuetmp} fv, {apply_item} fi
-			  	WHERE fc.id = fv.completed $userselect AND fc.apply = :apply_id $courseselect AND fi.id = fv.item $usergroup";
+	$sql = "SELECT MAX(ai.position) FROM {apply_submit} as, {apply_value} av, {apply_item} ai
+			  	WHERE as.id = av.submit_id AND as.apply_id = :apply_id AND ai.id = av.item_id $usergroup";
 	$params['apply_id'] = $apply_id;
 
 	$lastpos = $DB->get_field_sql($sql, $params);
@@ -803,53 +765,30 @@ function apply_get_page_to_continue($apply_id, $courseid=false, $guestid=false)
 
 
 
+///////////////////////////////////////////////////////////////////////////////////
+//
+// Submit Handling
+//
 
-
-/*
-function apply_get_current_completed($apply_id, $tmp=false, $courseid=false, $guestid=false)
+function apply_get_current_submit($apply_id) //, $tmp=false, $courseid=false, $guestid=false)
 {
-	global $USER, $CFG, $DB;
+	global $USER, $DB;
 
-	if (!$courseid) {
-		if ($guestid) {
-			$params = array('apply'=>$apply_id, 'guestid'=>$guestid);
-			return $DB->get_record('apply_completed'.$tmpstr, $params);
-		} 
-		else {
-			$params = array('apply'=>$apply_id, 'userid'=>$USER->id);
-			return $DB->get_record('apply_completed'.$tmpstr, $params);
-		}
-	}
-
-	$params = array();
-
-	if ($guestid) {
-		$userselect = "AND fc.guestid = :guestid";
-		$params['guestid'] = $guestid;
-	} else {
-		$userselect = "AND fc.userid = :userid";
-		$params['userid'] = $USER->id;
-	}
-	//if courseid is set the apply is global.
-	//there can be more than one completed on one apply
-	$sql =  "SELECT DISTINCT fc.*
-			   FROM {apply_value{$tmpstr}} fv, {apply_completed{$tmpstr}} fc
-			  WHERE fv.course_id = :courseid
-					AND fv.completed = fc.id
-					$userselect
-					AND fc.apply = :apply_id";
-	$params['courseid']   = intval($courseid);
-	$params['apply_id'] = $apply_id;
-
-	if (!$sqlresult = $DB->get_records_sql($sql, $params)) {
-		return false;
-	}
-	foreach ($sqlresult as $r) {
-		return $DB->get_record('apply_completed'.$tmpstr, array('id'=>$r->id));
-	}
+	$params = array('apply_id'=>$apply_id, 'user_id'=>$USER->id);
+	return $DB->get_record('apply_submit', $params);
 }
-*/
 
+
+
+function apply_get_current_all_submit($apply_id)
+{
+	global $DB;
+
+	// 権限チェック
+
+	$params = array('apply_id'=>$apply_id);
+	return $DB->get_record('apply_submit', $params);
+}
 
 
 
@@ -861,516 +800,321 @@ function apply_get_current_completed($apply_id, $tmp=false, $courseid=false, $gu
 
 function apply_clean_input_value($item, $value) 
 {
-    $itemobj = apply_get_item_class($item->typ);
-    return $itemobj->clean_input_value($value);
+	$itemobj = apply_get_item_class($item->typ);
+	return $itemobj->clean_input_value($value);
 }
 
 
 
-function apply_save_values($usrid)
+// return submit_id
+function apply_save_values($user_id)
 {
-    global $DB;
+	global $DB;
 
-    $apples_id = optional_param('applies_id', 0, PARAM_INT);
+	$submit_id = optional_param('submit_id', 0, PARAM_INT);
 
-    $time = time();
-    $time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
+	$time = time();
+	$time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
 
-    if ($usrid==0) {
-        return apply_create_values($usrid, $time_modified);
-    }
+	if ($user_id==0) {
+		return apply_create_values($user_id, $time_modified);
+	}
 
-    $appli = $DB->get_record('apply_application', array('id'=>$applies_id));
-    if (!$appli) {
-        return apply_create_values($usrid, $time_modified);
-    }
+	$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
+	if (!$submit) {
+		return apply_create_values($user_id, $time_modified);
+	}
 	else {
-        $appli->time_modified = $time_modified;
-        return apply_update_values($appli);
-    }
+		$submit->time_modified = $time_modified;
+		return apply_update_values($submit);
+	}
 }
 
 
 
 function apply_check_values($firstitem, $lastitem)
 {
-    global $DB, $CFG;
+	global $DB, $CFG;
 
-    $applyid = optional_param('apply_id', 0, PARAM_INT);
+	$apply_id = optional_param('apply_id', 0, PARAM_INT);
 
-    $select = "apply_id = ?  AND position >= ?  AND position <= ?  AND hasvalue = 1";
-    $params = array($applyid, $firstitem, $lastitem);
+	$select = "apply_id = ?  AND position >= ?  AND position <= ?  AND hasvalue = 1";
+	$params = array($apply_id, $firstitem, $lastitem);
 
-    if (!$applyitems = $DB->get_records_select('apply_item', $select, $params)) {
-        return true;
-    }
+	if (!$items = $DB->get_records_select('apply_item', $select, $params)) {
+		return true;
+	}
 
-    foreach ($applyitems as $item) {
-        $itemobj = apply_get_item_class($item->typ);
-        $formvalname = $item->typ . '_' . $item->id;
+	foreach ($items as $item) {
+		$itemobj = apply_get_item_class($item->typ);
+		$formvalname = $item->typ . '_' . $item->id;
 
-        if ($itemobj->value_is_array()) {
-            $value = optional_param_array($formvalname, null, PARAM_RAW);
-        } 
+		if ($itemobj->value_is_array()) {
+			$value = optional_param_array($formvalname, null, PARAM_RAW);
+		} 
 		else {
-            $value = optional_param($formvalname, null, PARAM_RAW);
-        }
-        $value = $itemobj->clean_input_value($value);
+			$value = optional_param($formvalname, null, PARAM_RAW);
+		}
+		$value = $itemobj->clean_input_value($value);
 
-        if (is_null($value) AND $item->required==1) {
-            return false;
-        }
+		if (is_null($value) AND $item->required==1) {
+			return false;
+		}
+		if (!$itemobj->check_value($value, $item)) {
+			return false;
+		}
+	}
 
-        if (!$itemobj->check_value($value, $item)) {
-            return false;
-        }
-    }
-
-    return true;
+	return true;
 }
 
 
-/*
-function apply_save_guest_values($guestid) {
-    global $DB;
 
-    $completedid = optional_param('completedid', false, PARAM_INT);
-
-    $time_modified = time();
-    if (!$completed = $DB->get_record('apply_completedtmp', array('id'=>$completedid))) {
-        return apply_create_values(0, $time_modified, true, $guestid);
-    } else {
-        $completed->time_modified = $time_modified;
-        return apply_update_values($completed, true);
-    }
-}
-*/
-
-
-
-function apply_get_item_value($apply_id, $item_id) 
+function apply_get_item_value($submit_id, $item_id) 
 {
-    global $DB;
+	global $DB;
 
-    $params = array('apply_id'=>$apply_id, 'item_id'=>$item_id);
-    return $DB->get_field('apply_value', 'value', $params);
+	$params = array('submit_id'=>$submit_id, 'item_id'=>$item_id);
+	return $DB->get_field('apply_value', 'value', $params);
 }
 
 
 
-function apply_compare_item_value($completedid, $itemid, $dependvalue, $tmp = false) {
-    global $DB, $CFG;
-
-    $dbvalue = apply_get_item_value($completedid, $itemid, $tmp);
-
-    //get the class of the given item-typ
-    $item = $DB->get_record('apply_item', array('id'=>$itemid));
-
-    //get the instance of the item-class
-    $itemobj = apply_get_item_class($item->typ);
-    return $itemobj->compare_value($item, $dbvalue, $dependvalue); //true or false
-}
-
-
-
-function apply_check_values($firstitem, $lastitem) {
-    global $DB, $CFG;
-
-    $applyid = optional_param('applyid', 0, PARAM_INT);
-
-    //get all items between the first- and lastitem
-    $select = "apply = ?
-                    AND position >= ?
-                    AND position <= ?
-                    AND hasvalue = 1";
-    $params = array($applyid, $firstitem, $lastitem);
-    if (!$applyitems = $DB->get_records_select('apply_item', $select, $params)) {
-        //if no values are given so no values can be wrong ;-)
-        return true;
-    }
-
-    foreach ($applyitems as $item) {
-        //get the instance of the item-class
-        $itemobj = apply_get_item_class($item->typ);
-
-        //the name of the input field of the completeform is given in a special form:
-        //<item-typ>_<item-id> eg. numeric_234
-        //this is the key to get the value for the correct item
-        $formvalname = $item->typ . '_' . $item->id;
-
-        if ($itemobj->value_is_array()) {
-            //get the raw value here. It is cleaned after that by the object itself
-            $value = optional_param_array($formvalname, null, PARAM_RAW);
-        } else {
-            //get the raw value here. It is cleaned after that by the object itself
-            $value = optional_param($formvalname, null, PARAM_RAW);
-        }
-        $value = $itemobj->clean_input_value($value);
-
-        //check if the value is set
-        if (is_null($value) AND $item->required == 1) {
-            return false;
-        }
-
-        //now we let check the value by the item-class
-        if (!$itemobj->check_value($value, $item)) {
-            return false;
-        }
-    }
-    //if no wrong values so we can return true
-    return true;
-}
-
-
-
-
-
-
-
-function apply_create_values($usrid, $time_modified, $tmp = false, $guestid = false) {
-    global $DB;
-
-    $applyid = optional_param('applyid', false, PARAM_INT);
-//    $anonymous_response = optional_param('anonymous_response', false, PARAM_INT);
-    $courseid = optional_param('courseid', false, PARAM_INT);
-
-    $tmpstr = $tmp ? 'tmp' : '';
-    //first we create a new completed record
-    $completed = new stdClass();
-    $completed->apply           = $applyid;
-    $completed->userid             = $usrid;
-    $completed->guestid            = $guestid;
-    $completed->time_modified       = $time_modified;
-//    $completed->anonymous_response = $anonymous_response;
-
-    $completedid = $DB->insert_record('apply_completed'.$tmpstr, $completed);
-
-    $completed = $DB->get_record('apply_completed'.$tmpstr, array('id'=>$completedid));
-
-    //the keys are in the form like abc_xxx
-    //with explode we make an array with(abc, xxx) and (abc=typ und xxx=itemnr)
-
-    //get the items of the apply
-    if (!$allitems = $DB->get_records('apply_item', array('apply'=>$completed->apply))) {
-        return false;
-    }
-    foreach ($allitems as $item) {
-        if (!$item->hasvalue) {
-            continue;
-        }
-        //get the class of item-typ
-        $itemobj = apply_get_item_class($item->typ);
-
-        $keyname = $item->typ.'_'.$item->id;
-
-        if ($itemobj->value_is_array()) {
-            $itemvalue = optional_param_array($keyname, null, $itemobj->value_type());
-        } else {
-            $itemvalue = optional_param($keyname, null, $itemobj->value_type());
-        }
-
-        if (is_null($itemvalue)) {
-            continue;
-        }
-
-        $value = new stdClass();
-        $value->item = $item->id;
-        $value->completed = $completed->id;
-        $value->course_id = $courseid;
-
-        //the kind of values can be absolutely different
-        //so we run create_value directly by the item-class
-        $value->value = $itemobj->create_value($itemvalue);
-        $DB->insert_record('apply_value'.$tmpstr, $value);
-    }
-    return $completed->id;
-}
-
-
-
-
-
-
-function apply_update_values($completed, $tmp = false) {
-    global $DB;
-
-    $courseid = optional_param('courseid', false, PARAM_INT);
-    $tmpstr = $tmp ? 'tmp' : '';
-
-    $DB->update_record('apply_completed'.$tmpstr, $completed);
-    //get the values of this completed
-    $values = $DB->get_records('apply_value'.$tmpstr, array('completed'=>$completed->id));
-
-    //get the items of the apply
-    if (!$allitems = $DB->get_records('apply_item', array('apply'=>$completed->apply))) {
-        return false;
-    }
-    foreach ($allitems as $item) {
-        if (!$item->hasvalue) {
-            continue;
-        }
-        //get the class of item-typ
-        $itemobj = apply_get_item_class($item->typ);
-
-        $keyname = $item->typ.'_'.$item->id;
-
-        if ($itemobj->value_is_array()) {
-            $itemvalue = optional_param_array($keyname, null, $itemobj->value_type());
-        } else {
-            $itemvalue = optional_param($keyname, null, $itemobj->value_type());
-        }
-
-        //is the itemvalue set (could be a subset of items because pagebreak)?
-        if (is_null($itemvalue)) {
-            continue;
-        }
-
-        $newvalue = new stdClass();
-        $newvalue->item = $item->id;
-        $newvalue->completed = $completed->id;
-        $newvalue->course_id = $courseid;
-
-        //the kind of values can be absolutely different
-        //so we run create_value directly by the item-class
-        $newvalue->value = $itemobj->create_value($itemvalue);
-
-        //check, if we have to create or update the value
-        $exist = false;
-        foreach ($values as $value) {
-            if ($value->item == $newvalue->item) {
-                $newvalue->id = $value->id;
-                $exist = true;
-                break;
-            }
-        }
-        if ($exist) {
-            $DB->update_record('apply_value'.$tmpstr, $newvalue);
-        } else {
-            $DB->insert_record('apply_value'.$tmpstr, $newvalue);
-        }
-    }
-
-    return $completed->id;
-}
-
-
-
-function apply_get_group_values($item,
-                                   $groupid = false,
-                                   $courseid = false,
-                                   $ignore_empty = false) {
-
-    global $CFG, $DB;
-
-    //if the groupid is given?
-    if (intval($groupid) > 0) {
-        if ($ignore_empty) {
-            $ignore_empty_select = "AND fbv.value != '' AND fbv.value != '0'";
-        } else {
-            $ignore_empty_select = "";
-        }
-
-        $query = 'SELECT fbv .  *
-                    FROM {apply_value} fbv, {apply_completed} fbc, {groups_members} gm
-                   WHERE fbv.item = ?
-                         AND fbv.completed = fbc.id
-                         AND fbc.userid = gm.userid
-                         '.$ignore_empty_select.'
-                         AND gm.groupid = ?
-                ORDER BY fbc.time_modified';
-        $values = $DB->get_records_sql($query, array($item->id, $groupid));
-
-    } else {
-        if ($ignore_empty) {
-            $ignore_empty_select = "AND value != '' AND value != '0'";
-        } else {
-            $ignore_empty_select = "";
-        }
-
-        if ($courseid) {
-            $select = "item = ? AND course_id = ? ".$ignore_empty_select;
-            $params = array($item->id, $courseid);
-            $values = $DB->get_records_select('apply_value', $select, $params);
-        } else {
-            $select = "item = ? ".$ignore_empty_select;
-            $params = array($item->id);
-            $values = $DB->get_records_select('apply_value', $select, $params);
-        }
-    }
-/*
-    $params = array('id'=>$item->apply);
-    if ($DB->get_field('apply', 'anonymous', $params) == APPLY_ANONYMOUS_YES) {
-        if (is_array($values)) {
-            shuffle($values);
-        }
-    }
-*/
-    return $values;
-}
-
-
-
-function apply_is_already_submitted($applyid, $courseid = false) {
-    global $USER, $DB;
-
-    $params = array('userid'=>$USER->id, 'apply'=>$applyid);
-    if (!$trackings = $DB->get_records_menu('apply_tracking', $params, '', 'id, completed')) {
-        return false;
-    }
-
-    if ($courseid) {
-        $select = 'completed IN ('.implode(',', $trackings).') AND course_id = ?';
-        if (!$values = $DB->get_records_select('apply_value', $select, array($courseid))) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-
-
-function apply_get_current_application($applyid, $courseid = false)
+function apply_compare_item_value($submit_id, $item_id, $dependvalue)
 {
-    global $USER, $CFG, $DB;
+	global $DB, $CFG;
 
-    if (!$courseid) {
-        $params = array('apply'=>$applyid, 'userid'=>$USER->id);
-        return $DB->get_record('apply_application', $params);
-    }
+	$dbvalue = apply_get_item_value($submit_id, $item_id);
+	$item = $DB->get_record('apply_item', array('id'=>$item_id));
 
-    $params = array();
-    $userselect = " AND fa.userid = :userid ";
-    $params['userid'] = $USER->id;
+	$itemobj = apply_get_item_class($item->typ);
+	$ret = $itemobj->compare_value($item, $dbvalue, $dependvalue); //true or false
 
-    //if courseid is set the apply is global.
-    //there can be more than one completed on one apply
-    $sql = "SELECT DISTINCT fa.* FROM {apply_value} fv, {apply_application} fa
-                WHERE fv.course_id=:courseid AND fv.apply_id=fa.id AND fa.userid=:userid AND fa.apply=:applyid";
-    $params['courseid'] = intval($courseid);
-    $params['applyid']  = $applyid;
+	return $ret;
+}
 
-    if (!$sqlresult = $DB->get_records_sql($sql, $params)) {
-        return false;
-    }
 
-    foreach ($sqlresult as $r) {
-        return $DB->get_record('apply_applications', array('id'=>$r->id));
-    }
+
+function apply_check_values($firstitem, $lastitem)
+{
+	global $DB, $CFG;
+
+	$apply_id = optional_param('apply_id', 0, PARAM_INT);
+
+	//get all items between the first- and lastitem
+	$select = "apply_id = ?  AND position >= ?  AND position <= ?  AND hasvalue = 1";
+	$params = array($apply_id, $firstitem, $lastitem);
+
+	if (!$items = $DB->get_records_select('apply_item', $select, $params)) {
+		return true;
+	}
+
+	foreach ($items as $item) {
+		$itemobj = apply_get_item_class($item->typ);
+		$formvalname = $item->typ . '_' . $item->id;
+
+		if ($itemobj->value_is_array()) {
+			$value = optional_param_array($formvalname, null, PARAM_RAW);
+		} 
+		else {
+			$value = optional_param($formvalname, null, PARAM_RAW);
+		}
+		$value = $itemobj->clean_input_value($value);
+
+		if (is_null($value) AND $item->required == 1) {
+			return false;
+		}
+		if (!$itemobj->check_value($value, $item)) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 
 
 
-function apply_get_completeds_group($apply, $groupid = false, $courseid = false) {
-    global $CFG, $DB;
+function apply_create_values($usrid, $time_modified)
+{
+	global $DB;
 
-    if (intval($groupid) > 0) {
-        $query = "SELECT fbc.*
-                    FROM {apply_completed} fbc, {groups_members} gm
-                   WHERE fbc.apply = ?
-                         AND gm.groupid = ?
-                         AND fbc.userid = gm.userid";
-        if ($values = $DB->get_records_sql($query, array($apply->id, $groupid))) {
-            return $values;
-        } else {
-            return false;
-        }
-    } else {
-        if ($courseid) {
-            $query = "SELECT DISTINCT fbc.*
-                        FROM {apply_completed} fbc, {apply_value} fbv
-                        WHERE fbc.id = fbv.completed
-                            AND fbc.apply = ?
-                            AND fbv.course_id = ?
-                        ORDER BY random_response";
-            if ($values = $DB->get_records_sql($query, array($apply->id, $courseid))) {
-                return $values;
-            } else {
-                return false;
-            }
-        } else {
-            if ($values = $DB->get_records('apply_completed', array('apply'=>$apply->id))) {
-                return $values;
-            } else {
-                return false;
-            }
-        }
-    }
+	$apply_id = optional_param('apply_id', false, PARAM_INT);
+//	$courseid = optional_param('courseid', false, PARAM_INT);
+
+	$submit = new stdClass();
+	$subnit->apply_id		= $apply_id;
+	$submit->user_id		= $usrid;
+	$submit->time_modified  = $time_modified;
+
+	$submit_id = $DB->insert_record('apply_submit', $submit);
+	$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
+
+	if (!$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id))) {
+		return false;
+	}
+
+	foreach ($items as $item) {
+		//
+		if (!$item->hasvalue) {
+			continue;
+		}
+		$itemobj = apply_get_item_class($item->typ);
+		$keyname = $item->typ.'_'.$item->id;
+
+		if ($itemobj->value_is_array()) {
+			$itemvalue = optional_param_array($keyname, null, $itemobj->value_type());
+		}
+		else {
+			$itemvalue = optional_param($keyname, null, $itemobj->value_type());
+		}
+		if (is_null($itemvalue)) {
+			continue;
+		}
+
+		$value = new stdClass();
+		$value->item_id   = $item->id;
+		$value->submit_id = $submit->id;
+		$value->value = $itemobj->create_value($itemvalue);
+
+		$DB->insert_record('apply_value', $value);
+	}
+
+	return $submit->id;
 }
 
 
 
-function apply_get_completeds_group_count($apply, $groupid = false, $courseid = false) {
-    global $CFG, $DB;
+function apply_update_values($submit)
+{
+	global $DB;
 
-    if ($courseid > 0 AND !$groupid <= 0) {
-        $sql = "SELECT id, COUNT(item) AS ci
-                  FROM {apply_value}
-                 WHERE course_id  = ?
-              GROUP BY item ORDER BY ci DESC";
-        if ($foundrecs = $DB->get_records_sql($sql, array($courseid))) {
-            $foundrecs = array_values($foundrecs);
-            return $foundrecs[0]->ci;
-        }
-        return false;
-    }
-    if ($values = apply_get_completeds_group($apply, $groupid)) {
-        return count($values);
-    } else {
-        return false;
-    }
+//	$courseid = optional_param('courseid', false, PARAM_INT);
+
+	$DB->update_record('apply_submit', $submit);
+	$values = $DB->get_records('apply_value', array('submit_id'=>$submit->id));
+
+	if (!$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id))) {
+		return false;
+	}
+
+	foreach ($items as $item) {
+		//
+		if (!$item->hasvalue) {
+			continue;
+		}
+		$itemobj = apply_get_item_class($item->typ);
+		$keyname = $item->typ.'_'.$item->id;
+
+		if ($itemobj->value_is_array()) {
+			$itemvalue = optional_param_array($keyname, null, $itemobj->value_type());
+		}
+		else {
+			$itemvalue = optional_param($keyname, null, $itemobj->value_type());
+		}
+		if (is_null($itemvalue)) {
+			continue;
+		}
+
+		$newvalue = new stdClass();
+		$newvalue->item_id 	 = $item->id;
+		$newvalue->submit_id = $submit->id;
+		$newvalue->value = $itemobj->create_value($itemvalue);
+
+		$exist = false;
+		foreach ($values as $value) {
+			if ($value->item==$newvalue->item) {
+				$newvalue->id = $value->id;
+				$exist = true;
+				break;
+			}
+		}
+		if ($exist) {
+			$DB->update_record('apply_value', $newvalue);
+		}
+		else {
+			$DB->insert_record('apply_value', $newvalue);
+		}
+	}
+
+	return $completed->id;
 }
 
 
 
-function apply_delete_all_applies($applyid) {
-    global $DB;
+function apply_get_group_values($item, $groupid=false, $ignore_empty=false)
+{
+	global $CFG, $DB;
 
-    if (!$completeds = $DB->get_records('apply_completed', array('apply'=>$applyid))) {
-        return;
-    }
-    foreach ($completeds as $completed) {
-        apply_delete_completed($completed->id);
-    }
+	if ($ignore_empty) {
+		$ignore_empty_select = "AND value != '' AND value != '0'";
+	}
+	else {
+		$ignore_empty_select = "";
+	}
+
+	if (intval($groupid)>0) {
+		$query = 'SELECT av.* FROM {apply_value} av, {apply_submit} as, {groups_members} gm
+	   				WHERE av.item_id = ? AND av.submit_id = as.id AND as.user_id = gm.userid '.
+					$ignore_empty_select.' AND gm.groupid = ?
+					ORDER BY av.time_modified';
+		$values = $DB->get_records_sql($query, array($item->id, $groupid));
+	}
+	//
+	else {
+		$select = "item_id = ? ".$ignore_empty_select;
+		$params = array($item->id);
+		$values = $DB->get_records_select('apply_value', $select, $params);
+	}
+
+	return $values;
 }
 
 
 
-function apply_delete_completed($completedid) {
-    global $DB, $CFG;
-    require_once($CFG->libdir.'/completionlib.php');
+function apply_delete_all_submit($apply_id) 
+{
+	global $DB;
 
-    if (!$completed = $DB->get_record('apply_completed', array('id'=>$completedid))) {
-        return false;
-    }
+	if (!$submits = $DB->get_records('apply_submit', array('apply_id'=>$apply_id))) {
+		return;
+	}
 
-    if (!$apply = $DB->get_record('apply', array('id'=>$completed->apply))) {
-        return false;
-    }
-
-    if (!$course = $DB->get_record('course', array('id'=>$apply->course))) {
-        return false;
-    }
-
-    if (!$cm = get_coursemodule_from_instance('apply', $apply->id)) {
-        return false;
-    }
-
-    //first we delete all related values
-    $DB->delete_records('apply_value', array('completed'=>$completed->id));
-
-    //now we delete all tracking data
-    $params = array('completed'=>$completed->id, 'apply'=>$completed->apply);
-    if ($tracking = $DB->get_record('apply_tracking', $params)) {
-        $DB->delete_records('apply_tracking', array('completed'=>$completed->id));
-    }
-
-    // Update completion state
-    $completion = new completion_info($course);
-    if ($completion->is_enabled($cm) && $apply->completionsubmit) {
-        $completion->update_state($cm, COMPLETION_INCOMPLETE, $completed->userid);
-    }
-    //last we delete the completed-record
-    return $DB->delete_records('apply_completed', array('id'=>$completed->id));
+	foreach ($submits as $submit) {
+		apply_delete_submit($submit->id);
+	}
 }
+
+
+
+function apply_delete_submit($submit_id)
+{
+	global $DB, $CFG;
+
+//	require_once($CFG->libdir.'/completionlib.php');
+
+	if (!$submit = $DB->get_record('apply_submit', array('id'=>$submit_id))) {
+		return false;
+	}
+	if (!$apply = $DB->get_record('apply', array('id'=>$submit->apply_id))) {
+		return false;
+	}
+	if (!$course = $DB->get_record('course', array('id'=>$apply->course))) {
+		return false;
+	}
+	if (!$cm = get_coursemodule_from_instance('apply', $apply->id)) {
+		return false;
+	}
+
+	$DB->delete_records('apply_value', array('submit_id'=>$submit->id));
+
+	$completion = new completion_info($course);
+	if ($completion->is_enabled($cm) && $apply->completionsubmit) {
+		$completion->update_state($cm, COMPLETION_INCOMPLETE, $submit->user_id);
+	}
+
+	$ret = $DB->delete_records('apply_submit', array('id'=>$submit->id));
+	return ret;
+}
+
+

@@ -183,7 +183,7 @@ if ($apply_complete_cap) {
     }
     if ($apply_can_submit) {
         //if the user is not known so we cannot save the values temporarly
-        $completefile = 'applies.php';
+        $completefile = 'submit.php';
 //        $guestid = false;
 
         $url_params = array('id'=>$id, 'courseid'=>$courseid, 'gopage'=>0);
