@@ -50,7 +50,8 @@ require_login($course, true, $cm);
 require_capability('mod/apply:edititems', $context);
 
 $mform = new mod_apply_delete_item_form();
-$newformdata = array('id'=>$id, 'deleteitem'=>$deleteitem, 'confirmdelete'=>'1'); $mform->set_data($newformdata);
+$newformdata = array('id'=>$id, 'deleteitem'=>$deleteitem, 'confirmdelete'=>'1'); 
+$mform->set_data($newformdata);
 $formdata = $mform->get_data();
 
 if ($mform->is_cancelled()) {

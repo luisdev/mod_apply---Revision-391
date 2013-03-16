@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * prints the form to confirm delete a completed
+ * prints the form to confirm delete a submit
  *
  * @author Andreas Grabs
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
@@ -29,15 +29,17 @@ if (!defined('MOODLE_INTERNAL')) {
 
 require_once($CFG->libdir.'/formslib.php');
 
-class mod_apply_delete_completed_form extends moodleform {
+
+class mod_apply_delete_submit_form extends moodleform
+{
     public function definition() {
         $mform =& $this->_form;
 
         // hidden elements
         $mform->addElement('hidden', 'id');
         $mform->setType('id', PARAM_INT);
-        $mform->addElement('hidden', 'completedid');
-        $mform->setType('completeid', PARAM_INT);
+        $mform->addElement('hidden', 'submit_id');
+        $mform->setType('submit_id', PARAM_INT);
         $mform->addElement('hidden', 'do_show');
         $mform->setType('do_show', PARAM_INT);
         $mform->addElement('hidden', 'confirmdelete');
