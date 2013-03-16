@@ -102,14 +102,14 @@ if (has_capability('mod/apply:edititems', $context)) {
 
     echo $OUTPUT->box_start('boxaligncenter boxwidthwide');
     echo $groupselect.'<div class="clearer">&nbsp;</div>';
-    $completedscount = apply_get_completeds_group_count($apply, $mygroupid);
+    $submitscount = apply_get_submits_group_count($apply, $mygroupid);
 
     echo $OUTPUT->box_start('apply_info');
     echo '<span class="apply_info">';
     echo get_string('completed_applys', 'apply').': ';
     echo '</span>';
     echo '<span class="apply_info_value">';
-    echo $completedscount;
+    echo $submitscount;
     echo '</span>';
     echo $OUTPUT->box_end();
 

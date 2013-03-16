@@ -5,12 +5,10 @@ function set_item_focus(itemid) {
     }
 }
 
-/*
 function applyGo2delete(form) {
-    form.action = M.cfg.wwwroot+'/mod/apply/delete_completed.php';
+    form.action = M.cfg.wwwroot+'/mod/apply/delete_submit.php';
     form.submit();
 }
-*/
 
 function setcourseitemfilter(item, item_typ) {
     document.report.courseitemfilter.value = item;

@@ -95,7 +95,7 @@ foreach ($applys as $apply) {
     $viewurl = new moodle_url('/mod/apply/view.php', array('id'=>$apply->coursemodule));
 
     if (has_capability('mod/apply:viewreports', $context)) {
-        $completed_apply_count = intval(apply_get_completeds_group_count($apply));
+        $submit_apply_count = intval(apply_get_submits_group_count($apply));
     }
 
     $dimmedclass = $apply->visible ? '' : 'class="dimmed"';
@@ -107,7 +107,7 @@ foreach ($applys as $apply) {
         $tabledata = array ($link);
     }
     if (has_capability('mod/apply:viewreports', $context)) {
-        $tabledata[] = $completed_apply_count;
+        $tabledata[] = $submit_apply_count;
     }
 
     $table->data[] = $tabledata;

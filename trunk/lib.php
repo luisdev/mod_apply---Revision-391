@@ -642,7 +642,7 @@ function apply_get_template_list($course, $onlyownorpublic='')
 // Groups
 //
 
-function apply_get_completeds_group($apply, $groupid=false) 
+function apply_get_submits_group($apply, $groupid=false) 
 {
 	global $CFG, $DB;
 
@@ -663,9 +663,9 @@ function apply_get_completeds_group($apply, $groupid=false)
 
 
 
-function apply_get_completeds_group_count($apply, $groupid=false) 
+function apply_get_submits_group_count($apply, $groupid=false) 
 {
-	if ($values = apply_get_completeds_group($apply, $groupid)) {
+	if ($values = apply_get_submits_group($apply, $groupid)) {
 		return count($values);
 	} 
 	else {
