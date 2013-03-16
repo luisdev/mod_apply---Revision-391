@@ -157,7 +157,6 @@ function apply_reset_userdata($data)
 
 	$componentstr = get_string('modulenameplural', 'apply');
 
-	//get the relevant entries from $data
 	foreach ($data as $key=>$value) {
 		switch(true) {
 			case substr($key, 0, strlen(APPLY_RESETFORM_RESET))==APPLY_RESETFORM_RESET:
@@ -179,10 +178,9 @@ function apply_reset_userdata($data)
 		}
 	}
 
-	//reset the selected applys
 	foreach ($resetapplys as $id) {
 		$apply = $DB->get_record('apply', array('id'=>$id));
-		apply_delete_all_completeds($id);
+		apply_delete_all_submit($id);
 		$status[] = array('component'=>$componentstr.':'.$apply->name, 'item'=>get_string('resetting_data', 'apply'), 'error'=>false);
 	}
 
@@ -425,8 +423,6 @@ function apply_delete_item($item_id, $renumber=true, $template=false)
 function apply_delete_all_items($apply_id)
 {
 	global $DB, $CFG;
-
-//	require_once($CFG->libdir.'/completionlib.php');
 
 	if (!$apply = $DB->get_record('apply', array('id'=>$apply_id))) {
 		return false;
@@ -1037,7 +1033,7 @@ function apply_update_values($submit)
 		}
 	}
 
-	return $completed->id;
+	return $submit->id;
 }
 
 
@@ -1108,6 +1104,7 @@ function apply_delete_submit($submit_id)
 
 	$DB->delete_records('apply_value', array('submit_id'=>$submit->id));
 
+	// ???
 	$completion = new completion_info($course);
 	if ($completion->is_enabled($cm) && $apply->completionsubmit) {
 		$completion->update_state($cm, COMPLETION_INCOMPLETE, $submit->user_id);
