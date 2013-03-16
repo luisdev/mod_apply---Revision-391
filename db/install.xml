@@ -4,7 +4,7 @@
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="apply" COMMENT="all applys" NEXT="apply_application">
+    <TABLE NAME="apply" COMMENT="all applys" NEXT="apply_submit">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="course"/>
         <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>
@@ -25,7 +25,7 @@
         <INDEX NAME="course" UNIQUE="false" FIELDS="course"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="apply_application" COMMENT="filled out apply" PREVIOUS="apply" NEXT="apply_item">
+    <TABLE NAME="apply_submit" COMMENT="filled out apply" PREVIOUS="apply" NEXT="apply_item">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="apply_id"/>
         <FIELD NAME="apply_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="user_id"/>
@@ -45,7 +45,7 @@
         <INDEX NAME="user_id" UNIQUE="false" FIELDS="user_id"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="apply_item" COMMENT="apply_items" PREVIOUS="apply_application" NEXT="apply_value">
+    <TABLE NAME="apply_item" COMMENT="apply_items" PREVIOUS="apply_submit" NEXT="apply_value">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="apply_id"/>
         <FIELD NAME="apply_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="template"/>
@@ -69,9 +69,9 @@
     </TABLE>
     <TABLE NAME="apply_value" COMMENT="values of the completeds" PREVIOUS="apply_item" NEXT="apply_template">
       <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="apply_id"/>
-        <FIELD NAME="apply_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="item_id"/>
-        <FIELD NAME="item_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="apply_id" NEXT="value"/>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="submit_id"/>
+        <FIELD NAME="submit_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="item_id"/>
+        <FIELD NAME="item_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="submit_id" NEXT="value"/>
         <FIELD NAME="value" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="item_id"/>
       </FIELDS>
       <KEYS>
