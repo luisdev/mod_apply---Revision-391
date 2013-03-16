@@ -31,7 +31,7 @@
         <FIELD NAME="apply_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="user_id"/>
         <FIELD NAME="user_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="apply_id" NEXT="title"/>
         <FIELD NAME="title" TYPE="char" LENGTH="32" NOTNULL="true" SEQUENCE="false" PREVIOUS="user_id" NEXT="up_num"/>
-        <FIELD NAME="up_num" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="0: Cancel 1: New" PREVIOUS="title" NEXT="ack"/>
+        <FIELD NAME="up_num" TYPE="int" LENGTH="2" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="-1:Cancel, 1:New" PREVIOUS="title" NEXT="ack"/>
         <FIELD NAME="ack" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="up_num" NEXT="ack_user"/>
         <FIELD NAME="ack_user" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="ack" NEXT="applied"/>
         <FIELD NAME="applied" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="ack_user" NEXT="time_modified"/>
@@ -67,7 +67,7 @@
         <KEY NAME="template" TYPE="foreign" FIELDS="template" REFTABLE="apply_template" REFFIELDS="id" PREVIOUS="apply_id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="apply_value" COMMENT="values of the completeds" PREVIOUS="apply_item" NEXT="apply_template">
+    <TABLE NAME="apply_value" COMMENT="values of the completeds" PREVIOUS="apply_item" NEXT="apply_value_tmp">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="submit_id"/>
         <FIELD NAME="submit_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="item_id"/>
@@ -80,7 +80,20 @@
         <KEY NAME="item_id" TYPE="foreign" FIELDS="item_id" REFTABLE="apply_item" REFFIELDS="id" PREVIOUS="primary"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="apply_template" COMMENT="templates of applystructures" PREVIOUS="apply_value">
+    <TABLE NAME="apply_value_tmp" COMMENT="values of the completeds" PREVIOUS="apply_value" NEXT="apply_template">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="submit_id"/>
+        <FIELD NAME="submit_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="item_id"/>
+        <FIELD NAME="item_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="submit_id" NEXT="value"/>
+        <FIELD NAME="value" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="item_id" NEXT="time_modified"/>
+        <FIELD NAME="time_modified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="value"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for apply_value" NEXT="item_id"/>
+        <KEY NAME="item_id" TYPE="foreign" FIELDS="item_id" REFTABLE="apply_item" REFFIELDS="id" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="apply_template" COMMENT="templates of applystructures" PREVIOUS="apply_value_tmp">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="course"/>
         <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>

@@ -6,8 +6,57 @@
  * @package mod_apply (modified from mod_apply/lib.php that by Andreas Grabs)
  */
 
-
 defined('MOODLE_INTERNAL') || die;
+
+/*
+function apply_add_instance($apply)
+function apply_check_values($firstitem, $lastitem)
+function apply_clean_input_value($item, $value) 
+function apply_compare_item_value($submit_id, $item_id, $dependvalue)
+function apply_create_item($data)
+function apply_create_pagebreak($apply_id) 
+function apply_create_values($usrid, $time_modified)
+function apply_delete_all_items($apply_id)
+function apply_delete_all_submit($apply_id) 
+function apply_delete_instance($apply_id) 
+function apply_delete_item($item_id, $renumber=true, $template=false) 
+function apply_delete_submit($submit_id)
+function apply_get_all_break_positions($apply_id) 
+function apply_get_coursemodule_info($coursemodule)
+function apply_get_current_all_submit($apply_id)
+function apply_get_current_submit($apply_id) //, $tmp=false, $courseid=false, $guestid=false)
+function apply_get_depend_candidates_for_item($apply, $item) 
+function apply_get_editor_options() 
+function apply_get_group_values($item, $groupid=false, $ignore_empty=false)
+function apply_get_item_class($typ)
+function apply_get_item_value($submit_id, $item_id) 
+function apply_get_last_break_position($apply_id)
+function apply_get_page_to_continue($apply_id)
+function apply_get_post_actions() 
+function apply_get_submits_group($apply, $groupid=false) 
+function apply_get_submits_group_count($apply, $groupid=false) 
+function apply_get_template_list($course, $onlyownorpublic='') 
+function apply_get_view_actions() 
+function apply_init_session()
+function apply_load_apply_items($dir='mod/apply/item')
+function apply_load_apply_items_options()
+function apply_move_item($moveitem, $pos) {
+function apply_movedown_item($item)
+function apply_moveup_item($item)
+function apply_print_item_complete($item, $value=false, $highlightrequire=false)
+function apply_print_item_preview($item)
+function apply_print_item_show_value($item, $value=false)
+function apply_renumber_items($apply_id)
+function apply_reset_userdata($data) 
+function apply_save_values($user_id)
+function apply_supports($feature)
+function apply_switch_item_required($item)
+function apply_update_instance($apply)
+function apply_update_item($item) {
+function apply_update_values($submit)
+*/
+
+
 
 
 /** Include eventslib.php */
@@ -116,6 +165,7 @@ function apply_delete_instance($apply_id)
 	if (is_array($apply_items)) {
 		foreach ($apply_items as $apply_item) {
 			$DB->delete_records('apply_value', array('item_id'=>$apply_item->id));
+			$DB->delete_records('apply_value_tmp', array('item_id'=>$apply_item->id));
 		}
 		if ($del_items = $DB->get_records('apply_item', array('apply_id'=>$apply_id))) {
 			foreach ($del_items as $del_item) {
@@ -408,6 +458,7 @@ function apply_delete_item($item_id, $renumber=true, $template=false)
 	}
 
 	$DB->delete_records('apply_value', array('item_id'=>$item_id));
+	$DB->delete_records('apply_value_tmp', array('item_id'=>$item_id));
 
 	$DB->set_field('apply_item', 'dependvalue', '', array('dependitem'=>$item_id));
 	$DB->set_field('apply_item', 'dependitem',   0, array('dependitem'=>$item_id));
@@ -743,7 +794,7 @@ function apply_get_page_to_continue($apply_id)
 	$usergroup  = "GROUP BY as.user_id";
 	$params['user_id'] = $USER->id;
 
-	$sql = "SELECT MAX(ai.position) FROM {apply_submit} as, {apply_value} av, {apply_item} ai
+	$sql = "SELECT MAX(ai.position) FROM {apply_submit} as, {apply_value_tmp} av, {apply_item} ai
 			  	WHERE as.id = av.submit_id AND as.apply_id = :apply_id AND ai.id = av.item_id $usergroup";
 	$params['apply_id'] = $apply_id;
 
@@ -784,6 +835,55 @@ function apply_get_current_all_submit($apply_id)
 
 	$params = array('apply_id'=>$apply_id);
 	return $DB->get_record('apply_submit', $params);
+}
+
+
+
+function apply_delete_all_submit($apply_id) 
+{
+	global $DB;
+
+	if (!$submits = $DB->get_records('apply_submit', array('apply_id'=>$apply_id))) {
+		return;
+	}
+
+	foreach ($submits as $submit) {
+		apply_delete_submit($submit->id);
+	}
+}
+
+
+
+function apply_delete_submit($submit_id)
+{
+	global $DB, $CFG;
+
+//	require_once($CFG->libdir.'/completionlib.php');
+
+	if (!$submit = $DB->get_record('apply_submit', array('id'=>$submit_id))) {
+		return false;
+	}
+	if (!$apply = $DB->get_record('apply', array('id'=>$submit->apply_id))) {
+		return false;
+	}
+	if (!$course = $DB->get_record('course', array('id'=>$apply->course))) {
+		return false;
+	}
+	if (!$cm = get_coursemodule_from_instance('apply', $apply->id)) {
+		return false;
+	}
+
+	$DB->delete_records('apply_value', array('submit_id'=>$submit->id));
+	$DB->delete_records('apply_value_tmp', array('submit_id'=>$submit->id));
+
+	// ???
+	$completion = new completion_info($course);
+	if ($completion->is_enabled($cm) && $apply->completionsubmit) {
+		$completion->update_state($cm, COMPLETION_INCOMPLETE, $submit->user_id);
+	}
+
+	$ret = $DB->delete_records('apply_submit', array('id'=>$submit->id));
+	return ret;
 }
 
 
@@ -866,12 +966,13 @@ function apply_check_values($firstitem, $lastitem)
 
 
 
-function apply_get_item_value($submit_id, $item_id) 
+function apply_get_item_value($submit_id, $item_id, $tmp=false) 
 {
 	global $DB;
 
+	$tmpstr = $tmp ? '_tmp' : '';
 	$params = array('submit_id'=>$submit_id, 'item_id'=>$item_id);
-	return $DB->get_field('apply_value', 'value', $params);
+	return $DB->get_field('apply_value'.$tmpstr, 'value', $params);
 }
 
 
@@ -891,55 +992,16 @@ function apply_compare_item_value($submit_id, $item_id, $dependvalue)
 
 
 
-function apply_check_values($firstitem, $lastitem)
-{
-	global $DB, $CFG;
-
-	$apply_id = optional_param('apply_id', 0, PARAM_INT);
-
-	//get all items between the first- and lastitem
-	$select = "apply_id = ?  AND position >= ?  AND position <= ?  AND hasvalue = 1";
-	$params = array($apply_id, $firstitem, $lastitem);
-
-	if (!$items = $DB->get_records_select('apply_item', $select, $params)) {
-		return true;
-	}
-
-	foreach ($items as $item) {
-		$itemobj = apply_get_item_class($item->typ);
-		$formvalname = $item->typ . '_' . $item->id;
-
-		if ($itemobj->value_is_array()) {
-			$value = optional_param_array($formvalname, null, PARAM_RAW);
-		} 
-		else {
-			$value = optional_param($formvalname, null, PARAM_RAW);
-		}
-		$value = $itemobj->clean_input_value($value);
-
-		if (is_null($value) AND $item->required == 1) {
-			return false;
-		}
-		if (!$itemobj->check_value($value, $item)) {
-			return false;
-		}
-	}
-
-	return true;
-}
-
-
-
-
-function apply_create_values($usrid, $time_modified)
+function apply_create_values($usrid, $time_modified, $tmp=false)
 {
 	global $DB;
 
 	$apply_id = optional_param('apply_id', false, PARAM_INT);
 //	$courseid = optional_param('courseid', false, PARAM_INT);
+	$tmpstr = $tmp ? '_tmp' : '';
 
 	$submit = new stdClass();
-	$subnit->apply_id		= $apply_id;
+	$submit->apply_id		= $apply_id;
 	$submit->user_id		= $usrid;
 	$submit->time_modified  = $time_modified;
 
@@ -973,7 +1035,7 @@ function apply_create_values($usrid, $time_modified)
 		$value->submit_id = $submit->id;
 		$value->value = $itemobj->create_value($itemvalue);
 
-		$DB->insert_record('apply_value', $value);
+		$DB->insert_record('apply_value'.$tmpstr, $value);
 	}
 
 	return $submit->id;
@@ -981,14 +1043,15 @@ function apply_create_values($usrid, $time_modified)
 
 
 
-function apply_update_values($submit)
+function apply_update_values($submit, $tmp=false)
 {
 	global $DB;
 
 //	$courseid = optional_param('courseid', false, PARAM_INT);
+	$tmpstr = $tmp ? '_tmp' : '';
 
 	$DB->update_record('apply_submit', $submit);
-	$values = $DB->get_records('apply_value', array('submit_id'=>$submit->id));
+	$values = $DB->get_records('apply_value'.$tmpstr, array('submit_id'=>$submit->id));
 
 	if (!$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id))) {
 		return false;
@@ -1026,10 +1089,10 @@ function apply_update_values($submit)
 			}
 		}
 		if ($exist) {
-			$DB->update_record('apply_value', $newvalue);
+			$DB->update_record('apply_value'.$tmpstr, $newvalue);
 		}
 		else {
-			$DB->insert_record('apply_value', $newvalue);
+			$DB->insert_record('apply_value'.$tmpstr, $newvalue);
 		}
 	}
 
@@ -1068,50 +1131,80 @@ function apply_get_group_values($item, $groupid=false, $ignore_empty=false)
 
 
 
-function apply_delete_all_submit($apply_id) 
+/*
+function apply_set_tmp_values($submit) 
 {
-	global $DB;
+    global $DB;
 
-	if (!$submits = $DB->get_records('apply_submit', array('apply_id'=>$apply_id))) {
-		return;
-	}
+    $tmpcpl = new stdClass();
+    foreach ($submit as $key => $value) {
+        $tmpcpl->{$key} = $value;
+    }
+    unset($tmpcpl->id);
+    $tmpcpl->timemodified = time();
+    $tmpcpl->id = $DB->insert_record('apply_completedtmp', $tmpcpl);
+    //get all values of original-completed
+    if (!$values = $DB->get_records('apply_value', array('completed'=>$feedbackcompleted->id))) {
+        return;
+    }
 
-	foreach ($submits as $submit) {
-		apply_delete_submit($submit->id);
-	}
+    foreach ($values as $value) {
+        unset($value->id);
+        $value->submit_id = $tmpcpl->id;
+        $DB->insert_record('apply_value_tmp', $value);
+    }
+    return $tmpcpl;
 }
+*/
 
 
 
-function apply_delete_submit($submit_id)
+/*
+function apply_save_tmp_values($feedbackcompletedtmp, $feedbackcompleted, $userid)
 {
-	global $DB, $CFG;
+    global $DB;
 
-//	require_once($CFG->libdir.'/completionlib.php');
+    $tmpcplid = $feedbackcompletedtmp->id;
+    if ($feedbackcompleted) {
+        //first drop all existing values
+        $DB->delete_records('apply_value', array('completed'=>$feedbackcompleted->id));
+        //update the current completed
+        $feedbackcompleted->timemodified = time();
+        $DB->update_record('apply_completed', $feedbackcompleted);
+    } else {
+        $feedbackcompleted = clone($feedbackcompletedtmp);
+        $feedbackcompleted->id = '';
+        $feedbackcompleted->userid = $userid;
+        $feedbackcompleted->timemodified = time();
+        $feedbackcompleted->id = $DB->insert_record('apply_completed', $feedbackcompleted);
+    }
 
-	if (!$submit = $DB->get_record('apply_submit', array('id'=>$submit_id))) {
-		return false;
-	}
-	if (!$apply = $DB->get_record('apply', array('id'=>$submit->apply_id))) {
-		return false;
-	}
-	if (!$course = $DB->get_record('course', array('id'=>$apply->course))) {
-		return false;
-	}
-	if (!$cm = get_coursemodule_from_instance('apply', $apply->id)) {
-		return false;
-	}
-
-	$DB->delete_records('apply_value', array('submit_id'=>$submit->id));
-
-	// ???
-	$completion = new completion_info($course);
-	if ($completion->is_enabled($cm) && $apply->completionsubmit) {
-		$completion->update_state($cm, COMPLETION_INCOMPLETE, $submit->user_id);
-	}
-
-	$ret = $DB->delete_records('apply_submit', array('id'=>$submit->id));
-	return ret;
+    //save all the new values from apply_valuetmp
+    //get all values of tmp-completed
+    $params = array('completed'=>$feedbackcompletedtmp->id);
+    if (!$values = $DB->get_records('apply_valuetmp', $params)) {
+        return false;
+    }
+    foreach ($values as $value) {
+        //check if there are depend items
+        $item = $DB->get_record('apply_item', array('id'=>$value->item));
+        if ($item->dependitem > 0) {
+            $check = apply_compare_item_value($tmpcplid, $item->dependitem, $item->dependvalue, true);
+        } else {
+            $check = true;
+        }
+        if ($check) {
+            unset($value->id);
+            $value->completed = $feedbackcompleted->id;
+            $DB->insert_record('apply_value', $value);
+        }
+    }
+    //drop all the tmpvalues
+    $DB->delete_records('apply_valuetmp', array('completed'=>$tmpcplid));
+    $DB->delete_records('apply_completedtmp', array('id'=>$tmpcplid));
+    return $feedbackcompleted->id;
 }
+*/
+
 
 
