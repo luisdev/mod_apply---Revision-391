@@ -92,6 +92,7 @@ if (! $course = $DB->get_record('course', array('id'=>$cm->course))) {
 if (! $apply  = $DB->get_record('apply', array('id'=>$cm->instance))) {
 	print_error('invalidcoursemodule');
 }
+if (!$courseid) $courseid = $course->id;
 
 $context = context_module::instance($cm->id);
 
@@ -112,7 +113,7 @@ $strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
 $PAGE->navbar->add(get_string('apply:submit', 'apply'));
-$urlparams = array('id'=>$cm->id, 'go_page'=>$go_page, 'courseid'=>$course->id);
+$urlparams = array('id'=>$cm->id, 'go_page'=>$go_page, 'courseid'=>$courseid);
 $PAGE->set_url('/mod/apply/submit.php', $urlparams);
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));
@@ -134,7 +135,7 @@ if ($apply_is_closed) {
 		echo '<h2><font color="red">';
 		echo get_string('apply_is_not_open', 'apply');
 		echo '</font></h2>';
-		echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$course->id);
+		echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
 	}
 	echo $OUTPUT->box_end();
 	//
@@ -159,7 +160,7 @@ if ($apply_can_submit) {
 	//
 	if ($prev_values==1) {
 		if (!isset($SESSION->apply->is_started) OR !$SESSION->apply->is_started==true) {
-			print_error('error', '', $CFG->wwwroot.'/course/view.php?id='.$course->id);
+			print_error('error', '', $CFG->wwwroot.'/course/view.php?id='.$courseid);
 		}
 
 		if (apply_check_values($start_itempos, $last_itempos)) {
@@ -249,10 +250,12 @@ if ($apply_can_submit) {
 
 	//
 	if ((!isset($SESSION->apply->is_started)) AND (!isset($save_return))) {
-		$submits = apply_get_current_submit($apply->id);
-		if (!$submits) {
+echo "1111111111111111111111111";
+di();
+//		$submits = apply_get_current_submit($apply->id);
+//		if (!$submits) {
 			//$submits = apply_set_tmp_values($submits);
-		}
+//		}
 	}
 
 

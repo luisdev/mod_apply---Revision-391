@@ -40,6 +40,7 @@ if (! $course = $DB->get_record('course', array('id'=>$cm->course))) {
 if (! $apply = $DB->get_record('apply', array('id'=>$cm->instance))) {
 	print_error('invalidcoursemodule');
 }
+if (!$courseid) $courseid = $course->id;
 
 $context = context_module::instance($cm->id);
 
@@ -122,7 +123,7 @@ if ($apply_submit_cap) {
 
 	if ($apply_can_submit) {
 		$submit_file = 'submit.php';
-		$url_params  = array('id'=>$id, 'courseid'=>$courseid, 'go_page'=>0);
+		$url_params  = array('id'=>$id, 'courseid' => $courseid, 'go_page'=>0);
 		$submit_url = new moodle_url('/mod/apply/'.$submit_file, $url_params);
 
 		if (has_capability('mod/apply:viewreports', $context)) {
@@ -146,12 +147,7 @@ if ($apply_submit_cap) {
 		echo '<h2><font color="red">';
 		echo get_string('this_apply_is_already_submitted', 'apply');
 		echo '</font></h2>';
-		if ($courseid) {
-			echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
-		}
-		else {
-			echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$course->id);
-		}
+		echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
 	}
 	echo $OUTPUT->box_end();
 }
@@ -161,12 +157,7 @@ else {
 	echo '<h2><font color="red">';
 	echo get_string('apply_is_not_open', 'apply');
 	echo '</font></h2>';
-	if ($courseid) {
-		echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
-	}
-	else {
-		echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$course->id);
-	}
+	echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
 	echo $OUTPUT->box_end();
 }
 

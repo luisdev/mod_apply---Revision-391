@@ -27,9 +27,10 @@ require_once("lib.php");
 require_once('delete_submit_form.php');
 
 
-$id = required_param('id', PARAM_INT);
-$submit_id = optional_param('submit_id', 0, PARAM_INT);
-$return = optional_param('return', 'entries', PARAM_ALPHA);
+$id 		= required_param('id', PARAM_INT);
+$submit_id 	= optional_param('submit_id', 0, PARAM_INT);
+$return 	= optional_param('return',  'entries', PARAM_ALPHA);
+$courseid 	= optional_param('courseid', false, PARAM_INT);
 
 
 if ($submit_id==0) {
@@ -41,14 +42,13 @@ $PAGE->set_url('/mod/apply/delete_submit.php', array('id'=>$id, 'submit_id'=>$su
 if (! $cm = get_coursemodule_from_id('apply', $id)) {
     print_error('invalidcoursemodule');
 }
-
 if (! $course = $DB->get_record('course', array('id'=>$cm->course))) {
     print_error('coursemisconf');
 }
-
 if (! $apply = $DB->get_record('apply', array('id'=>$cm->instance))) {
     print_error('invalidcoursemodule');
 }
+if (!$courseid) $courseid = $course->id;
 
 $context = context_module::instance($cm->id);
 

@@ -29,28 +29,31 @@ require_once($CFG->libdir.'/tablelib.php');
 
 $current_tab = 'templates';
 
-$id = required_param('id', PARAM_INT);
-$canceldelete = optional_param('canceldelete', false, PARAM_INT);
-$shoulddelete = optional_param('shoulddelete', false, PARAM_INT);
-$deletetempl  = optional_param('deletetempl',  false, PARAM_INT);
+$id 		   = required_param('id', PARAM_INT);
+$cancel_delete = optional_param('cancel_delete', false, PARAM_INT);
+$should_delete = optional_param('should_delete', false, PARAM_INT);
+$delete_templ  = optional_param('delete_templ',  false, PARAM_INT);
+$courseid 	   = optional_param('courseid', 	 false, PARAM_INT);
 
 $url = new moodle_url('/mod/apply/delete_template.php', array('id'=>$id));
-if ($canceldelete !== false) {
-    $url->param('canceldelete', $canceldelete);
+if ($cancel_delete !== false) {
+    $url->param('cancel_delete', $cancel_delete);
 }
-if ($shoulddelete !== false) {
-    $url->param('shoulddelete', $shoulddelete);
+if ($should_delete !== false) {
+    $url->param('should_delete', $should_delete);
 }
-if ($deletetempl !== false) {
-    $url->param('deletetempl', $deletetempl);
+if ($delete_templ !== false) {
+    $url->param('delete_templ', $delete_templ);
 }
+if (!$courseid) $courseid = $course->id;
+
 $PAGE->set_url($url);
 
 if (($formdata = data_submitted()) AND !confirm_sesskey()) {
     print_error('invalidsesskey');
 }
 
-if ($canceldelete==1) {
+if ($cancel_delete==1) {
     $editurl = new moodle_url('/mod/apply/edit.php', array('id'=>$id, 'do_show'=>'templates'));
     redirect($editurl->out(false));
 }
@@ -69,10 +72,10 @@ $context = context_module::instance($cm->id);
 
 require_login($course, true, $cm);
 
-require_capability('mod/apply:deletetemplate', $context);
+require_capability('mod/apply:delete_template', $context);
 
 $mform = new mod_apply_delete_template_form();
-$newformdata = array('id'=>$id, 'deletetempl'=>$deletetempl, 'confirmdelete'=>'1');
+$newformdata = array('id'=>$id, 'delete_templ'=>$delete_templ, 'confirmdelete'=>'1');
 
 $mform->set_data($newformdata);
 $formdata = $mform->get_data();
@@ -84,13 +87,13 @@ if ($mform->is_cancelled()) {
 }
 
 if (isset($formdata->confirmdelete) AND $formdata->confirmdelete == 1) {
-    if (!$template = $DB->get_record('apply_template', array('id'=>$deletetempl))) {
+    if (!$template = $DB->get_record('apply_template', array('id'=>$delete_templ))) {
         print_error('error');
     }
     if ($template->ispublic) {
         $systemcontext = get_system_context();
         require_capability('mod/apply:createpublictemplate', $systemcontext);
-        require_capability('mod/apply:deletetemplate', $systemcontext);
+        require_capability('mod/apply:delete_template', $systemcontext);
     }
     apply_delete_template($template);
     redirect($deleteurl->out(false));
@@ -115,9 +118,9 @@ require('tabs.php');
 /// Print the main part of the page
 echo $OUTPUT->heading($strdeleteapply);
 
-if ($shoulddelete==1) {
+if ($should_delete==1) {
     echo $OUTPUT->box_start('generalbox errorboxcontent boxaligncenter boxwidthnormal');
-    echo $OUTPUT->heading(get_string('confirmdeletetemplate', 'apply'));
+    echo $OUTPUT->heading(get_string('confirmdelete_template', 'apply'));
     $mform->display();
     echo $OUTPUT->box_end();
 } 
@@ -147,7 +150,7 @@ else {
         foreach ($templates as $template) {
             $data = array();
             $data[] = $template->name;
-            $url = new moodle_url($deleteurl, array('id'=>$id, 'deletetempl'=>$template->id, 'shoulddelete'=>1,));
+            $url = new moodle_url($deleteurl, array('id'=>$id, 'delete_templ'=>$template->id, 'should_delete'=>1,));
 
             $data[] = $OUTPUT->single_button($url, $strdeleteapply, 'post');
             $tablecourse->add_data($data);
@@ -158,7 +161,7 @@ else {
     //now we get the public templates if it is permitted
     $systemcontext = get_system_context();
     if (has_capability('mod/apply:createpublictemplate', $systemcontext) AND
-        has_capability('mod/apply:deletetemplate', $systemcontext)) {
+        has_capability('mod/apply:delete_template', $systemcontext)) {
         $templates = apply_get_template_list($course, 'public');
         if (!is_array($templates)) {
             echo $OUTPUT->box(get_string('no_templates_available_yet', 'apply'), 'generalbox boxaligncenter');
@@ -183,7 +186,7 @@ else {
             foreach ($templates as $template) {
                 $data = array();
                 $data[] = $template->name;
-                $url = new moodle_url($deleteurl, array('id'=>$id, 'deletetempl'=>$template->id, 'shoulddelete'=>1,));
+                $url = new moodle_url($deleteurl, array('id'=>$id, 'delete_templ'=>$template->id, 'should_delete'=>1,));
 
                 $data[] = $OUTPUT->single_button($url, $strdeleteapply, 'post');
                 $tablepublic->add_data($data);
@@ -194,7 +197,7 @@ else {
     }
 
     echo $OUTPUT->box_start('boxaligncenter boxwidthnormal');
-    $url = new moodle_url($deleteurl, array('id'=>$id, 'canceldelete'=>1,));
+    $url = new moodle_url($deleteurl, array('id'=>$id, 'cancel_delete'=>1,));
 
     echo $OUTPUT->single_button($url, get_string('back'), 'post');
     echo $OUTPUT->box_end();
