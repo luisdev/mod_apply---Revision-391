@@ -137,6 +137,7 @@ if ($apply_is_closed) {
 		echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$course->id);
 	}
 	echo $OUTPUT->box_end();
+	//
 	echo $OUTPUT->footer();
 	exit;
 }
@@ -152,6 +153,7 @@ if ($apply->multiple_submit==0) {
 }
 
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // can submit
 if ($apply_can_submit) {
 	//
@@ -217,17 +219,15 @@ if ($apply_can_submit) {
 			$start_position = 0;
 		}
 		else {
-			if (!isset($allbreaks[$go_page - 1])) {
-				$go_page = count($allbreaks);
-			}
-			$start_position = $allbreaks[$go_page - 1];
+			if (!isset($allbreaks[$go_page-1])) $go_page = count($allbreaks);
+			$start_position = $allbreaks[$go_page-1];
 		}
-		$ispagebreak = true;
+		$is_pagebreak = true;
 	} 
 	else {
 		$start_position = 0;
 		$newpage = 0;
-		$ispagebreak = false;
+		$is_pagebreak = false;
 	}
 
 	//
@@ -240,46 +240,28 @@ if ($apply_can_submit) {
 	$params = array('apply_id' => $apply->id, 'typ' => 'pagebreak');
 	if ($pagebreaks = $DB->get_records('apply_item', $params, 'position')) {
 		$pagebreaks = array_values($pagebreaks);
-		$firstpagebreak = $pagebreaks[0];
+		$first_pagebreak = $pagebreaks[0];
 	}
 	else {
-		$firstpagebreak = false;
+		$first_pagebreak = false;
 	}
-	$maxitemcount = $DB->count_records('apply_item', array('apply_id'=>$apply->id));
+	$max_item_count = $DB->count_records('apply_item', array('apply_id'=>$apply->id));
 
 	//
-	//get the values of completeds before done. Anonymous user can not get these values.
 	if ((!isset($SESSION->apply->is_started)) AND (!isset($save_return))) {
 		$submits = apply_get_current_submit($apply->id);
 		if (!$submits) {
-			$applycompleted = apply_get_current_completed($apply->ideid);
-			if ($applycompleted) {
-				//copy the values to apply_valuetmp create a completedtmp
-				$applycompletedtmp = apply_set_tmp_values($applycompleted);
-			}
-		}
-		else {
-			$submits = apply_get_current_submit($apply->id);
+			//$submits = apply_set_tmp_values($submits);
 		}
 	}
+
 
 	///////////////////////////////////////////////////////////////////////////
-	/// Print the main part of the page
-	$analysisurl = new moodle_url('/mod/apply/analysis.php', array('id'=>$id));
-	if ($courseid>0) {
-		$analysisurl->param('courseid', $courseid);
-	}
+	// Print the main part of the page
+	//
 	echo $OUTPUT->heading(format_text($apply->name));
 
-	if (!has_capability('mod/apply:viewreports', $context)) {
-
-		$params = array('user_id'=>$USER->id, 'apply_id' => $apply->id);
-		echo $OUTPUT->box_start('mdl-align');
-		echo '<a href="'.$analysisurl->out().'">';
-		echo get_string('completed_applys', 'apply').'</a>';
-		echo $OUTPUT->box_end();
-	}
-
+	//
 	if (isset($save_return) && $save_return=='saved') {
 		echo '<p align="center">';
 		echo '<b><font color="green">';
@@ -297,171 +279,24 @@ if ($apply_can_submit) {
 	}
 
 	else {
-		require('submit_page.php');
-/*
-		if (isset($save_return) && $save_return=='failed') {
-			echo $OUTPUT->box_start('mform error');
-			echo get_string('saving_failed', 'apply');
-			echo $OUTPUT->box_end();
-		}
-
-		if (isset($save_return) && $save_return=='missing') {
-			echo $OUTPUT->box_start('mform error');
-			echo get_string('saving_failed_because_missing_or_false_values', 'apply');
-			echo $OUTPUT->box_end();
-		}
-
-		//print the items
-		if (is_array($apply_items)) {
-			echo $OUTPUT->box_start('apply_form');
-			echo '<form action="submit.php" method="post" onsubmit=" ">';
-			echo '<fieldset>';
-			echo '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
-
-			//check, if there exists required-elements
-			$params = array('apply_id' => $apply->id, 'required' => 1);
-			$countreq = $DB->count_records('apply_item', $params);
-			if ($countreq > 0) {
-				echo '<span class="apply_required_mark">(*)';
-				echo get_string('items_are_required', 'apply');
-				echo '</span>';
-			}
-			echo $OUTPUT->box_start('apply_items');
-
-			unset($startitem);
-			$select = 'apply_id = ? AND hasvalue = 1 AND position < ?';
-			$pply_complete_cancelparams = array($apply->id, $start_position);
-			$itemnr = $DB->count_records_select('apply_item', $select, $params);
-			$last_break_position = 0;
-			$align = right_to_left() ? 'right' : 'left';
-	
-
-			foreach ($apply_items as $applyitem) {
-				if (!isset($startitem)) {
-					//avoid showing double pagebreaks
-					if ($applyitem->typ == 'pagebreak') {
-						continue;
-					}
-					$startitem = $applyitem;
-				}
-
-				if ($applyitem->dependitem > 0) {
-					//chech if the conditions are ok
-					$fb_compare_value = apply_compare_item_value($applycompletedtmp->id,
-																	$applyitem->dependitem,
-																	$applyitem->dependvalue,
-																	true);
-					if (!isset($applycompletedtmp->id) OR !$fb_compare_value) {
-						$lastitem = $applyitem;
-						$last_break_position = $applyitem->position;
-						continue;
-					}
-				}
-
-				if ($applyitem->dependitem > 0) {
-					$dependstyle = ' apply_complete_depend';
-				}
-				else {
-					$dependstyle = '';
-				}
-
-				echo $OUTPUT->box_start('apply_item_box_'.$align.$dependstyle);
-				$value = '';
-				//get the value
-				$frmvaluename = $applyitem->typ . '_'. $applyitem->id;
-				if (isset($save_return)) {
-					$value = isset($formdata->{$frmvaluename}) ? $formdata->{$frmvaluename} : null;
-					$value = apply_clean_input_value($applyitem, $value);
-				}
-				else {
-					if (isset($applycompletedtmp->id)) {
-						$value = apply_get_item_value($applycompletedtmp->id,
-														 $applyitem->id,
-														 true);
-					}
-				}
-				if ($applyitem->hasvalue==1) {
-					$itemnr++;
-					echo $OUTPUT->box_start('apply_item_number_'.$align);
-					echo $itemnr;
-					echo $OUTPUT->box_end();
-				}
-				if ($applyitem->typ != 'pagebreak') {
-					echo $OUTPUT->box_start('box generalbox boxalign_'.$align);
-					apply_print_item_complete($applyitem, $value, $highlightrequired);
-					echo $OUTPUT->box_end();
-				}
-
+		// error
+		if (isset($save_return)) {
+			if ($save_return=='failed') {
+ 			   echo $OUTPUT->box_start('mform error');
+				echo get_string('saving_failed', 'apply');
 				echo $OUTPUT->box_end();
-
-				$last_break_position = $applyitem->position; //last item-pos (item or pagebreak)
-				if ($applyitem->typ == 'pagebreak') {
-					break;
-				} else {
-					$lastitem = $applyitem;
-				}
 			}
-			echo $OUTPUT->box_end();
-			echo '<input type="hidden" name="id" value="'.$id.'" />';
-			echo '<input type="hidden" name="apply_id" value="'.$apply->id.'" />';
-			echo '<input type="hidden" name="last_page" value="'.$go_page.'" />';
-			if (isset($applycompletedtmp->id)) {
-				$inputvalue = 'value="'.$applycompletedtmp->id.'"';
+			else if ($save_return=='missing') {
+				echo $OUTPUT->box_start('mform error');
+				echo get_string('saving_failed_because_missing_or_false_values', 'apply');
+				echo $OUTPUT->box_end();
 			}
-			else {
-				$inputvalue = 'value=""';
-			}
-			echo '<input type="hidden" name="submit_id" '.$inputvalue.' />';
-			echo '<input type="hidden" name="courseid" value="'. $courseid . '" />';
-			echo '<input type="hidden" name="prev_values" value="1" />';
-			if (isset($startitem)) {
-				echo '<input type="hidden" name="start_itempos" value="'.$startitem->position.'" />';
-				echo '<input type="hidden" name="last_itempos" value="'.$lastitem->position.'" />';
-			}
-
-
-			if ( $ispagebreak AND $last_break_position > $firstpagebreak->position) {
-				$inputvalue = 'value="'.get_string('previous_page', 'apply').'"';
-				echo '<input name="go_prev_page" type="submit" '.$inputvalue.' />';
-			}
-			if ($last_break_position < $maxitemcount) {
-				$inputvalue = 'value="'.get_string('next_page', 'apply').'"';
-				echo '<input name="go_next_page" type="submit" '.$inputvalue.' />';
-			}
-			if ($last_break_position >= $maxitemcount) { //last page
-				$inputvalue = 'value="'.get_string('save_entries', 'apply').'"';
-				echo '<input name="save_values" type="submit" '.$inputvalue.' />';
-			}
-
-			echo '</fieldset>';
-			echo '</form>';
-			echo $OUTPUT->box_end();
-
-			echo $OUTPUT->box_start('apply_submit_cancel');
-			if ($courseid) {
-				$action = 'action="'.$CFG->wwwroot.'/course/view.php?id='.$courseid.'"';
-			}
-			else {
-				if ($course->id == SITEID) {
-					$action = 'action="'.$CFG->wwwroot.'"';
-				}
-				else {
-					$action = 'action="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'"';
-				}
-			}
-
-			echo '<form '.$action.' method="post" onsubmit=" ">';
-			echo '<fieldset>';
-			echo '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
-			echo '<input type="hidden" name="courseid" value="'. $courseid . '" />';
-			echo '<button type="submit">'.get_string('cancel').'</button>';
-			echo '</fieldset>';
-			echo '</form>';
-			echo $OUTPUT->box_end();
-
+		}
+		//
+		if (is_array($apply_items)) {
+			require('submit_page.php');
 			$SESSION->apply->is_started = true;
 		}
-*/
 	}
 }
 

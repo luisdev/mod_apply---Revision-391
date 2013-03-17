@@ -902,7 +902,7 @@ function apply_get_item_value($submit_id, $item_id, $tmp=false)
 
 
 
-function apply_compare_item_value($submit_id, $item_id, $dependvalue)
+function apply_compare_item_value($submit_id, $item_id, $depend_value)
 {
 	global $DB, $CFG;
 
@@ -910,7 +910,7 @@ function apply_compare_item_value($submit_id, $item_id, $dependvalue)
 	$item = $DB->get_record('apply_item', array('id'=>$item_id));
 
 	$itemobj = apply_get_item_class($item->typ);
-	$ret = $itemobj->compare_value($item, $dbvalue, $dependvalue); //true or false
+	$ret = $itemobj->compare_value($item, $dbvalue, $depend_value);
 
 	return $ret;
 }
