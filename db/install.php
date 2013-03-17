@@ -18,5 +18,5 @@ function xmldb_apply_install() {
     global $DB;
 
     /// Disable this module by default (because it's not technically part of Moodle 2.0)
-    $DB->set_field('modules', 'visible', 0, array('name'=>'apply'));
+    //$DB->set_field('modules', 'visible', 0, array('name'=>'apply'));
 }

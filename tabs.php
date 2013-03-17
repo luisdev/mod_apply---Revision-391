@@ -21,24 +21,26 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  * @package apply
  */
+
 defined('MOODLE_INTERNAL') OR die('not allowed');
 
 $tabs = array();
 $row  = array();
-$inactive = array();
+$inactive  = array();
 $activated = array();
 
 //some pages deliver the cmid instead the id
-if (isset($cmid) AND intval($cmid) AND $cmid > 0) {
+if (isset($cmid) AND intval($cmid) AND $cmid>0) {
     $usedid = $cmid;
-} else {
+}
+else {
     $usedid = $id;
 }
+$courseid = optional_param('courseid', false, PARAM_INT);
 
+//
 $context = context_module::instance($usedid);
 
-$courseid = optional_param('courseid', false, PARAM_INT);
-// $current_tab = $SESSION->apply->current_tab;
 if (!isset($current_tab)) {
     $current_tab = '';
 }
@@ -46,6 +48,7 @@ if (!isset($current_tab)) {
 $viewurl = new moodle_url('/mod/apply/view.php', array('id'=>$usedid, 'do_show'=>'view'));
 $row[] = new tabobject('view', $viewurl->out(), get_string('overview', 'apply'));
 
+// Edit Item
 if (has_capability('mod/apply:edititems', $context)) {
     $editurl = new moodle_url('/mod/apply/edit.php', array('id'=>$usedid, 'do_show'=>'edit'));
     $row[] = new tabobject('edit', $editurl->out(), get_string('edit_items', 'apply'));
@@ -54,44 +57,15 @@ if (has_capability('mod/apply:edititems', $context)) {
     $row[] = new tabobject('templates', $templateurl->out(), get_string('templates', 'apply'));
 }
 
+// Viewe Report
 if (has_capability('mod/apply:viewreports', $context)) {
-/*
-    if ($apply->course == SITEID) {
-        $url_params = array('id'=>$usedid, 'courseid'=>$courseid, 'do_show'=>'analysis');
-        $analysisurl = new moodle_url('/mod/apply/analysis_course.php', $url_params);
-        $row[] = new tabobject('analysis',
-                                $analysisurl->out(),
-                                get_string('analysis', 'apply'));
-
-    } else {
-        $url_params = array('id'=>$usedid, 'courseid'=>$courseid, 'do_show'=>'analysis');
-        $analysisurl = new moodle_url('/mod/apply/analysis.php', $url_params);
-        $row[] = new tabobject('analysis',
-                                $analysisurl->out(),
-                                get_string('analysis', 'apply'));
-    }
-*/
-
     $url_params = array('id'=>$usedid, 'do_show'=>'showentries');
     $reporturl = new moodle_url('/mod/apply/show_entries.php', $url_params);
-    $row[] = new tabobject('showentries',
-                            $reporturl->out(),
-                            get_string('show_entries', 'apply'));
-
-//    if ($apply->anonymous == APPLY_ANONYMOUS_NO AND $apply->course != SITEID) {
-/*
-    if ($apply->course != SITEID) {
-        $nonrespondenturl = new moodle_url('/mod/apply/show_nonrespondents.php', array('id'=>$usedid));
-        $row[] = new tabobject('nonrespondents',
-                                $nonrespondenturl->out(),
-                                get_string('show_nonrespondents', 'apply'));
-    }
-*/
+    $row[] = new tabobject('showentries', $reporturl->out(), get_string('show_entries', 'apply'));
 }
 
 if (count($row) > 1) {
     $tabs[] = $row;
-
     print_tabs($tabs, $current_tab, $inactive, $activated);
 }
 

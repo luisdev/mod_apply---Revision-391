@@ -132,6 +132,8 @@ class apply_edit_use_template_form extends moodleform {
     }
 }
 
+
+
 class apply_edit_create_template_form extends moodleform {
     private $applydata;
 
