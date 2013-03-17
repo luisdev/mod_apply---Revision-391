@@ -29,6 +29,7 @@ require_once('edit_form.php');
 apply_init_session();
 
 $id = required_param('id', PARAM_INT);
+$courseid = optional_param('courseid', false, PARAM_INT);
 
 if (($formdata = data_submitted()) AND !confirm_sesskey()) {
     print_error('invalidsesskey');
@@ -48,14 +49,13 @@ $url = new moodle_url('/mod/apply/edit.php', array('id'=>$id, 'do_show'=>$do_sho
 if (! $cm = get_coursemodule_from_id('apply', $id)) {
     print_error('invalidcoursemodule');
 }
-
 if (! $course = $DB->get_record("course", array("id"=>$cm->course))) {
     print_error('coursemisconf');
 }
-
 if (! $apply = $DB->get_record("apply", array("id"=>$cm->instance))) {
     print_error('invalidcoursemodule');
 }
+if (!$courseid) $courseid = $course->id;
 
 $context = context_module::instance($cm->id);
 

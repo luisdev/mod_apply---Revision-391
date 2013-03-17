@@ -36,7 +36,7 @@ if (isset($cmid) AND intval($cmid) AND $cmid>0) {
 else {
     $usedid = $id;
 }
-$courseid = optional_param('courseid', false, PARAM_INT);
+if (!$courseid) $courseid = optional_param('courseid', false, PARAM_INT);
 
 //
 $context = context_module::instance($usedid);
