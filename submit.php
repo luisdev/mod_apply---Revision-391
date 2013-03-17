@@ -29,13 +29,13 @@ require_once('lib.php');
 apply_init_session();
 
 $id 			= required_param('id', PARAM_INT);
+$courseid 	  	= optional_param('courseid', 0, PARAM_INT);
 $submit_id		= optional_param('submit_id', 0, PARAM_INT);
-$course_id 	  	= optional_param('course_id', 0, PARAM_INT);
-$preservevalues = optional_param('preservevalues', 0, PARAM_INT);
-$gopage 		= optional_param('gopage', -1, PARAM_INT);
-$lastpage 	  	= optional_param('lastpage', false, PARAM_INT);
-$startitempos	= optional_param('startitempos', 0, PARAM_INT);
-$lastitempos  	= optional_param('lastitempos',  0, PARAM_INT);
+$prev_values 	= optional_param('prev_values', 0, PARAM_INT);
+$go_page 		= optional_param('go_page', -1, PARAM_INT);
+$last_page 	  	= optional_param('last_page', false, PARAM_INT);
+$start_itempos	= optional_param('start_itempos', 0, PARAM_INT);
+$last_itempos  	= optional_param('last_itempos',  0, PARAM_INT);
 
 $highlightrequired = false;
 
@@ -46,39 +46,39 @@ if (($formdata = data_submitted()) AND !confirm_sesskey()) {
 
 // Page
 //if the use hit enter into a textfield so the form should not submit
-if ( isset($formdata->sesskey)	AND
-	!isset($formdata->savevalues) AND
-	!isset($formdata->gonextpage) AND
-	!isset($formdata->gopreviouspage)) {
+if ( isset($formdata->sesskey)	  	AND
+	!isset($formdata->save_values) 	AND
+	!isset($formdata->go_next_page) AND
+	!isset($formdata->go_prev_page)) {
 
-	$gopage = $formdata->lastpage;
+	$go_page = $formdata->last_page;
 }
 
-if (isset($formdata->savevalues)) {
-	$savevalues = true;
+if (isset($formdata->save_values)) {
+	$save_values = true;
 } 
 else {
-	$savevalues = false;
+	$save_values = false;
 }
 
 // page
-if ($gopage<0 AND !$savevalues) {
-	if (isset($formdata->gonextpage)) {
-		$gopage = $lastpage + 1;
-		$gonextpage = true;
-		$gopreviouspage = false;
+if ($go_page<0 AND !$save_values) {
+	if (isset($formdata->go_next_page)) {
+		$go_page = $last_page + 1;
+		$go_next_page = true;
+		$go_prev_page = false;
 	}
-	else if (isset($formdata->gopreviouspage)) {
-		$gopage = $lastpage - 1;
-		$gonextpage = false;
-		$gopreviouspage = true;
+	else if (isset($formdata->go_prev_page)) {
+		$go_page = $last_page - 1;
+		$go_next_page = false;
+		$go_prev_page = true;
 	}
 	else {
 		print_error('missingparameter');
 	}
 }
 else {
-	$gonextpage = $gopreviouspage = false;
+	$go_next_page = $go_prev_page = false;
 }
 
 
@@ -89,27 +89,22 @@ if (! $cm = get_coursemodule_from_id('apply', $id)) {
 if (! $course = $DB->get_record('course', array('id'=>$cm->course))) {
 	print_error('coursemisconf');
 }
-if (! $apply = $DB->get_record('apply', array('id'=>$cm->instance))) {
+if (! $apply  = $DB->get_record('apply', array('id'=>$cm->instance))) {
 	print_error('invalidcoursemodule');
 }
 
 $context = context_module::instance($cm->id);
 
-$apply_complete_cap = false;
+$apply_submit_cap = false;
 if (has_capability('mod/apply:submit', $context)) {
-	$apply_complete_cap = true;
+	$apply_submit_cap = true;
 }
 //
-if (!$apply_complete_cap) {
+if (!$apply_submit_cap) {
 	print_error('error');
 }
 
 require_login($course, true, $cm);
-
-
-// ???
-//$completion = new completion_info($course);
-//$completion->set_module_viewed($cm);
 
 
 /// Print the page header
@@ -117,7 +112,7 @@ $strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
 $PAGE->navbar->add(get_string('apply:submit', 'apply'));
-$urlparams = array('id'=>$cm->id, 'gopage'=>$gopage, 'course_id'=>$course->id);
+$urlparams = array('id'=>$cm->id, 'go_page'=>$go_page, 'courseid'=>$course->id);
 $PAGE->set_url('/mod/apply/submit.php', $urlparams);
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));
@@ -135,10 +130,12 @@ $apply_is_closed = ($apply->time_open>$checktime) OR ($apply->time_close<$checkt
 
 if ($apply_is_closed) {
 	echo $OUTPUT->box_start('generalbox boxaligncenter');
+	{
 		echo '<h2><font color="red">';
 		echo get_string('apply_is_not_open', 'apply');
 		echo '</font></h2>';
 		echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$course->id);
+	}
 	echo $OUTPUT->box_end();
 	echo $OUTPUT->footer();
 	exit;
@@ -149,7 +146,7 @@ if ($apply_is_closed) {
 //the main-check is in view.php
 $apply_can_submit = true;
 if ($apply->multiple_submit==0) {
-	if (apply_is_already_submitted($apply->id, $course_id)) {
+	if (apply_get_valid_submit_count($apply->id, $USER->id)>0) {
 		$apply_can_submit = false;
 	}
 }
@@ -158,27 +155,27 @@ if ($apply->multiple_submit==0) {
 // can submit
 if ($apply_can_submit) {
 	//
-	if ($preservevalues==1) {
+	if ($prev_values==1) {
 		if (!isset($SESSION->apply->is_started) OR !$SESSION->apply->is_started==true) {
 			print_error('error', '', $CFG->wwwroot.'/course/view.php?id='.$course->id);
 		}
 
-		if (apply_check_values($startitempos, $lastitempos)) {
+		if (apply_check_values($start_itempos, $last_itempos)) {
 			$user_id   = $USER->id;
-			$submit_id = apply_save_values($apply->id, $submit_id, $user_id, true);
+			$submit_id = apply_save_values($apply->id, $submit_id, $user_id, true);	// save to tmp
 
 			if ($submit_id) {
 				if ($user_id>0) {
 					add_to_log($course->id, 'apply', 'start_apply', 'view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
 				}
-				if (!$gonextpage AND !$gopreviouspage) {
-					$preservevalues = false;
+				if (!$go_next_page AND !$go_prev_page) {
+					$prev_values = false;
 				}
 			}
 			else {
-				$savereturn = 'failed';
-				if (isset($lastpage)) {
-					$gopage = $lastpage;
+				$save_return = 'failed';
+				if (isset($last_page)) {
+					$go_page = $last_page;
 				}
 				else {
 					print_error('missingparameter');
@@ -187,62 +184,57 @@ if ($apply_can_submit) {
 		}
 		//
 		else {
-			$savereturn = 'missing';
+			$save_return = 'missing';
 			$highlightrequired = true;
-			if (isset($lastpage)) {
-				$gopage = $lastpage;
-			} else {
+			if (isset($last_page)) {
+				$go_page = $last_page;
+			}
+			else {
 				print_error('missingparameter');
 			}
 		}
 	}
 
 	//saving the items
-	if ($savevalues AND !$preservevalues) {
+	if ($save_values AND !$prev_values) {
 		//exists there any pagebreak, so there are values in the apply_value_tmp
 		$user_id   = $USER->id; 
 		$submit_id = apply_save_values($apply->id, $submit_id, $user_id);
 
 		if ($submit_id) {
-			$savereturn = 'saved';
+			$save_return = 'saved';
 			add_to_log($course->id, 'apply', 'submit', 'view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
 			apply_send_email($cm, $apply, $course, $user_id);
-
-			// Update completion state
-//			$completion = new completion_info($course);
-//			if ($completion->is_enabled($cm) && $apply->completionsubmit) {
-//				$completion->update_state($cm, COMPLETION_COMPLETE);
-//			}
 		}
 		else {
-			$savereturn = 'failed';
+			$save_return = 'failed';
 		}
 	}
 
 	//
 	if ($allbreaks = apply_get_all_break_positions($apply->id)) {
-		if ($gopage<=0) {
-			$startposition = 0;
+		if ($go_page<=0) {
+			$start_position = 0;
 		}
 		else {
-			if (!isset($allbreaks[$gopage - 1])) {
-				$gopage = count($allbreaks);
+			if (!isset($allbreaks[$go_page - 1])) {
+				$go_page = count($allbreaks);
 			}
-			$startposition = $allbreaks[$gopage - 1];
+			$start_position = $allbreaks[$go_page - 1];
 		}
 		$ispagebreak = true;
 	} 
 	else {
-		$startposition = 0;
+		$start_position = 0;
 		$newpage = 0;
 		$ispagebreak = false;
 	}
 
 	//
-	//get the applyitems after the last shown pagebreak
+	//get the apply_items after the last shown pagebreak
 	$select = 'apply_id = ? AND position > ?';
-	$params = array($apply->id, $startposition);
-	$applyitems = $DB->get_records_select('apply_item', $select, $params, 'position');
+	$params = array($apply->id, $start_position);
+	$apply_items = $DB->get_records_select('apply_item', $select, $params, 'position');
 
 	//get the first pagebreak
 	$params = array('apply_id' => $apply->id, 'typ' => 'pagebreak');
@@ -257,7 +249,7 @@ if ($apply_can_submit) {
 
 	//
 	//get the values of completeds before done. Anonymous user can not get these values.
-	if ((!isset($SESSION->apply->is_started)) AND (!isset($savereturn))) {
+	if ((!isset($SESSION->apply->is_started)) AND (!isset($save_return))) {
 		$submits = apply_get_current_submit($apply->id);
 		if (!$submits) {
 			$applycompleted = apply_get_current_completed($apply->ideid);
@@ -274,13 +266,12 @@ if ($apply_can_submit) {
 	///////////////////////////////////////////////////////////////////////////
 	/// Print the main part of the page
 	$analysisurl = new moodle_url('/mod/apply/analysis.php', array('id'=>$id));
-	if ($course_id>0) {
-		$analysisurl->param('course_id', $course_id);
+	if ($courseid>0) {
+		$analysisurl->param('courseid', $courseid);
 	}
 	echo $OUTPUT->heading(format_text($apply->name));
 
-	if ( has_capability('mod/apply:viewanalysepage', $context) AND 
-		!has_capability('mod/apply:viewreports', $context)) {
+	if (!has_capability('mod/apply:viewreports', $context)) {
 
 		$params = array('user_id'=>$USER->id, 'apply_id' => $apply->id);
 		echo $OUTPUT->box_start('mdl-align');
@@ -289,15 +280,15 @@ if ($apply_can_submit) {
 		echo $OUTPUT->box_end();
 	}
 
-	if (isset($savereturn) && $savereturn=='saved') {
+	if (isset($save_return) && $save_return=='saved') {
 		echo '<p align="center">';
 		echo '<b><font color="green">';
 		echo get_string('entries_saved', 'apply');
 		echo '</font></b>';
 		echo '</p>';
 
-		if ($course_id) {
-			$url = $CFG->wwwroot.'/course/view.php?id='.$course_id;
+		if ($courseid) {
+			$url = $CFG->wwwroot.'/course/view.php?id='.$courseid;
 		}
 		else {
 			$url = $CFG->wwwroot.'/course/view.php?id='.$course->id;
@@ -306,20 +297,22 @@ if ($apply_can_submit) {
 	}
 
 	else {
-		if (isset($savereturn) && $savereturn=='failed') {
+		require('submit_page.php');
+/*
+		if (isset($save_return) && $save_return=='failed') {
 			echo $OUTPUT->box_start('mform error');
 			echo get_string('saving_failed', 'apply');
 			echo $OUTPUT->box_end();
 		}
 
-		if (isset($savereturn) && $savereturn=='missing') {
+		if (isset($save_return) && $save_return=='missing') {
 			echo $OUTPUT->box_start('mform error');
 			echo get_string('saving_failed_because_missing_or_false_values', 'apply');
 			echo $OUTPUT->box_end();
 		}
 
 		//print the items
-		if (is_array($applyitems)) {
+		if (is_array($apply_items)) {
 			echo $OUTPUT->box_start('apply_form');
 			echo '<form action="submit.php" method="post" onsubmit=" ">';
 			echo '<fieldset>';
@@ -337,13 +330,13 @@ if ($apply_can_submit) {
 
 			unset($startitem);
 			$select = 'apply_id = ? AND hasvalue = 1 AND position < ?';
-			$params = array($apply->id, $startposition);
+			$pply_complete_cancelparams = array($apply->id, $start_position);
 			$itemnr = $DB->count_records_select('apply_item', $select, $params);
-			$lastbreakposition = 0;
+			$last_break_position = 0;
 			$align = right_to_left() ? 'right' : 'left';
 	
 
-			foreach ($applyitems as $applyitem) {
+			foreach ($apply_items as $applyitem) {
 				if (!isset($startitem)) {
 					//avoid showing double pagebreaks
 					if ($applyitem->typ == 'pagebreak') {
@@ -360,7 +353,7 @@ if ($apply_can_submit) {
 																	true);
 					if (!isset($applycompletedtmp->id) OR !$fb_compare_value) {
 						$lastitem = $applyitem;
-						$lastbreakposition = $applyitem->position;
+						$last_break_position = $applyitem->position;
 						continue;
 					}
 				}
@@ -376,7 +369,7 @@ if ($apply_can_submit) {
 				$value = '';
 				//get the value
 				$frmvaluename = $applyitem->typ . '_'. $applyitem->id;
-				if (isset($savereturn)) {
+				if (isset($save_return)) {
 					$value = isset($formdata->{$frmvaluename}) ? $formdata->{$frmvaluename} : null;
 					$value = apply_clean_input_value($applyitem, $value);
 				}
@@ -401,7 +394,7 @@ if ($apply_can_submit) {
 
 				echo $OUTPUT->box_end();
 
-				$lastbreakposition = $applyitem->position; //last item-pos (item or pagebreak)
+				$last_break_position = $applyitem->position; //last item-pos (item or pagebreak)
 				if ($applyitem->typ == 'pagebreak') {
 					break;
 				} else {
@@ -411,7 +404,7 @@ if ($apply_can_submit) {
 			echo $OUTPUT->box_end();
 			echo '<input type="hidden" name="id" value="'.$id.'" />';
 			echo '<input type="hidden" name="apply_id" value="'.$apply->id.'" />';
-			echo '<input type="hidden" name="lastpage" value="'.$gopage.'" />';
+			echo '<input type="hidden" name="last_page" value="'.$go_page.'" />';
 			if (isset($applycompletedtmp->id)) {
 				$inputvalue = 'value="'.$applycompletedtmp->id.'"';
 			}
@@ -419,34 +412,34 @@ if ($apply_can_submit) {
 				$inputvalue = 'value=""';
 			}
 			echo '<input type="hidden" name="submit_id" '.$inputvalue.' />';
-			echo '<input type="hidden" name="course_id" value="'. $course_id . '" />';
-			echo '<input type="hidden" name="preservevalues" value="1" />';
+			echo '<input type="hidden" name="courseid" value="'. $courseid . '" />';
+			echo '<input type="hidden" name="prev_values" value="1" />';
 			if (isset($startitem)) {
-				echo '<input type="hidden" name="startitempos" value="'.$startitem->position.'" />';
-				echo '<input type="hidden" name="lastitempos" value="'.$lastitem->position.'" />';
+				echo '<input type="hidden" name="start_itempos" value="'.$startitem->position.'" />';
+				echo '<input type="hidden" name="last_itempos" value="'.$lastitem->position.'" />';
 			}
 
 
-			if ( $ispagebreak AND $lastbreakposition > $firstpagebreak->position) {
+			if ( $ispagebreak AND $last_break_position > $firstpagebreak->position) {
 				$inputvalue = 'value="'.get_string('previous_page', 'apply').'"';
-				echo '<input name="gopreviouspage" type="submit" '.$inputvalue.' />';
+				echo '<input name="go_prev_page" type="submit" '.$inputvalue.' />';
 			}
-			if ($lastbreakposition < $maxitemcount) {
+			if ($last_break_position < $maxitemcount) {
 				$inputvalue = 'value="'.get_string('next_page', 'apply').'"';
-				echo '<input name="gonextpage" type="submit" '.$inputvalue.' />';
+				echo '<input name="go_next_page" type="submit" '.$inputvalue.' />';
 			}
-			if ($lastbreakposition >= $maxitemcount) { //last page
+			if ($last_break_position >= $maxitemcount) { //last page
 				$inputvalue = 'value="'.get_string('save_entries', 'apply').'"';
-				echo '<input name="savevalues" type="submit" '.$inputvalue.' />';
+				echo '<input name="save_values" type="submit" '.$inputvalue.' />';
 			}
 
 			echo '</fieldset>';
 			echo '</form>';
 			echo $OUTPUT->box_end();
 
-			echo $OUTPUT->box_start('apply_complete_cancel');
-			if ($course_id) {
-				$action = 'action="'.$CFG->wwwroot.'/course/view.php?id='.$course_id.'"';
+			echo $OUTPUT->box_start('apply_submit_cancel');
+			if ($courseid) {
+				$action = 'action="'.$CFG->wwwroot.'/course/view.php?id='.$courseid.'"';
 			}
 			else {
 				if ($course->id == SITEID) {
@@ -460,7 +453,7 @@ if ($apply_can_submit) {
 			echo '<form '.$action.' method="post" onsubmit=" ">';
 			echo '<fieldset>';
 			echo '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
-			echo '<input type="hidden" name="course_id" value="'. $course_id . '" />';
+			echo '<input type="hidden" name="courseid" value="'. $courseid . '" />';
 			echo '<button type="submit">'.get_string('cancel').'</button>';
 			echo '</fieldset>';
 			echo '</form>';
@@ -468,25 +461,25 @@ if ($apply_can_submit) {
 
 			$SESSION->apply->is_started = true;
 		}
+*/
 	}
 }
-
-
 
 // cannot submit
 else {
 	echo $OUTPUT->box_start('generalbox boxaligncenter');
+	{
 		echo '<h2>';
 		echo '<font color="red">';
 		echo get_string('this_apply_is_already_submitted', 'apply');
 		echo '</font>';
 		echo '</h2>';
 		echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$course->id);
+	}
 	echo $OUTPUT->box_end();
 }
 
 
 ///////////////////////////////////////////////////////////////////////////
 /// Finish the page
-
 echo $OUTPUT->footer();

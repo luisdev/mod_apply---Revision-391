@@ -29,8 +29,6 @@ defined('MOODLE_INTERNAL') OR die('not allowed');
 
 echo $OUTPUT->box_start('boxaligncenter boxwidthwide');
 {
-	//echo $groupselect.'<div class="clearer">&nbsp;</div>';
-	echo '<div class="clearer">xxxxx&nbsp;</div>';
 	$submitscount = apply_get_current_submit_count($apply->id);
 
 	echo $OUTPUT->box_start('apply_info');
