@@ -43,7 +43,7 @@ if (! $apply = $DB->get_record('apply', array('id'=>$cm->instance))) {
 
 $context = context_module::instance($cm->id);
 
-$apply_complete_cap = false;
+$apply_submit_cap = false;
 if (has_capability('mod/apply:submit', $context)) {
 	$apply_submit_cap = true;
 }
@@ -67,16 +67,12 @@ echo $OUTPUT->header();
 
 
 //ishidden check.
-//apply in courses
 $cap_viewhiddenactivities = has_capability('moodle/course:viewhiddenactivities', $context);
 if ((empty($cm->visible) and !$cap_viewhiddenactivities)) {
-	notice(get_string("activityiscurrentlyhidden"));
+	notice(get_string('activityiscurrentlyhidden'));
 }
-
-//ishidden check.
-//apply on mainsite
 if ((empty($cm->visible) and !$cap_viewhiddenactivities)) {
-	notice(get_string("activityiscurrentlyhidden"));
+	notice(get_string('activityiscurrentlyhidden'));
 }
 
 
@@ -126,7 +122,7 @@ if ($apply_submit_cap) {
 
 	if ($apply_can_submit) {
 		$submit_file = 'submit.php';
-		$url_params  = array('id'=>$id, 'courseid'=>$courseid, 'gopage'=>0);
+		$url_params  = array('id'=>$id, 'courseid'=>$courseid, 'go_page'=>0);
 		$submit_url = new moodle_url('/mod/apply/'.$submit_file, $url_params);
 
 		if (has_capability('mod/apply:viewreports', $context)) {
@@ -137,7 +133,7 @@ if ($apply_submit_cap) {
 		}
 		if ($submits) {
 			if ($startpage = apply_get_page_to_continue($apply->iduestid)) {
-				$submit_url->param('gopage', $startpage);
+				$submit_url->param('go_page', $startpage);
 			}
 			echo '<a href="'.$submit_url->out().'">'.get_string('continue_the_form', 'apply').'</a>';
 		}
@@ -157,9 +153,23 @@ if ($apply_submit_cap) {
 			echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$course->id);
 		}
 	}
-
 	echo $OUTPUT->box_end();
 }
+//
+else {
+	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
+	echo '<h2><font color="red">';
+	echo get_string('apply_is_not_open', 'apply');
+	echo '</font></h2>';
+	if ($courseid) {
+		echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
+	}
+	else {
+		echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$course->id);
+	}
+	echo $OUTPUT->box_end();
+}
+
 
 
 /// Finish the page

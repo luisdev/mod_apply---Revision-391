@@ -47,17 +47,17 @@ define('APPLY_DEFAULT_PAGE_COUNT', 20);
 function apply_supports($feature)
 {
 	switch($feature) {
+		case FEATURE_MOD_INTRO:					return true;
+		case FEATURE_SHOW_DESCRIPTION:			return true;
+
 		case FEATURE_GROUPS:					return false;
 		case FEATURE_GROUPINGS:					return false;
 		case FEATURE_GROUPMEMBERSONLY:			return false;
 
-		case FEATURE_MOD_INTRO:					return true;
-		case FEATURE_BACKUP_MOODLE2:			return true;
-		case FEATURE_SHOW_DESCRIPTION:			return true;
-
 		case FEATURE_COMPLETION_TRACKS_VIEWS:	return false;
 		case FEATURE_COMPLETION_HAS_RULES:		return false;
 
+		case FEATURE_BACKUP_MOODLE2:			return false;
 		case FEATURE_GRADE_HAS_GRADE:			return false;
 		case FEATURE_GRADE_OUTCOMES:			return false;
 
@@ -822,7 +822,7 @@ function apply_get_valid_submit($apply_id, $user_id=0)
 		$select.= 'AND user_id = ?';
 		$params = array($apply_id, $user_id);
 	}
-	$submits = $DB->get_records_select('apply_submit', $select, $params)) {
+	$submits = $DB->get_records_select('apply_submit', $select, $params);
 
 	return $submits;
 }
@@ -1104,7 +1104,7 @@ function apply_send_email($cm, $apply, $course, $userid)
 			$info->apply = format_string($apply->name, true);
 			$info->url= $CFG->wwwroot.'/mod/apply/show_entries.php?id='.$cm->id.'&userid='.$userid.'&do_show=showentries';
 
-			$postsubject = $strcompleted.': '.$info->username.' -> '.$apply->name;
+			$postsubject = $submitted.': '.$info->username.' -> '.$apply->name;
 			$posttext = apply_send_email_text($info, $course);
 
 			if ($teacher->mailformat==1) {
