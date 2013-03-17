@@ -95,7 +95,7 @@ foreach ($applys as $apply) {
     $viewurl = new moodle_url('/mod/apply/view.php', array('id'=>$apply->coursemodule));
 
     if (has_capability('mod/apply:viewreports', $context)) {
-        $submit_apply_count = intval(apply_get_submits_group_count($apply));
+        $submit_apply_count = intval(apply_get_current_submit($apply->id));
     }
 
     $dimmedclass = $apply->visible ? '' : 'class="dimmed"';

@@ -43,7 +43,7 @@ $capabilities = array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
         'archetypes' => array(
-            'guest' => CAP_ALLOW,
+            'guest'   => CAP_ALLOW,
             'student' => CAP_ALLOW,
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
@@ -51,7 +51,7 @@ $capabilities = array(
         )
     ),
 
-    'mod/apply:complete' => array(
+    'mod/apply:submit' => array(
 
         'riskbitmask' => RISK_SPAM,
 
@@ -62,34 +62,12 @@ $capabilities = array(
         )
     ),
 
-    'mod/apply:viewanalysepage' => array(
-
-        'riskbitmask' => RISK_PERSONAL,
-
-        'captype' => 'read',
-        'contextlevel' => CONTEXT_MODULE,
-        'archetypes' => array(
-            'student' => CAP_ALLOW,
-            'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        )
-    ),
-
     'mod/apply:deletesubmissions' => array(
 
         'captype' => 'write',
         'contextlevel' => CONTEXT_MODULE,
         'archetypes' => array(
             'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        )
-    ),
-
-    'mod/apply:mapcourse' => array(
-
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_MODULE,
-        'archetypes' => array(
             'manager' => CAP_ALLOW
         )
     ),

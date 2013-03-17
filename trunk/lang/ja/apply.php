@@ -63,8 +63,8 @@ $string['checkbox'] = '多肢選択 - 複数回答 (チェックボックス)';
 $string['check_values'] = '考えられる回答';
 $string['choosefile'] = 'ファイルを選択する';
 $string['chosen_apply_response'] = '選択された申請フォームの回答';
-$string['submited'] = '送信';
-$string['submited_applys'] = '申請書類数';
+$string['submitted'] = '送信';
+$string['submitted_applys'] = '申請書類数';
 
 //
 $string['submit_the_form'] = '申請する ...';

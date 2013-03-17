@@ -1,7 +1,21 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @author  Fumi Iseki
+ * @author  Fumi.Iseki
  * @license GNU Public License
  * @package mod_apply (modified from mod_apply/lib.php that by Andreas Grabs)
  */
@@ -9,51 +23,6 @@
 defined('MOODLE_INTERNAL') || die;
 
 /*
-function apply_add_instance($apply)
-function apply_check_values($firstitem, $lastitem)
-function apply_clean_input_value($item, $value) 
-function apply_compare_item_value($submit_id, $item_id, $dependvalue)
-function apply_create_item($data)
-function apply_create_pagebreak($apply_id) 
-function apply_create_values($userid, $time_modified)
-function apply_delete_all_items($apply_id)
-function apply_delete_all_submit($apply_id) 
-function apply_delete_instance($apply_id) 
-function apply_delete_item($item_id, $renumber=true, $template=false) 
-function apply_delete_submit($submit_id)
-function apply_get_all_break_positions($apply_id) 
-function apply_get_coursemodule_info($coursemodule)
-function apply_get_current_all_submit($apply_id)
-function apply_get_current_submit($apply_id) //, $tmp=false, $courseid=false, $guestid=false)
-function apply_get_depend_candidates_for_item($apply, $item) 
-function apply_get_editor_options() 
-function apply_get_group_values($item, $groupid=false, $ignore_empty=false)
-function apply_get_item_class($typ)
-function apply_get_item_value($submit_id, $item_id) 
-function apply_get_last_break_position($apply_id)
-function apply_get_page_to_continue($apply_id)
-function apply_get_post_actions() 
-function apply_get_submits_group($apply, $groupid=false) 
-function apply_get_submits_group_count($apply, $groupid=false) 
-function apply_get_template_list($course, $onlyownorpublic='') 
-function apply_get_view_actions() 
-function apply_init_session()
-function apply_load_apply_items($dir='mod/apply/item')
-function apply_load_apply_items_options()
-function apply_move_item($moveitem, $pos) {
-function apply_movedown_item($item)
-function apply_moveup_item($item)
-function apply_print_item_complete($item, $value=false, $highlightrequire=false)
-function apply_print_item_preview($item)
-function apply_print_item_show_value($item, $value=false)
-function apply_renumber_items($apply_id)
-function apply_reset_userdata($data) 
-function apply_save_values($user_id)
-function apply_supports($feature)
-function apply_switch_item_required($item)
-function apply_update_instance($apply)
-function apply_update_item($item) {
-function apply_update_values($submit)
 */
 
 
@@ -78,16 +47,19 @@ define('APPLY_DEFAULT_PAGE_COUNT', 20);
 function apply_supports($feature)
 {
 	switch($feature) {
-		case FEATURE_GROUPS:					return true;
-		case FEATURE_GROUPINGS:					return true;
-		case FEATURE_GROUPMEMBERSONLY:			return true;
+		case FEATURE_GROUPS:					return false;
+		case FEATURE_GROUPINGS:					return false;
+		case FEATURE_GROUPMEMBERSONLY:			return false;
+
 		case FEATURE_MOD_INTRO:					return true;
-		case FEATURE_COMPLETION_TRACKS_VIEWS:	return true;
-		case FEATURE_COMPLETION_HAS_RULES:		return true;
-		case FEATURE_GRADE_HAS_GRADE:			return false;
-		case FEATURE_GRADE_OUTCOMES:			return false;
 		case FEATURE_BACKUP_MOODLE2:			return true;
 		case FEATURE_SHOW_DESCRIPTION:			return true;
+
+		case FEATURE_COMPLETION_TRACKS_VIEWS:	return false;
+		case FEATURE_COMPLETION_HAS_RULES:		return false;
+
+		case FEATURE_GRADE_HAS_GRADE:			return false;
+		case FEATURE_GRADE_OUTCOMES:			return false;
 
 		default: return null;
 	}
@@ -120,8 +92,6 @@ function apply_add_instance($apply)
 		$cm = get_coursemodule_from_id('apply', $apply->id);
 		$apply->coursemodule = $cm->id;
 	}
-//	$context = context_module::instance($apply->coursemodule);
-//	$editoroptions = apply_get_editor_options();
 
 	$DB->update_record('apply', $apply);
 
@@ -145,9 +115,6 @@ function apply_update_instance($apply)
 	}
 
 //	apply_set_events($apply);
-
-//	$context = context_module::instance($apply->coursemodule);
-//	$editoroptions = apply_get_editor_options();
 
 	$DB->update_record('apply', $apply);
 
@@ -274,12 +241,10 @@ function apply_init_session()
 
 
 
-/*
 function apply_get_editor_options() 
 {
 	return array('maxfiles' => EDITOR_UNLIMITED_FILES, 'trusttext'=>true);
 }
-*/
 
 
 
@@ -327,7 +292,7 @@ function apply_load_apply_items_options()
 {
 	global $CFG;
 
-	$apply_options = array("pagebreak" => get_string('add_pagebreak', 'apply'));
+	$apply_options = array('pagebreak'=>get_string('add_pagebreak', 'apply'));
 
 	if (!$apply_names = apply_load_apply_items('mod/apply/item')) {
 		return array();
@@ -354,8 +319,8 @@ function apply_get_depend_candidates_for_item($apply, $item)
 		$where .= ' AND id != ?';
 		$params[] = $item->id;
 	}
-	$dependitems = array(0 => get_string('choose'));
-	$applyitems = $DB->get_records_select_menu('apply_item', $where, $params, 'position', 'id, label');
+	$dependitems = array(0=>get_string('choose'));
+	$applyitems  = $DB->get_records_select_menu('apply_item', $where, $params, 'position', 'id, label');
 
 	if (!$applyitems) {
 		return $dependitems;
@@ -596,12 +561,12 @@ function apply_move_item($moveitem, $pos) {
 	global $DB;
 
 	$params = array('apply_id'=>$moveitem->apply_id);
-	if (!$allitems = $DB->get_records('apply_item', $params, 'position')) {
+	if (!$items = $DB->get_records('apply_item', $params, 'position')) {
 		return false;
 	}
-	if (is_array($allitems)) {
+	if (is_array($items)) {
 		$index = 1;
-		foreach ($allitems as $item) {
+		foreach ($items as $item) {
 			if ($index == $pos) {
 				$index++;
 			}
@@ -682,46 +647,6 @@ function apply_get_template_list($course, $onlyownorpublic='')
 			break;
 	}
 	return $templates;
-}
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////////
-//
-// Groups
-//
-
-function apply_get_submits_group($apply, $groupid=false) 
-{
-	global $CFG, $DB;
-
-	if (intval($groupid)>0) {
-		$query = "SELECT as.* FROM {apply_submit} as, {groups_members} gm 
-						WHERE as.apply_id = ? AND gm.groupid = ?  AND as.user_id = gm.userid";
-		$values = $DB->get_records_sql($query, array($apply->id, $groupid));
-		if ($values) return $values;
-		return false;
-	} 
-	//
-	else {
-		$values = $DB->get_records('apply_submit', array('apply_id'=>$apply->id));
-		if ($values) return $values;
-		return false;
-	}
-}
-
-
-
-function apply_get_submits_group_count($apply, $groupid=false) 
-{
-	if ($values = apply_get_submits_group($apply, $groupid)) {
-		return count($values);
-	} 
-	else {
-		return false;
-	}
 }
 
 
@@ -817,41 +742,29 @@ function apply_get_page_to_continue($apply_id)
 // Submit Handling
 //
 
-function apply_get_current_submit($apply_id, $user_id=0) //, $tmp=false, $courseid=false, $guestid=false)
+function apply_get_current_submit($apply_id, $user_id=0)
 {
-	global $USER, $DB;
+	global $DB;
 
-	if ($user_id==0) $user_id = $USER->id;
+	if ($user_id==0) {
+		$params = array('apply_id'=>$apply_id);
+	}
+	else {
+		$params = array('apply_id'=>$apply_id, 'user_id'=>$user_id);
+	}
+	$submits = $DB->get_records('apply_submit', $params);
 
-	$params = array('apply_id'=>$apply_id, 'user_id'=>$user_id);
-	return $DB->get_record('apply_submit', $params);
+	return $submits;
 }
 
 
 
-function apply_get_current_all_submit($apply_id)
+function apply_get_current_submit_count($apply_id, $user_id=0)
 {
-	global $DB;
+	$submits = apply_get_current_submit($apply_id, $user_id);
 
-	// 権限チェック
-
-	$params = array('apply_id'=>$apply_id);
-	return $DB->get_record('apply_submit', $params);
-}
-
-
-
-function apply_delete_all_submit($apply_id) 
-{
-	global $DB;
-
-	if (!$submits = $DB->get_records('apply_submit', array('apply_id'=>$apply_id))) {
-		return;
-	}
-
-	foreach ($submits as $submit) {
-		apply_delete_submit($submit->id);
-	}
+	if (!$submits) return 0;
+	return count($submits);
 }
 
 
@@ -860,12 +773,10 @@ function apply_delete_submit($submit_id)
 {
 	global $DB, $CFG;
 
-//	require_once($CFG->libdir.'/completionlib.php');
-
 	if (!$submit = $DB->get_record('apply_submit', array('id'=>$submit_id))) {
 		return false;
 	}
-	if (!$apply = $DB->get_record('apply', array('id'=>$submit->apply_id))) {
+	if (!$apply  = $DB->get_record('apply', array('id'=>$submit->apply_id))) {
 		return false;
 	}
 	if (!$course = $DB->get_record('course', array('id'=>$apply->course))) {
@@ -875,17 +786,55 @@ function apply_delete_submit($submit_id)
 		return false;
 	}
 
-	$DB->delete_records('apply_value', array('submit_id'=>$submit->id));
+	$DB->delete_records('apply_value',     array('submit_id'=>$submit->id));
 	$DB->delete_records('apply_value_tmp', array('submit_id'=>$submit->id));
-
-	// ???
-//	$completion = new completion_info($course);
-//	if ($completion->is_enabled($cm) && $apply->completionsubmit) {
-//		$completion->update_state($cm, COMPLETION_INCOMPLETE, $submit->user_id);
-//	}
 
 	$ret = $DB->delete_records('apply_submit', array('id'=>$submit->id));
 	return ret;
+}
+
+
+
+function apply_delete_all_submit($apply_id) 
+{
+	global $DB;
+
+	$submits = $DB->get_records('apply_submit', array('apply_id'=>$apply_id));
+	if (!$submits) return;
+
+	foreach ($submits as $submit) {
+		apply_delete_submit($submit->id);
+	}
+}
+
+
+
+function apply_get_valid_submit($apply_id, $user_id=0)
+{
+	global $DB;
+
+	$select = 'up_num > 0 AND apply_id = ? ';
+
+	if ($user_id==0) {
+		$params = array($apply_id);
+	}
+	else {
+		$select.= 'AND user_id = ?';
+		$params = array($apply_id, $user_id);
+	}
+	$submits = $DB->get_records_select('apply_submit', $select, $params)) {
+
+	return $submits;
+}
+
+
+
+function apply_get_valid_submit_count($apply_id, $user_id=0)
+{
+	$submits = apply_get_valid_submit($apply_id, $user_id);
+
+	if (!$submits) return 0;
+	return count($submits);
 }
 
 
@@ -1094,6 +1043,7 @@ function apply_update_values($submit, $tmp=false)
 
 
 
+/*
 function apply_get_group_values($item, $groupid=false, $ignore_empty=false)
 {
 	global $CFG, $DB;
@@ -1121,6 +1071,7 @@ function apply_get_group_values($item, $groupid=false, $ignore_empty=false)
 
 	return $values;
 }
+*/
 
 
 
@@ -1139,27 +1090,12 @@ function apply_send_email($cm, $apply, $course, $userid)
 	if ($apply->email_notification==0) eturn;
 
 	$user = $DB->get_record('user', array('id'=>$userid));
-	if (isset($cm->groupmode) && empty($course->groupmodeforce)) {
-		$groupmode = $cm->groupmode;
-	} 
-	else {
-		$groupmode = $course->groupmode;
-	}
-	if ($groupmode==SEPARATEGROUPS) {
-		$groups = $DB->get_records_sql_menu("SELECT g.name, g.id FROM {groups} g, {groups_members} m
-												WHERE g.courseid = ? AND g.id = m.groupid AND m.userid = ?
-										   		ORDER BY name ASC", array($course->id, $userid));
-		$groups = array_values($groups);
-		$teachers = apply_get_receivemail_users($cm->id, $groups);
-	}
-	else {
-		$teachers = apply_get_receivemail_users($cm->id);
-	}
+	$teachers = apply_get_receivemail_users($cm->id);
 
 	if ($teachers) {
 		$strapplys = get_string('modulenameplural', 'apply');
 		$strapply  = get_string('modulename', 'apply');
-		$strcompleted  = get_string('completed', 'apply');
+		$submitted = get_string('submitted',  'apply');
 		$printusername = fullname($user);
 
 		foreach ($teachers as $teacher) {
@@ -1195,12 +1131,12 @@ function apply_send_email($cm, $apply, $course, $userid)
 
 
 
-function apply_get_receivemail_users($cmid, $groups=false)
+function apply_get_receivemail_users($cmid)
 {
     $context = context_module::instance($cmid);
 
     //get_users_by_capability($context, $capability, $fields, $sort, $limitfrom, $limitnum, $groups, $exceptions, $doanything)
-    $ret = get_users_by_capability($context, 'mod/apply:receivemail', '', 'lastname', '', '', $groups, '', false);
+    $ret = get_users_by_capability($context, 'mod/apply:receivemail', '', 'lastname', '', '', false, '', false);
 
     return $ret;
 }

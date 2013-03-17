@@ -96,7 +96,7 @@ if (! $apply = $DB->get_record('apply', array('id'=>$cm->instance))) {
 $context = context_module::instance($cm->id);
 
 $apply_complete_cap = false;
-if (has_capability('mod/apply:complete', $context)) {
+if (has_capability('mod/apply:submit', $context)) {
 	$apply_complete_cap = true;
 }
 //
