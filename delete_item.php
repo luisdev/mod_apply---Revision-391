@@ -22,8 +22,8 @@
  * @package apply
  */
 
-require_once("../../config.php");
-require_once("lib.php");
+require_once('../../config.php');
+require_once('lib.php');
 require_once('delete_item_form.php');
 
 $id 		 = required_param('id', PARAM_INT);
@@ -60,7 +60,7 @@ if ($mform->is_cancelled()) {
 
 if (isset($formdata->confirmdelete) AND $formdata->confirmdelete == 1) {
     apply_delete_item($formdata->delete_item);
-    redirect('edit.php?id=' . $id);
+    redirect('edit.php?id='.$id);
 }
 
 

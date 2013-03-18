@@ -116,7 +116,7 @@ if ($apply_submit_cap) {
 	//check multiple Submit
 	$apply_can_submit = true;
 	if ($apply->multiple_submit==0 ) {
-		if (apply_get_valid_submit_count($apply->id, $USER->id)>0) {
+		if (apply_get_valid_submits_count($apply->id, $USER->id)>0) {
 			$apply_can_submit = false;
 		}
 	}
@@ -124,13 +124,13 @@ if ($apply_submit_cap) {
 	if ($apply_can_submit) {
 		$submit_file = 'submit.php';
 		$url_params  = array('id'=>$id, 'courseid' => $courseid, 'go_page'=>0);
-		$submit_url = new moodle_url('/mod/apply/'.$submit_file, $url_params);
+		$submit_url  = new moodle_url('/mod/apply/'.$submit_file, $url_params);
 
 		if (has_capability('mod/apply:viewreports', $context)) {
-			$submits = apply_get_current_submit($apply->id);
+			$submits = apply_get_all_submits($apply->id);
 		}
 		else {
-			$submits = apply_get_current_submit($apply->id, $USER->id);
+			$submits = apply_get_all_submits($apply->id, $USER->id);
 		}
 		if ($submits) {
 			if ($startpage = apply_get_page_to_continue($apply->id)) {

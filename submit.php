@@ -165,7 +165,7 @@ if ($apply_can_submit) {
 
 		if (apply_check_values($start_itempos, $last_itempos)) {
 			$user_id   = $USER->id;
-			$submit_id = apply_save_values($apply->id, $submit_id, $user_id, true);	// save to tmp
+			$submit_id = apply_save_draft_values($apply->id, $submit_id, $user_id);	// save to draft
 
 			if ($submit_id) {
 				if ($user_id>0) {
@@ -203,10 +203,8 @@ if ($apply_can_submit) {
 		//exists there any pagebreak, so there are values in the apply_value_tmp
 		$user_id = $USER->id; 
 
-		apply_flush_tmp_values($apply->id, $submit_id);
-    	apply_delete_values($submit_id, true);
-		//
-		$submit_id = apply_save_values($apply->id, $submit_id, $user_id);
+		$submit_id = apply_save_draft_values($apply->id, $submit_id, $user_id);
+		apply_exec_submit($submit_id);
 
 		if ($submit_id) {
 			$save_return = 'saved';
