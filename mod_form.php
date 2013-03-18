@@ -80,7 +80,6 @@ class mod_apply_mod_form extends moodleform_mod
 		//-------------------------------------------------------------------------------
 		// for Group
 		$this->standard_coursemodule_elements();
-		//-------------------------------------------------------------------------------
 
 		// buttons
 		$this->add_action_buttons();
@@ -100,39 +99,13 @@ class mod_apply_mod_form extends moodleform_mod
 		} else {
 			$default_values['close_enable'] = 1;
 		}
-
-		$editoroptions = apply_get_editor_options();
-
-		if ($this->current->instance) {
-			// editing an existing apply - let us prepare the added editor elements (intro done automatically)
-			$draftitemid = file_get_submitted_draft_itemid('page_after_submit');
-			$default_values['page_after_submit_editor']['text'] = file_prepare_draft_area($draftitemid, $this->context->id,
-																	'mod_apply', 'page_after_submit', false,
-																	$editoroptions,
-																	$default_values['page_after_submit']);
-			$default_values['page_after_submit_editor']['format'] = $default_values['page_after_submitformat'];
-			$default_values['page_after_submit_editor']['itemid'] = $draftitemid;
-		}
-		else {
-			// adding a new apply instance
-			$draftitemid = file_get_submitted_draft_itemid('page_after_submit_editor');
-			// no context yet, itemid not used
-			file_prepare_draft_area($draftitemid, null, 'mod_apply', 'page_after_submit', false);
-			$default_values['page_after_submit_editor']['text']   = '';
-			$default_values['page_after_submit_editor']['format'] = editors_get_preferred_format();
-			$default_values['page_after_submit_editor']['itemid'] = $draftitemid;
-		}
 	}
+
 
 
 	public function get_data()
 	{
 		$data = parent::get_data();
-		if ($data) {
-			$data->page_after_submitformat = $data->page_after_submit_editor['format'];
-			$data->page_after_submit = $data->page_after_submit_editor['text'];
-		}
-
 		return $data;
 	}
 
