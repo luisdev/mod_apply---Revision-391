@@ -47,6 +47,7 @@ define('APPLY_DEFAULT_PAGE_COUNT', 20);
 function apply_supports($feature)
 {
 	switch($feature) {
+
 		case FEATURE_MOD_INTRO:					return true;
 		case FEATURE_SHOW_DESCRIPTION:			return true;
 
@@ -783,7 +784,7 @@ function apply_get_all_submits($apply_id, $user_id=0)
 
 function apply_get_all_submits_count($apply_id, $user_id=0)
 {
-	$submits = apply_get_current_submits($apply_id, $user_id);
+	$submits = apply_get_all_submits($apply_id, $user_id);
 
 	if (!$submits) return 0;
 	return count($submits);

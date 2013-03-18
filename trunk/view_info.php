@@ -29,7 +29,8 @@ defined('MOODLE_INTERNAL') OR die('not allowed');
 
 echo $OUTPUT->box_start('boxaligncenter boxwidthwide');
 {
-	$submitscount = apply_get_current_submit_count($apply->id);
+	$submitscount = apply_get_all_submits_count($apply->id);
+//	$submitscount = apply_get_valid_submits_count($apply->id);
 
 	echo $OUTPUT->box_start('apply_info');
 	echo '<span class="apply_info">';

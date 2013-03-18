@@ -148,7 +148,7 @@ if ($apply_is_closed) {
 //the main-check is in view.php
 $apply_can_submit = true;
 if ($apply->multiple_submit==0) {
-	if (apply_get_valid_submit_count($apply->id, $USER->id)>0) {
+	if (apply_get_valid_submits_count($apply->id, $USER->id)>0) {
 		$apply_can_submit = false;
 	}
 }
@@ -252,9 +252,9 @@ if ($apply_can_submit) {
 
 	//
 	if ((!isset($SESSION->apply->is_started)) AND (!isset($save_return))) {
-echo "1111111111111111111111111";
-di();
-//		$submits = apply_get_current_submit($apply->id);
+		$submits = apply_get_all_submits($apply->id);
+echo "11111111111111";
+die();
 //		if (!$submits) {
 			//$submits = apply_set_tmp_values($submits);
 //		}

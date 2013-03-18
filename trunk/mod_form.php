@@ -48,6 +48,7 @@ class mod_apply_mod_form extends moodleform_mod
 		$this->add_intro_editor(true, get_string('description', 'apply'));
 
 		//-------------------------------------------------------------------------------
+/*
 		$mform->addElement('header', 'timinghdr', get_string('timing', 'form'));
 		//
 		$enable_open_group = array();
@@ -65,6 +66,7 @@ class mod_apply_mod_form extends moodleform_mod
 
 		$mform->addHelpButton('enable_close_group', 'time_close', 'apply');
 		$mform->disabledIf('enable_close_group', 'close_enable', 'notchecked');
+*/
 
 		//-------------------------------------------------------------------------------
 		$mform->addElement('header', 'applyhdr', get_string('apply_options', 'apply'));
@@ -89,6 +91,7 @@ class mod_apply_mod_form extends moodleform_mod
 
 
 
+/*
 	public function data_preprocessing(&$default_values)
 	{
 		if (empty($default_values['time_open'])) {
@@ -102,5 +105,20 @@ class mod_apply_mod_form extends moodleform_mod
 			$default_values['close_enable'] = 1;
 		}
 	}
+*/
+
+    public function get_data()
+	{
+        $data = parent::get_data();
+        return $data;
+    }
+
+
+
+    public function validation($data, $files)
+	{
+        $errors = parent::validation($data, $files);
+        return $errors;
+    }
 
 }
