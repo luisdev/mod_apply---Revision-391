@@ -131,8 +131,8 @@ $string['entries_saved'] = 'あなたの回答が保存されました．あり�
 $string['export_questions'] = '質問をエクスポートする';
 $string['export_to_excel'] = 'Excelにエクスポートする';
 $string['apply:addinstance'] = '新しい申請フォームを追加する';
-$string['applyclose'] = '申請フォーム終了日時';
-$string['applycloses'] = '申請フォーム終了日時';
+$string['apply_close']  = '終了日時';
+$string['apply_closes'] = '終了日時';
 
 //
 $string['apply:applies'] = '申請を提出する';
@@ -145,8 +145,8 @@ $string['apply:edititems'] = 'アイテムを編集する';
 $string['apply_is_not_for_anonymous'] = '匿名ユーザは，申請フォームを利用できません．';
 $string['apply_is_not_open'] = '申請フォームは利用できません．';
 $string['apply:mapcourse'] = 'コースをグローバル申請フォームにマップする';
-$string['applyopen'] = '申請フォーム開始日時';
-$string['applyopens'] = '申請フォーム開始日時';
+$string['apply_open']  = '開始日時';
+$string['apply_opens'] = '開始日時';
 $string['apply_options'] = '申請フォームオプション';
 $string['apply:receivemail'] = 'メール通知を受信する';
 $string['apply:view'] = '申請フォームを表示する';
