@@ -103,20 +103,4 @@ class mod_apply_mod_form extends moodleform_mod
 		}
 	}
 
-
-
-/*
-	public function get_data()
-	{
-		$data = parent::get_data();
-		return $data;
-	}
-
-
-	public function validation($data, $files)
-	{
-		$errors = parent::validation($data, $files);
-		return $errors;
-	}
-*/
 }

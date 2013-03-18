@@ -199,9 +199,13 @@ if ($apply_can_submit) {
 	}
 
 	//saving the items
-	if ($save_values AND !$prev_values) {
+	if ($save_values and !$prev_values) {
 		//exists there any pagebreak, so there are values in the apply_value_tmp
-		$user_id   = $USER->id; 
+		$user_id = $USER->id; 
+
+		apply_flush_tmp_values($apply->id, $submit_id);
+    	apply_delete_values($submit_id, true);
+		//
 		$submit_id = apply_save_values($apply->id, $submit_id, $user_id);
 
 		if ($submit_id) {
@@ -285,7 +289,7 @@ di();
 		// error
 		if (isset($save_return)) {
 			if ($save_return=='failed') {
- 			   echo $OUTPUT->box_start('mform error');
+ 				echo $OUTPUT->box_start('mform error');
 				echo get_string('saving_failed', 'apply');
 				echo $OUTPUT->box_end();
 			}
