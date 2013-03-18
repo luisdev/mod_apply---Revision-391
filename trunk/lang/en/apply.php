@@ -118,8 +118,8 @@ $string['entries_saved'] = 'Your answers have been saved. Thank you.';
 $string['export_questions'] = 'Export questions';
 $string['export_to_excel'] = 'Export to Excel';
 
-$string['applyclose'] = 'Close the apply at';
-$string['applycloses'] = 'Apply closes';
+$string['apply_close']  = 'Close the apply at';
+$string['apply_closes'] = 'Apply closes';
 
 $string['apply:addinstance'] = 'Add a new apply';
 $string['apply:submit'] = 'Submit a apply';
@@ -137,8 +137,8 @@ $string['apply:viewreports'] = 'View reports';
 
 $string['apply_is_not_for_anonymous'] = 'apply is not for anonymous';
 $string['apply_is_not_open'] = 'The apply is not open';
-$string['applyopen'] = 'Open the apply at';
-$string['applyopens'] = 'Apply opens';
+$string['apply_open']  = 'Open the apply at';
+$string['apply_opens'] = 'Apply opens';
 $string['apply_options'] = 'Apply options';
 $string['file'] = 'File';
 $string['filter_by_course'] = 'Filter by course';
