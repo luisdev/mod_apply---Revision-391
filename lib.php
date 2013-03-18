@@ -47,20 +47,16 @@ define('APPLY_DEFAULT_PAGE_COUNT', 20);
 function apply_supports($feature)
 {
 	switch($feature) {
-
-		case FEATURE_MOD_INTRO:					return true;
-		case FEATURE_SHOW_DESCRIPTION:			return true;
-
-		case FEATURE_GROUPS:					return false;
-		case FEATURE_GROUPINGS:					return false;
-		case FEATURE_GROUPMEMBERSONLY:			return false;
-
-		case FEATURE_COMPLETION_TRACKS_VIEWS:	return false;
-		case FEATURE_COMPLETION_HAS_RULES:		return false;
-
-		case FEATURE_BACKUP_MOODLE2:			return false;
-		case FEATURE_GRADE_HAS_GRADE:			return false;
-		case FEATURE_GRADE_OUTCOMES:			return false;
+		case FEATURE_GROUPS:				  return false;
+		case FEATURE_GROUPINGS:			   return false;
+		case FEATURE_GROUPMEMBERSONLY:		return false;
+		case FEATURE_MOD_INTRO:			   return true;
+		case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
+		case FEATURE_COMPLETION_HAS_RULES:	return true;
+		case FEATURE_GRADE_HAS_GRADE:		 return false;
+		case FEATURE_GRADE_OUTCOMES:		  return false;
+		case FEATURE_BACKUP_MOODLE2:		  return true;
+		case FEATURE_SHOW_DESCRIPTION:		return true;
 
 		default: return null;
 	}
@@ -201,29 +197,6 @@ function apply_reset_userdata($data)
 	}
 
 	return $status;
-}
-
-
-
-function apply_get_coursemodule_info($coursemodule)
-{
-	global $DB;
-
-	$apply = $DB->get_record('apply', array('id'=>$coursemodule->instance), 'id, name, intro, introformat');
-	if ($apply) {
-		if (empty($apply->name)) {
-			$apply->name = "Apply_{$apply->id}";
-			$DB->set_field('apply', 'name', $apply->name, array('id'=>$apply->id));
-		}
-		//
-		$info = new stdClass();
-		$info->extra = format_module_intro('apply', $apply, $coursemodule->id, false);
-		$info->name  = $apply->name;
-		return $info;
-	} 
-	else {
-		return null;
-	}
 }
 
 
@@ -1164,53 +1137,51 @@ function apply_send_email($cm, $apply, $course, $userid)
 
 function apply_get_receivemail_users($cmid)
 {
-    $context = context_module::instance($cmid);
+	$context = context_module::instance($cmid);
 
-    //get_users_by_capability($context, $capability, $fields, $sort, $limitfrom, $limitnum, $groups, $exceptions, $doanything)
-    $ret = get_users_by_capability($context, 'mod/apply:receivemail', '', 'lastname', '', '', false, '', false);
+	//get_users_by_capability($context, $capability, $fields, $sort, $limitfrom, $limitnum, $groups, $exceptions, $doanything)
+	$ret = get_users_by_capability($context, 'mod/apply:receivemail', '', 'lastname', '', '', false, '', false);
 
-    return $ret;
+	return $ret;
 }
 
 
 
 function apply_send_email_text($info, $course) 
 {
-    $coursecontext = context_course::instance($course->id);
-    $courseshortname = format_string($course->shortname, true, array('context'=>$coursecontext));
+	$coursecontext = context_course::instance($course->id);
+	$courseshortname = format_string($course->shortname, true, array('context'=>$coursecontext));
 
-    $posttext  = $courseshortname.' -> '.get_string('modulenameplural', 'apply').' -> '.$info->apply."\n";
-    $posttext .= '---------------------------------------------------------------------'."\n";
-    $posttext .= get_string('emailteachermail', 'apply', $info)."\n";
-    $posttext .= '---------------------------------------------------------------------'."\n";
+	$posttext  = $courseshortname.' -> '.get_string('modulenameplural', 'apply').' -> '.$info->apply."\n";
+	$posttext .= '---------------------------------------------------------------------'."\n";
+	$posttext .= get_string('emailteachermail', 'apply', $info)."\n";
+	$posttext .= '---------------------------------------------------------------------'."\n";
 
-    return $posttext;
+	return $posttext;
 }
 
 
 
 function apply_send_email_html($info, $course, $cm)
 {
-    global $CFG;
+	global $CFG;
 
-    $coursecontext = context_course::instance($course->id);
-    $courseshortname = format_string($course->shortname, true, array('context'=>$coursecontext));
-    $course_url = $CFG->wwwroot.'/course/view.php?id='.$course->id;
-    $apply_all_url = $CFG->wwwroot.'/mod/apply/index.php?id='.$course->id;
-    $apply_url = $CFG->wwwroot.'/mod/apply/view.php?id='.$cm->id;
+	$coursecontext = context_course::instance($course->id);
+	$courseshortname = format_string($course->shortname, true, array('context'=>$coursecontext));
+	$course_url = $CFG->wwwroot.'/course/view.php?id='.$course->id;
+	$apply_all_url = $CFG->wwwroot.'/mod/apply/index.php?id='.$course->id;
+	$apply_url = $CFG->wwwroot.'/mod/apply/view.php?id='.$cm->id;
 
-    $posthtml = '<p><font face="sans-serif">'.
-        		'<a href="'.$course_url.'">'.$courseshortname.'</a> ->'.
-            	'<a href="'.$apply_all_url.'">'.get_string('modulenameplural', 'apply').'</a> ->'.
-            	'<a href="'.$apply_url.'">'.$info->apply.'</a></font></p>';
-    $posthtml.= '<hr /><font face="sans-serif">';
-    $posthtml.= '<p>'.get_string('emailteachermailhtml', 'apply', $info).'</p>';
-    $posthtml.= '</font><hr />';
+	$posthtml = '<p><font face="sans-serif">'.
+				'<a href="'.$course_url.'">'.$courseshortname.'</a> ->'.
+				'<a href="'.$apply_all_url.'">'.get_string('modulenameplural', 'apply').'</a> ->'.
+				'<a href="'.$apply_url.'">'.$info->apply.'</a></font></p>';
+	$posthtml.= '<hr /><font face="sans-serif">';
+	$posthtml.= '<p>'.get_string('emailteachermailhtml', 'apply', $info).'</p>';
+	$posthtml.= '</font><hr />';
 
-    return $posthtml;
+	return $posthtml;
 }
-
-
 
 
 
