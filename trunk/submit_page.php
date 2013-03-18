@@ -1,19 +1,4 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
-//
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 
 //print the items
 echo $OUTPUT->box_start('apply_form');
@@ -46,22 +31,22 @@ echo $OUTPUT->box_start('apply_form');
 				$start_item = $apply_item;
 			}
 			if ($apply_item->dependitem>0) {
-				$fb_compare_value = apply_compare_item_value($submits_tmp->id, $apply_item->dependitem, $apply_item->dependvalue, true);
-				if (!isset($submits_tmp->id) OR !$fb_compare_value) {
+				$compare_value = apply_compare_item_value($submit_id, $apply_item->dependitem, $apply_item->dependvalue, true);
+				if (!isset($submit_id) OR !$compare_value) {
 					$lastitem = $apply_item;
 					$last_break_position = $apply_item->position;
 					continue;
 				}
 			}
 			if ($apply_item->dependitem>0) {
-				$dependstyle = ' apply_complete_depend';
+				$depend_style = ' apply_submit_depend';
 			}
 			else {
-				$dependstyle = '';
+				$depend_style = '';
 			}
 
 			//
-			echo $OUTPUT->box_start('apply_item_box_'.$align.$dependstyle);
+			echo $OUTPUT->box_start('apply_item_box_'.$align.$depend_style);
 			{
 				$value = '';
 				//get the value
@@ -71,8 +56,8 @@ echo $OUTPUT->box_start('apply_form');
 					$value = apply_clean_input_value($apply_item, $value);
 				}
 				else {
-					if (isset($submits_tmp->id)) {
-						$value = apply_get_item_value($submits_tmp->id, $apply_item->id, true);
+					if (isset($submit_id)) {
+						$value = apply_get_item_value($submit_id, $apply_item->id, true);
 					}
 				}
 				if ($apply_item->hasvalue==1) {
@@ -104,8 +89,8 @@ echo $OUTPUT->box_start('apply_form');
 	echo '<input type="hidden" name="id" value="'.$id.'" />';
 	echo '<input type="hidden" name="apply_id" value="'.$apply->id.'" />';
 	echo '<input type="hidden" name="last_page" value="'.$go_page.'" />';
-	if (isset($submits_tmp->id)) {
-		$inputvalue = 'value="'.$submits_tmp->id.'"';
+	if (isset($submit_id)) {
+		$inputvalue = 'value="'.$submit_id.'"';
 	}
 	else {
 		$inputvalue = 'value=""';

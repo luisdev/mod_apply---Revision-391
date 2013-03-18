@@ -133,7 +133,7 @@ if ($apply_submit_cap) {
 			$submits = apply_get_current_submit($apply->id, $USER->id);
 		}
 		if ($submits) {
-			if ($startpage = apply_get_page_to_continue($apply->iduestid)) {
+			if ($startpage = apply_get_page_to_continue($apply->id)) {
 				$submit_url->param('go_page', $startpage);
 			}
 			echo '<a href="'.$submit_url->out().'">'.get_string('continue_the_form', 'apply').'</a>';
