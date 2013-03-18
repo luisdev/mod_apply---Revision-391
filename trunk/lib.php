@@ -386,7 +386,8 @@ function apply_create_item($data)
 
 
 
-function apply_update_item($item) {
+function apply_update_item($item)
+{
 	global $DB;
 
 	return $DB->update_record('apply_item', $item);
@@ -563,7 +564,8 @@ function apply_movedown_item($item)
 
 
 
-function apply_move_item($moveitem, $pos) {
+function apply_move_item($moveitem, $pos)
+{
 	global $DB;
 
 	$params = array('apply_id'=>$moveitem->apply_id);
