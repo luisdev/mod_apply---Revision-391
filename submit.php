@@ -95,15 +95,14 @@ if (!$courseid) $courseid = $course->id;
 
 $context = context_module::instance($cm->id);
 
-$apply_submit_cap = false;
-if (has_capability('mod/apply:submit', $context)) {
-	$apply_submit_cap = true;
-}
+
 //
-if (!$apply_submit_cap) {
-	print_error('error');
+if (!has_capability('mod/apply:submit', $context)) {
+	apply_print_error_messagebox('apply_is_not_used', $courseid);
+	exit;
 }
 
+//
 require_login($course, true, $cm);
 
 
@@ -119,76 +118,60 @@ $PAGE->set_title(format_string($apply->name));
 echo $OUTPUT->header();
 
 
-//ishidden check.
-if ((empty($cm->visible) AND !has_capability('moodle/course:viewhiddenactivities', $context))) {
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Check
+if ((empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities', $context))) {
 	notice(get_string("activityiscurrentlyhidden"));
 }
 
-//check, if the apply is open (time_open, time_close)
-$checktime = time();
-$apply_is_closed = ($apply->time_open>$checktime) OR ($apply->time_close<$checktime AND $apply->time_close>0);
-
-if ($apply_is_closed) {
-	echo $OUTPUT->box_start('generalbox boxaligncenter');
-	{
-		echo '<h2><font color="red">';
-		echo get_string('apply_is_not_open', 'apply');
-		echo '</font></h2>';
-		echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
+if (!$apply->multiple_submit) {
+	if (apply_get_valid_submits_count($apply->id, $USER->id)>0) {
+		apply_print_error_messagebox('apply_is_already_submitted', $courseid);
+		exit;
 	}
-	echo $OUTPUT->box_end();
-	//
-	echo $OUTPUT->footer();
+}
+
+$checktime = time();
+$apply_is_not_open = $apply->time_open>$checktime;
+$apply_is_closed   = $apply->time_close<$checktime and $apply->time_close>0;
+if ($apply_is_not_open or $apply_is_closed) {
+	if ($apply_is_not_open) apply_print_error_messagbox('apply_is_not_open', $courseid);
+	else 					apply_print_error_messagbox('apply_is_closed',   $courseid);
 	exit;
 }
 
-
-//additional check for multiple-submit (prevent browsers back-button).
-//the main-check is in view.php
-$apply_can_submit = true;
-if ($apply->multiple_submit==0) {
-	if (apply_get_valid_submits_count($apply->id, $USER->id)>0) {
-		$apply_can_submit = false;
+// first time view
+if (!$SESSION->apply->is_started) {
+	$itemscount = $DB->count_records('apply_item', array('apply_id'=>$apply->id, 'hasvalue'=>1));
+	if ($itemscount<=0) {
+		apply_print_error_messagebox('apply_is_not_ready', $courseid);
+		exit;
 	}
 }
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// can submit
-if ($apply_can_submit) {
-	//
-	if ($prev_values==1) {
-		//if (!isset($SESSION->apply->is_started) or !$SESSION->apply->is_started==true) {
-		if (!$SESSION->apply->is_started) {
-			print_error('error', '', $CFG->wwwroot.'/course/view.php?id='.$courseid);
-		}
+//
+if ($prev_values==1) {
+	//if (!isset($SESSION->apply->is_started) or !$SESSION->apply->is_started==true) {
+	if (!$SESSION->apply->is_started) {
+		print_error('error', '', $CFG->wwwroot.'/course/view.php?id='.$courseid);
+	}
 
-		if (apply_check_values($start_itempos, $last_itempos)) {
-			$user_id   = $USER->id;
-			$submit_id = apply_save_draft_values($apply->id, $submit_id, $user_id);	// save to draft
+	if (apply_check_values($start_itempos, $last_itempos)) {
+		$user_id   = $USER->id;
+		$submit_id = apply_save_draft_values($apply->id, $submit_id, $user_id);	// save to draft
 
-			if ($submit_id) {
-				if ($user_id>0) {
-					add_to_log($course->id, 'apply', 'start_apply', 'view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
-				}
-				if (!$go_next_page and !$go_prev_page) {
-					$prev_values = false;
-				}
+		if ($submit_id) {
+			if ($user_id>0) {
+				add_to_log($course->id, 'apply', 'start_apply', 'view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
 			}
-			else {
-				$save_return = 'failed';
-				if (isset($last_page)) {
-					$go_page = $last_page;
-				}
-				else {
-					print_error('missingparameter');
-				}
+			if (!$go_next_page and !$go_prev_page) {
+				$prev_values = false;
 			}
 		}
-		//
 		else {
-			$save_return = 'missing';
-			$highlightrequired = true;
+			$save_return = 'failed';
 			if (isset($last_page)) {
 				$go_page = $last_page;
 			}
@@ -197,134 +180,115 @@ if ($apply_can_submit) {
 			}
 		}
 	}
-
-	//saving the items
-	if ($save_values and !$prev_values) {
-		//exists there any pagebreak, so there are values in the apply_value_tmp
-		$user_id = $USER->id; 
-
-		$submit_id = apply_save_draft_values($apply->id, $submit_id, $user_id);
-		apply_exec_submit($submit_id);
-
-		if ($submit_id) {
-			$save_return = 'saved';
-			add_to_log($course->id, 'apply', 'submit', 'view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
-			apply_send_email($cm, $apply, $course, $user_id);
+	//
+	else {
+		$save_return = 'missing';
+		$highlightrequired = true;
+		if (isset($last_page)) {
+			$go_page = $last_page;
 		}
 		else {
-			$save_return = 'failed';
-		}
-	}
-
-	//
-	if ($allbreaks = apply_get_all_break_positions($apply->id)) {
-		if ($go_page<=0) {
-			$start_position = 0;
-		}
-		else {
-			if (!isset($allbreaks[$go_page-1])) $go_page = count($allbreaks);
-			$start_position = $allbreaks[$go_page-1];
-		}
-		$is_pagebreak = true;
-	} 
-	else {
-		$start_position = 0;
-		$newpage = 0;
-		$is_pagebreak = false;
-	}
-
-	//
-	//get the apply_items after the last shown pagebreak
-	$select = 'apply_id = ? AND position > ?';
-	$params = array($apply->id, $start_position);
-	$apply_items = $DB->get_records_select('apply_item', $select, $params, 'position');
-
-	//get the first pagebreak
-	$params = array('apply_id' => $apply->id, 'typ' => 'pagebreak');
-	if ($pagebreaks = $DB->get_records('apply_item', $params, 'position')) {
-		$pagebreaks = array_values($pagebreaks);
-		$first_pagebreak = $pagebreaks[0];
-	}
-	else {
-		$first_pagebreak = false;
-	}
-	$max_item_count = $DB->count_records('apply_item', array('apply_id'=>$apply->id));
-
-	//
-	// first time view
-	if (!$SESSION->apply->is_started and !isset($save_return)) {
-		$params = array('apply_id'=>$apply->id, 'hasvalue'=>1);
-		$itemscount = $DB->count_records('apply_item', $params);
-		if ($itemscount<=0) {
-			echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
-			echo '<h2><font color="red">';
-			echo get_string('apply_is_not_open', 'apply');
-			echo '</font></h2>';
-			echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
-			echo $OUTPUT->box_end();
-			echo $OUTPUT->footer();
-			return;
-		}
-	}
-
-
-	///////////////////////////////////////////////////////////////////////////
-	// Print the main part of the page
-	//
-    $SESSION->apply->is_started = false;
-	echo $OUTPUT->heading(format_text($apply->name));
-
-	//
-	if (isset($save_return) && $save_return=='saved') {
-		echo '<p align="center">';
-		echo '<b><font color="green">';
-		echo get_string('entries_saved', 'apply');
-		echo '</font></b>';
-		echo '</p>';
-
-		$url = $CFG->wwwroot.'/course/view.php?id='.$courseid;
-		echo $OUTPUT->continue_button($url);
-	}
-
-	else {
-		// error
-		if (isset($save_return)) {
-			if ($save_return=='failed') {
- 				echo $OUTPUT->box_start('mform error');
-				echo get_string('saving_failed', 'apply');
-				echo $OUTPUT->box_end();
-			}
-			else if ($save_return=='missing') {
-				echo $OUTPUT->box_start('mform error');
-				echo get_string('saving_failed_because_missing_or_false_values', 'apply');
-				echo $OUTPUT->box_end();
-			}
-		}
-		//
-		if (is_array($apply_items)) {
-			//
-			require('submit_page.php');
-			//
-			$SESSION->apply->is_started = true;
+			print_error('missingparameter');
 		}
 	}
 }
 
-// cannot submit
-else {
-	echo $OUTPUT->box_start('generalbox boxaligncenter');
-	{
-		echo '<h2>';
-		echo '<font color="red">';
-		echo get_string('this_apply_is_already_submitted', 'apply');
-		echo '</font>';
-		echo '</h2>';
-		echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$course->id);
+//saving the items
+if ($save_values and !$prev_values) {
+	//
+	$user_id   = $USER->id; 
+	$submit_id = apply_save_draft_values($apply->id, $submit_id, $user_id);
+	apply_exec_submit($submit_id);
+
+	if ($submit_id) {
+		$save_return = 'saved';
+		add_to_log($course->id, 'apply', 'submit', 'view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
+		apply_send_email($cm, $apply, $course, $user_id);
 	}
-	echo $OUTPUT->box_end();
+	else {
+		$save_return = 'failed';
+	}
+}
+
+//
+if ($allbreaks = apply_get_all_break_positions($apply->id)) {
+	if ($go_page<=0) {
+		$start_position = 0;
+	}
+	else {
+		if (!isset($allbreaks[$go_page-1])) $go_page = count($allbreaks);
+		$start_position = $allbreaks[$go_page-1];
+	}
+	$is_pagebreak = true;
+} 
+else {
+	$start_position = 0;
+	$newpage = 0;
+	$is_pagebreak = false;
+}
+
+//
+//get the apply_items after the last shown pagebreak
+$select = 'apply_id = ? AND position > ?';
+$params = array($apply->id, $start_position);
+$apply_items = $DB->get_records_select('apply_item', $select, $params, 'position');
+
+//get the first pagebreak
+$params = array('apply_id' => $apply->id, 'typ' => 'pagebreak');
+if ($pagebreaks = $DB->get_records('apply_item', $params, 'position')) {
+	$pagebreaks = array_values($pagebreaks);
+	$first_pagebreak = $pagebreaks[0];
+}
+else {
+	$first_pagebreak = false;
+}
+$max_item_count = $DB->count_records('apply_item', array('apply_id'=>$apply->id));
+
+
+
+///////////////////////////////////////////////////////////////////////////
+// Print the main part of the page
+//
+$SESSION->apply->is_started = false;
+echo $OUTPUT->heading(format_text($apply->name));
+
+//
+if (isset($save_return) && $save_return=='saved') {
+	echo '<p align="center">';
+	echo '<b><font color="green">';
+	echo get_string('entries_saved', 'apply');
+	echo '</font></b>';
+	echo '</p>';
+
+	$url = $CFG->wwwroot.'/course/view.php?id='.$courseid;
+	echo $OUTPUT->continue_button($url);
+}
+
+else {
+	// Error
+	if (isset($save_return)) {
+		if ($save_return=='failed') {
+ 				echo $OUTPUT->box_start('mform error');
+			echo get_string('saving_failed', 'apply');
+			echo $OUTPUT->box_end();
+		}
+		else if ($save_return=='missing') {
+			echo $OUTPUT->box_start('mform error');
+			echo get_string('saving_failed_because_missing_or_false_values', 'apply');
+			echo $OUTPUT->box_end();
+		}
+	}
+	//
+	if (is_array($apply_items)) {
+		//
+		require('submit_page.php');
+		//
+		$SESSION->apply->is_started = true;
+	}
 }
 
 
 ///////////////////////////////////////////////////////////////////////////
 /// Finish the page
 echo $OUTPUT->footer();
+

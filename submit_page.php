@@ -33,7 +33,7 @@ echo $OUTPUT->box_start('apply_form');
 			if ($apply_item->dependitem>0) {
 				$compare_value = apply_compare_item_value($submit_id, $apply_item->dependitem, $apply_item->dependvalue, true);
 				if (!isset($submit_id) OR !$compare_value) {
-					$lastitem = $apply_item;
+					$last_item = $apply_item;
 					$last_break_position = $apply_item->position;
 					continue;
 				}
@@ -80,7 +80,7 @@ echo $OUTPUT->box_start('apply_form');
 			break;
 		}
 		else {
-			$lastitem = $apply_item;
+			$last_item = $apply_item;
 		}
 	}
 	echo $OUTPUT->box_end();
@@ -89,18 +89,16 @@ echo $OUTPUT->box_start('apply_form');
 	echo '<input type="hidden" name="id" value="'.$id.'" />';
 	echo '<input type="hidden" name="apply_id" value="'.$apply->id.'" />';
 	echo '<input type="hidden" name="last_page" value="'.$go_page.'" />';
-	if (isset($submit_id)) {
-		$inputvalue = 'value="'.$submit_id.'"';
-	}
-	else {
-		$inputvalue = 'value=""';
-	}
+
+	if (isset($submit_id)) 	$inputvalue = 'value="'.$submit_id.'"';
+	else 					$inputvalue = 'value=""';
+	//
 	echo '<input type="hidden" name="submit_id" '.$inputvalue.' />';
 	echo '<input type="hidden" name="courseid" value="'. $courseid . '" />';
 	echo '<input type="hidden" name="prev_values" value="1" />';
 	if (isset($start_item)) {
 		echo '<input type="hidden" name="start_itempos" value="'.$start_item->position.'" />';
-		echo '<input type="hidden" name="last_itempos" value="'.$lastitem->position.'" />';
+		echo '<input type="hidden" name="last_itempos"  value="'.$last_item->position.'" />';
 	}
 	
 	// Button

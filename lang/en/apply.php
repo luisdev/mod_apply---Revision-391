@@ -36,6 +36,11 @@ $string['time_open_help'] = 'You can specify times when the apply is accessible 
 $string['use_calendar'] = 'Use Calendar';
 $string['use_calendar_help'] = 'Use Calendar';
 
+$string['apply_is_not_open']  = 'This Apply is not open yet';
+$string['apply_is_not_ready'] = 'This Apply is not ready';
+$string['apply_is_closed']    = 'This Apply is closed';
+$string['apply_is_not_used']  = 'You ca not use this Apply';
+$string['apply_is_already_submitted'] = 'You\'ve already submitted this Apply';
 
 $string['add_pagebreak'] = 'Add a page break';
 $string['adjustment'] = 'Adjustment';
@@ -136,7 +141,6 @@ $string['apply:viewanalysepage'] = 'View the analysis page after submit';
 $string['apply:viewreports'] = 'View reports';
 
 $string['apply_is_not_for_anonymous'] = 'apply is not for anonymous';
-$string['apply_is_not_open'] = 'The apply is not open yet';
 $string['apply_open']  = 'Open the apply at';
 $string['apply_opens'] = 'Apply opens';
 $string['apply_options'] = 'Apply options';
@@ -291,7 +295,6 @@ $string['textfield'] = 'Short text answer';
 $string['textfield_maxlength'] = 'Maximum characters accepted';
 $string['textfield_size'] = 'Textfield width';
 $string['there_are_no_settings_for_recaptcha'] = 'There are no settings for captcha';
-$string['this_apply_is_already_submitted'] = 'You\'ve already completed this activity.';
 
 
 $string['typemissing'] = 'missing value "type"';
