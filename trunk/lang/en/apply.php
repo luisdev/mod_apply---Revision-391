@@ -51,8 +51,12 @@ $string['apply:viewreports'] = 'View reports';
 // mod_form
 $string['name'] = 'Name';
 $string['description'] = 'Description';
-$string['apply_open']  = 'Open the apply at';
-$string['apply_close'] = 'Close the apply at';
+//$string['apply_open']  = 'Open the apply at';
+//$string['apply_close'] = 'Close the apply at';
+$string['time_open'] = 'Time to open';
+$string['time_open_help'] = 'You can specify times when the apply is accessible for people to answer the applications. If the checkbox is not ticked there is no limit defined.';
+$string['time_close'] = 'Time to close';
+$string['time_close_help'] = 'You can specify times when the apply is accessible for people to answer the applications. If the checkbox is not ticked there is no limit defined.';
 $string['apply_options'] = 'Apply options';
 
 $string['email_notification'] = 'Send e-mail notifications';
@@ -62,6 +66,9 @@ $string['multiple_submit_help'] = 'If enabled for anonymous surveys, users can s
 
 $string['use_calendar'] = 'Use Calendar';
 $string['use_calendar_help'] = 'The period for submission of an application is registered into a calendar.';
+
+// view
+$string['entries_list_title'] = 'List of submitted Applications';
 
 // submit
 $string['entry_saved'] = 'Your applocation have been saved. Thank you.';
@@ -81,10 +88,6 @@ $string['add_item']  = 'Add application item to activity';
 $string['add_items'] = 'Add application items to activity';
 
 
-$string['time_close'] = 'Time to close';
-$string['time_close_help'] = 'You can specify times when the apply is accessible for people to answer the questions. If the checkbox is not ticked there is no limit defined.';
-$string['time_open'] = 'Time to open';
-$string['time_open_help'] = 'You can specify times when the apply is accessible for people to answer the questions. If the checkbox is not ticked there is no limit defined.';
 
 
 $string['apply_is_not_open']  = 'This Apply is not open yet';

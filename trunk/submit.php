@@ -39,16 +39,16 @@ $last_itempos  	= optional_param('last_itempos',  0, PARAM_INT);
 
 $highlightrequired = false;
 
-if (($formdata = data_submitted()) AND !confirm_sesskey()) {
+if (($formdata = data_submitted()) and !confirm_sesskey()) {
 	print_error('invalidsesskey');
 }
 
 // Page
-//if the use hit enter into a textfield so the form should not submit
-if ( isset($formdata->sesskey)	  	AND
-	!isset($formdata->save_values) 	AND
-	!isset($formdata->go_next_page) AND
-	!isset($formdata->go_prev_page)) {
+if ( isset($formdata->sesskey)	  	and
+	!isset($formdata->save_values) 	and
+	!isset($formdata->go_next_page) and
+	!isset($formdata->go_prev_page) and
+	 isset($formdata->last_page)) {
 
 	$go_page = $formdata->last_page;
 }

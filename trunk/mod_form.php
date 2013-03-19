@@ -51,16 +51,16 @@ class mod_apply_mod_form extends moodleform_mod
 		$mform->addElement('header', 'timinghdr', get_string('timing', 'form'));
 		//
 		$enable_open_group 	  = array();
-		$enable_open_group[]  =& $mform->createElement('checkbox', 'open_enable', get_string('apply_open', 'apply'));
+		$enable_open_group[]  =& $mform->createElement('checkbox', 'open_enable', get_string('time_open', 'apply'));
 		$enable_open_group[]  =& $mform->createElement('date_time_selector', 'time_open', '');
-		$mform->addGroup($enable_open_group, 'enable_open_group', get_string('apply_open', 'apply'), ' ', false);
+		$mform->addGroup($enable_open_group, 'enable_open_group', get_string('time_open', 'apply'), ' ', false);
 		$mform->addHelpButton('enable_open_group', 'time_open', 'apply');
 		$mform->disabledIf('enable_open_group', 'open_enable', 'notchecked');
 
 		$enable_close_group   = array();
-		$enable_close_group[] =& $mform->createElement('checkbox', 'close_enable', get_string('apply_close', 'apply')); 
+		$enable_close_group[] =& $mform->createElement('checkbox', 'close_enable', get_string('time_close', 'apply')); 
 		$enable_close_group[] =& $mform->createElement('date_time_selector', 'time_close', '');
-		$mform->addGroup($enable_close_group, 'enable_close_group', get_string('apply_close', 'apply'), ' ', false);
+		$mform->addGroup($enable_close_group, 'enable_close_group', get_string('time_close', 'apply'), ' ', false);
 
 		$mform->addHelpButton('enable_close_group', 'time_close', 'apply');
 		$mform->disabledIf('enable_close_group', 'close_enable', 'notchecked');
