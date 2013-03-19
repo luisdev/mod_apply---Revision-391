@@ -88,14 +88,12 @@ $previewlnk = '<a href="'.$CFG->wwwroot.'/mod/apply/print.php?id='.$id.'">'.$pre
 echo $OUTPUT->heading(format_text($apply->name.' '.$previewlnk));
 
 //show some infos to the apply
-if (has_capability('mod/apply:edititems', $context)) {
-	require('view_info.php');
-}
 echo $OUTPUT->heading(get_string('description', 'apply'), 4);
-
 echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
-$options = (object)array('noclean'=>true);
 echo format_module_intro('apply', $apply, $cm->id);
+
+require('view_info.php');
+
 echo $OUTPUT->box_end();
 
 
@@ -146,17 +144,15 @@ if ($apply_can_submit) {
 //
 
 $submits = apply_get_all_submits($apply->id, $USER->id);
-
-
-/*
-	if (has_capability('mod/apply:viewreports', $context)) {
-		$submits = apply_get_all_submits($apply->id);
+if ($submits) {
+	echo '<br />';
+	echo $OUTPUT->heading(get_string('entries_list_title', 'apply'), 2);
+	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
+	foreach ($submits as $submit) {
+		echo $submit->id.'<br />';
 	}
-	else {
-		$submits = apply_get_all_submits($apply->id, $USER->id);
-	}
+	echo $OUTPUT->box_end();
 }
-*/
 
 
 ///////////////////////////////////////////////////////////////////////////

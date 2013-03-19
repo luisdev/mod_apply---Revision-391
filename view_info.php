@@ -24,13 +24,11 @@
 
 defined('MOODLE_INTERNAL') OR die('not allowed');
 
-//$groupselect = groups_print_activity_menu($cm, $CFG->wwwroot.'/mod/apply/view.php?id='.$cm->id, true);
-//$mygroupid   = groups_get_activity_group($cm);
 
 echo $OUTPUT->box_start('boxaligncenter boxwidthwide');
 {
+/*
 	$submitscount = apply_get_all_submits_count($apply->id);
-//	$submitscount = apply_get_valid_submits_count($apply->id);
 
 	echo $OUTPUT->box_start('apply_info');
 	echo '<span class="apply_info">';
@@ -52,7 +50,7 @@ echo $OUTPUT->box_start('boxaligncenter boxwidthwide');
 	echo $itemscount;
 	echo '</span>';
 	echo $OUTPUT->box_end();
-
+*/
 	if ($apply->time_open) {
 		echo $OUTPUT->box_start('apply_info');
 		echo '<span class="apply_info">';

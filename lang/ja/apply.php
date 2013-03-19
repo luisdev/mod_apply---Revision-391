@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['modulename_plural'] = '申請フォーム';
 $string['modulename'] = '申請フォーム';
-$string['modulename_help'] = '各種の簡単な申請書を作成し，ユーザに提出させることができます');
+$string['modulename_help'] = '各種の簡単な申請書を作成し，ユーザに提出させることができます';
 
 // Button
 $string['save_entry_button']  = ' 申請書を送信 ';
@@ -53,9 +53,13 @@ $string['apply:viewreports'] = 'レポートを表示する';
 // mod_form
 $string['name'] = '名称';
 $string['description'] = '説明';
-$string['apply_open']  = '開始日時';
-$string['apply_close'] = '終了日時';
+$string['time_open']   = '開始日時';
+$string['time_close']  = '終了日時';
+//$string['apply_open']  = '開始日時';
+//$string['apply_close'] = '終了日時';
 $string['apply_options'] = '申請フォームオプション';
+$string['time_open_help']  = 'あなたはユーザが書類提出のため申請フォームにアクセスできるようになる日時を指定することができます．チェックボックスがチェックされない場合，制限は定義されません．';
+$string['time_close_help'] = 'あなたはユーザが書類提出のため申請フォームにアクセスできないようになる日時を指定することができます．チェックボックスがチェックされない場合，制限は定義されません．';
 
 $string['email_notification'] = '通知メールを送信する';
 $string['email_notification_help'] = '有効にした場合，申請フォームの送信に関して管理者宛にメール通知されます';
@@ -64,6 +68,9 @@ $string['multiple_submit_help'] = 'ユーザは無制限で申請フォームを
 
 $string['use_calendar'] = 'カレンダーに登録';
 $string['use_calendar_help'] = '申請書の提出期間をカレンダーに登録できます';
+
+// view
+$string['entries_list_title'] = '提出済み申請書類一覧';
 
 // submit
 $string['entry_saved'] = 'あなたの申請書が送信されました';
@@ -81,10 +88,6 @@ $string['name_required'] = '名称を入力してください';
 $string['add_item']  = '項目を追加する';
 $string['add_items'] = '項目を追加する';
 
-$string['time_close'] = '終了日時';
-$string['time_close_help'] = 'あなたはユーザが質問回答のため申請フォームにアクセスできないようになる日時を指定することができます．チェックボックスがチェックされない場合，制限は定義されません．';
-$string['time_open'] = '開始日時';
-$string['time_open_help'] = 'あなたはユーザが質問回答のため申請フォームにアクセスできるようになる日時を指定することができます．チェックボックスがチェックされない場合，制限は定義されません．';
 
 
 $string['add_pagebreak'] = '改ページを追加する';
