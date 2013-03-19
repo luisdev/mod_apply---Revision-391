@@ -41,6 +41,13 @@ $string['use_calendar_help'] = '同期する？';
 
 $string['add_pagebreak'] = '改ページを追加する';
 
+$string['apply_is_not_open']  = '申請フォームはまだ利用できません';
+$string['apply_is_not_ready'] = '申請フォームはまだ準備ができていません';
+$string['apply_is_closed']    = '申請期間は終了しました';
+$string['apply_is_not_used']  = 'この申請を行う事はできません';
+$string['apply_is_already_submitted'] = 'あなたは既に申請済みです';
+
+
 $string['adjustment'] = '表示方向';
 $string['analysis'] = '分析';
 $string['anonymous'] = '匿名';
@@ -143,7 +150,8 @@ $string['apply:deletesubmissions'] = '完了した送信を削除する';
 $string['apply:deletetemplate'] = 'テンプレートを削除する';
 $string['apply:edititems'] = 'アイテムを編集する';
 $string['apply_is_not_for_anonymous'] = '匿名ユーザは，申請フォームを利用できません．';
-$string['apply_is_not_open'] = '申請フォームはまだ利用できません．';
+
+
 $string['apply:mapcourse'] = 'コースをグローバル申請フォームにマップする';
 $string['apply_open']  = '開始日時';
 $string['apply_opens'] = '開始日時';
@@ -295,7 +303,6 @@ $string['textfield'] = '短文回答';
 $string['textfield_maxlength'] = '最大文字数';
 $string['textfield_size'] = 'テキストフィールド幅';
 $string['there_are_no_settings_for_recaptcha'] = 'CAPTCHAが設定されていません．';
-$string['this_apply_is_already_submitted'] = 'あなたは，すでにこの申請フォームを完了しています．';
 $string['typemissing'] = '「type」の値がありません．';
 $string['update_item'] = '質問の変更を保存する';
 $string['url_for_continue'] = '「続ける」ボタンのURI';

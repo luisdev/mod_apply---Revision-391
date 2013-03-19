@@ -67,7 +67,6 @@ $PAGE->set_heading(format_string($course->fullname));
 echo $OUTPUT->header();
 
 
-//ishidden check.
 $cap_viewhiddenactivities = has_capability('moodle/course:viewhiddenactivities', $context);
 if ((empty($cm->visible) and !$cap_viewhiddenactivities)) {
 	notice(get_string('activityiscurrentlyhidden'));
@@ -102,70 +101,72 @@ echo $OUTPUT->box_end();
 
 $SESSION->apply->is_started = false;
 
-// submit-start
-if ($apply_submit_cap) {
-	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 
-	$checktime = time();
-	if (($apply->time_open>$checktime) OR ($apply->time_close<$checktime AND $apply->time_close>0)) {
-		echo '<h2><font color="red">'.get_string('apply_is_not_open', 'apply').'</font></h2>';
-		echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$course->id);
-		echo $OUTPUT->box_end();
-		echo $OUTPUT->footer();
-		exit;
-	}
-
-	//check multiple Submit
-	$apply_can_submit = true;
-	if ($apply->multiple_submit==0 ) {
-		if (apply_get_valid_submits_count($apply->id, $USER->id)>0) {
-			$apply_can_submit = false;
-		}
-	}
-
-	if ($apply_can_submit) {
-		$submit_file = 'submit.php';
-		$url_params  = array('id'=>$id, 'courseid' => $courseid, 'go_page'=>0);
-		$submit_url  = new moodle_url('/mod/apply/'.$submit_file, $url_params);
-
-		if (has_capability('mod/apply:viewreports', $context)) {
-			$submits = apply_get_all_submits($apply->id);
-		}
-		else {
-			$submits = apply_get_all_submits($apply->id, $USER->id);
-		}
-		if ($submits) {
-			if ($startpage = apply_get_page_to_continue($apply->id)) {
-				$submit_url->param('go_page', $startpage);
-			}
-			echo '<a href="'.$submit_url->out().'">'.get_string('continue_the_form', 'apply').'</a>';
-		}
-		else {
-			echo '<a href="'.$submit_url->out().'">'.get_string('submit_the_form', 'apply').'</a>';
-		}
-	}
-	//
-	else {
-		echo '<h2><font color="red">';
-		echo get_string('this_apply_is_already_submitted', 'apply');
-		echo '</font></h2>';
-		echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
-	}
-	echo $OUTPUT->box_end();
-}
-//
-else {
-	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
-	echo '<h2><font color="red">';
-	echo get_string('apply_is_not_open', 'apply');
-	echo '</font></h2>';
-	echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
-	echo $OUTPUT->box_end();
-}
-
-
-
-/// Finish the page
 ///////////////////////////////////////////////////////////////////////////
+// Check
+if (!$apply_submit_cap) {
+	apply_print_error_messagebox('apply_is_not_used', $courseid);
+	exit;
+}
+
+$continue_link = $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
+//
+$apply_can_submit = true;
+if ($apply->multiple_submit==0 ) {
+	if (apply_get_valid_submits_count($apply->id, $USER->id)>0) {
+		$apply_can_submit = false;
+		apply_print_messagebox('apply_is_already_submitted', $continue_link);
+	}
+}
+
+// Date
+if ($apply_can_submit) {
+	$checktime = time();
+	$apply_is_not_open = $apply->time_open>$checktime;
+	$apply_is_closed   = $apply->time_close<$checktime and $apply->time_close>0;
+	if ($apply_is_not_open or $apply_is_closed) {
+    	if ($apply_is_not_open) apply_print_messagbox('apply_is_not_open', $continue_link);
+    	else                    apply_print_messagbox('apply_is_closed',   $continue_link);
+		$apply_can_submit = false;
+	}
+}
+
+//
+if ($apply_can_submit) {
+	$submit_file = 'submit.php';
+	$url_params  = array('id'=>$id, 'courseid'=>$courseid, 'go_page'=>0);
+	$submit_url  = new moodle_url('/mod/apply/'.$submit_file, $url_params);
+	$submit_link = '<a href="'.$submit_url->out().'">'.get_string('submit_the_form', 'apply').'</a>';
+    apply_print_messagbox('apply_is_closed', $submit_link);
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////
+
+
+/*
+
+	if (has_capability('mod/apply:viewreports', $context)) {
+		$submits = apply_get_all_submits($apply->id);
+	}
+	else {
+		$submits = apply_get_all_submits($apply->id, $USER->id);
+	}
+	if ($submits) {
+		if ($startpage = apply_get_page_to_continue($apply->id)) {
+			$submit_url->param('go_page', $startpage);
+		}
+		echo '<a href="'.$submit_url->out().'">'.get_string('continue_the_form', 'apply').'</a>';
+	}
+
+	echo '<a href="'.$submit_url->out().'">'.get_string('submit_the_form', 'apply').'</a>';
+	echo $OUTPUT->box_end();
+}
+*/
+
+
+///////////////////////////////////////////////////////////////////////////
+/// Finish the page
 echo $OUTPUT->footer();
 

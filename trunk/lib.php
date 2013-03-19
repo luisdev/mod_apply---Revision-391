@@ -1187,3 +1187,45 @@ function apply_send_email_html($info, $course, $cm)
 
 
 
+
+
+///////////////////////////////////////////////////////////////////////////////////
+//
+// Tools
+//
+
+function apply_print_error_messagebox($str, $courseid)
+{
+	global $OUTPUT, $CFG;
+
+    echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
+
+	if ($str!='' and $str!=null) {
+    	echo '<h2><font color="red"><div align="center">';
+    	echo get_string($str, 'apply');
+    	echo '</div></font></h2>';
+	}
+
+    echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
+    echo $OUTPUT->box_end();
+    echo $OUTPUT->footer();
+}
+
+
+
+function apply_print_messagebox($str, $link=null)
+{
+	global $OUTPUT;
+
+    echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
+
+	if ($str!='' and $str!=null) {
+    	echo '<h2><font color="steel blue"><div align="center">';
+    	echo get_string($str, 'apply');
+    	echo '</div></font></h2>';
+	}
+
+	if ($link!=null) echo $link;
+    echo $OUTPUT->box_end();
+}
+
