@@ -29,9 +29,8 @@ require_once($CFG->libdir.'/tablelib.php');
 
 ////////////////////////////////////////////////////////
 //get the params
-////////////////////////////////////////////////////////
 $id		  = required_param('id', PARAM_INT);
-$userid   = optional_param('userid', false, PARAM_INT);
+$user_id  = optional_param('user_id', false, PARAM_INT);
 $do_show  = required_param('do_show', PARAM_ALPHA);
 $perpage  = optional_param('perpage', APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);  // how many per page
 $showall  = optional_param('showall', false, PARAM_INT);  // should we show all users
@@ -42,8 +41,6 @@ $current_tab = $do_show;
 
 ////////////////////////////////////////////////////////
 //get the objects
-////////////////////////////////////////////////////////
-
 if (! $cm = get_coursemodule_from_id('apply', $id)) {
 	print_error('invalidcoursemodule');
 }
@@ -70,8 +67,8 @@ if ($formdata) {
 	if (!confirm_sesskey()) {
 		print_error('invalidsesskey');
 	}
-	if ($userid) {
-		$formdata->userid = intval($userid);
+	if ($user_id) {
+		$formdata->user_id = intval($user_id);
 	}
 }
 
@@ -80,16 +77,15 @@ require_capability('mod/apply:viewreports', $context);
 
 ////////////////////////////////////////////////////////
 //get the responses of given user
-////////////////////////////////////////////////////////
 if ($do_show=='showoneentry') {
 	//get the applyitems
-	$applyitems = $DB->get_records('apply_item', array('apply'=>$apply->id), 'position');
-	$params = array('apply'=>$apply->id, 'userid'=>$userid);
-	$applycompleted = $DB->get_record('apply_completed', $params); //arb
+	$applyitems = $DB->get_records('apply_item', array('apply_id'=>$apply->id), 'position');
+	$params = array('apply_id'=>$apply->id, 'user_id'=>$user_id);
+	$applycompleted = $DB->get_record('apply_submit', $params); //arb
 }
 
 /// Print the page header
-$strapplys = get_string('modulename_plural', 'apply');
+$strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
 $PAGE->set_heading(format_string($course->fullname));
@@ -98,27 +94,27 @@ echo $OUTPUT->header();
 
 require('tabs.php');
 
-/// Print the main part of the page
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////////////
+/// Print the main part of the page
 
 ////////////////////////////////////////////////////////
 /// Print the links to get responses and analysis
-////////////////////////////////////////////////////////
 if ($do_show=='showentries') {
 	//print the link to analysis
 	if (has_capability('mod/apply:viewreports', $context)) {
+/*
 		//get the effective groupmode of this course and module
 		if (isset($cm->groupmode) && empty($course->groupmodeforce)) {
 			$groupmode =  $cm->groupmode;
-		} else {
+		}
+		else {
 			$groupmode = $course->groupmode;
 		}
 
 		$groupselect = groups_print_activity_menu($cm, $url->out(), true);
 		$mygroupid = groups_get_activity_group($cm);
+*/
 
 		// preparing the table for output
 		$baseurl = new moodle_url('/mod/apply/show_entries.php');
@@ -143,48 +139,54 @@ if ($do_show=='showentries') {
 		$table->set_attribute('id', 'showentrytable');
 		$table->set_attribute('class', 'generaltable generalbox');
 		$table->set_control_variables(array(
-					TABLE_VAR_SORT	=> 'ssort',
-					TABLE_VAR_IFIRST  => 'sifirst',
-					TABLE_VAR_ILAST   => 'silast',
+					TABLE_VAR_SORT  => 'ssort',
+					TABLE_VAR_IFIRST=> 'sifirst',
+					TABLE_VAR_ILAST => 'silast',
 					TABLE_VAR_PAGE	=> 'spage'
 					));
 		$table->setup();
 
 		if ($table->get_sql_sort()) {
 			$sort = $table->get_sql_sort();
-		} else {
+		}
+		else {
 			$sort = '';
 		}
 
 		list($where, $params) = $table->get_sql_where();
-		if ($where) {
-			$where .= ' AND';
-		}
+		if ($where) $where .= ' AND';
 
 		//get students in conjunction with groupmode
+/*
 		if ($groupmode > 0) {
 			if ($mygroupid > 0) {
 				$usedgroupid = $mygroupid;
-			} else {
+			}
+			else {
 				$usedgroupid = false;
 			}
-		} else {
+		}
+		else {
 			$usedgroupid = false;
 		}
+*/
 
-		$matchcount = apply_count_complete_users($cm, $usedgroupid);
+		$matchcount = apply_get_submit_users_count($cm);
 		$table->initialbars(true);
 
 		if ($showall) {
 			$startpage = false;
 			$pagecount = false;
-		} else {
+		}
+		else {
 			$table->pagesize($perpage, $matchcount);
 			$startpage = $table->get_page_start();
 			$pagecount = $table->get_page_size();
 		}
 
-		$students = apply_get_complete_users($cm, $usedgroupid, $where, $params, $sort, $startpage, $pagecount);
+		$students = apply_get_submit_users($cm, $where, $params, $sort, $startpage, $pagecount);
+
+/*
 		$str_analyse = get_string('analysis', 'apply');
 		$str_complete = get_string('completed_applys', 'apply');
 		$str_course = get_string('course');
@@ -199,14 +201,17 @@ if ($do_show=='showentries') {
 			echo '</a>';
 			echo $OUTPUT->help_icon('viewcompleted', 'apply');
 			echo $OUTPUT->box_end();
-		} else {
-			$analysisurl = new moodle_url('/mod/apply/analysis.php', array('id'=>$id, 'courseid'=>$courseid));
-			echo $OUTPUT->box_start('mdl-align');
-			echo '<a href="'.$analysisurl->out().'">';
-			echo $str_analyse.' ('.$str_complete.': '.intval($completed_fb_count).')';
-			echo '</a>';
-			echo $OUTPUT->box_end();
 		}
+		else {
+			$analysisurl = new moodle_url('/mod/apply/analysis.php', array('id'=>$id, 'courseid'=>$courseid));
+*/
+			echo $OUTPUT->box_start('mdl-align');
+			//echo '<a href="'.$analysisurl->out().'">';
+			//echo $str_analyse.' ('.$str_complete.': '.intval($completed_fb_count).')';
+			//echo '</a>';
+			echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+			echo $OUTPUT->box_end();
+//		}
 	}
 
 	//####### viewreports-start
@@ -223,8 +228,8 @@ if ($do_show=='showentries') {
 		} 
 		else {
 			foreach ($students as $student) {
-				$params = array('userid'=>$student->id, 'apply'=>$apply->id);
-				$completed_count = $DB->count_records('apply_completed', $params);
+				$params = array('user_id'=>$student->id, 'apply_id'=>$apply->id);
+				$completed_count = $DB->count_records('apply_submit', $params);
 
 				if ($completed_count > 0) {
 					//userpicture and link to the profilepage
@@ -233,9 +238,9 @@ if ($do_show=='showentries') {
 					$data = array ($OUTPUT->user_picture($student, array('courseid'=>$course->id)), $profilelink);
 
 					//link to the entry of the user
-					$params = array('apply'=>$apply->id, 'userid'=>$student->id);
-					$applycompleted = $DB->get_record('apply_completed', $params);
-					$showentryurl_params = array('userid'=>$student->id, 'do_show'=>'showoneentry');
+					$params = array('apply_id'=>$apply->id, 'user_id'=>$student->id);
+					$applycompleted = $DB->get_record('apply_submit', $params);
+					$showentryurl_params = array('user_id'=>$student->id, 'do_show'=>'showoneentry');
 					$showentryurl = new moodle_url($url, $showentryurl_params);
 					$showentrylink = '<a href="'.$showentryurl->out().'">'.userdate($applycompleted->time_modified).'</a>';
 					$data[] = $showentrylink;
@@ -259,7 +264,8 @@ if ($do_show=='showentries') {
 				$allurl->param('showall', 0);
 				echo $OUTPUT->container(html_writer::link($allurl, get_string('showperpage', '', APPLY_DEFAULT_PAGE_COUNT)), array(), 'showall');
 
-			} else if ($matchcount > 0 && $perpage < $matchcount) {
+			}
+			else if ($matchcount > 0 && $perpage < $matchcount) {
 				$allurl->param('showall', 1);
 				echo $OUTPUT->container(html_writer::link($allurl, get_string('showall', '', $matchcount)), array(), 'showall');
 			}
@@ -274,18 +280,18 @@ if ($do_show=='showentries') {
 
 ////////////////////////////////////////////////////////
 /// Print the responses of the given user
-////////////////////////////////////////////////////////
 if ($do_show == 'showoneentry') {
 	echo $OUTPUT->heading(format_text($apply->name));
 
 	//print the items
 	if (is_array($applyitems)) {
 		$align = right_to_left() ? 'right' : 'left';
-		$usr = $DB->get_record('user', array('id'=>$userid));
+		$usr = $DB->get_record('user', array('id'=>$user_id));
 
 		if ($applycompleted) {
 			echo $OUTPUT->heading(userdate($applycompleted->time_modified).' ('.fullname($usr).')', 3);
-		} else {
+		}
+		else {
 			echo $OUTPUT->heading(get_string('not_completed_yet', 'apply'), 3);
 		}
 
@@ -293,7 +299,7 @@ if ($do_show == 'showoneentry') {
 		$itemnr = 0;
 		foreach ($applyitems as $applyitem) {
 			//get the values
-			$params = array('completed'=>$applycompleted->id, 'item'=>$applyitem->id);
+			$params = array('submit_id'=>$applycompleted->id, 'item_id'=>$applyitem->id);
 			$value = $DB->get_record('apply_value', $params);
 			echo $OUTPUT->box_start('apply_item_box_'.$align);
 			if ($applyitem->hasvalue==1) {
@@ -307,7 +313,8 @@ if ($do_show == 'showoneentry') {
 				echo $OUTPUT->box_start('box generalbox boxalign_'.$align);
 				if (isset($value->value)) {
 					apply_print_item_show_value($applyitem, $value->value);
-				} else {
+				}
+				else {
 					apply_print_item_show_value($applyitem, false);
 				}
 				echo $OUTPUT->box_end();
@@ -319,10 +326,8 @@ if ($do_show == 'showoneentry') {
 	echo $OUTPUT->continue_button(new moodle_url($url, array('do_show'=>'showentries')));
 }
 
-/// Finish the page
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////////////
+/// Finish the page
 echo $OUTPUT->footer();
 

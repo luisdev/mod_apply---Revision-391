@@ -107,7 +107,7 @@ require_login($course, true, $cm);
 
 
 /// Print the page header
-$strapplys = get_string('modulename_plural', 'apply');
+$strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
 $PAGE->navbar->add(get_string('apply:submit', 'apply'));
