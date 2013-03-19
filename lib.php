@@ -48,15 +48,15 @@ function apply_supports($feature)
 {
 	switch($feature) {
 		case FEATURE_GROUPS:				  return false;
-		case FEATURE_GROUPINGS:			   return false;
-		case FEATURE_GROUPMEMBERSONLY:		return false;
-		case FEATURE_MOD_INTRO:			   return true;
-		case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
-		case FEATURE_COMPLETION_HAS_RULES:	return true;
-		case FEATURE_GRADE_HAS_GRADE:		 return false;
+		case FEATURE_GROUPINGS:				  return false;
+		case FEATURE_GROUPMEMBERSONLY:		  return false;
+		case FEATURE_MOD_INTRO:				  return true;
+		case FEATURE_COMPLETION_TRACKS_VIEWS: return false;
+		case FEATURE_COMPLETION_HAS_RULES:	  return false;
+		case FEATURE_GRADE_HAS_GRADE:		  return false;
 		case FEATURE_GRADE_OUTCOMES:		  return false;
 		case FEATURE_BACKUP_MOODLE2:		  return true;
-		case FEATURE_SHOW_DESCRIPTION:		return true;
+		case FEATURE_SHOW_DESCRIPTION:		  return true;
 
 		default: return null;
 	}
@@ -779,7 +779,8 @@ function apply_create_submit($apply_id, $user_id=0)
 	$submit->title			= '';
 	$submit->time_modified  = $time_modified;
 
-	$DB->insert_record('apply_submit', $submit);
+	$submit_id = $DB->insert_record('apply_submit', $submit);
+	$submit    = $DB->get_record('apply_submit', array('id'=>$submit_id));
 
 	return $submit;
 }
@@ -1022,7 +1023,7 @@ function apply_update_draft_values($submit)
 		$exist = false;
 		if ($values) {
 			foreach ($values as $value) {
-				if ($value->item==$newvalue->item) {
+				if ($value->item_id==$newvalue->item_id) {
 					$newvalue->id = $value->id;
 					$exist = true;
 					break;
@@ -1063,7 +1064,7 @@ function apply_flush_draft_values($submit_id, $up_num)
 	$time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
 
 	foreach($values as $value) {
-		$val = apply_get_item_value($value->submit_id, $value->item_id, $up_num); 
+        $val = $DB->get_record('apply_value', array('submit_id'=>$submit_id, 'item_id'=>$value->item_id, 'up_num'=>$up_num));
 		if ($val) {
 			$value->id 	   = $val->id;
 			$value->up_num = $val->up_num;
@@ -1091,7 +1092,7 @@ function apply_send_email($cm, $apply, $course, $userid)
 {
 	global $CFG, $DB;
 
-	if ($apply->email_notification==0) eturn;
+	if ($apply->email_notification==0) return;
 
 	$user = $DB->get_record('user', array('id'=>$userid));
 	$teachers = apply_get_receivemail_users($cm->id);

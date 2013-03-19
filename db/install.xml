@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/apply/db" VERSION="20130318" COMMENT="XMLDB file for Moodle mod/apply"
+<XMLDB PATH="mod/apply/db" VERSION="20130319" COMMENT="XMLDB file for Moodle mod/apply"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -40,7 +40,8 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for apply_completed" NEXT="apply_id"/>
-        <KEY NAME="apply_id" TYPE="foreign" FIELDS="apply_id" REFTABLE="apply_id" REFFIELDS="id" PREVIOUS="primary"/>
+        <KEY NAME="apply_id" TYPE="foreign" FIELDS="apply_id" REFTABLE="apply_id" REFFIELDS="id" PREVIOUS="primary" NEXT="submit_key"/>
+        <KEY NAME="submit_key" TYPE="unique" FIELDS="apply_id, user_id, up_num" PREVIOUS="apply_id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="apply_item" COMMENT="apply_items" PREVIOUS="apply_submit" NEXT="apply_value">
@@ -77,11 +78,9 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for apply_value" NEXT="submit_id"/>
         <KEY NAME="submit_id" TYPE="foreign" FIELDS="submit_id" REFTABLE="apply_submit" REFFIELDS="id" PREVIOUS="primary" NEXT="item_id"/>
-        <KEY NAME="item_id" TYPE="foreign" FIELDS="item_id" REFTABLE="apply_item" REFFIELDS="id" PREVIOUS="submit_id"/>
+        <KEY NAME="item_id" TYPE="foreign" FIELDS="item_id" REFTABLE="apply_item" REFFIELDS="id" PREVIOUS="submit_id" NEXT="value_key"/>
+        <KEY NAME="value_key" TYPE="unique" FIELDS="submit_id, item_id, up_num" PREVIOUS="item_id"/>
       </KEYS>
-      <INDEXES>
-        <INDEX NAME="up_num" UNIQUE="false" FIELDS="up_num"/>
-      </INDEXES>
     </TABLE>
     <TABLE NAME="apply_template" COMMENT="templates of applystructures" PREVIOUS="apply_value">
       <FIELDS>
