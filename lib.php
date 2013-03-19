@@ -167,7 +167,7 @@ function apply_reset_userdata($data)
 	$dropapplys	= array();
 	$status 	= array();
 
-	$componentstr = get_string('modulenameplural', 'apply');
+	$componentstr = get_string('modulename_plural', 'apply');
 
 	foreach ($data as $key=>$value) {
 		switch(true) {
@@ -1099,7 +1099,7 @@ function apply_send_email($cm, $apply, $course, $userid)
 	$teachers = apply_get_receivemail_users($cm->id);
 
 	if ($teachers) {
-		$strapplys = get_string('modulenameplural', 'apply');
+		$strapplys = get_string('modulename_plural', 'apply');
 		$strapply  = get_string('modulename', 'apply');
 		$submitted = get_string('submitted',  'apply');
 		$printusername = fullname($user);
@@ -1154,7 +1154,7 @@ function apply_send_email_text($info, $course)
 	$coursecontext = context_course::instance($course->id);
 	$courseshortname = format_string($course->shortname, true, array('context'=>$coursecontext));
 
-	$posttext  = $courseshortname.' -> '.get_string('modulenameplural', 'apply').' -> '.$info->apply."\n";
+	$posttext  = $courseshortname.' -> '.get_string('modulename_plural', 'apply').' -> '.$info->apply."\n";
 	$posttext .= '---------------------------------------------------------------------'."\n";
 	$posttext .= get_string('emailteachermail', 'apply', $info)."\n";
 	$posttext .= '---------------------------------------------------------------------'."\n";
@@ -1176,7 +1176,7 @@ function apply_send_email_html($info, $course, $cm)
 
 	$posthtml = '<p><font face="sans-serif">'.
 				'<a href="'.$course_url.'">'.$courseshortname.'</a> ->'.
-				'<a href="'.$apply_all_url.'">'.get_string('modulenameplural', 'apply').'</a> ->'.
+				'<a href="'.$apply_all_url.'">'.get_string('modulename_plural', 'apply').'</a> ->'.
 				'<a href="'.$apply_url.'">'.$info->apply.'</a></font></p>';
 	$posthtml.= '<hr /><font face="sans-serif">';
 	$posthtml.= '<p>'.get_string('emailteachermailhtml', 'apply', $info).'</p>';
@@ -1213,7 +1213,7 @@ function apply_print_error_messagebox($str, $courseid)
 
 
 
-function apply_print_messagebox($str, $link=null)
+function apply_print_messagebox($str, $append=null)
 {
 	global $OUTPUT;
 
@@ -1225,7 +1225,7 @@ function apply_print_messagebox($str, $link=null)
     	echo '</div></font></h2>';
 	}
 
-	if ($link!=null) echo $link;
+	if ($append!=null) echo $append;
     echo $OUTPUT->box_end();
 }
 

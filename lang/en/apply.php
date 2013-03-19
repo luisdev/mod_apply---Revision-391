@@ -17,30 +17,85 @@
 /**
  * Strings for component 'apply', language 'en', branch 'MOODLE_20_STABLE'
  *
- * @package   apply
- * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @package   mod_apply
+ * @copyright Fumi.Iseki http://www.nsl.tuis.ac.jp/
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+defined('MOODLE_INTERNAL') || die();
+
+$string['modulename_plural'] = 'Application Forms';
+$string['modulename'] = 'Application Form';
+$string['modulename_help'] = 'You can make simple Application Forms and make a user submit it.';
+
+// Button
+$string['save_entry_button']  = ' Submit this Application ';
+$string['save_draft_button']  = ' Save as Draft ';
+$string['submit_form_button'] = ' Sumbit... ';
+
+// Menu
+$string['apply:submit'] = 'Submit a Application';
+//
+$string['apply:addinstance'] = 'Add a new apply';
+$string['apply:applies'] = 'issue a apply';
+$string['apply:createprivatetemplate'] = 'Create private template';
+$string['apply:createpublictemplate'] = 'Create public template';
+$string['apply:deletesubmissions'] = 'Delete completed submissions';
+$string['apply:deletetemplate'] = 'Delete template';
+$string['apply:edititems'] = 'Edit items';
+$string['apply:mapcourse'] = 'Map courses to global applys';
+$string['apply:receivemail'] = 'Receive email notification';
+$string['apply:view'] = 'View a apply';
+$string['apply:viewanalysepage'] = 'View the analysis page after submit';
+$string['apply:viewreports'] = 'View reports';
+
+// mod_form
+$string['name'] = 'Name';
+$string['description'] = 'Description';
+$string['apply_open']  = 'Open the apply at';
+$string['apply_close'] = 'Close the apply at';
+$string['apply_options'] = 'Apply options';
+
+$string['email_notification'] = 'Send e-mail notifications';
+$string['email_notification_help'] = 'If enabled, administrators receive email notification of apply submissions.';
+$string['multiple_submit'] = 'Multiple submissions';
+$string['multiple_submit_help'] = 'If enabled for anonymous surveys, users can submit apply an unlimited number of times.';
+
+$string['use_calendar'] = 'Use Calendar';
+$string['use_calendar_help'] = 'The period for submission of an application is registered into a calendar.';
+
+// submit
+$string['entry_saved'] = 'Your applocation have been saved. Thank you.';
+$string['saving_failed'] = 'Saving failed';
+$string['saving_failed_because_missing_or_false_values'] = 'Saving failed because missing or false values.';
+
+
+
+
+
+$string['name_required'] = 'Name required';
+
+
+
 
 $string['add_item']  = 'Add application item to activity';
 $string['add_items'] = 'Add application items to activity';
 
-$string['multiple_submit'] = 'Multiple submissions';
-$string['multiple_submit_help'] = 'If enabled for anonymous surveys, users can submit apply an unlimited number of times.';
 
 $string['time_close'] = 'Time to close';
 $string['time_close_help'] = 'You can specify times when the apply is accessible for people to answer the questions. If the checkbox is not ticked there is no limit defined.';
 $string['time_open'] = 'Time to open';
 $string['time_open_help'] = 'You can specify times when the apply is accessible for people to answer the questions. If the checkbox is not ticked there is no limit defined.';
 
-$string['use_calendar'] = 'Use Calendar';
-$string['use_calendar_help'] = 'Use Calendar';
 
 $string['apply_is_not_open']  = 'This Apply is not open yet';
 $string['apply_is_not_ready'] = 'This Apply is not ready';
 $string['apply_is_closed']    = 'This Apply is closed';
-$string['apply_is_not_used']  = 'You ca not use this Apply';
+$string['apply_is_disable']  = 'You ca not use this Apply';
 $string['apply_is_already_submitted'] = 'You\'ve already submitted this Apply';
+$string['apply_is_enable']  = 'Submit a this Apply';
+
+
+$string['submit_new_apply']   = 'Submit a new Apply';
 
 $string['add_pagebreak'] = 'Add a page break';
 $string['adjustment'] = 'Adjustment';
@@ -100,7 +155,6 @@ $string['depending_help'] = 'It is possible to show an item depending on the val
 </ol>';
 $string['dependitem'] = 'Dependence item';
 $string['dependvalue'] = 'Dependence value';
-$string['description'] = 'Description';
 $string['do_not_analyse_empty_submits'] = 'Do not analyse empty submits';
 $string['dropdown'] = 'Multiple choice - single answer allowed (dropdownlist)';
 $string['dropdownlist'] = 'Multiple choice - single answer (dropdown)';
@@ -109,9 +163,6 @@ $string['dropdown_values'] = 'Answers';
 $string['drop_apply'] = 'Remove from this course';
 $string['edit_item'] = 'Edit question';
 $string['edit_items'] = 'Edit questions';
-$string['email_notification'] = 'Send e-mail notifications';
-$string['emailnotification'] = 'emailnotifications';
-$string['emailnotification_help'] = 'If enabled, administrators receive email notification of apply submissions.';
 $string['emailteachermail'] = '{$a->username} has completed apply activity : \'{$a->apply}\'
 
 You can view it here:
@@ -119,31 +170,14 @@ You can view it here:
 {$a->url}';
 $string['emailteachermailhtml'] = '{$a->username} has completed apply activity : <i>\'{$a->apply}\'</i><br /><br />
 You can view it <a href="{$a->url}">here</a>.';
-$string['entries_saved'] = 'Your answers have been saved. Thank you.';
 $string['export_questions'] = 'Export questions';
 $string['export_to_excel'] = 'Export to Excel';
 
-$string['apply_close']  = 'Close the apply at';
 $string['apply_closes'] = 'Apply closes';
 
-$string['apply:addinstance'] = 'Add a new apply';
-$string['apply:submit'] = 'Submit a apply';
-$string['apply:applies'] = 'issue a apply';
-$string['apply:createprivatetemplate'] = 'Create private template';
-$string['apply:createpublictemplate'] = 'Create public template';
-$string['apply:deletesubmissions'] = 'Delete completed submissions';
-$string['apply:deletetemplate'] = 'Delete template';
-$string['apply:edititems'] = 'Edit items';
-$string['apply:mapcourse'] = 'Map courses to global applys';
-$string['apply:receivemail'] = 'Receive email notification';
-$string['apply:view'] = 'View a apply';
-$string['apply:viewanalysepage'] = 'View the analysis page after submit';
-$string['apply:viewreports'] = 'View reports';
 
 $string['apply_is_not_for_anonymous'] = 'apply is not for anonymous';
-$string['apply_open']  = 'Open the apply at';
 $string['apply_opens'] = 'Apply opens';
-$string['apply_options'] = 'Apply options';
 $string['file'] = 'File';
 $string['filter_by_course'] = 'Filter by course';
 $string['handling_error'] = 'Error occurred in apply module action handling';
@@ -183,19 +217,7 @@ $string['maximal'] = 'maximal';
 $string['messageprovider:message'] = 'Apply reminder';
 $string['messageprovider:submission'] = 'Apply notifications';
 $string['mode'] = 'Mode';
-$string['modulename'] = 'Application Form';
-$string['modulename_help'] = 'The apply activity module enables a teacher to create a custom survey for collecting apply from participants using a variety of question types including multiple choice, yes/no or text input.
-
-Apply responses may be anonymous if desired, and results may be shown to all participants or restricted to teachers only. Any apply activities on the site front page may also be completed by non-logged-in users.
-
-Apply activities may be used
-
-* For course evaluations, helping improve the content for later participants
-* To enable participants to sign up for course modules, events etc.
-* For guest surveys of course choices, school policies etc.
-* For anti-bullying surveys in which students can report incidents anonymously';
 $string['modulename_link'] = 'mod/apply/view';
-$string['modulenameplural'] = 'Apply';
 $string['movedown_item'] = 'Move this question down';
 $string['move_here'] = 'Move here';
 $string['move_item'] = 'Move this question';
@@ -204,8 +226,6 @@ $string['multichoice'] = 'Multiple choice';
 $string['multichoicerated'] = 'Multiple choice (rated)';
 $string['multichoicetype'] = 'Multiple choice type';
 $string['multichoice_values'] = 'Multiple choice values';
-$string['name'] = 'Name';
-$string['name_required'] = 'Name required';
 $string['next_page'] = 'Next page';
 $string['no_handler'] = 'No action handler exists for';
 $string['no_itemlabel'] = 'No label';
@@ -261,8 +281,6 @@ $string['save_as_new_item'] = 'Save as new question';
 $string['save_as_new_template'] = 'Save as new template';
 $string['save_entries'] = 'Submit your answers';
 $string['save_item'] = 'Save question';
-$string['saving_failed'] = 'Saving failed';
-$string['saving_failed_because_missing_or_false_values'] = 'Saving failed because missing or false values';
 $string['search_course'] = 'Search course';
 $string['searchcourses'] = 'Search courses';
 $string['searchcourses_help'] = 'Search for the code or name of the course(s) that you wish to associate with this apply.';

@@ -69,7 +69,7 @@ class mod_apply_mod_form extends moodleform_mod
 		$mform->addElement('header', 'applyhdr', get_string('apply_options', 'apply'));
 		//
 		$mform->addElement('selectyesno', 'email_notification', get_string('email_notification', 'apply'));
-		$mform->addHelpButton('email_notification', 'emailnotification', 'apply');
+		$mform->addHelpButton('email_notification', 'email_notification', 'apply');
 		//
 		$mform->addElement('selectyesno', 'multiple_submit', get_string('multiple_submit', 'apply')); 
 		$mform->addHelpButton('multiple_submit', 'multiple_submit', 'apply');

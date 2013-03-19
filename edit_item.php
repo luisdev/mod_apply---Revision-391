@@ -105,7 +105,7 @@ if ($itemobj->get_data()) {
 
 ////////////////////////////////////////////////////////////////////////////////////
 /// Print the page header
-$strapplys = get_string('modulenameplural', 'apply');
+$strapplys = get_string('modulename_plural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
 if ($item->id) {

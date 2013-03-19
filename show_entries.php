@@ -89,7 +89,7 @@ if ($do_show=='showoneentry') {
 }
 
 /// Print the page header
-$strapplys = get_string('modulenameplural', 'apply');
+$strapplys = get_string('modulename_plural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
 $PAGE->set_heading(format_string($course->fullname));

@@ -98,7 +98,7 @@ $context = context_module::instance($cm->id);
 
 //
 if (!has_capability('mod/apply:submit', $context)) {
-	apply_print_error_messagebox('apply_is_not_used', $courseid);
+	apply_print_error_messagebox('apply_is_disable', $courseid);
 	exit;
 }
 
@@ -107,7 +107,7 @@ require_login($course, true, $cm);
 
 
 /// Print the page header
-$strapplys = get_string('modulenameplural', 'apply');
+$strapplys = get_string('modulename_plural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
 $PAGE->navbar->add(get_string('apply:submit', 'apply'));
@@ -256,7 +256,7 @@ echo $OUTPUT->heading(format_text($apply->name));
 if (isset($save_return) && $save_return=='saved') {
 	echo '<p align="center">';
 	echo '<b><font color="green">';
-	echo get_string('entries_saved', 'apply');
+	echo get_string('entry_saved', 'apply');
 	echo '</font></b>';
 	echo '</p>';
 

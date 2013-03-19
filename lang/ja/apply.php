@@ -18,35 +18,86 @@
 /**
  * Strings for component 'apply', language 'ja', branch 'MOODLE_24_STABLE'
  *
- * @package   apply
- * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @package   mod_apply
+ * @copyright Fumi.Iseki http://www.nsl.tuis.ac.jp/
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['modulename_plural'] = '申請フォーム';
+$string['modulename'] = '申請フォーム';
+$string['modulename_help'] = '各種の簡単な申請書を作成し，ユーザに提出させることができます');
+
+// Button
+$string['save_entry_button']  = ' 申請書を送信 ';
+$string['save_draft_button']  = ' 下書きとして保存 ';
+$string['submit_form_button'] = ' 申請する... ';
+
+// Menu
+$string['apply:submit'] = '申請の提出';
+//
+$string['apply:addinstance'] = '新しい申請フォームを追加する';
+$string['apply:applies'] = '申請を提出する';
+$string['apply:createprivatetemplate'] = 'プライベートテンプレートを作成する';
+$string['apply:createpublictemplate'] = 'パブリックテンプレートを作成する';
+$string['apply:deletesubmissions'] = '完了した送信を削除する';
+$string['apply:deletetemplate'] = 'テンプレートを削除する';
+$string['apply:edititems'] = 'アイテムを編集する';
+$string['apply:mapcourse'] = 'コースをグローバル申請フォームにマップする';
+$string['apply:receivemail'] = 'メール通知を受信する';
+$string['apply:view'] = '申請フォームを表示する';
+$string['apply:viewanalysepage'] = '回答送信後，分析ページを表示する';
+$string['apply:viewreports'] = 'レポートを表示する';
+
+// mod_form
+$string['name'] = '名称';
+$string['description'] = '説明';
+$string['apply_open']  = '開始日時';
+$string['apply_close'] = '終了日時';
+$string['apply_options'] = '申請フォームオプション';
+
+$string['email_notification'] = '通知メールを送信する';
+$string['email_notification_help'] = '有効にした場合，申請フォームの送信に関して管理者宛にメール通知されます';
+$string['multiple_submit'] = '複数申請';
+$string['multiple_submit_help'] = 'ユーザは無制限で申請フォームを送信することができます';
+
+$string['use_calendar'] = 'カレンダーに登録';
+$string['use_calendar_help'] = '申請書の提出期間をカレンダーに登録できます';
+
+// submit
+$string['entry_saved'] = 'あなたの申請書が送信されました';
+$string['saving_failed'] = '保存に失敗しました';
+$string['saving_failed_because_missing_or_false_values'] = '値が入力されていないか，正しくないため，保存に失敗しました';
+
+
+
+
+
+
+$string['name_required'] = '名称を入力してください';
+//
 
 $string['add_item']  = '項目を追加する';
 $string['add_items'] = '項目を追加する';
-$string['multiple_submit'] = '複数申請';
-$string['multiple_submit_help'] = 'ユーザは無制限で申請フォームを送信することができます．';
 
 $string['time_close'] = '終了日時';
 $string['time_close_help'] = 'あなたはユーザが質問回答のため申請フォームにアクセスできないようになる日時を指定することができます．チェックボックスがチェックされない場合，制限は定義されません．';
 $string['time_open'] = '開始日時';
 $string['time_open_help'] = 'あなたはユーザが質問回答のため申請フォームにアクセスできるようになる日時を指定することができます．チェックボックスがチェックされない場合，制限は定義されません．';
 
-$string['use_calendar'] = 'カレンダーと同期するか？';
-$string['use_calendar_help'] = '同期する？';
 
 $string['add_pagebreak'] = '改ページを追加する';
 
 $string['apply_is_not_open']  = '申請フォームはまだ利用できません';
 $string['apply_is_not_ready'] = '申請フォームはまだ準備ができていません';
 $string['apply_is_closed']    = '申請期間は終了しました';
-$string['apply_is_not_used']  = 'この申請を行う事はできません';
+$string['apply_is_disable']   = 'この申請を行う事はできません';
 $string['apply_is_already_submitted'] = 'あなたは既に申請済みです';
+$string['apply_is_enable']    = '申請を行う';
 
+
+$string['submit_new_apply']   = '新規申請を行う';
 
 $string['adjustment'] = '表示方向';
 $string['analysis'] = '分析';
@@ -115,7 +166,6 @@ $string['depending_help'] = '依存アイテムを使用して他のアイテム
 </ol>';
 $string['dependitem'] = 'アイテムに依存する';
 $string['dependvalue'] = '値に依存する';
-$string['description'] = '説明';
 $string['do_not_analyse_empty_submits'] = '空の送信を分析しない';
 $string['dropdown'] = '多肢選択 - 単一回答 (ドロップダウンリスト)';
 $string['dropdownlist'] = '多肢選択 - 単一回答 (ドロップダウン)';
@@ -124,9 +174,6 @@ $string['dropdown_values'] = '回答';
 $string['drop_apply'] = 'このコースから削除する';
 $string['edit_item']  = '申請書を編集する';
 $string['edit_items'] = '申請書を編集する ...';
-$string['emailnotification'] = '通知メールを送信する';
-$string['email_notification'] = '通知メールを送信する';
-$string['emailnotification_help'] = '有効にした場合，申請フォームの送信に関して管理者宛にメール通知されます．';
 $string['emailteachermail'] = '{$a->username} が申請フォーム「 {$a->apply} 」を完了しました．
 
 下記ページにて内容を閲覧できます:
@@ -134,32 +181,14 @@ $string['emailteachermail'] = '{$a->username} が申請フォーム「 {$a->appl
 {$a->url}';
 $string['emailteachermailhtml'] = '{$a->username} が申請フォーム「 {$a->apply} 」を完了しました．<br /><br />
 <a href="{$a->url}">このページ</a>で詳細を閲覧できます．';
-$string['entries_saved'] = 'あなたの回答が保存されました．ありがとうございます．';
 $string['export_questions'] = '質問をエクスポートする';
 $string['export_to_excel'] = 'Excelにエクスポートする';
-$string['apply:addinstance'] = '新しい申請フォームを追加する';
-$string['apply_close']  = '終了日時';
 $string['apply_closes'] = '終了日時';
 
 //
-$string['apply:applies'] = '申請を提出する';
 
-$string['apply:createprivatetemplate'] = 'プライベートテンプレートを作成する';
-$string['apply:createpublictemplate'] = 'パブリックテンプレートを作成する';
-$string['apply:deletesubmissions'] = '完了した送信を削除する';
-$string['apply:deletetemplate'] = 'テンプレートを削除する';
-$string['apply:edititems'] = 'アイテムを編集する';
 $string['apply_is_not_for_anonymous'] = '匿名ユーザは，申請フォームを利用できません．';
-
-
-$string['apply:mapcourse'] = 'コースをグローバル申請フォームにマップする';
-$string['apply_open']  = '開始日時';
 $string['apply_opens'] = '開始日時';
-$string['apply_options'] = '申請フォームオプション';
-$string['apply:receivemail'] = 'メール通知を受信する';
-$string['apply:view'] = '申請フォームを表示する';
-$string['apply:viewanalysepage'] = '回答送信後，分析ページを表示する';
-$string['apply:viewreports'] = 'レポートを表示する';
 $string['file'] = 'ファイル';
 $string['filter_by_course'] = 'コースでフィルタする';
 $string['handling_error'] = '申請フォーム処理中にエラーが発生しました．';
@@ -192,18 +221,6 @@ $string['maximal'] = '最大';
 $string['messageprovider:message'] = '申請フォームリマインダ';
 $string['messageprovider:submission'] = '申請フォーム通知';
 $string['mode'] = 'モード';
-$string['modulename'] = '申請フォーム';
-$string['modulename_help'] = '申請フォーム活動モジュールにおいて，教師は多肢選択，○/×またはテキスト入力を含む様々な質問タイプを使用して参加者から申請フォームを収集することのできる独自調査を作成することができます．
-
-必要であれば，申請フォーム回等を匿名にすることができます．そして，結果を学生すべてに表示，または教師のみに閲覧制限することができます．サイトフロントページの申請フォームは非ログインユーザにより入力させることもできます．
-
-申請フォーム活動は下記のように使用することができます:
-
-* 今後の参加者へのコンテンツ改善のためのコース評価として
-* 参加者がコースモジュール，イベント等に参加できるようにするため
-* コース選択，学校方針等のゲスト調査として
-* 学生が内容を匿名で報告できるイジメ対策として';
-$string['modulenameplural'] = '申請フォーム';
 $string['movedown_item'] = 'この質問を下げる';
 $string['move_here'] = 'ここに移動する';
 $string['move_item'] = 'この質問を移動する';
@@ -212,8 +229,8 @@ $string['multichoice'] = '多肢選択';
 $string['multichoicerated'] = '多肢選択 (評定)';
 $string['multichoicetype'] = '多肢選択タイプ';
 $string['multichoice_values'] = '多肢選択値';
-$string['name'] = '名称';
-$string['name_required'] = '名称を入力してください．';
+
+
 $string['next_page'] = '次のページ';
 $string['no_handler'] = 'アクションハンドラがありません:';
 $string['no_itemlabel'] = 'ラベルなし';
@@ -269,8 +286,6 @@ $string['save_as_new_item'] = '新しい質問として保存する';
 $string['save_as_new_template'] = '新しいテンプレートとして保存する';
 $string['save_entries'] = '申請書を送信';
 $string['save_item'] = '質問を保存する';
-$string['saving_failed'] = '保存に失敗しました．';
-$string['saving_failed_because_missing_or_false_values'] = '値が入力されていないか，正しくないため，保存に失敗しました．';
 $string['search_course'] = 'コースを検索する';
 $string['searchcourses'] = 'コースを検索する';
 $string['searchcourses_help'] = 'あなたがこの申請フォームに関連付けたいコースのコードまたは名称を使用して検索してください．';
