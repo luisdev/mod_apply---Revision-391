@@ -136,7 +136,7 @@ $string['apply:viewanalysepage'] = 'View the analysis page after submit';
 $string['apply:viewreports'] = 'View reports';
 
 $string['apply_is_not_for_anonymous'] = 'apply is not for anonymous';
-$string['apply_is_not_open'] = 'The apply is not open';
+$string['apply_is_not_open'] = 'The apply is not open yet';
 $string['apply_open']  = 'Open the apply at';
 $string['apply_opens'] = 'Apply opens';
 $string['apply_options'] = 'Apply options';

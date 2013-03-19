@@ -251,13 +251,10 @@ if ($apply_can_submit) {
 	$max_item_count = $DB->count_records('apply_item', array('apply_id'=>$apply->id));
 
 	//
+	// first time view
 	if ((!isset($SESSION->apply->is_started)) AND (!isset($save_return))) {
-		$submits = apply_get_all_submits($apply->id);
-echo "11111111111111";
-die();
-//		if (!$submits) {
-			//$submits = apply_set_tmp_values($submits);
-//		}
+		//
+		//
 	}
 
 
@@ -274,12 +271,7 @@ die();
 		echo '</font></b>';
 		echo '</p>';
 
-		if ($courseid) {
-			$url = $CFG->wwwroot.'/course/view.php?id='.$courseid;
-		}
-		else {
-			$url = $CFG->wwwroot.'/course/view.php?id='.$course->id;
-		}
+		$url = $CFG->wwwroot.'/course/view.php?id='.$courseid;
 		echo $OUTPUT->continue_button($url);
 	}
 
@@ -299,7 +291,9 @@ die();
 		}
 		//
 		if (is_array($apply_items)) {
+			//
 			require('submit_page.php');
+			//
 			$SESSION->apply->is_started = true;
 		}
 	}
