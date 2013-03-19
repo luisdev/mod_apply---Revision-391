@@ -57,7 +57,7 @@ add_to_log($course->id, 'apply', 'view', 'view.php?id='.$cm->id, $apply->id, $cm
 ///////////////////////////////////////////////////////////////////////////
 // Print the page header
 
-$strapplys = get_string('modulename_plural', 'apply');
+$strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
 $PAGE->set_url('/mod/apply/view.php', array('id'=>$cm->id, 'do_show'=>'view'));

@@ -82,7 +82,7 @@ if (isset($formdata->confirmdelete) AND $formdata->confirmdelete==1) {
 
 ///////////////////////////////////////////////////////////////////////////
 // Print the page header
-$strapplys = get_string('modulename_plural', 'apply');
+$strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
 $PAGE->navbar->add(get_string('delete_entry', 'apply'));

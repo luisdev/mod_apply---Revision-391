@@ -167,7 +167,7 @@ function apply_reset_userdata($data)
 	$dropapplys	= array();
 	$status 	= array();
 
-	$componentstr = get_string('modulename_plural', 'apply');
+	$componentstr = get_string('modulenameplural', 'apply');
 
 	foreach ($data as $key=>$value) {
 		switch(true) {
@@ -1082,6 +1082,47 @@ function apply_flush_draft_values($submit_id, $version)
 
 
 
+///////////////////////////////////////////////////////////////////////////////////
+//
+// User
+//
+
+function apply_get_submit_users($cm, $where='', array $params=null, $sort='', $start_page=false, $page_count=false)
+{
+    global $DB;
+
+//    $context = context_module::instance($cm->id);
+
+    $params = (array)$params;
+    $params['apply_id'] = $cm->instance;
+
+    if ($sort) $sortsql = ' ORDER BY '.$sort;
+	else	   $sortsql = '';
+
+    $ufields = user_picture::fields('u');
+    $sql = 'SELECT DISTINCT '.$ufields.', s.time_modified as completed_time_modified
+            	FROM {user} u, {apply_submit} s WHERE '.$where.' u.id=s.user_id AND s.apply_id=:apply_id';
+
+    if ($start_page===false or $page_count===false) {
+        $start_page = false;
+        $page_count = false;
+    }
+    return $DB->get_records_sql($sql, $params, $start_page, $page_count);
+}
+
+
+
+function apply_get_submit_users_count($cm)
+{
+    global $DB;
+
+    $params = array($cm->instance);
+    $sql = 'SELECT COUNT(u.id) FROM {user} u, {apply_submit} s WHERE u.id=s.user_id AND s.apply_id=? AND s.version>0';
+
+    return $DB->count_records_sql($sql, $params);
+}
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -1099,7 +1140,7 @@ function apply_send_email($cm, $apply, $course, $userid)
 	$teachers = apply_get_receivemail_users($cm->id);
 
 	if ($teachers) {
-		$strapplys = get_string('modulename_plural', 'apply');
+		$strapplys = get_string('modulenameplural', 'apply');
 		$strapply  = get_string('modulename', 'apply');
 		$submitted = get_string('submitted',  'apply');
 		$printusername = fullname($user);
@@ -1154,7 +1195,7 @@ function apply_send_email_text($info, $course)
 	$coursecontext = context_course::instance($course->id);
 	$courseshortname = format_string($course->shortname, true, array('context'=>$coursecontext));
 
-	$posttext  = $courseshortname.' -> '.get_string('modulename_plural', 'apply').' -> '.$info->apply."\n";
+	$posttext  = $courseshortname.' -> '.get_string('modulenameplural', 'apply').' -> '.$info->apply."\n";
 	$posttext .= '---------------------------------------------------------------------'."\n";
 	$posttext .= get_string('emailteachermail', 'apply', $info)."\n";
 	$posttext .= '---------------------------------------------------------------------'."\n";
@@ -1176,7 +1217,7 @@ function apply_send_email_html($info, $course, $cm)
 
 	$posthtml = '<p><font face="sans-serif">'.
 				'<a href="'.$course_url.'">'.$courseshortname.'</a> ->'.
-				'<a href="'.$apply_all_url.'">'.get_string('modulename_plural', 'apply').'</a> ->'.
+				'<a href="'.$apply_all_url.'">'.get_string('modulenameplural', 'apply').'</a> ->'.
 				'<a href="'.$apply_url.'">'.$info->apply.'</a></font></p>';
 	$posthtml.= '<hr /><font face="sans-serif">';
 	$posthtml.= '<p>'.get_string('emailteachermailhtml', 'apply', $info).'</p>';

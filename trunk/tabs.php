@@ -30,7 +30,7 @@ $inactive  = array();
 $activated = array();
 
 //some pages deliver the cmid instead the id
-if (isset($cmid) AND intval($cmid) AND $cmid>0) {
+if (isset($cmid) and intval($cmid) and $cmid>0) {
     $usedid = $cmid;
 }
 else {
@@ -45,24 +45,27 @@ if (!isset($current_tab)) {
     $current_tab = '';
 }
 
+// View my applications
 $viewurl = new moodle_url('/mod/apply/view.php', array('id'=>$usedid, 'do_show'=>'view'));
 $row[] = new tabobject('view', $viewurl->out(), get_string('overview', 'apply'));
 
-// Edit Item
-if (has_capability('mod/apply:edititems', $context)) {
-    $editurl = new moodle_url('/mod/apply/edit.php', array('id'=>$usedid, 'do_show'=>'edit'));
-    $row[] = new tabobject('edit', $editurl->out(), get_string('edit_items', 'apply'));
-
-    $templateurl = new moodle_url('/mod/apply/edit.php', array('id'=>$usedid, 'do_show'=>'templates'));
-    $row[] = new tabobject('templates', $templateurl->out(), get_string('templates', 'apply'));
-}
-
-// Viewe Report
+// View all Report
 if (has_capability('mod/apply:viewreports', $context)) {
     $url_params = array('id'=>$usedid, 'do_show'=>'showentries');
     $reporturl = new moodle_url('/mod/apply/show_entries.php', $url_params);
     $row[] = new tabobject('showentries', $reporturl->out(), get_string('show_entries', 'apply'));
 }
+
+// Edit Item and Template
+if (has_capability('mod/apply:edititems', $context)) {
+	//
+    $editurl = new moodle_url('/mod/apply/edit.php', array('id'=>$usedid, 'do_show'=>'edit'));
+    $row[] = new tabobject('edit', $editurl->out(), get_string('edit_items', 'apply'));
+	//
+    $templateurl = new moodle_url('/mod/apply/edit.php', array('id'=>$usedid, 'do_show'=>'templates'));
+    $row[] = new tabobject('templates', $templateurl->out(), get_string('templates', 'apply'));
+}
+
 
 if (count($row) > 1) {
     $tabs[] = $row;

@@ -25,9 +25,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['modulename_plural'] = '申請フォーム';
+//
+$string['modulenameplural'] = '申請フォーム';
 $string['modulename'] = '申請フォーム';
 $string['modulename_help'] = '各種の簡単な申請書を作成し，ユーザに提出させることができます';
+$string['description'] = '説明';
+
 
 // Button
 $string['save_entry_button']  = ' 申請書を送信 ';
@@ -52,14 +55,11 @@ $string['apply:viewreports'] = 'レポートを表示する';
 
 // mod_form
 $string['name'] = '名称';
-$string['description'] = '説明';
 $string['time_open']   = '開始日時';
-$string['time_close']  = '終了日時';
-//$string['apply_open']  = '開始日時';
-//$string['apply_close'] = '終了日時';
-$string['apply_options'] = '申請フォームオプション';
 $string['time_open_help']  = 'あなたはユーザが書類提出のため申請フォームにアクセスできるようになる日時を指定することができます．チェックボックスがチェックされない場合，制限は定義されません．';
+$string['time_close']  = '終了日時';
 $string['time_close_help'] = 'あなたはユーザが書類提出のため申請フォームにアクセスできないようになる日時を指定することができます．チェックボックスがチェックされない場合，制限は定義されません．';
+$string['apply_options'] = '申請フォームオプション';
 
 $string['email_notification'] = '通知メールを送信する';
 $string['email_notification_help'] = '有効にした場合，申請フォームの送信に関して管理者宛にメール通知されます';
@@ -77,6 +77,11 @@ $string['entry_saved'] = 'あなたの申請書が送信されました';
 $string['saving_failed'] = '保存に失敗しました';
 $string['saving_failed_because_missing_or_false_values'] = '値が入力されていないか，正しくないため，保存に失敗しました';
 
+// tabs
+$string['overview'] = '概要';
+$string['show_entries'] = '申請書の表示';
+$string['edit_items'] = '項目の編集';
+$string['templates'] = 'テンプレート';
 
 
 
@@ -176,7 +181,6 @@ $string['dropdownrated'] = 'ドロップダウンリスト (評定)';
 $string['dropdown_values'] = '回答';
 $string['drop_apply'] = 'このコースから削除する';
 $string['edit_item']  = '申請書を編集する';
-$string['edit_items'] = '申請書を編集する ...';
 $string['emailteachermail'] = '{$a->username} が申請フォーム「 {$a->apply} 」を完了しました．
 
 下記ページにて内容を閲覧できます:
@@ -254,7 +258,6 @@ $string['of'] = '/';
 $string['oldvaluespreserved'] = 'すべての古い問題および割り当てられた値は保持されます';
 $string['oldvalueswillbedeleted'] = '現在の問題およびすべてのユーザ回答が削除されます';
 $string['only_one_captcha_allowed'] = '1申請フォームあたり，1つのCAPTCHAのみ許可されています．';
-$string['overview'] = '概要';
 $string['page'] = 'ページ';
 $string['page_after_submit'] = '回答送信後のページ';
 $string['pagebreak'] = 'ページブレーク';
@@ -299,7 +302,6 @@ $string['separator_decimal'] = '.';
 $string['separator_thousand'] = ',';
 $string['show_all'] = 'すべてを表示する';
 $string['show_analysepage_after_submit'] = '回答送信後，分析ページを表示する';
-$string['show_entries'] = '申請を表示する';
 $string['show_entry'] = '申請を表示する';
 $string['show_nonrespondents'] = '未回答者を表示する';
 $string['site_after_submit'] = '回答送信後のサイト';
@@ -311,8 +313,6 @@ $string['subject'] = '件名';
 $string['switch_group'] = 'グループを切り替える';
 $string['switch_item_to_not_required'] = '必須回答を解除する';
 $string['switch_item_to_required'] = '必須回答にする';
-$string['template'] = 'テンプレート';
-$string['templates'] = 'テンプレート';
 $string['template_saved'] = 'テンプレートが保存されました．';
 $string['textarea'] = '長文回答';
 $string['textarea_height'] = '行数';

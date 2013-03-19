@@ -23,9 +23,12 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-$string['modulename_plural'] = 'Application Forms';
+//
+$string['modulenameplural'] = 'Application Forms';
 $string['modulename'] = 'Application Form';
 $string['modulename_help'] = 'You can make simple Application Forms and make a user submit it.';
+$string['description'] = 'Description';
+
 
 // Button
 $string['save_entry_button']  = ' Submit this Application ';
@@ -50,9 +53,6 @@ $string['apply:viewreports'] = 'View reports';
 
 // mod_form
 $string['name'] = 'Name';
-$string['description'] = 'Description';
-//$string['apply_open']  = 'Open the apply at';
-//$string['apply_close'] = 'Close the apply at';
 $string['time_open'] = 'Time to open';
 $string['time_open_help'] = 'You can specify times when the apply is accessible for people to answer the applications. If the checkbox is not ticked there is no limit defined.';
 $string['time_close'] = 'Time to close';
@@ -75,8 +75,17 @@ $string['entry_saved'] = 'Your applocation have been saved. Thank you.';
 $string['saving_failed'] = 'Saving failed';
 $string['saving_failed_because_missing_or_false_values'] = 'Saving failed because missing or false values.';
 
+// tabs
+$string['overview'] = 'Overview';
+$string['show_entries'] = 'Show Applications';
+$string['edit_items'] = 'Edit Items';
+$string['templates'] = 'Templates';
 
 
+
+
+
+$string['template'] = 'Template';
 
 
 $string['name_required'] = 'Name required';
@@ -165,7 +174,6 @@ $string['dropdownrated'] = 'Dropdownlist (rated)';
 $string['dropdown_values'] = 'Answers';
 $string['drop_apply'] = 'Remove from this course';
 $string['edit_item'] = 'Edit question';
-$string['edit_items'] = 'Edit questions';
 $string['emailteachermail'] = '{$a->username} has completed apply activity : \'{$a->apply}\'
 
 You can view it here:
@@ -249,7 +257,6 @@ $string['of'] = 'of';
 $string['oldvaluespreserved'] = 'All old questions and the assigned values will be preserved';
 $string['oldvalueswillbedeleted'] = 'The current questions and all your user\'s responses will be deleted';
 $string['only_one_captcha_allowed'] = 'Only one captcha is allowed in a apply';
-$string['overview'] = 'Overview';
 $string['page'] = 'Page';
 $string['page-mod-apply-x'] = 'Any apply module page';
 $string['page_after_submit'] = 'Page after submit';
@@ -294,7 +301,6 @@ $string['separator_decimal'] = '.';
 $string['separator_thousand'] = ',';
 $string['show_all'] = 'Show all';
 $string['show_analysepage_after_submit'] = 'Show analysis page after submit';
-$string['show_entries'] = 'Show responses';
 $string['show_entry'] = 'Show response';
 $string['show_nonrespondents'] = 'Show non-respondents';
 $string['site_after_submit'] = 'Site after submit';
@@ -306,8 +312,6 @@ $string['subject'] = 'Subject';
 $string['switch_group'] = 'Switch group';
 $string['switch_item_to_not_required'] = 'switch to: answer not required';
 $string['switch_item_to_required'] = 'switch to: answer required';
-$string['template'] = 'Template';
-$string['templates'] = 'Templates';
 $string['template_saved'] = 'Template saved';
 $string['textarea'] = 'Longer text answer';
 $string['textarea_height'] = 'Number of lines';
