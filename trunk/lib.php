@@ -944,9 +944,10 @@ function apply_get_item_value($submit_id, $item_id, $version=-1)
 {
 	global $DB;
 
-	if ($version==-1) {
+	if ($version<0) {
 		$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
 		if ($submit) $version = $submit->version;
+		else return null;
 	}
 
 	$params = array('submit_id'=>$submit_id, 'item_id'=>$item_id, 'version'=>$version);
@@ -1066,7 +1067,7 @@ function apply_flush_draft_values($submit_id, $version)
 	foreach($values as $value) {
         $val = $DB->get_record('apply_value', array('submit_id'=>$submit_id, 'item_id'=>$value->item_id, 'version'=>$version));
 		if ($val) {
-			$value->id 	   = $val->id;
+			$value->id = $val->id;
 			$value->version = $val->version;
 			$value->time_modified = $time_modified;
 			$DB->update_record('apply_value', $value);
