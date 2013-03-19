@@ -688,7 +688,7 @@ function apply_get_page_to_continue($apply_id, $user_id=0)
 		$usergroup  = 'GROUP BY as.user_id ';
 	}
 
-	$where = 'WHERE as.id=av.submit_id AND av.up_num=0 AND as.apply_id=:apply_id AND ai.id=av.item_id ';
+	$where = 'WHERE as.id=av.submit_id AND av.version=0 AND as.apply_id=:apply_id AND ai.id=av.item_id ';
 	$where.= $userselect.$usergroup;
 
 	//
@@ -716,7 +716,7 @@ function apply_get_valid_submits($apply_id, $user_id=0)
 {
 	global $DB;
 
-	$select = 'up_num>0 AND canceled=0 AND apply_id=? ';
+	$select = 'version>0 AND canceled=0 AND apply_id=? ';
 	$params = array($apply_id);
 
 	if ($user_id) {
@@ -863,10 +863,10 @@ function apply_exec_submit($submit_id)
 	$time = time();
 	$time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
 
-	$submit->up_num++;
+	$submit->version++;
 	$submit->time_modified = $time_modified;
 
-	apply_flush_draft_values ($submit->id, $submit->up_num);
+	apply_flush_draft_values ($submit->id, $submit->version);
 	apply_delete_draft_values($submit->id);
 
 	$DB->update_record('apply_submit', $submit);
@@ -940,16 +940,16 @@ function apply_check_values($first_item, $last_item)
 
 
 
-function apply_get_item_value($submit_id, $item_id, $up_num=-1) 
+function apply_get_item_value($submit_id, $item_id, $version=-1) 
 {
 	global $DB;
 
-	if ($up_num==-1) {
+	if ($version==-1) {
 		$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
-		if ($submit) $up_num = $submit->up_num;
+		if ($submit) $version = $submit->version;
 	}
 
-	$params = array('submit_id'=>$submit_id, 'item_id'=>$item_id, 'up_num'=>$up_num);
+	$params = array('submit_id'=>$submit_id, 'item_id'=>$item_id, 'version'=>$version);
 	$ret = $DB->get_field('apply_value', 'value', $params);
 
 	return $ret;
@@ -957,11 +957,11 @@ function apply_get_item_value($submit_id, $item_id, $up_num=-1)
 
 
 
-function apply_compare_item_value($submit_id, $item_id, $dependvalue, $up_num=-1)
+function apply_compare_item_value($submit_id, $item_id, $dependvalue, $version=-1)
 {
 	global $DB;
 
-	$dbvalue = apply_get_item_value($submit_id, $item_id, $up_num);
+	$dbvalue = apply_get_item_value($submit_id, $item_id, $version);
 	$item = $DB->get_record('apply_item', array('id'=>$item_id));
 
 	$itemobj = apply_get_item_class($item->typ);
@@ -993,7 +993,7 @@ function apply_update_draft_values($submit)
 
 	$items  = $DB->get_records('apply_item',  array('apply_id'=>$submit->apply_id));
 	if (!$items) return false;
-	$values = $DB->get_records('apply_value', array('submit_id'=>$submit->id, 'up_num'=>0));
+	$values = $DB->get_records('apply_value', array('submit_id'=>$submit->id, 'version'=>0));
 
 	$time = time();
 	$time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
@@ -1016,7 +1016,7 @@ function apply_update_draft_values($submit)
 		$newvalue = new stdClass();
 		$newvalue->submit_id = $submit->id;
 		$newvalue->item_id 	 = $item->id;
-		$newvalue->up_num 	 = 0;
+		$newvalue->version 	 = 0;
 		$newvalue->value 	 = $itemobj->create_value($itemvalue);
 		$newvalue->time_modified = $time_modified;
 
@@ -1048,31 +1048,31 @@ function apply_delete_draft_values($submit_id)
 {
 	global $DB;
 
-	$DB->delete_records('apply_value', array('submit_id'=>$submit_id, 'up_num'=>0));
+	$DB->delete_records('apply_value', array('submit_id'=>$submit_id, 'version'=>0));
 }
 
 
 
-function apply_flush_draft_values($submit_id, $up_num)
+function apply_flush_draft_values($submit_id, $version)
 {
 	global $DB;
 
-	$values = $DB->get_records('apply_value', array('submit_id'=>$submit_id, 'up_num'=>0));
+	$values = $DB->get_records('apply_value', array('submit_id'=>$submit_id, 'version'=>0));
 	if (!$values) return;
 
 	$time = time();
 	$time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
 
 	foreach($values as $value) {
-        $val = $DB->get_record('apply_value', array('submit_id'=>$submit_id, 'item_id'=>$value->item_id, 'up_num'=>$up_num));
+        $val = $DB->get_record('apply_value', array('submit_id'=>$submit_id, 'item_id'=>$value->item_id, 'version'=>$version));
 		if ($val) {
 			$value->id 	   = $val->id;
-			$value->up_num = $val->up_num;
+			$value->version = $val->version;
 			$value->time_modified = $time_modified;
 			$DB->update_record('apply_value', $value);
 		}
 		else {
-			$value->up_num = $up_num;
+			$value->version = $version;
 			$value->time_modified = $time_modified;
 			$DB->insert_record('apply_value', $value);
 		}
