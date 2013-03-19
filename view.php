@@ -100,6 +100,8 @@ echo format_module_intro('apply', $apply, $cm->id);
 echo $OUTPUT->box_end();
 
 
+$SESSION->apply->is_started = false;
+
 // submit-start
 if ($apply_submit_cap) {
 	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
