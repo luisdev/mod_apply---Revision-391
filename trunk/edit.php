@@ -157,8 +157,8 @@ $use_template_form->set_form_elements();
 $use_template_form->set_data(array('id'=>$id));
 
 /// Print the page header
-$strapplys = get_string("modulenameplural", "apply");
-$strapply  = get_string("modulename", "apply");
+$strapplys = get_string('modulename_plural', 'apply');
+$strapply  = get_string('modulename', 'apply');
 
 $PAGE->set_url('/mod/apply/edit.php', array('id'=>$cm->id, 'do_show'=>$do_show));
 $PAGE->set_heading(format_string($course->fullname));

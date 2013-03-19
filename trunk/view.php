@@ -57,7 +57,7 @@ add_to_log($course->id, 'apply', 'view', 'view.php?id='.$cm->id, $apply->id, $cm
 ///////////////////////////////////////////////////////////////////////////
 // Print the page header
 
-$strapplys = get_string('modulenameplural', 'apply');
+$strapplys = get_string('modulename_plural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
 $PAGE->set_url('/mod/apply/view.php', array('id'=>$cm->id, 'do_show'=>'view'));
@@ -105,7 +105,7 @@ $SESSION->apply->is_started = false;
 ///////////////////////////////////////////////////////////////////////////
 // Check
 if (!$apply_submit_cap) {
-	apply_print_error_messagebox('apply_is_not_used', $courseid);
+	apply_print_error_messagebox('apply_is_disable', $courseid);
 	exit;
 }
 
@@ -125,8 +125,8 @@ if ($apply_can_submit) {
 	$apply_is_not_open = $apply->time_open>$checktime;
 	$apply_is_closed   = $apply->time_close<$checktime and $apply->time_close>0;
 	if ($apply_is_not_open or $apply_is_closed) {
-    	if ($apply_is_not_open) apply_print_messagbox('apply_is_not_open', $continue_link);
-    	else                    apply_print_messagbox('apply_is_closed',   $continue_link);
+    	if ($apply_is_not_open) apply_print_messagebox('apply_is_not_open', $continue_link);
+    	else                    apply_print_messagebox('apply_is_closed',   $continue_link);
 		$apply_can_submit = false;
 	}
 }
@@ -136,32 +136,25 @@ if ($apply_can_submit) {
 	$submit_file = 'submit.php';
 	$url_params  = array('id'=>$id, 'courseid'=>$courseid, 'go_page'=>0);
 	$submit_url  = new moodle_url('/mod/apply/'.$submit_file, $url_params);
-	$submit_link = '<a href="'.$submit_url->out().'">'.get_string('submit_the_form', 'apply').'</a>';
-    apply_print_messagbox('apply_is_closed', $submit_link);
+	$submit_link = '<div align="center">'.$OUTPUT->single_button($submit_url->out(), get_string('submit_form_button', 'apply')).'</div>';
+    apply_print_messagebox('submit_new_apply', $submit_link);
 }
 
 
 
 ///////////////////////////////////////////////////////////////////////////
+//
+
+$submits = apply_get_all_submits($apply->id, $USER->id);
 
 
 /*
-
 	if (has_capability('mod/apply:viewreports', $context)) {
 		$submits = apply_get_all_submits($apply->id);
 	}
 	else {
 		$submits = apply_get_all_submits($apply->id, $USER->id);
 	}
-	if ($submits) {
-		if ($startpage = apply_get_page_to_continue($apply->id)) {
-			$submit_url->param('go_page', $startpage);
-		}
-		echo '<a href="'.$submit_url->out().'">'.get_string('continue_the_form', 'apply').'</a>';
-	}
-
-	echo '<a href="'.$submit_url->out().'">'.get_string('submit_the_form', 'apply').'</a>';
-	echo $OUTPUT->box_end();
 }
 */
 
