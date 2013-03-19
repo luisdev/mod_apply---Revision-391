@@ -43,7 +43,6 @@ if (($formdata = data_submitted()) AND !confirm_sesskey()) {
 	print_error('invalidsesskey');
 }
 
-
 // Page
 //if the use hit enter into a textfield so the form should not submit
 if ( isset($formdata->sesskey)	  	AND
@@ -159,7 +158,8 @@ if ($apply->multiple_submit==0) {
 if ($apply_can_submit) {
 	//
 	if ($prev_values==1) {
-		if (!isset($SESSION->apply->is_started) OR !$SESSION->apply->is_started==true) {
+		//if (!isset($SESSION->apply->is_started) or !$SESSION->apply->is_started==true) {
+		if (!$SESSION->apply->is_started) {
 			print_error('error', '', $CFG->wwwroot.'/course/view.php?id='.$courseid);
 		}
 
@@ -171,7 +171,7 @@ if ($apply_can_submit) {
 				if ($user_id>0) {
 					add_to_log($course->id, 'apply', 'start_apply', 'view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
 				}
-				if (!$go_next_page AND !$go_prev_page) {
+				if (!$go_next_page and !$go_prev_page) {
 					$prev_values = false;
 				}
 			}
@@ -252,15 +252,26 @@ if ($apply_can_submit) {
 
 	//
 	// first time view
-	if ((!isset($SESSION->apply->is_started)) AND (!isset($save_return))) {
-		//
-		//
+	if (!$SESSION->apply->is_started and !isset($save_return)) {
+		$params = array('apply_id'=>$apply->id, 'hasvalue'=>1);
+		$itemscount = $DB->count_records('apply_item', $params);
+		if ($itemscount<=0) {
+			echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
+			echo '<h2><font color="red">';
+			echo get_string('apply_is_not_open', 'apply');
+			echo '</font></h2>';
+			echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
+			echo $OUTPUT->box_end();
+			echo $OUTPUT->footer();
+			return;
+		}
 	}
 
 
 	///////////////////////////////////////////////////////////////////////////
 	// Print the main part of the page
 	//
+    $SESSION->apply->is_started = false;
 	echo $OUTPUT->heading(format_text($apply->name));
 
 	//
