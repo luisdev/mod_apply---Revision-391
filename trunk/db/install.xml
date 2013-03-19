@@ -29,9 +29,9 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="apply_id"/>
         <FIELD NAME="apply_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="user_id"/>
-        <FIELD NAME="user_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="apply_id" NEXT="up_num"/>
-        <FIELD NAME="up_num" TYPE="int" LENGTH="6" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="-1:Cancel, 1:New" PREVIOUS="user_id" NEXT="canceled"/>
-        <FIELD NAME="canceled" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="up_num" NEXT="ack"/>
+        <FIELD NAME="user_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="apply_id" NEXT="version"/>
+        <FIELD NAME="version" TYPE="int" LENGTH="6" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="0:Draft, 1:New, 2: 2nd, ..." PREVIOUS="user_id" NEXT="canceled"/>
+        <FIELD NAME="canceled" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="version" NEXT="ack"/>
         <FIELD NAME="ack" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="canceled" NEXT="ack_user"/>
         <FIELD NAME="ack_user" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="ack" NEXT="applied"/>
         <FIELD NAME="applied" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="ack_user" NEXT="title"/>
@@ -40,8 +40,7 @@
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for apply_completed" NEXT="apply_id"/>
-        <KEY NAME="apply_id" TYPE="foreign" FIELDS="apply_id" REFTABLE="apply_id" REFFIELDS="id" PREVIOUS="primary" NEXT="submit_key"/>
-        <KEY NAME="submit_key" TYPE="unique" FIELDS="apply_id, user_id, up_num" PREVIOUS="apply_id"/>
+        <KEY NAME="apply_id" TYPE="foreign" FIELDS="apply_id" REFTABLE="apply_id" REFFIELDS="id" PREVIOUS="primary"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="apply_item" COMMENT="apply_items" PREVIOUS="apply_submit" NEXT="apply_value">
@@ -70,16 +69,16 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="submit_id"/>
         <FIELD NAME="submit_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="item_id"/>
-        <FIELD NAME="item_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="submit_id" NEXT="up_num"/>
-        <FIELD NAME="up_num" TYPE="int" LENGTH="6" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="item_id" NEXT="value"/>
-        <FIELD NAME="value" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="up_num" NEXT="time_modified"/>
+        <FIELD NAME="item_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="submit_id" NEXT="version"/>
+        <FIELD NAME="version" TYPE="int" LENGTH="6" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="0:Draft, 1:New, 2:2nd, ..." PREVIOUS="item_id" NEXT="value"/>
+        <FIELD NAME="value" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="version" NEXT="time_modified"/>
         <FIELD NAME="time_modified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="value"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for apply_value" NEXT="submit_id"/>
         <KEY NAME="submit_id" TYPE="foreign" FIELDS="submit_id" REFTABLE="apply_submit" REFFIELDS="id" PREVIOUS="primary" NEXT="item_id"/>
         <KEY NAME="item_id" TYPE="foreign" FIELDS="item_id" REFTABLE="apply_item" REFFIELDS="id" PREVIOUS="submit_id" NEXT="value_key"/>
-        <KEY NAME="value_key" TYPE="unique" FIELDS="submit_id, item_id, up_num" PREVIOUS="item_id"/>
+        <KEY NAME="value_key" TYPE="unique" FIELDS="submit_id, item_id, version" PREVIOUS="item_id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="apply_template" COMMENT="templates of applystructures" PREVIOUS="apply_value">
