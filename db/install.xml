@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/apply/db" VERSION="20130319" COMMENT="XMLDB file for Moodle mod/apply"
+<XMLDB PATH="mod/apply/db" VERSION="20130320" COMMENT="XMLDB file for Moodle mod/apply"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -33,9 +33,9 @@
         <FIELD NAME="version" TYPE="int" LENGTH="6" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="0:Draft, 1:New, 2: 2nd, ..." PREVIOUS="user_id" NEXT="canceled"/>
         <FIELD NAME="canceled" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="version" NEXT="acked"/>
         <FIELD NAME="acked" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="canceled" NEXT="acked_user"/>
-        <FIELD NAME="acked_user" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="acked" NEXT="applied"/>
-        <FIELD NAME="applied" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="acked_user" NEXT="title"/>
-        <FIELD NAME="title" TYPE="char" LENGTH="32" NOTNULL="true" SEQUENCE="false" PREVIOUS="applied" NEXT="time_modified"/>
+        <FIELD NAME="acked_user" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="acked" NEXT="execed"/>
+        <FIELD NAME="execed" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="acked_user" NEXT="title"/>
+        <FIELD NAME="title" TYPE="char" LENGTH="32" NOTNULL="true" SEQUENCE="false" PREVIOUS="execed" NEXT="time_modified"/>
         <FIELD NAME="time_modified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="title"/>
       </FIELDS>
       <KEYS>

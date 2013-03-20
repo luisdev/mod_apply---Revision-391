@@ -180,8 +180,9 @@ if ($do_show=='show_entries') {
 			//
 			foreach ($students as $student) {
 				//userpicture and link to the profilepage
-				$fullname_url = $CFG->wwwroot.'/user/view.php?id='.$student->id.'&amp;course='.$courseid;
-				$profilelink = '<strong><a href="'.$fullname_url.'">'.fullname($student).'</a></strong>';
+				$name_url 	 = $CFG->wwwroot.'/user/view.php?id='.$student->id.'&amp;course='.$courseid;
+			//	$profilelink = '<strong><a href="'.$name_url.'">'.fullname($student).'</a></strong>';
+				$profilelink = '<strong><a href="'.$name_url.'">'.$student->lastname.'</a></strong>';
 
 				$submits = apply_get_valid_submits($apply->id, $student->id);
 				foreach ($submits as $submit) {
@@ -200,14 +201,14 @@ if ($do_show=='show_entries') {
 					//
 					$data[] = $submit->version;
 					//
-					if 		($submit->ack==0) $ack = get_string('acked_notyet',  'apply');
-					else if ($submit->ack==1) $ack = get_string('acked_accpept', 'apply');
-					else 					  $ack = get_string('acked_reject',  'apply');
+					if 		($submit->acked==0) $acked = get_string('acked_notyet',  'apply');
+					else if ($submit->acked==1) $acked = get_string('acked_accpept', 'apply');
+					else 					    $acked = get_string('acked_reject',  'apply');
 					$data[] = $ack;
 					//
-					if ($submit->applied) $exec = get_string('exec_done',   'apply');
-					else 				  $exec = get_string('exec_notyet', 'apply');
-					$data[] = $exec;
+					if ($submit->execed) $execed = get_string('exec_done',   'apply');
+					else 				 $execed = get_string('exec_notyet', 'apply');
+					$data[] = $execed;
 					//
 					if ($submit->canceled) $cancel = get_string('cancel_disable', 'apply');
 					else 				   $cancel = get_string('cancel_enable',  'apply');
