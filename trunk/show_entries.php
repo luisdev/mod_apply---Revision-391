@@ -44,10 +44,10 @@ $current_tab = $do_show;
 if (! $cm = get_coursemodule_from_id('apply', $id)) {
 	print_error('invalidcoursemodule');
 }
-if (! $course = $DB->get_record("course", array("id"=>$cm->course))) {
+if (! $course = $DB->get_record('course', array('id'=>$cm->course))) {
 	print_error('coursemisconf');
 }
-if (! $apply = $DB->get_record("apply", array("id"=>$cm->instance))) {
+if (! $apply = $DB->get_record('apply', array('id'=>$cm->instance))) {
 	print_error('invalidcoursemodule');
 }
 if (!$courseid) $courseid = $course->id;
@@ -58,6 +58,7 @@ $PAGE->set_url($url);
 $context = context_module::instance($cm->id);
 
 
+////////////////////////////////////////////////////////
 // Check
 require_login($course, true, $cm);
 
@@ -96,20 +97,18 @@ if ($do_show=='show_entries') {
 		// Setup Table
 		$baseurl = new moodle_url('/mod/apply/show_entries.php');
 		$baseurl->params(array('id'=>$id, 'do_show'=>$do_show, 'show_all'=>$show_all));
-
-		//$table_columns = array('userpic', 'fullname', 'title', 'modified', 'version', 'acked', 'applied', 'canceled', 'checkbox');
-		$table_columns = array('userpic', 'lasttname', 'title', 'modified', 'version', 'acked', 'applied', 'canceled', 'checkbox');
-
+		$name_pattern  = $apply->name_pattern;
+		$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'acked', 'execed', 'canceled', '');
 
 		$title_pic  = get_string('userpic');
-		$title_name = get_string('lastname');
-		$title_ttl  = get_string('title_title', 'apply');
+		$title_name = get_string($name_pattern);
+		$title_ttl  = get_string('title_title',	 'apply');
 		$title_date = get_string('date');
-		$title_ver  = get_string('title_version', 'apply');
-		$title_ack  = get_string('title_acked', 'apply');
-		$title_exec = get_string('title_exec', 'apply');
-		$title_cncl = get_string('cancel');
-		$title_chk  = get_string('title_check', 'apply');
+		$title_ver  = get_string('title_version','apply');
+		$title_ack  = get_string('title_ack',	 'apply');
+		$title_exec = get_string('title_exec',   'apply');
+		$title_cncl = get_string('title_cancel', 'apply');
+		$title_chk  = get_string('title_check',	 'apply');
 		$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_ack, $title_exec, $title_cncl, $title_chk, 'xxx');
 
 		// 管理者
@@ -176,13 +175,17 @@ if ($do_show=='show_entries') {
 			$table->print_html();
 		} 
 		else {
-			apply_print_initials_bar($table, false, true);
+			if 		($name_pattern=='firstname') apply_print_initials_bar($table, true, false);
+			else if ($name_pattern=='lastname')  apply_print_initials_bar($table, false, true);
 			//
 			foreach ($students as $student) {
 				//userpicture and link to the profilepage
 				$name_url 	 = $CFG->wwwroot.'/user/view.php?id='.$student->id.'&amp;course='.$courseid;
-			//	$profilelink = '<strong><a href="'.$name_url.'">'.fullname($student).'</a></strong>';
-				$profilelink = '<strong><a href="'.$name_url.'">'.$student->lastname.'</a></strong>';
+
+				if 		($name_pattern=='firstname') $user_name = $student->firstname;
+				else if ($name_pattern=='lastname')  $user_name = $student->lastname;
+				else								 $user_name = fullname($student); 
+				$profilelink = '<strong><a href="'.$name_url.'">'.$user_name.'</a></strong>';
 
 				$submits = apply_get_valid_submits($apply->id, $student->id);
 				foreach ($submits as $submit) {
@@ -204,15 +207,15 @@ if ($do_show=='show_entries') {
 					if 		($submit->acked==0) $acked = get_string('acked_notyet',  'apply');
 					else if ($submit->acked==1) $acked = get_string('acked_accpept', 'apply');
 					else 					    $acked = get_string('acked_reject',  'apply');
-					$data[] = $ack;
+					$data[] = $acked;
 					//
-					if ($submit->execed) $execed = get_string('exec_done',   'apply');
-					else 				 $execed = get_string('exec_notyet', 'apply');
+					if ($submit->execed) $execed = get_string('execed_done',   'apply');
+					else 				 $execed = get_string('execed_notyet', 'apply');
 					$data[] = $execed;
 					//
-					if ($submit->canceled) $cancel = get_string('cancel_disable', 'apply');
-					else 				   $cancel = get_string('cancel_enable',  'apply');
-					$data[] = $cancel;
+					if ($submit->canceled) $canceled = get_string('canceled_disable', 'apply');
+					else 				   $canceled = get_string('canceled_enable',  'apply');
+					$data[] = $canceled;
 					//
 					$data[] = '';
 

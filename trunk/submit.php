@@ -61,7 +61,7 @@ else {
 }
 
 // page
-if ($go_page<0 AND !$save_values) {
+if ($go_page<0 and !$save_values) {
 	if (isset($formdata->go_next_page)) {
 		$go_page = $last_page + 1;
 		$go_next_page = true;
@@ -132,8 +132,8 @@ if (!$apply->multiple_submit) {
 }
 
 $checktime = time();
-$apply_is_not_open = $apply->time_open>$checktime;
-$apply_is_closed   = $apply->time_close<$checktime and $apply->time_close>0;
+$apply_is_not_open =  $apply->time_open>$checktime;
+$apply_is_closed   = ($apply->time_close<$checktime and $apply->time_close>0);
 if ($apply_is_not_open or $apply_is_closed) {
 	if ($apply_is_not_open) apply_print_error_messagbox('apply_is_not_open', $courseid);
 	else 					apply_print_error_messagbox('apply_is_closed',   $courseid);

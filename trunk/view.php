@@ -110,7 +110,7 @@ if (!$apply_submit_cap) {
 $continue_link = $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
 //
 $apply_can_submit = true;
-if ($apply->multiple_submit==0 ) {
+if (!$apply->multiple_submit) {
 	if (apply_get_valid_submits_count($apply->id, $USER->id)>0) {
 		$apply_can_submit = false;
 		apply_print_messagebox('apply_is_already_submitted', $continue_link);
@@ -120,8 +120,8 @@ if ($apply->multiple_submit==0 ) {
 // Date
 if ($apply_can_submit) {
 	$checktime = time();
-	$apply_is_not_open = $apply->time_open>$checktime;
-	$apply_is_closed   = $apply->time_close<$checktime and $apply->time_close>0;
+	$apply_is_not_open =  $apply->time_open>$checktime;
+	$apply_is_closed   = ($apply->time_close<$checktime and $apply->time_close>0);
 	if ($apply_is_not_open or $apply_is_closed) {
     	if ($apply_is_not_open) apply_print_messagebox('apply_is_not_open', $continue_link);
     	else                    apply_print_messagebox('apply_is_closed',   $continue_link);

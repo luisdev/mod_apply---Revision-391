@@ -46,7 +46,7 @@ $PAGE->set_url($url);
 $usehtmleditor = can_use_html_editor();
 
 
-if (($formdata = data_submitted()) AND !confirm_sesskey()) {
+if (($formdata = data_submitted()) and !confirm_sesskey()) {
     print_error('invalidsesskey');
 }
 if (! $cm = get_coursemodule_from_id('apply', $cmid)) {

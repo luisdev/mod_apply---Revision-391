@@ -494,7 +494,7 @@ function apply_moveup_item($item)
 
 	$itembefore = null;
 	foreach ($items as $i) {
-		if ($i->id == $item->id) {
+		if ($i->id==$item->id) {
 			if (is_null($itembefore)) {
 				return true;
 			}
@@ -523,7 +523,7 @@ function apply_movedown_item($item)
 
 	$movedownitem = null;
 	foreach ($items as $i) {
-		if (!is_null($movedownitem) and $movedownitem->id == $item->id) {
+		if (!is_null($movedownitem) and $movedownitem->id==$item->id) {
 			$movedownitem->position = $i->position;
 			$i->position--;
 			apply_update_item($movedownitem);
@@ -549,10 +549,10 @@ function apply_move_item($moveitem, $pos)
 	if (is_array($items)) {
 		$index = 1;
 		foreach ($items as $item) {
-			if ($index == $pos) {
+			if ($index==$pos) {
 				$index++;
 			}
-			if ($item->id == $moveitem->id) {
+			if ($item->id==$moveitem->id) {
 				$moveitem->position = $pos;
 				apply_update_item($moveitem);
 				continue;
