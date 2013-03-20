@@ -56,9 +56,9 @@ $string['apply:viewreports'] = 'View reports';
 
 // Title
 $string['title_title'] = 'Title';
-$string['title_version'] = 'No.';
+$string['title_version'] = 'Ver.';
 $string['title_ack']   = 'Recept.';
-$string['title_exec']  = 'Exec.';
+$string['title_exec']  = 'Exec. ';
 $string['title_class'] = 'Class';
 $string['title_check'] = 'Check';
 
@@ -101,9 +101,9 @@ $string['saving_failed'] = 'Saving failed';
 $string['saving_failed_because_missing_or_false_values'] = 'Saving failed because missing or false values.';
 
 
-
 // show_entries
 $string['delete_entry']  = 'Delete';
+$string['user_pic']  	 = 'Picture';
 $string['acked_notyet']  = 'Not Yet';
 $string['acked_accept']  = 'Accept';
 $string['acked_reject']  = 'Reject';
@@ -114,6 +114,8 @@ $string['class_newpost'] = 'New Post';
 $string['class_update']  = 'Update';
 $string['class_cancel']  = 'Cancel';
 $string['no_title'] = 'No Title';
+$string['show_all'] = 'Show all {$a}';
+$string['show_perpage'] = 'Show {$a} per page';
 
 
 // edit_item
@@ -340,7 +342,6 @@ $string['send'] = 'send';
 $string['send_message'] = 'send message';
 $string['separator_decimal'] = '.';
 $string['separator_thousand'] = ',';
-$string['show_all'] = 'Show all';
 $string['show_analysepage_after_submit'] = 'Show analysis page after submit';
 $string['show_entry'] = 'Show response';
 $string['show_nonrespondents'] = 'Show non-respondents';

@@ -48,7 +48,7 @@ define('APPLY_THOUSAND',		 ',');
 define('APPLY_RESETFORM_RESET',	 'apply_reset_data_');
 define('APPLY_RESETFORM_DROP',	 'apply_drop_apply_');
 define('APPLY_MAX_PIX_LENGTH',	  400);
-define('APPLY_DEFAULT_PAGE_COUNT', 20);
+define('APPLY_DEFAULT_PAGE_COUNT', 10);
 
 
 
@@ -721,6 +721,29 @@ function apply_get_page_to_continue($apply_id, $user_id=0)
 // Submit Handling
 //
 
+function apply_get_submits_select($apply_id, $where='', array $params=null, $sort='', $start_page=false, $page_count=false)
+{
+	global $DB;
+
+	$params = (array)$params;
+	$params['apply_id'] = $apply_id;
+
+	if ($sort) $sortsql = ' ORDER BY '.$sort;
+	else	   $sortsql = '';
+
+	$sql = 'SELECT s.* FROM {user} u, {apply_submit} s WHERE '.$where.' u.id=s.user_id AND s.apply_id=:apply_id AND s.version>0 '.$sortsql;
+
+	if ($start_page===false or $page_count===false) {
+		$start_page = false;
+		$page_count = false;
+	}
+
+	$ret = $DB->get_records_sql($sql, $params, $start_page, $page_count);
+	return $ret;
+}
+
+
+
 function apply_get_valid_submits($apply_id, $user_id=0)
 {
 	global $DB;
@@ -779,8 +802,6 @@ function apply_create_submit($apply_id, $user_id=0)
 	global $DB, $USER;
 
 	if (!$user_id) $user_id = $USER->id;
-//	$time = time();
-//	$time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
 
 	$submit = new stdClass();
 	$submit->apply_id		= $apply_id;
@@ -849,12 +870,16 @@ function apply_delete_all_submits($apply_id)
 {
 	global $DB;
 
+	$ret = false;
+
 	$submits = $DB->get_records('apply_submit', array('apply_id'=>$apply_id));
-	if (!$submits) return;
+	if (!$submits) return $ret;
 
 	foreach ($submits as $submit) {
-		apply_delete_submit($submit->id);
+		$ret = apply_delete_submit($submit->id);
 	}
+
+	return $ret;
 }
 
 
@@ -864,16 +889,19 @@ function apply_exec_submit($submit_id)
 	global $DB;
 
 	$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
-	if (!$submit) return;
+	if (!$submit) return false;
 
+	$title = '';
 	$submit->version++;
 	$submit->time_modified = time();
 
 	if 		($submit->version==1) $submit->class = APPLY_CLASS_NEW;
 	else if ($submit->version >1) $submit->class = APPLY_CLASS_UPDATE;
 
-	apply_flush_draft_values ($submit->id, $submit->version);
+	apply_flush_draft_values ($submit->id, $submit->version, $title);
 	apply_delete_draft_values($submit->id);
+
+	if ($title!='') $submit->title = $title;
 	$ret = $DB->update_record('apply_submit', $submit);
 
 	return $ret;
@@ -983,8 +1011,9 @@ function apply_save_draft_values($apply_id, $submit_id, $user_id=0)
 
 	$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
 	if (!$submit) $submit = apply_create_submit($apply_id, $user_id);
-
+	//
 	$submit_id = apply_update_draft_values($submit);
+
 	return $submit_id;
 }
 
@@ -1051,13 +1080,14 @@ function apply_delete_draft_values($submit_id)
 
 
 
-function apply_flush_draft_values($submit_id, $version)
+function apply_flush_draft_values($submit_id, $version, &$title)
 {
 	global $DB;
 
 	$values = $DB->get_records('apply_value', array('submit_id'=>$submit_id, 'version'=>0));
 	if (!$values) return;
 
+	$title = '';
 	$time_modified = time();
 
 	foreach($values as $value) {
@@ -1073,8 +1103,19 @@ function apply_flush_draft_values($submit_id, $version)
 			$value->time_modified = $time_modified;
 			$DB->insert_record('apply_value', $value);
 		}
+
+		//
+		if ($title=='') {
+			$item = $DB->get_record('apply_item', array('id'=>$value->item_id));
+			if ($item) {
+				if ($item->label=='title' and $item->typ=='textfield') {
+					$title = $value->value;
+				}
+			}
+		}
 	}
 }
+
 
 
 
@@ -1083,20 +1124,35 @@ function apply_flush_draft_values($submit_id, $version)
 // Users
 //
 
-function apply_get_submitted_users_info($cm, $where='', array $params=null, $sort='', $start_page=false, $page_count=false)
+function apply_get_user_info($user_id)
+{
+	global $DB;
+
+	$ufields = user_picture::fields('u');	// u.id, u.picture, u.firstname, u.lastname, u.imagealt, u.email
+	$sql = 'SELECT '.$ufields.' FROM {user} u WHERE u.id='.$user_id;
+
+	$ret = $DB->get_record_sql($sql);
+	return $ret;
+}
+
+
+
+/*
+function apply_get_submitted_users($apply_id, $where='', array $params=null, $sort='', $start_page=false, $page_count=false)
 {
 	global $DB;
 
 	$params = (array)$params;
-	$params['apply_id'] = $cm->instance;
+	$params['apply_id'] = $apply_id;
 
 	if ($sort) $sortsql = ' ORDER BY '.$sort;
 	else	   $sortsql = '';
 
 	$ufields = user_picture::fields('u');	// u.id, u.picture, u.firstname, u.lastname, u.imagealt, u.email
-	$sql = 'SELECT DISTINCT '.$ufields.' FROM {user} u, {apply_submit} s '. // 重複削除
+	$sql = 'SELECT '.$ufields.', s.id as submit_id FROM {user} u, {apply_submit} s '.
 				'WHERE '.$where.' u.id=s.user_id AND s.apply_id=:apply_id AND s.version>0 '.$sortsql;
 
+print $sql;
 	if ($start_page===false or $page_count===false) {
 		$start_page = false;
 		$page_count = false;
@@ -1105,9 +1161,11 @@ function apply_get_submitted_users_info($cm, $where='', array $params=null, $sor
 	$ret = $DB->get_records_sql($sql, $params, $start_page, $page_count);
 	return $ret;
 }
+*/
 
 
 
+/*
 function apply_get_submitted_users_count($cm)
 {
 	global $DB;
@@ -1117,7 +1175,7 @@ function apply_get_submitted_users_count($cm)
 
 	return $DB->count_records_sql($sql, $params);
 }
-
+*/
 
 
 
@@ -1269,6 +1327,11 @@ function apply_print_messagebox($str, $append=null, $color='steel blue')
 
 
 
+///////////////////////////////////////////////////////////////////////////////////
+//
+// Table
+//
+
 function apply_print_initials_bar($table, $first=true, $last=true)
 {
 	$alpha = explode(',', get_string('alphabet', 'langconfig'));
@@ -1307,5 +1370,23 @@ function apply_print_one_initials_bar($table, $alpha, $current, $class, $title, 
 		}
 	}
 	echo html_writer::end_tag('div');
+}
+
+
+
+function apply_get_primary_sort($table_sorts, $post_sort)
+{
+	if (!$post_sort)   return '';
+	if (!$table_sorts) return $post_sort;
+
+
+	$tsorts = explode(',', $table_sorts);
+	if (!$tsorts) return '';
+
+	foreach ($tsorts as $tsort) {
+		if (!strncmp($tsort, $post_sort, strlen($post_sort))) {
+			return $tsort;
+		}	
+	}
 }
 

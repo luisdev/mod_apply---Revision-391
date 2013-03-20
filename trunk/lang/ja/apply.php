@@ -58,7 +58,7 @@ $string['apply:viewreports'] = 'レポートを表示する';
 
 // Title
 $string['title_title'] = 'タイトル';
-$string['title_version'] = 'No.';
+$string['title_version'] = 'Ver.';
 $string['title_class'] = '区分';
 $string['title_ack']   = '受付';
 $string['title_exec']  = '処理';
@@ -105,6 +105,7 @@ $string['saving_failed_because_missing_or_false_values'] = '値が入力され�
 
 // show_entries
 $string['delete_entry']  = '削除';
+$string['user_pic']   	 = '画像';
 $string['acked_notyet']  = '未処理';
 $string['acked_accept']  = '受理';
 $string['acked_reject']  = '却下';
@@ -115,6 +116,8 @@ $string['class_newpost'] = '新規';
 $string['class_update']  = '更新';
 $string['class_cancel']  = '取消';
 $string['no_title'] = 'タイトルなし';
+$string['show_all'] = '{$a} 個のデータ全てを表示する';
+$string['show_perpage'] = '1ページあたりの表示数を {$a} にする';
 
 
 // edit_item
@@ -134,7 +137,6 @@ $string['textfield_size'] = 'テキストフィールド幅';
 
 
 
-$string['show_all'] = 'すべてを表示する';
 
 
 

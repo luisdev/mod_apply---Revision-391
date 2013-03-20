@@ -152,7 +152,7 @@ if (!$SESSION->apply->is_started) {
 
 ///////////////////////////////////////////////////////////////////////////
 //
-if ($prev_values==1) {
+if ($prev_values) {
 	//if (!isset($SESSION->apply->is_started) or !$SESSION->apply->is_started==true) {
 	if (!$SESSION->apply->is_started) {
 		//print_error('error', '', $CFG->wwwroot.'/course/view.php?id='.$courseid);
@@ -197,8 +197,8 @@ if ($prev_values==1) {
 //saving the items
 if ($save_values and !$prev_values) {
 	//
-	$user_id   = $USER->id; 
-	$submit_id = apply_save_draft_values($apply->id, $submit_id, $user_id);
+	//$user_id   = $USER->id; 
+	//$submit_id = apply_save_draft_values($apply->id, $submit_id, $user_id);
 	apply_exec_submit($submit_id);
 
 	if ($submit_id) {
