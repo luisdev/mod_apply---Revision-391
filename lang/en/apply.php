@@ -35,6 +35,7 @@ $string['save_entry_button']  = ' Submit this Application ';
 $string['save_draft_button']  = ' Save as Draft ';
 $string['submit_form_button'] = ' Sumbit... ';
 
+
 // Menu
 $string['apply:submit'] = 'Submit a Application';
 //
@@ -50,6 +51,22 @@ $string['apply:receivemail'] = 'Receive email notification';
 $string['apply:view'] = 'View a apply';
 $string['apply:viewanalysepage'] = 'View the analysis page after submit';
 $string['apply:viewreports'] = 'View reports';
+
+
+// Title
+$string['title_title'] = 'Title';
+$string['title_version'] = 'Ver.';
+$string['title_acked'] = 'Ack.';
+$string['title_exec']  = 'Exec.';
+$string['title_check'] = 'Check';
+
+
+// tabs
+$string['overview'] = 'Overview';
+$string['show_entries'] = 'Show Applications';
+$string['edit_items'] = 'Edit Items';
+$string['templates'] = 'Templates';
+
 
 // mod_form
 $string['name'] = 'Name';
@@ -67,21 +84,27 @@ $string['multiple_submit_help'] = 'If enabled for anonymous surveys, users can s
 $string['use_calendar'] = 'Use Calendar';
 $string['use_calendar_help'] = 'The period for submission of an application is registered into a calendar.';
 
+
 // view
 $string['entries_list_title'] = 'List of submitted Applications';
+
 
 // submit
 $string['entry_saved'] = 'Your applocation have been saved. Thank you.';
 $string['saving_failed'] = 'Saving failed';
 $string['saving_failed_because_missing_or_false_values'] = 'Saving failed because missing or false values.';
 
-// tabs
-$string['overview'] = 'Overview';
-$string['show_entries'] = 'Show Applications';
-$string['edit_items'] = 'Edit Items';
-$string['templates'] = 'Templates';
 
-
+// show_entries
+$string['delete_entry'] = 'Delete Entry';
+$string['acked_notyet'] = 'Not Yet';
+$string['acked_accept'] = 'Accept';
+$string['acked_reject'] = 'Reject';
+$string['exec_done'] = 'Done';
+$string['exec_notyet'] = 'Not Yet';
+$string['cancel_disable']  = 'Canceled';
+$string['cancel_enable']   = 'Enable';
+$string['no_title'] = 'No Title';
 
 
 
@@ -142,7 +165,6 @@ $string['continue_the_form'] = 'Continue the form';
 $string['count_of_nums'] = 'Count of numbers';
 $string['courseid'] = 'courseid';
 $string['creating_templates'] = 'Save these questions as a new template';
-$string['delete_entry'] = 'Delete entry';
 $string['delete_item'] = 'Delete question';
 $string['delete_old_items'] = 'Delete old items';
 $string['delete_template'] = 'Delete template';
