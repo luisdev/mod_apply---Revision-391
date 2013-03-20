@@ -770,14 +770,14 @@ function apply_create_submit($apply_id, $user_id=0)
 	global $DB, $USER;
 
 	if (!$user_id) $user_id = $USER->id;
-	$time = time();
-	$time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
+//	$time = time();
+//	$time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
 
 	$submit = new stdClass();
 	$submit->apply_id		= $apply_id;
 	$submit->user_id		= $user_id;
 	$submit->title			= '';
-	$submit->time_modified  = $time_modified;
+	$submit->time_modified  = time();
 
 	$submit_id = $DB->insert_record('apply_submit', $submit);
 	$submit    = $DB->get_record('apply_submit', array('id'=>$submit_id));
@@ -802,11 +802,8 @@ function apply_update_submit($submit)
 	if (!$sbmt->id) return false; 
 	
 	//
-	$time = time();
-	$time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
-
 	$submit->id = $sbmt->id;
-	$submit->time_modified = $time_modified;
+	$submit->time_modified = time();
 	$DB->update_record('apply_submit', $submit);
 
 	return $submit->id;
@@ -860,15 +857,11 @@ function apply_exec_submit($submit_id)
 	$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
 	if (!$submit) return;
 
-	$time = time();
-	$time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
-
 	$submit->version++;
-	$submit->time_modified = $time_modified;
+	$submit->time_modified = time();
 
 	apply_flush_draft_values ($submit->id, $submit->version);
 	apply_delete_draft_values($submit->id);
-
 	$DB->update_record('apply_submit', $submit);
 
 	return;
@@ -883,12 +876,8 @@ function apply_calcel_submit($submit_id)
 	$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
 	if (!$submit) return;
 
-	$time = time();
-	$time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
-
 	$submit->canceled = 1;
-	$submit->time_modified = $time_modified;
-
+	$submit->time_modified = time();
 	$DB->update_record('apply_submit', $submit);
 
 	return;
@@ -996,8 +985,7 @@ function apply_update_draft_values($submit)
 	if (!$items) return false;
 	$values = $DB->get_records('apply_value', array('submit_id'=>$submit->id, 'version'=>0));
 
-	$time = time();
-	$time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
+	$time_modified = time();
 
 	foreach ($items as $item) {
 		if (!$item->hasvalue) continue;
@@ -1032,12 +1020,8 @@ function apply_update_draft_values($submit)
 			}
 		}
 		//
-		if ($exist) {
-			$DB->update_record('apply_value', $newvalue);
-		}
-		else {
-			$DB->insert_record('apply_value', $newvalue);
-		}
+		if ($exist) $DB->update_record('apply_value', $newvalue);
+		else 		$DB->insert_record('apply_value', $newvalue);
 	}
 
 	return $submit->id;
@@ -1061,8 +1045,7 @@ function apply_flush_draft_values($submit_id, $version)
 	$values = $DB->get_records('apply_value', array('submit_id'=>$submit_id, 'version'=>0));
 	if (!$values) return;
 
-	$time = time();
-	$time_modified = mktime(0, 0, 0, date('m', $time), date('d', $time), date('Y', $time));
+	$time_modified = time();
 
 	foreach($values as $value) {
         $val = $DB->get_record('apply_value', array('submit_id'=>$submit_id, 'item_id'=>$value->item_id, 'version'=>$version));
@@ -1130,13 +1113,13 @@ function apply_get_submit_users_count($cm)
 // E-Mail
 //
 
-function apply_send_email($cm, $apply, $course, $userid)
+function apply_send_email($cm, $apply, $course, $user_id)
 {
 	global $CFG, $DB;
 
 	if ($apply->email_notification==0) return;
 
-	$user = $DB->get_record('user', array('id'=>$userid));
+	$user = $DB->get_record('user', array('id'=>$user_id));
 	$teachers = apply_get_receivemail_users($cm->id);
 
 	if ($teachers) {
@@ -1149,7 +1132,7 @@ function apply_send_email($cm, $apply, $course, $userid)
 			$info = new stdClass();
 			$info->username = $printusername;
 			$info->apply = format_string($apply->name, true);
-			$info->url= $CFG->wwwroot.'/mod/apply/show_entries.php?id='.$cm->id.'&userid='.$userid.'&do_show=showentries';
+			$info->url= $CFG->wwwroot.'/mod/apply/show_entries.php?id='.$cm->id.'&user_id='.$user_id.'&do_show=show_entries';
 
 			$postsubject = $submitted.': '.$info->username.' -> '.$apply->name;
 			$posttext = apply_send_email_text($info, $course);

@@ -35,11 +35,11 @@ if (($formdata = data_submitted()) AND !confirm_sesskey()) {
     print_error('invalidsesskey');
 }
 
-$do_show = optional_param('do_show', 'edit', PARAM_ALPHA);
-$moveupitem = optional_param('moveupitem', false, PARAM_INT);
+$do_show 	  = optional_param('do_show', 'edit', PARAM_ALPHAEXT);
+$moveupitem   = optional_param('moveupitem', false, PARAM_INT);
 $movedownitem = optional_param('movedownitem', false, PARAM_INT);
-$moveitem = optional_param('moveitem', false, PARAM_INT);
-$movehere = optional_param('movehere', false, PARAM_INT);
+$moveitem 	  = optional_param('moveitem', false, PARAM_INT);
+$movehere 	  = optional_param('movehere', false, PARAM_INT);
 $switchitemrequired = optional_param('switchitemrequired', false, PARAM_INT);
 
 $current_tab = $do_show;

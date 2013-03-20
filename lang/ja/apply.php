@@ -83,7 +83,13 @@ $string['show_entries'] = '申請書の表示';
 $string['edit_items'] = '項目の編集';
 $string['templates'] = 'テンプレート';
 
+// show_entries
+$string['delete_entry'] = '削除';
 
+
+
+
+$string['show_all'] = 'すべてを表示する';
 
 
 
@@ -144,7 +150,6 @@ $string['continue_the_form'] = 'フォームを続ける';
 $string['count_of_nums'] = '桁数';
 $string['courseid'] = 'コースID';
 $string['creating_templates'] = 'これらの質問を新しいテンプレートとして保存する';
-$string['delete_entry'] = 'エントリを削除する';
 $string['delete_item'] = '質問を削除する';
 $string['delete_old_items'] = '古いアイテムを削除する';
 $string['delete_template'] = 'テンプレートを削除する';
@@ -300,7 +305,6 @@ $string['send'] = '送信';
 $string['send_message'] = 'メッセージを送信する';
 $string['separator_decimal'] = '.';
 $string['separator_thousand'] = ',';
-$string['show_all'] = 'すべてを表示する';
 $string['show_analysepage_after_submit'] = '回答送信後，分析ページを表示する';
 $string['show_entry'] = '申請を表示する';
 $string['show_nonrespondents'] = '未回答者を表示する';

@@ -22,8 +22,8 @@
  * @package mod_apply (modified from mod_feedback that by Andreas Grabs)
  */
 
-require_once("../../config.php");
-require_once("lib.php");
+require_once('../../config.php');
+require_once('lib.php');
 require_once($CFG->libdir.'/tablelib.php');
 
 
@@ -31,9 +31,9 @@ require_once($CFG->libdir.'/tablelib.php');
 //get the params
 $id		  = required_param('id', PARAM_INT);
 $user_id  = optional_param('user_id', false, PARAM_INT);
-$do_show  = required_param('do_show', PARAM_ALPHA);
+$do_show  = required_param('do_show', PARAM_ALPHAEXT);
 $perpage  = optional_param('perpage', APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);  // how many per page
-$showall  = optional_param('showall', false, PARAM_INT);  // should we show all users
+$show_all = optional_param('show_all', false, PARAM_INT);  // should we show all users
 $courseid = optional_param('courseid', 0, PARAM_INT);
 
 $current_tab = $do_show;
@@ -52,16 +52,15 @@ if (! $apply = $DB->get_record("apply", array("id"=>$cm->instance))) {
 }
 if (!$courseid) $courseid = $course->id;
 
-
 $url = new moodle_url('/mod/apply/show_entries.php', array('id'=>$cm->id, 'do_show'=>$do_show));
 $PAGE->set_url($url);
 
 $context = context_module::instance($cm->id);
 
-//
+
+// Check
 require_login($course, true, $cm);
 
-//
 $formdata = data_submitted();
 if ($formdata) {
 	if (!confirm_sesskey()) {
@@ -77,11 +76,10 @@ require_capability('mod/apply:viewreports', $context);
 
 ////////////////////////////////////////////////////////
 //get the responses of given user
-if ($do_show=='showoneentry') {
-	//get the applyitems
-	$applyitems = $DB->get_records('apply_item', array('apply_id'=>$apply->id), 'position');
+if ($do_show=='show_one_entry') {
 	$params = array('apply_id'=>$apply->id, 'user_id'=>$user_id);
-	$applycompleted = $DB->get_record('apply_submit', $params); //arb
+	$apply_items   = $DB->get_records('apply_item', array('apply_id'=>$apply->id), 'position');
+	$apply_submits = $DB->get_records('apply_submit', $params); 
 }
 
 /// Print the page header
@@ -100,43 +98,30 @@ require('tabs.php');
 
 ////////////////////////////////////////////////////////
 /// Print the links to get responses and analysis
-if ($do_show=='showentries') {
-	//print the link to analysis
+if ($do_show=='show_entries') {
 	if (has_capability('mod/apply:viewreports', $context)) {
-/*
-		//get the effective groupmode of this course and module
-		if (isset($cm->groupmode) && empty($course->groupmodeforce)) {
-			$groupmode =  $cm->groupmode;
-		}
-		else {
-			$groupmode = $course->groupmode;
-		}
-
-		$groupselect = groups_print_activity_menu($cm, $url->out(), true);
-		$mygroupid = groups_get_activity_group($cm);
-*/
-
 		// preparing the table for output
 		$baseurl = new moodle_url('/mod/apply/show_entries.php');
-		$baseurl->params(array('id'=>$id, 'do_show'=>$do_show, 'showall'=>$showall));
+		$baseurl->params(array('id'=>$id, 'do_show'=>$do_show, 'show_all'=>$show_all));
 
-		$tablecolumns = array('userpic', 'fullname', 'completed_time_modified');
-		$tableheaders = array(get_string('userpic'), get_string('fullnameuser'), get_string('date'));
+		$table_columns = array('userpic', 'fullname', 'title', 'time_modified', 'version', 'acked', 'applied', 'canceled', 'checkbox');
+		$table_headers = array(get_string('userpic'), get_string('fullnameuser'), 'Title', get_string('date'), 'ver.',
+							  'acked', 'applied', 'canceled', 'check');
 
 		if (has_capability('mod/apply:deletesubmissions', $context)) {
-			$tablecolumns[] = 'deleteentry';
-			$tableheaders[] = '';
+			$table_columns[] = 'delete_entry';
+			$table_headers[] = '';
 		}
 
-		$table = new flexible_table('apply-showentry-list-'.$course->id);
+		$table = new flexible_table('apply-show_entry-list-'.$course->id);
 
-		$table->define_columns($tablecolumns);
-		$table->define_headers($tableheaders);
+		$table->define_columns($table_columns);
+		$table->define_headers($table_headers);
 		$table->define_baseurl($baseurl);
 
 		$table->sortable(true, 'lastname', SORT_DESC);
 		$table->set_attribute('cellspacing', '0');
-		$table->set_attribute('id', 'showentrytable');
+		$table->set_attribute('id', 'show_entrytable');
 		$table->set_attribute('class', 'generaltable generalbox');
 		$table->set_control_variables(array(
 					TABLE_VAR_SORT  => 'ssort',
@@ -146,35 +131,16 @@ if ($do_show=='showentries') {
 					));
 		$table->setup();
 
-		if ($table->get_sql_sort()) {
-			$sort = $table->get_sql_sort();
-		}
-		else {
-			$sort = '';
-		}
+		if ($table->get_sql_sort()) $sort = $table->get_sql_sort();
+		else 						$sort = '';
 
 		list($where, $params) = $table->get_sql_where();
 		if ($where) $where .= ' AND';
 
-		//get students in conjunction with groupmode
-/*
-		if ($groupmode > 0) {
-			if ($mygroupid > 0) {
-				$usedgroupid = $mygroupid;
-			}
-			else {
-				$usedgroupid = false;
-			}
-		}
-		else {
-			$usedgroupid = false;
-		}
-*/
-
 		$matchcount = apply_get_submit_users_count($cm);
 		$table->initialbars(true);
 
-		if ($showall) {
+		if ($show_all) {
 			$startpage = false;
 			$pagecount = false;
 		}
@@ -183,35 +149,12 @@ if ($do_show=='showentries') {
 			$startpage = $table->get_page_start();
 			$pagecount = $table->get_page_size();
 		}
-
+		//
 		$students = apply_get_submit_users($cm, $where, $params, $sort, $startpage, $pagecount);
 
-/*
-		$str_analyse = get_string('analysis', 'apply');
-		$str_complete = get_string('completed_applys', 'apply');
-		$str_course = get_string('course');
-
-		// 分析？
-		$completed_fb_count = apply_get_completeds_group_count($apply, $mygroupid);
-		if ($apply->course == SITEID) {
-			$analysisurl = new moodle_url('/mod/apply/analysis_course.php', array('id'=>$id, 'courseid'=>$courseid));
-			echo $OUTPUT->box_start('mdl-align');
-			echo '<a href="'.$analysisurl->out().'">';
-			echo $str_course.' '.$str_analyse.' ('.$str_complete.': '.intval($completed_fb_count).')';
-			echo '</a>';
-			echo $OUTPUT->help_icon('viewcompleted', 'apply');
-			echo $OUTPUT->box_end();
-		}
-		else {
-			$analysisurl = new moodle_url('/mod/apply/analysis.php', array('id'=>$id, 'courseid'=>$courseid));
-*/
-			echo $OUTPUT->box_start('mdl-align');
-			//echo '<a href="'.$analysisurl->out().'">';
-			//echo $str_analyse.' ('.$str_complete.': '.intval($completed_fb_count).')';
-			//echo '</a>';
-			echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
-			echo $OUTPUT->box_end();
-//		}
+		echo $OUTPUT->box_start('mdl-align');
+		echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+		echo $OUTPUT->box_end();
 	}
 
 	//####### viewreports-start
@@ -229,29 +172,29 @@ if ($do_show=='showentries') {
 		else {
 			foreach ($students as $student) {
 				$params = array('user_id'=>$student->id, 'apply_id'=>$apply->id);
-				$completed_count = $DB->count_records('apply_submit', $params);
+				$submit_count = $DB->count_records('apply_submit', $params);
 
-				if ($completed_count > 0) {
+				if ($submit_count>0) {
 					//userpicture and link to the profilepage
 					$fullname_url = $CFG->wwwroot.'/user/view.php?id='.$student->id.'&amp;course='.$course->id;
 					$profilelink = '<strong><a href="'.$fullname_url.'">'.fullname($student).'</a></strong>';
 					$data = array ($OUTPUT->user_picture($student, array('courseid'=>$course->id)), $profilelink);
 
 					//link to the entry of the user
-					$params = array('apply_id'=>$apply->id, 'user_id'=>$student->id);
-					$applycompleted = $DB->get_record('apply_submit', $params);
-					$showentryurl_params = array('user_id'=>$student->id, 'do_show'=>'showoneentry');
-					$showentryurl = new moodle_url($url, $showentryurl_params);
-					$showentrylink = '<a href="'.$showentryurl->out().'">'.userdate($applycompleted->time_modified).'</a>';
-					$data[] = $showentrylink;
+					$params  = array('apply_id'=>$apply->id, 'user_id'=>$student->id);
+					$submits = $DB->get_record('apply_submit', $params);
+					$show_entry_url_params = array('user_id'=>$student->id, 'do_show'=>'show_one_entry');
+					$show_entry_url = new moodle_url($url, $show_entry_url_params);
+					$show_entry_link = '<a href="'.$show_entry_url->out().'">'.userdate($submit->time_modified).'</a>';
+					$data[] = $show_entry_link;
 
 					//link to delete the entry
 					if (has_capability('mod/apply:deletesubmissions', $context)) {
-						$delete_url_params = array('id'=>$cm->id, 'completedid'=>$applycompleted->id, 'do_show'=>'showoneentry');
+						$delete_url_params = array('id'=>$cm->id, 'completedid'=>$applycompleted->id, 'do_show'=>'show_one_entry');
 
-						$deleteentryurl = new moodle_url($CFG->wwwroot.'/mod/apply/delete_completed.php', $delete_url_params);
-						$deleteentrylink = '<a href="'.$deleteentryurl->out().'">'.get_string('delete_entry', 'apply').'</a>';
-						$data[] = $deleteentrylink;
+						$deleteentry_url = new moodle_url($CFG->wwwroot.'/mod/apply/delete_completed.php', $delete_url_params);
+						$deleteentry_link = '<a href="'.$deleteentry_url->out().'">'.get_string('delete_entry', 'apply').'</a>';
+						$data[] = $deleteentry_link;
 					}
 					$table->add_data($data);
 				}
@@ -260,14 +203,14 @@ if ($do_show=='showentries') {
 
 			$allurl = new moodle_url($baseurl);
 
-			if ($showall) {
-				$allurl->param('showall', 0);
-				echo $OUTPUT->container(html_writer::link($allurl, get_string('showperpage', '', APPLY_DEFAULT_PAGE_COUNT)), array(), 'showall');
+			if ($show_all) {
+				$allurl->param('show_all', 0);
+				echo $OUTPUT->container(html_writer::link($allurl, get_string('showperpage', '', APPLY_DEFAULT_PAGE_COUNT)), array(), 'show_all');
 
 			}
 			else if ($matchcount > 0 && $perpage < $matchcount) {
-				$allurl->param('showall', 1);
-				echo $OUTPUT->container(html_writer::link($allurl, get_string('showall', '', $matchcount)), array(), 'showall');
+				$allurl->param('show_all', 1);
+				echo $OUTPUT->container(html_writer::link($allurl, get_string('show_all', '', $matchcount)), array(), 'show_all');
 			}
 		}
 
@@ -280,7 +223,7 @@ if ($do_show=='showentries') {
 
 ////////////////////////////////////////////////////////
 /// Print the responses of the given user
-if ($do_show == 'showoneentry') {
+if ($do_show=='show_one_entry') {
 	echo $OUTPUT->heading(format_text($apply->name));
 
 	//print the items
@@ -323,7 +266,7 @@ if ($do_show == 'showoneentry') {
 		}
 		echo $OUTPUT->box_end();
 	}
-	echo $OUTPUT->continue_button(new moodle_url($url, array('do_show'=>'showentries')));
+	echo $OUTPUT->continue_button(new moodle_url($url, array('do_show'=>'show_entries')));
 }
 
 
