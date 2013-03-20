@@ -29,12 +29,12 @@ require_once('delete_submit_form.php');
 
 $id 		= required_param('id', PARAM_INT);
 $submit_id 	= optional_param('submit_id', 0, PARAM_INT);
-$return 	= optional_param('return',  'entries', PARAM_ALPHA);
+$return 	= optional_param('return',  'entries', PARAM_ALPHAEXT);
 $courseid 	= optional_param('courseid', false, PARAM_INT);
 
 
 if ($submit_id==0) {
-    print_error('no_submit_to_delete', 'apply', 'show_entries.php?id='.$id.'&do_show=showentries');
+    print_error('no_submit_to_delete', 'apply', 'show_entries.php?id='.$id.'&do_show=show_entries');
 }
 
 $PAGE->set_url('/mod/apply/delete_submit.php', array('id'=>$id, 'submit_id'=>$submit_id));
@@ -67,7 +67,7 @@ $mform->set_data($newformdata);
 $formdata = $mform->get_data();
 
 if ($mform->is_cancelled()) {
-	redirect('show_entries.php?id='.$id.'&do_show=showentries');
+	redirect('show_entries.php?id='.$id.'&do_show=show_entries');
 }
 
 
@@ -75,7 +75,7 @@ if (isset($formdata->confirmdelete) AND $formdata->confirmdelete==1) {
     if ($submit = $DB->get_record('apply_submit', array('id'=>$submit_id))) {
         apply_delete_submit($submit_id);
         add_to_log($course->id, 'apply', 'delete', 'view.php?id='.$cm->id, $apply->id, $cm->id);
-        redirect('show_entries.php?id='.$id.'&do_show=showentries');
+        redirect('show_entries.php?id='.$id.'&do_show=show_entries');
     }
 }
 

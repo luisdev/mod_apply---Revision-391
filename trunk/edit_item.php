@@ -28,9 +28,9 @@ require_once('lib.php');
 apply_init_session();
 
 $cmid 	  = required_param('cmid', PARAM_INT);
-$typ 	  = optional_param('typ', false, PARAM_ALPHA);
+$typ 	  = optional_param('typ', false, PARAM_ALPHAEXT);
 $id 	  = optional_param('id',  false, PARAM_INT);
-$action   = optional_param('action', false, PARAM_ALPHA);
+$action   = optional_param('action', false, PARAM_ALPHAEXT);
 $courseid = optional_param('courseid', false, PARAM_INT);
 
 $editurl = new moodle_url('/mod/apply/edit.php', array('id'=>$cmid));
