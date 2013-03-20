@@ -36,6 +36,7 @@ $string['description'] = '説明';
 $string['save_entry_button']  = ' 申請書を送信 ';
 $string['save_draft_button']  = ' 下書きとして保存 ';
 $string['submit_form_button'] = ' 申請する... ';
+$string['save_entries'] = '申請書を送信';
 
 
 // Menu
@@ -57,10 +58,10 @@ $string['apply:viewreports'] = 'レポートを表示する';
 
 // Title
 $string['title_title'] = 'タイトル';
-$string['title_version'] = 'バージョン';
-$string['title_ack'] = '承認';
-$string['title_exec'] = '処理';
-$string['title_cancel'] = '取消';
+$string['title_version'] = 'No.';
+$string['title_class'] = '区分';
+$string['title_ack']   = '受付';
+$string['title_exec']  = '処理';
 $string['title_check'] = 'チェック';
 
 
@@ -103,15 +104,32 @@ $string['saving_failed_because_missing_or_false_values'] = '値が入力され�
 
 
 // show_entries
-$string['delete_entry'] = '削除';
-$string['acked_notyet'] = '未処理';
-$string['acked_accept'] = '受理';
-$string['acked_reject'] = '却下';
-$string['execed_done'] = '処理済';
+$string['delete_entry']  = '削除';
+$string['acked_notyet']  = '未処理';
+$string['acked_accept']  = '受理';
+$string['acked_reject']  = '却下';
+$string['execed_done']	 = '処理済';
 $string['execed_notyet'] = '未処理';
-$string['canceled_disable'] = '取消';
-$string['canceled_enable']  = '有効';
+$string['class_draft']   = '下書き';
+$string['class_newpost'] = '新規';
+$string['class_update']  = '更新';
+$string['class_cancel']  = '取消';
 $string['no_title'] = 'タイトルなし';
+
+
+// edit_item
+$string['save_item'] = '保存';
+$string['add_item']  = '項目を追加する';
+$string['items_are_required'] = 'アスタリスクが付けられた質問は必須回答です．';
+
+$string['textarea'] = '長文回答';
+$string['textarea_height'] = '行数';
+$string['textarea_width'] = '幅';
+$string['textfield'] = '短文回答';
+$string['textfield_maxlength'] = '最大文字数';
+$string['textfield_size'] = 'テキストフィールド幅';
+
+
 
 
 
@@ -123,7 +141,6 @@ $string['show_all'] = 'すべてを表示する';
 $string['name_required'] = '名称を入力してください';
 //
 
-$string['add_item']  = '項目を追加する';
 $string['add_items'] = '項目を追加する';
 
 
@@ -132,7 +149,7 @@ $string['add_pagebreak'] = '改ページを追加する';
 
 $string['apply_is_not_open']  = '申請フォームはまだ利用できません';
 $string['apply_is_not_ready'] = '申請フォームはまだ準備ができていません';
-$string['apply_is_closed']    = '申請期間は終了しました';
+$string['apply_is_closed']    = '申請期間は既に終了しました';
 $string['apply_is_disable']   = 'この申請を行う事はできません';
 $string['apply_is_already_submitted'] = 'あなたは既に申請済みです';
 $string['apply_is_enable']    = '申請を行う';
@@ -245,7 +262,6 @@ $string['insufficient_responses_help'] = 'このグループの回答が不足�
 申請フォームを匿名にするには，最低2つの回答が必要です．';
 $string['item_label'] = 'ラベル';
 $string['item_name'] = '申請書の項目数';
-$string['items_are_required'] = 'アスタリスクが付けられた質問は必須回答です．';
 $string['label'] = 'ラベル';
 $string['line_values'] = '評定';
 $string['mapcourse'] = 'コースに申請フォームをマップする';
@@ -322,7 +338,6 @@ $string['responses'] = '回答';
 $string['responsetime'] = '回答時間';
 $string['save_as_new_item'] = '新しい質問として保存する';
 $string['save_as_new_template'] = '新しいテンプレートとして保存する';
-$string['save_entries'] = '申請書を送信';
 $string['save_item'] = '質問を保存する';
 $string['search_course'] = 'コースを検索する';
 $string['searchcourses'] = 'コースを検索する';
@@ -345,12 +360,7 @@ $string['switch_group'] = 'グループを切り替える';
 $string['switch_item_to_not_required'] = '必須回答を解除する';
 $string['switch_item_to_required'] = '必須回答にする';
 $string['template_saved'] = 'テンプレートが保存されました．';
-$string['textarea'] = '長文回答';
-$string['textarea_height'] = '行数';
-$string['textarea_width'] = '幅';
-$string['textfield'] = '短文回答';
-$string['textfield_maxlength'] = '最大文字数';
-$string['textfield_size'] = 'テキストフィールド幅';
+
 $string['there_are_no_settings_for_recaptcha'] = 'CAPTCHAが設定されていません．';
 $string['typemissing'] = '「type」の値がありません．';
 $string['update_item'] = '質問の変更を保存する';

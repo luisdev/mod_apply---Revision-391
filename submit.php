@@ -98,7 +98,7 @@ $context = context_module::instance($cm->id);
 
 //
 if (!has_capability('mod/apply:submit', $context)) {
-	apply_print_error_messagebox('apply_is_disable', $courseid);
+	apply_print_error_messagebox('apply_is_disable', $id);
 	exit;
 }
 
@@ -126,7 +126,7 @@ if ((empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities
 
 if (!$apply->multiple_submit) {
 	if (apply_get_valid_submits_count($apply->id, $USER->id)>0) {
-		apply_print_error_messagebox('apply_is_already_submitted', $courseid);
+		apply_print_error_messagebox('apply_is_already_submitted', $id);
 		exit;
 	}
 }
@@ -135,8 +135,8 @@ $checktime = time();
 $apply_is_not_open =  $apply->time_open>$checktime;
 $apply_is_closed   = ($apply->time_close<$checktime and $apply->time_close>0);
 if ($apply_is_not_open or $apply_is_closed) {
-	if ($apply_is_not_open) apply_print_error_messagbox('apply_is_not_open', $courseid);
-	else 					apply_print_error_messagbox('apply_is_closed',   $courseid);
+	if ($apply_is_not_open) apply_print_error_messagbox('apply_is_not_open', $id);
+	else 					apply_print_error_messagbox('apply_is_closed',   $id);
 	exit;
 }
 
@@ -144,7 +144,7 @@ if ($apply_is_not_open or $apply_is_closed) {
 if (!$SESSION->apply->is_started) {
 	$itemscount = $DB->count_records('apply_item', array('apply_id'=>$apply->id, 'hasvalue'=>1));
 	if ($itemscount<=0) {
-		apply_print_error_messagebox('apply_is_not_ready', $courseid);
+		apply_print_error_messagebox('apply_is_not_ready', $id);
 		exit;
 	}
 }
@@ -155,7 +155,8 @@ if (!$SESSION->apply->is_started) {
 if ($prev_values==1) {
 	//if (!isset($SESSION->apply->is_started) or !$SESSION->apply->is_started==true) {
 	if (!$SESSION->apply->is_started) {
-		print_error('error', '', $CFG->wwwroot.'/course/view.php?id='.$courseid);
+		//print_error('error', '', $CFG->wwwroot.'/course/view.php?id='.$courseid);
+		print_error('error', '', $CFG->wwwroot.'/course/view.php?id='.$d);
 	}
 
 	if (apply_check_values($start_itempos, $last_itempos)) {
@@ -164,7 +165,7 @@ if ($prev_values==1) {
 
 		if ($submit_id) {
 			if ($user_id>0) {
-				add_to_log($course->id, 'apply', 'start_apply', 'view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
+				add_to_log($courseid, 'apply', 'start_apply', 'view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
 			}
 			if (!$go_next_page and !$go_prev_page) {
 				$prev_values = false;
@@ -202,7 +203,7 @@ if ($save_values and !$prev_values) {
 
 	if ($submit_id) {
 		$save_return = 'saved';
-		add_to_log($course->id, 'apply', 'submit', 'view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
+		add_to_log($courseid, 'apply', 'submit', 'view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
 		apply_send_email($cm, $apply, $course, $user_id);
 	}
 	else {
@@ -260,7 +261,8 @@ if (isset($save_return) && $save_return=='saved') {
 	echo '</font></b>';
 	echo '</p>';
 
-	$url = $CFG->wwwroot.'/course/view.php?id='.$courseid;
+	//$url = $CFG->wwwroot.'/course/view.php?id='.$courseid;
+	$url = $CFG->wwwroot.'/mod/apply/view.php?id='.$id;
 	echo $OUTPUT->continue_button($url);
 }
 

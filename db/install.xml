@@ -31,9 +31,9 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="apply_id"/>
         <FIELD NAME="apply_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="user_id"/>
         <FIELD NAME="user_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="apply_id" NEXT="version"/>
-        <FIELD NAME="version" TYPE="int" LENGTH="6" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="0:Draft, 1:New, 2: 2nd, ..." PREVIOUS="user_id" NEXT="canceled"/>
-        <FIELD NAME="canceled" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="version" NEXT="acked"/>
-        <FIELD NAME="acked" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="canceled" NEXT="acked_user"/>
+        <FIELD NAME="version" TYPE="int" LENGTH="6" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="0:Draft, 1:New, 2: 2nd, ..." PREVIOUS="user_id" NEXT="class"/>
+        <FIELD NAME="class" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="version" NEXT="acked"/>
+        <FIELD NAME="acked" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="class" NEXT="acked_user"/>
         <FIELD NAME="acked_user" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="acked" NEXT="execed"/>
         <FIELD NAME="execed" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="acked_user" NEXT="title"/>
         <FIELD NAME="title" TYPE="char" LENGTH="32" NOTNULL="true" SEQUENCE="false" PREVIOUS="execed" NEXT="time_modified"/>

@@ -32,6 +32,15 @@ defined('MOODLE_INTERNAL') || die;
 //require_once($CFG->libdir.'/eventslib.php');
 /** Include calendar/lib.php */
 //require_once($CFG->dirroot.'/calendar/lib.php');
+                    //
+define('APPLY_CLASS_DRAFT',  0);
+define('APPLY_CLASS_NEW',    1);
+define('APPLY_CLASS_UPDATE', 2);
+define('APPLY_CLASS_CANCEL', 3);
+
+define('APPLY_ACKED_NOTYET', 0);
+define('APPLY_ACKED_ACCEPT', 1);
+define('APPLY_ACKED_REJECT', 2);
 
 
 define('APPLY_DECIMAL',			 '.');
@@ -716,7 +725,7 @@ function apply_get_valid_submits($apply_id, $user_id=0)
 {
 	global $DB;
 
-	$select = 'version>0 AND canceled=0 AND apply_id=? ';
+	$select = 'version>0 AND class!=2 AND apply_id=? ';
 	$params = array($apply_id);
 
 	if ($user_id) {
@@ -876,7 +885,9 @@ function apply_calcel_submit($submit_id)
 	$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
 	if (!$submit) return;
 
-	$submit->canceled = 1;
+	if ($submit->version==0) return;
+
+	$submit->class = APPLY_CLASS_CANCEL;
 	$submit->time_modified = time();
 	$DB->update_record('apply_submit', $submit);
 
@@ -1081,14 +1092,16 @@ function apply_get_submitted_users_info($cm, $where='', array $params=null, $sor
 	else	   $sortsql = '';
 
 	$ufields = user_picture::fields('u');	// u.id, u.picture, u.firstname, u.lastname, u.imagealt, u.email
-	$sql = 'SELECT DISTINCT '.$ufields.', s.time_modified FROM {user} u, {apply_submit} s '. // 重複削除
-				'WHERE '.$where.' u.id=s.user_id AND s.apply_id=:apply_id AND s.version>0';
+	$sql = 'SELECT DISTINCT '.$ufields.' FROM {user} u, {apply_submit} s '. // 重複削除
+				'WHERE '.$where.' u.id=s.user_id AND s.apply_id=:apply_id AND s.version>0 '.$sortsql;
 
 	if ($start_page===false or $page_count===false) {
 		$start_page = false;
 		$page_count = false;
 	}
-	return $DB->get_records_sql($sql, $params, $start_page, $page_count);
+
+	$ret = $DB->get_records_sql($sql, $params, $start_page, $page_count);
+	return $ret;
 }
 
 
@@ -1217,7 +1230,7 @@ function apply_send_email_html($info, $course, $cm)
 // Tools
 //
 
-function apply_print_error_messagebox($str, $courseid)
+function apply_print_error_messagebox($str, $id)
 {
 	global $OUTPUT, $CFG;
 
@@ -1229,21 +1242,21 @@ function apply_print_error_messagebox($str, $courseid)
 		echo '</div></font></h2>';
 	}
 
-	echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
+	echo $OUTPUT->continue_button($CFG->wwwroot.'/mod/apply/view.php?id='.$id);
 	echo $OUTPUT->box_end();
 	echo $OUTPUT->footer();
 }
 
 
 
-function apply_print_messagebox($str, $append=null)
+function apply_print_messagebox($str, $append=null, $color='steel blue')
 {
 	global $OUTPUT;
 
 	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 
 	if ($str!='' and $str!=null) {
-		echo '<h2><font color="steel blue"><div align="center">';
+		echo '<h2><font color="'.$color.'"><div align="center">';
 		echo get_string($str, 'apply');
 		echo '</div></font></h2>';
 	}
@@ -1276,7 +1289,6 @@ function apply_print_initials_bar($table, $first=true, $last=true)
 function apply_print_one_initials_bar($table, $alpha, $current, $class, $title, $urlvar)
 {
 	echo html_writer::start_tag('div', array('class'=>'initialbar '.$class)).$title.' : ';
-
 	if ($current) {
 		echo html_writer::link($table->baseurl->out(false, array($urlvar=>'')), get_string('all'));
 	}
@@ -1292,6 +1304,6 @@ function apply_print_one_initials_bar($table, $alpha, $current, $class, $title, 
 			echo html_writer::link($table->baseurl->out(false, array($urlvar=>$letter)), $letter);
 		}
 	}
-
 	echo html_writer::end_tag('div');
 }
+
