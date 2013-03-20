@@ -25,6 +25,8 @@
 require_once('../../config.php');
 require_once('lib.php');
 
+apply_init_session();
+
 //
 $id = required_param('id', PARAM_INT);
 $courseid = optional_param('courseid', false, PARAM_INT);
@@ -135,7 +137,7 @@ if ($apply_can_submit) {
 	$url_params  = array('id'=>$id, 'courseid'=>$courseid, 'go_page'=>0);
 	$submit_url  = new moodle_url('/mod/apply/'.$submit_file, $url_params);
 	$submit_link = '<div align="center">'.$OUTPUT->single_button($submit_url->out(), get_string('submit_form_button', 'apply')).'</div>';
-    apply_print_messagebox('submit_new_apply', $submit_link);
+    apply_print_messagebox('submit_new_apply', $submit_link, 'green');
 }
 
 

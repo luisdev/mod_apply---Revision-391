@@ -31,13 +31,14 @@ $string['description'] = 'Description';
 
 
 // Button
-$string['save_entry_button']  = ' Submit this Application ';
-$string['save_draft_button']  = ' Save as Draft ';
+$string['save_entry_button']  = ' Submit this application ';
+$string['save_draft_button']  = ' Save as draft ';
 $string['submit_form_button'] = ' Sumbit... ';
+$string['save_entries'] = ' Submit your application ';
 
 
 // Menu
-$string['apply:submit'] = 'Submit a Application';
+$string['apply:submit'] = 'Submit a application';
 //
 $string['apply:addinstance'] = 'Add a new apply';
 $string['apply:applies'] = 'issue a apply';
@@ -55,10 +56,10 @@ $string['apply:viewreports'] = 'View reports';
 
 // Title
 $string['title_title'] = 'Title';
-$string['title_version'] = 'Ver.';
-$string['title_ack'] = 'Ack.';
+$string['title_version'] = 'No.';
+$string['title_ack']   = 'Recept.';
 $string['title_exec']  = 'Exec.';
-$string['title_cancel'] = 'Cancel';
+$string['title_class'] = 'Class';
 $string['title_check'] = 'Check';
 
 
@@ -79,7 +80,7 @@ $string['apply_options'] = 'Apply options';
 
 $string['email_notification'] = 'Send e-mail notifications';
 $string['email_notification_help'] = 'If enabled, administrators receive email notification of apply submissions.';
-$string['multiple_submit'] = 'Multiple submissions';
+$string['multiple_submit'] = 'Multiple Submissions';
 $string['multiple_submit_help'] = 'If enabled for anonymous surveys, users can submit apply an unlimited number of times.';
 
 $string['use_calendar'] = 'Use Calendar';
@@ -100,16 +101,33 @@ $string['saving_failed'] = 'Saving failed';
 $string['saving_failed_because_missing_or_false_values'] = 'Saving failed because missing or false values.';
 
 
+
 // show_entries
-$string['delete_entry'] = 'Delete Entry';
-$string['acked_notyet'] = 'Not Yet';
-$string['acked_accept'] = 'Accept';
-$string['acked_reject'] = 'Reject';
-$string['execed_done'] = 'Done';
+$string['delete_entry']  = 'Delete';
+$string['acked_notyet']  = 'Not Yet';
+$string['acked_accept']  = 'Accept';
+$string['acked_reject']  = 'Reject';
+$string['execed_done']   = 'Done';
 $string['execed_notyet'] = 'Not Yet';
-$string['canceled_disable'] = 'Canceled';
-$string['canceled_enable']  = 'Enable';
+$string['class_draft']   = 'Draft';
+$string['class_newpost'] = 'New Post';
+$string['class_update']  = 'Update';
+$string['class_cancel']  = 'Cancel';
 $string['no_title'] = 'No Title';
+
+
+// edit_item
+$string['save_item'] = 'Save item';
+$string['add_item']  = 'Add application item to activity';
+$string['items_are_required'] = 'Answers are required to starred items.';
+
+$string['textarea'] = 'Longer text answer';
+$string['textarea_height'] = 'Number of lines';
+$string['textarea_width'] = 'Width';
+$string['textfield'] = 'Short text answer';
+$string['textfield_maxlength'] = 'Maximum characters accepted';
+$string['textfield_size'] = 'Textfield width';
+
 
 
 
@@ -121,7 +139,6 @@ $string['name_required'] = 'Name required';
 
 
 
-$string['add_item']  = 'Add application item to activity';
 $string['add_items'] = 'Add application items to activity';
 
 
@@ -129,7 +146,7 @@ $string['add_items'] = 'Add application items to activity';
 
 $string['apply_is_not_open']  = 'This Apply is not open yet';
 $string['apply_is_not_ready'] = 'This Apply is not ready';
-$string['apply_is_closed']    = 'This Apply is closed';
+$string['apply_is_closed']    = 'This Apply is already closed';
 $string['apply_is_disable']  = 'You ca not use this Apply';
 $string['apply_is_already_submitted'] = 'You\'ve already submitted this Apply';
 $string['apply_is_enable']  = 'Submit a this Apply';
@@ -238,7 +255,6 @@ $string['insufficient_responses_help'] = 'There are insufficient responses for t
 To keep the apply anonymous, a minimum of 2 responses must be done.';
 $string['item_label'] = 'Label';
 $string['item_name'] = 'Question';
-$string['items_are_required'] = 'Answers are required to starred questions.';
 $string['label'] = 'Label';
 $string['line_values'] = 'Rating';
 $string['mapcourseinfo'] = 'This is a site-wide apply that is available to all courses using the apply block. You can however limit the courses to which it will appear by mapping them. Search the course and map it to this apply.';
@@ -316,8 +332,6 @@ $string['responses'] = 'Responses';
 $string['responsetime'] = 'Responsestime';
 $string['save_as_new_item'] = 'Save as new question';
 $string['save_as_new_template'] = 'Save as new template';
-$string['save_entries'] = 'Submit your answers';
-$string['save_item'] = 'Save question';
 $string['search_course'] = 'Search course';
 $string['searchcourses'] = 'Search courses';
 $string['searchcourses_help'] = 'Search for the code or name of the course(s) that you wish to associate with this apply.';
@@ -340,12 +354,6 @@ $string['switch_group'] = 'Switch group';
 $string['switch_item_to_not_required'] = 'switch to: answer not required';
 $string['switch_item_to_required'] = 'switch to: answer required';
 $string['template_saved'] = 'Template saved';
-$string['textarea'] = 'Longer text answer';
-$string['textarea_height'] = 'Number of lines';
-$string['textarea_width'] = 'Width';
-$string['textfield'] = 'Short text answer';
-$string['textfield_maxlength'] = 'Maximum characters accepted';
-$string['textfield_size'] = 'Textfield width';
 $string['there_are_no_settings_for_recaptcha'] = 'There are no settings for captcha';
 
 

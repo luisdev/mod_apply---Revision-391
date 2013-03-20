@@ -31,10 +31,14 @@ require_once($CFG->libdir.'/tablelib.php');
 //get the params
 $id		  = required_param('id', PARAM_INT);
 $do_show  = required_param('do_show',  PARAM_ALPHAEXT);
-$user_id  = optional_param('user_id',  false, PARAM_INT);
+$user_id  = optional_param('user_id',  0, PARAM_INT);
 $perpage  = optional_param('perpage',  APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);  // how many per page
-$show_all = optional_param('show_all', false, PARAM_INT);  // should we show all users
+$show_all = optional_param('show_all', 0, PARAM_INT);
 $courseid = optional_param('courseid', 0, PARAM_INT);
+
+
+
+
 
 $current_tab = $do_show;
 
@@ -98,18 +102,18 @@ if ($do_show=='show_entries') {
 		$baseurl = new moodle_url('/mod/apply/show_entries.php');
 		$baseurl->params(array('id'=>$id, 'do_show'=>$do_show, 'show_all'=>$show_all));
 		$name_pattern  = $apply->name_pattern;
-		$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'acked', 'execed', 'canceled', '');
+		$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execed', '');
 
 		$title_pic  = get_string('userpic');
 		$title_name = get_string($name_pattern);
 		$title_ttl  = get_string('title_title',	 'apply');
 		$title_date = get_string('date');
 		$title_ver  = get_string('title_version','apply');
+		$title_clss = get_string('title_class',  'apply');
 		$title_ack  = get_string('title_ack',	 'apply');
 		$title_exec = get_string('title_exec',   'apply');
-		$title_cncl = get_string('title_cancel', 'apply');
 		$title_chk  = get_string('title_check',	 'apply');
-		$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_ack, $title_exec, $title_cncl, $title_chk, 'xxx');
+		$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, $title_chk, '');
 
 		// 管理者
 		if (has_capability('mod/apply:deletesubmissions', $context)) {
@@ -118,8 +122,6 @@ if ($do_show=='show_entries') {
 		}
 
 		$table = new flexible_table('apply-show_entry-list-'.$course->id);
-
-
 
 		$table->define_columns($table_columns);
 		$table->define_headers($table_headers);
@@ -143,7 +145,6 @@ if ($do_show=='show_entries') {
 		list($where, $params) = $table->get_sql_where();
 		if ($where) $where .= ' AND';
 
-		$matchcount = apply_get_submitted_users_count($cm);
 		$table->initialbars(true);
 
 		if ($show_all) {
@@ -151,12 +152,12 @@ if ($do_show=='show_entries') {
 			$pagecount = false;
 		}
 		else {
+			$matchcount = apply_get_submitted_users_count($cm);
 			$table->pagesize($perpage, $matchcount);
 			$startpage = $table->get_page_start();
 			$pagecount = $table->get_page_size();
 		}
 		//
-
 		echo $OUTPUT->box_start('mdl-align');
 		echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
 		echo $OUTPUT->box_end();
@@ -169,6 +170,7 @@ if ($do_show=='show_entries') {
 		echo '<div class="clearer"></div>';
 		echo $OUTPUT->box_start('mdl-align');
 
+		//
 		$students = apply_get_submitted_users_info($cm, $where, $params, $sort, $startpage, $pagecount);
 
 		if (!$students) {
@@ -204,18 +206,22 @@ if ($do_show=='show_entries') {
 					//
 					$data[] = $submit->version;
 					//
-					if 		($submit->acked==0) $acked = get_string('acked_notyet',  'apply');
-					else if ($submit->acked==1) $acked = get_string('acked_accpept', 'apply');
-					else 					    $acked = get_string('acked_reject',  'apply');
+					if 		($submit->class==APPLY_CLASS_DRAFT)  $class = get_string('class_draft',   'apply');
+					else if ($submit->class==APPLY_CLASS_NEW)    $class = get_string('class_newpost', 'apply');
+					else if ($submit->class==APPLY_CLASS_UPDATE) $class = get_string('class_update',  'apply');
+					else if ($submit->class==APPLY_CLASS_CANCEL) $class = get_string('class_cancel',  'apply');
+					else										 $class = 'unknown';
+					$data[] = $class;
+					//
+					if 		($submit->acked==APPLY_ACKED_NOTYET) $acked = get_string('acked_notyet',  'apply');
+					else if ($submit->acked==APPLY_ACKED_ACCEPT) $acked = get_string('acked_accept', 'apply');
+					else if ($submit->acked==APPLY_ACKED_REJECT) $acked = get_string('acked_reject', 'apply');
+					else 					    				 $acked = 'unknown';
 					$data[] = $acked;
 					//
 					if ($submit->execed) $execed = get_string('execed_done',   'apply');
 					else 				 $execed = get_string('execed_notyet', 'apply');
 					$data[] = $execed;
-					//
-					if ($submit->canceled) $canceled = get_string('canceled_disable', 'apply');
-					else 				   $canceled = get_string('canceled_enable',  'apply');
-					$data[] = $canceled;
 					//
 					$data[] = '';
 
