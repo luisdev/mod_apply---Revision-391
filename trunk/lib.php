@@ -733,8 +733,8 @@ function apply_get_valid_submits($apply_id, $user_id=0)
 function apply_get_valid_submits_count($apply_id, $user_id=0)
 {
 	$submits = apply_get_valid_submits($apply_id, $user_id);
-
 	if (!$submits) return 0;
+
 	return count($submits);
 }
 
@@ -780,7 +780,7 @@ function apply_create_submit($apply_id, $user_id=0)
 	$submit->time_modified  = time();
 
 	$submit_id = $DB->insert_record('apply_submit', $submit);
-	$submit    = $DB->get_record('apply_submit', array('id'=>$submit_id));
+	$submit	= $DB->get_record('apply_submit', array('id'=>$submit_id));
 
 	return $submit;
 }
@@ -1048,7 +1048,7 @@ function apply_flush_draft_values($submit_id, $version)
 	$time_modified = time();
 
 	foreach($values as $value) {
-        $val = $DB->get_record('apply_value', array('submit_id'=>$submit_id, 'item_id'=>$value->item_id, 'version'=>$version));
+		$val = $DB->get_record('apply_value', array('submit_id'=>$submit_id, 'item_id'=>$value->item_id, 'version'=>$version));
 		if ($val) {
 			$value->id = $val->id;
 			$value->version = $val->version;
@@ -1067,43 +1067,42 @@ function apply_flush_draft_values($submit_id, $version)
 
 ///////////////////////////////////////////////////////////////////////////////////
 //
-// User
+// Users
 //
 
-function apply_get_submit_users($cm, $where='', array $params=null, $sort='', $start_page=false, $page_count=false)
+function apply_get_submitted_users_info($cm, $where='', array $params=null, $sort='', $start_page=false, $page_count=false)
 {
-    global $DB;
+	global $DB;
 
-//    $context = context_module::instance($cm->id);
+	$params = (array)$params;
+	$params['apply_id'] = $cm->instance;
 
-    $params = (array)$params;
-    $params['apply_id'] = $cm->instance;
-
-    if ($sort) $sortsql = ' ORDER BY '.$sort;
+	if ($sort) $sortsql = ' ORDER BY '.$sort;
 	else	   $sortsql = '';
 
-    $ufields = user_picture::fields('u');
-    $sql = 'SELECT DISTINCT '.$ufields.', s.time_modified as completed_time_modified
-            	FROM {user} u, {apply_submit} s WHERE '.$where.' u.id=s.user_id AND s.apply_id=:apply_id';
+	$ufields = user_picture::fields('u');	// u.id, u.picture, u.firstname, u.lastname, u.imagealt, u.email
+	$sql = 'SELECT DISTINCT '.$ufields.', s.time_modified FROM {user} u, {apply_submit} s '. // 重複削除
+				'WHERE '.$where.' u.id=s.user_id AND s.apply_id=:apply_id AND s.version>0';
 
-    if ($start_page===false or $page_count===false) {
-        $start_page = false;
-        $page_count = false;
-    }
-    return $DB->get_records_sql($sql, $params, $start_page, $page_count);
+	if ($start_page===false or $page_count===false) {
+		$start_page = false;
+		$page_count = false;
+	}
+	return $DB->get_records_sql($sql, $params, $start_page, $page_count);
 }
 
 
 
-function apply_get_submit_users_count($cm)
+function apply_get_submitted_users_count($cm)
 {
-    global $DB;
+	global $DB;
 
-    $params = array($cm->instance);
-    $sql = 'SELECT COUNT(u.id) FROM {user} u, {apply_submit} s WHERE u.id=s.user_id AND s.apply_id=? AND s.version>0';
+	$params = array($cm->instance);
+	$sql = 'SELECT COUNT(u.id) FROM {user} u, {apply_submit} s WHERE u.id=s.user_id AND s.apply_id=? AND s.version>0';
 
-    return $DB->count_records_sql($sql, $params);
+	return $DB->count_records_sql($sql, $params);
 }
+
 
 
 
@@ -1222,17 +1221,17 @@ function apply_print_error_messagebox($str, $courseid)
 {
 	global $OUTPUT, $CFG;
 
-    echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
+	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 
 	if ($str!='' and $str!=null) {
-    	echo '<h2><font color="red"><div align="center">';
-    	echo get_string($str, 'apply');
-    	echo '</div></font></h2>';
+		echo '<h2><font color="red"><div align="center">';
+		echo get_string($str, 'apply');
+		echo '</div></font></h2>';
 	}
 
-    echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
-    echo $OUTPUT->box_end();
-    echo $OUTPUT->footer();
+	echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
+	echo $OUTPUT->box_end();
+	echo $OUTPUT->footer();
 }
 
 
@@ -1241,15 +1240,58 @@ function apply_print_messagebox($str, $append=null)
 {
 	global $OUTPUT;
 
-    echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
+	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 
 	if ($str!='' and $str!=null) {
-    	echo '<h2><font color="steel blue"><div align="center">';
-    	echo get_string($str, 'apply');
-    	echo '</div></font></h2>';
+		echo '<h2><font color="steel blue"><div align="center">';
+		echo get_string($str, 'apply');
+		echo '</div></font></h2>';
 	}
 
 	if ($append!=null) echo $append;
-    echo $OUTPUT->box_end();
+	echo $OUTPUT->box_end();
 }
 
+
+
+function apply_print_initials_bar($table, $first=true, $last=true)
+{
+	$alpha = explode(',', get_string('alphabet', 'langconfig'));
+
+	if ($first) {
+		if (!empty($table->sess->i_first)) $ifirst = $table->sess->i_first;
+		else 							   $ifirst = '';
+		apply_print_one_initials_bar($table, $alpha, $ifirst, 'firstinitial', get_string('firstname'), $table->request[TABLE_VAR_IFIRST]);
+	}
+
+	if ($last) {
+		if (!empty($table->sess->i_last)) $ilast = $table->sess->i_last;
+		else 							  $ilast = '';
+		apply_print_one_initials_bar($table, $alpha, $ilast, 'lastinitial', get_string('lastname'), $table->request[TABLE_VAR_ILAST]);
+	}
+}
+
+
+
+function apply_print_one_initials_bar($table, $alpha, $current, $class, $title, $urlvar)
+{
+	echo html_writer::start_tag('div', array('class'=>'initialbar '.$class)).$title.' : ';
+
+	if ($current) {
+		echo html_writer::link($table->baseurl->out(false, array($urlvar=>'')), get_string('all'));
+	}
+	else {
+		echo html_writer::tag('strong', get_string('all'));
+	}
+
+	foreach ($alpha as $letter) {
+		if ($letter === $current) {
+			echo html_writer::tag('strong', $letter);
+		}
+		else {
+			echo html_writer::link($table->baseurl->out(false, array($urlvar=>$letter)), $letter);
+		}
+	}
+
+	echo html_writer::end_tag('div');
+}

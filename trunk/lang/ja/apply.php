@@ -37,6 +37,7 @@ $string['save_entry_button']  = ' 申請書を送信 ';
 $string['save_draft_button']  = ' 下書きとして保存 ';
 $string['submit_form_button'] = ' 申請する... ';
 
+
 // Menu
 $string['apply:submit'] = '申請の提出';
 //
@@ -52,6 +53,22 @@ $string['apply:receivemail'] = 'メール通知を受信する';
 $string['apply:view'] = '申請フォームを表示する';
 $string['apply:viewanalysepage'] = '回答送信後，分析ページを表示する';
 $string['apply:viewreports'] = 'レポートを表示する';
+
+
+// Title
+$string['title_title'] = 'タイトル';
+$string['title_version'] = 'バージョン';
+$string['title_acked'] = '承認';
+$string['title_exec'] = '処理';
+$string['title_check'] = 'チェック';
+
+
+// tabs
+$string['overview'] = '概要';
+$string['show_entries'] = '申請書の表示';
+$string['edit_items'] = '項目の編集';
+$string['templates'] = 'テンプレート';
+
 
 // mod_form
 $string['name'] = '名称';
@@ -69,22 +86,27 @@ $string['multiple_submit_help'] = 'ユーザは無制限で申請フォームを
 $string['use_calendar'] = 'カレンダーに登録';
 $string['use_calendar_help'] = '申請書の提出期間をカレンダーに登録できます';
 
+
 // view
 $string['entries_list_title'] = '提出済み申請書類一覧';
+
 
 // submit
 $string['entry_saved'] = 'あなたの申請書が送信されました';
 $string['saving_failed'] = '保存に失敗しました';
 $string['saving_failed_because_missing_or_false_values'] = '値が入力されていないか，正しくないため，保存に失敗しました';
 
-// tabs
-$string['overview'] = '概要';
-$string['show_entries'] = '申請書の表示';
-$string['edit_items'] = '項目の編集';
-$string['templates'] = 'テンプレート';
 
 // show_entries
 $string['delete_entry'] = '削除';
+$string['acked_notyet'] = '未処理';
+$string['acked_accept'] = '受理';
+$string['acked_reject'] = '却下';
+$string['exec_done'] = '処理済';
+$string['exec_notyet'] = '未処理';
+$string['cancel_disable'] = '取消';
+$string['cancel_enable']  = '有効';
+$string['no_title'] = 'タイトルなし';
 
 
 
