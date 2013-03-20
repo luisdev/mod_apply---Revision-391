@@ -869,29 +869,31 @@ function apply_exec_submit($submit_id)
 	$submit->version++;
 	$submit->time_modified = time();
 
+	if 		($submit->version==1) $submit->class = APPLY_CLASS_NEW;
+	else if ($submit->version >1) $submit->class = APPLY_CLASS_UPDATE;
+
 	apply_flush_draft_values ($submit->id, $submit->version);
 	apply_delete_draft_values($submit->id);
-	$DB->update_record('apply_submit', $submit);
+	$ret = $DB->update_record('apply_submit', $submit);
 
-	return;
+	return $ret;
 }
 
 
 
-function apply_calcel_submit($submit_id)
+function apply_cancel_submit($submit_id)
 {
 	global $DB;
 
 	$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
-	if (!$submit) return;
-
-	if ($submit->version==0) return;
+	if (!$submit) return false;
+	if ($submit->version==0) return false;
 
 	$submit->class = APPLY_CLASS_CANCEL;
 	$submit->time_modified = time();
-	$DB->update_record('apply_submit', $submit);
+	$ret = $DB->update_record('apply_submit', $submit);
 
-	return;
+	return $ret;
 }
 
 
