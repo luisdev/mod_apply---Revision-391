@@ -13,8 +13,9 @@
         <FIELD NAME="introformat" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="intro" NEXT="email_notification"/>
         <FIELD NAME="email_notification" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="introformat" NEXT="multiple_submit"/>
         <FIELD NAME="multiple_submit" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="email_notification" NEXT="use_calendar"/>
-        <FIELD NAME="use_calendar" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="multiple_submit" NEXT="time_open"/>
-        <FIELD NAME="time_open" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="use_calendar" NEXT="time_close"/>
+        <FIELD NAME="use_calendar" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="multiple_submit" NEXT="name_pattern"/>
+        <FIELD NAME="name_pattern" TYPE="char" LENGTH="16" NOTNULL="true" DEFAULT="lastname" SEQUENCE="false" PREVIOUS="use_calendar" NEXT="time_open"/>
+        <FIELD NAME="time_open" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="name_pattern" NEXT="time_close"/>
         <FIELD NAME="time_close" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="time_open" NEXT="time_modified"/>
         <FIELD NAME="time_modified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="time_close"/>
       </FIELDS>

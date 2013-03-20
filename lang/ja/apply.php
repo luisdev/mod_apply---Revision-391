@@ -28,7 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 //
 $string['modulenameplural'] = '申請フォーム';
 $string['modulename'] = '申請フォーム';
-$string['modulename_help'] = '各種の簡単な申請書を作成し，ユーザに提出させることができます';
+$string['modulename_help'] = '各種の簡単な申請書を作成し，ユーザに提出させることができます．';
 $string['description'] = '説明';
 
 
@@ -58,15 +58,16 @@ $string['apply:viewreports'] = 'レポートを表示する';
 // Title
 $string['title_title'] = 'タイトル';
 $string['title_version'] = 'バージョン';
-$string['title_acked'] = '承認';
+$string['title_ack'] = '承認';
 $string['title_exec'] = '処理';
+$string['title_cancel'] = '取消';
 $string['title_check'] = 'チェック';
 
 
 // tabs
 $string['overview'] = '概要';
 $string['show_entries'] = '申請書の表示';
-$string['edit_items'] = '項目の編集';
+$string['edit_items'] = '申請項目の編集';
 $string['templates'] = 'テンプレート';
 
 
@@ -86,6 +87,10 @@ $string['multiple_submit_help'] = 'ユーザは無制限で申請フォームを
 $string['use_calendar'] = 'カレンダーに登録';
 $string['use_calendar_help'] = '申請書の提出期間をカレンダーに登録できます';
 
+$string['username_manage'] = 'ユーザ名管理';
+$string['username_manage_help'] = '表示される名前のパターンを選択できます';
+$string['use_item'] = '{$a} を使用する';
+
 
 // view
 $string['entries_list_title'] = '提出済み申請書類一覧';
@@ -102,10 +107,10 @@ $string['delete_entry'] = '削除';
 $string['acked_notyet'] = '未処理';
 $string['acked_accept'] = '受理';
 $string['acked_reject'] = '却下';
-$string['exec_done'] = '処理済';
-$string['exec_notyet'] = '未処理';
-$string['cancel_disable'] = '取消';
-$string['cancel_enable']  = '有効';
+$string['execed_done'] = '処理済';
+$string['execed_notyet'] = '未処理';
+$string['canceled_disable'] = '取消';
+$string['canceled_enable']  = '有効';
 $string['no_title'] = 'タイトルなし';
 
 

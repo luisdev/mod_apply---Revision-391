@@ -70,13 +70,24 @@ class mod_apply_mod_form extends moodleform_mod
 		//
 		$mform->addElement('selectyesno', 'email_notification', get_string('email_notification', 'apply'));
 		$mform->addHelpButton('email_notification', 'email_notification', 'apply');
+		$mform->setDefault('email_notification', 0);
 		//
 		$mform->addElement('selectyesno', 'multiple_submit', get_string('multiple_submit', 'apply')); 
 		$mform->addHelpButton('multiple_submit', 'multiple_submit', 'apply');
+		$mform->setDefault('multiple_submit', 1);
 		//
 		$mform->addElement('selectyesno', 'use_calendar', get_string('use_calendar', 'apply')); 
 		$mform->addHelpButton('use_calendar', 'use_calendar', 'apply');
+		$mform->setDefault('use_calendar', 0);
 
+		$choices['fullname']  = get_string('use_item', 'apply', get_string('fullnameuser'));
+		$choices['firstname'] = get_string('use_item', 'apply', get_string('firstname'));
+		$choices['lastname']  = get_string('use_item', 'apply', get_string('lastname'));
+		$mform->addElement('select', 'name_pattern', get_string('username_manage', 'apply'), $choices); 
+		$mform->addHelpButton('name_pattern', 'username_manage', 'apply');
+		$mform->setDefault('name_pattern', 'lastname');
+
+		//
 		//-------------------------------------------------------------------------------
 		// for Group
 		$this->standard_coursemodule_elements();

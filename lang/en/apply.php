@@ -56,8 +56,9 @@ $string['apply:viewreports'] = 'View reports';
 // Title
 $string['title_title'] = 'Title';
 $string['title_version'] = 'Ver.';
-$string['title_acked'] = 'Ack.';
+$string['title_ack'] = 'Ack.';
 $string['title_exec']  = 'Exec.';
+$string['title_cancel'] = 'Cancel';
 $string['title_check'] = 'Check';
 
 
@@ -84,6 +85,10 @@ $string['multiple_submit_help'] = 'If enabled for anonymous surveys, users can s
 $string['use_calendar'] = 'Use Calendar';
 $string['use_calendar_help'] = 'The period for submission of an application is registered into a calendar.';
 
+$string['username_manage'] = 'Management of Username';
+$string['username_manage_help'] = 'You can select displied name pattern in this module.';
+$string['use_item'] = 'use {$a}';
+
 
 // view
 $string['entries_list_title'] = 'List of submitted Applications';
@@ -100,10 +105,10 @@ $string['delete_entry'] = 'Delete Entry';
 $string['acked_notyet'] = 'Not Yet';
 $string['acked_accept'] = 'Accept';
 $string['acked_reject'] = 'Reject';
-$string['exec_done'] = 'Done';
-$string['exec_notyet'] = 'Not Yet';
-$string['cancel_disable']  = 'Canceled';
-$string['cancel_enable']   = 'Enable';
+$string['execed_done'] = 'Done';
+$string['execed_notyet'] = 'Not Yet';
+$string['canceled_disable'] = 'Canceled';
+$string['canceled_enable']  = 'Enable';
 $string['no_title'] = 'No Title';
 
 

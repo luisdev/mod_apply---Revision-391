@@ -19,7 +19,7 @@ echo $OUTPUT->box_start('apply_form');
 	echo $OUTPUT->box_start('apply_items');
 	{
 		unset($start_item);
-		$select = 'apply_id = ? AND hasvalue = 1 AND position < ?';
+		$select = 'apply_id=? AND hasvalue=1 AND position<?';
 		$params = array($apply->id, $start_position);
 		$itemnr = $DB->count_records_select('apply_item', $select, $params);
 		$last_break_position = 0;
@@ -105,7 +105,7 @@ echo $OUTPUT->box_start('apply_form');
 	echo '<input type="reset" value="'.get_string('clear').'" />';
 	echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 
-	if ( $is_pagebreak AND $last_break_position > $first_pagebreak->position) {
+	if ($is_pagebreak and $last_break_position>$first_pagebreak->position) {
 		$inputvalue = 'value="'.get_string('previous_page', 'apply').'"';
 		echo '<input name="go_prev_page" type="submit" '.$inputvalue.' />';
 	}
