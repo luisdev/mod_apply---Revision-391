@@ -36,10 +36,6 @@ $perpage  = optional_param('perpage',  APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);  //
 $show_all = optional_param('show_all', 0, PARAM_INT);
 $courseid = optional_param('courseid', 0, PARAM_INT);
 
-
-
-
-
 $current_tab = $do_show;
 
 
@@ -104,7 +100,7 @@ if ($do_show=='show_entries') {
 		$name_pattern  = $apply->name_pattern;
 		$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execed', '');
 
-		$title_pic  = get_string('userpic');
+		$title_pic  = get_string('user_pic',	 'apply');
 		$title_name = get_string($name_pattern);
 		$title_ttl  = get_string('title_title',	 'apply');
 		$title_date = get_string('date');
@@ -139,70 +135,96 @@ if ($do_show=='show_entries') {
 					));
 		$table->setup();
 
-		if ($table->get_sql_sort()) $sort = $table->get_sql_sort();
-		else 						$sort = '';
+		//
+		$sort = $table->get_sql_sort();
+		if (!$sort) $sort = '';
 
 		list($where, $params) = $table->get_sql_where();
 		if ($where) $where .= ' AND';
 
+		if ($name_pattern=='firstname') {
+			$sifirst = optional_param('sifirst', '', PARAM_ALPHA);
+			if ($sifirst) {
+				$where .= "firstname LIKE :sifirst ESCAPE '\\\\' AND";
+				$params['sifirst'] =  $sifirst.'%';
+			}
+		}
+		if ($name_pattern=='lastname') {
+			$silast  = optional_param('silast',  '', PARAM_ALPHA);
+			if ($silast) {
+				$where .= "lastname LIKE :silast ESCAPE '\\\\' AND";
+				$params['silast'] =  $silast.'%';
+			}
+		}
+
+		//
 		$table->initialbars(true);
 
 		if ($show_all) {
-			$startpage = false;
-			$pagecount = false;
+			$start_page = false;
+			$page_count = false;
 		}
 		else {
-			$matchcount = apply_get_submitted_users_count($cm);
+			$matchcount = apply_get_valid_submits_count($cm->instance);
 			$table->pagesize($perpage, $matchcount);
-			$startpage = $table->get_page_start();
-			$pagecount = $table->get_page_size();
+			$start_page = $table->get_page_start();
+			$page_count = $table->get_page_size();
 		}
 		//
 		echo $OUTPUT->box_start('mdl-align');
-		echo "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+		echo '<h2>'.$apply->name.'</h2>';
 		echo $OUTPUT->box_end();
 
 
 		////////////////////////////////////////////////////////////
 		// Print List of Students
 		echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
-		echo isset($groupselect) ? $groupselect : '';
-		echo '<div class="clearer"></div>';
 		echo $OUTPUT->box_start('mdl-align');
 
-		//
-		$students = apply_get_submitted_users_info($cm, $where, $params, $sort, $startpage, $pagecount);
+		if ($name_pattern=='firstname') {
+			apply_print_initials_bar($table, true, false);
+			if ($show_all) echo '<br />';
+		}
+		else if ($name_pattern=='lastname') {
+			apply_print_initials_bar($table, false, true);
+			if ($show_all) echo '<br />';
+		}
 
-		if (!$students) {
+
+		////////////////////////////////////////////////////////////
+		// User Data
+		$submits = apply_get_submits_select($apply->id, $where, $params, $sort, $start_page, $page_count);
+
+		if (!$submits) {
 			$table->print_html();
 		} 
 		else {
-			if 		($name_pattern=='firstname') apply_print_initials_bar($table, true, false);
-			else if ($name_pattern=='lastname')  apply_print_initials_bar($table, false, true);
 			//
-			foreach ($students as $student) {
-				//userpicture and link to the profilepage
-				$name_url 	 = $CFG->wwwroot.'/user/view.php?id='.$student->id.'&amp;course='.$courseid;
+			foreach ($submits as $submit) {
+				$student = apply_get_user_info($submit->user_id);
+				if ($student) {
+					if 		($name_pattern=='firstname') $user_name = $student->firstname;
+					else if ($name_pattern=='lastname')  $user_name = $student->lastname;
+					else								 $user_name = fullname($student); 
+					//
+					$user_url  = $CFG->wwwroot.'/user/view.php?id='.$student->id.'&amp;course='.$courseid;
+					$prof_link = '<strong><a href="'.$user_url.'">'.$user_name.'</a></strong>';
+					$acked_url = $CFG->wwwroot.'/user/view.php?id='.$submit->acked_user.'&amp;course='.$courseid;
+					$entry_url = new moodle_url($url, array('user_id'=>$student->id, 'do_show'=>'show_one_entry'));
 
-				if 		($name_pattern=='firstname') $user_name = $student->firstname;
-				else if ($name_pattern=='lastname')  $user_name = $student->lastname;
-				else								 $user_name = fullname($student); 
-				$profilelink = '<strong><a href="'.$name_url.'">'.$user_name.'</a></strong>';
-
-				$submits = apply_get_valid_submits($apply->id, $student->id);
-				foreach ($submits as $submit) {
-					$data = array ($OUTPUT->user_picture($student, array('courseid'=>$courseid)), $profilelink);
-					$show_entry_url_params = array('user_id'=>$student->id, 'do_show'=>'show_one_entry');
-					$show_entry_url = new moodle_url($url, $show_entry_url_params);
+					$data = array();
+					//
+					$data[] = $OUTPUT->user_picture($student, array('courseid'=>$courseid));
+					$data[] = $prof_link;
 					//
 					$title = $submit->title;
 					if ($title=='') $title = get_string('no_title', 'apply');
-					$show_entry_link = '<a href="'.$show_entry_url->out().'">'.$title.'</a>';
-					$data[] = $show_entry_link;
+					$entry_link = '<a href="'.$entry_url->out().'">'.$title.'</a>';
+					$data[] = $entry_link;
 					//
 					$mod_time = userdate($submit->time_modified, '%Y/%m/%d %H:%M');
-					$show_entry_link = '<a href="'.$show_entry_url->out().'">'.$mod_time.'</a>';
-					$data[] = $show_entry_link;
+					$entry_link = '<a href="'.$entry_url->out().'">'.$mod_time.'</a>';
+					$data[] = $entry_link;
 					//
 					$data[] = $submit->version;
 					//
@@ -210,13 +232,14 @@ if ($do_show=='show_entries') {
 					else if ($submit->class==APPLY_CLASS_NEW)    $class = get_string('class_newpost', 'apply');
 					else if ($submit->class==APPLY_CLASS_UPDATE) $class = get_string('class_update',  'apply');
 					else if ($submit->class==APPLY_CLASS_CANCEL) $class = get_string('class_cancel',  'apply');
-					else										 $class = 'unknown';
 					$data[] = $class;
 					//
 					if 		($submit->acked==APPLY_ACKED_NOTYET) $acked = get_string('acked_notyet',  'apply');
 					else if ($submit->acked==APPLY_ACKED_ACCEPT) $acked = get_string('acked_accept', 'apply');
 					else if ($submit->acked==APPLY_ACKED_REJECT) $acked = get_string('acked_reject', 'apply');
-					else 					    				 $acked = 'unknown';
+					if ($submit->acked!=APPLY_ACKED_NOTYET) {
+						$acked = '<a href="'.$acked_url->out().'">'.$acked.'</a>';
+					}
 					$data[] = $acked;
 					//
 					if ($submit->execed) $execed = get_string('execed_done',   'apply');
@@ -241,11 +264,11 @@ if ($do_show=='show_entries') {
 			$allurl = new moodle_url($baseurl);
 			if ($show_all) {
 				$allurl->param('show_all', 0);
-				echo $OUTPUT->container(html_writer::link($allurl, get_string('showperpage', '', APPLY_DEFAULT_PAGE_COUNT)), array(), 'show_all');
+				echo $OUTPUT->container(html_writer::link($allurl, get_string('show_perpage', 'apply', APPLY_DEFAULT_PAGE_COUNT)), array(), 'show_all');
 			}
 			else if ($matchcount>0 && $perpage<$matchcount) {
 				$allurl->param('show_all', 1);
-				echo $OUTPUT->container(html_writer::link($allurl, get_string('show_all', '', $matchcount)), array(), 'show_all');
+				echo $OUTPUT->container(html_writer::link($allurl, get_string('show_all', 'apply', $matchcount)), array(), 'show_all');
 			}
 		}
 
