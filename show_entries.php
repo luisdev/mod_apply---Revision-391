@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * print the single entries
+ * print the entries
  *
  * @author  Fumi.Iseki
  * @license GNU Public License
@@ -59,8 +59,6 @@ $PAGE->set_url($url);
 
 $context = context_module::instance($cm->id);
 
-$name_pattern = $apply->name_pattern;
-
 
 ////////////////////////////////////////////////////////
 // Check
@@ -77,6 +75,9 @@ if ($formdata) {
 }
 
 require_capability('mod/apply:viewreports', $context);
+
+$is_student = false;
+$name_pattern = $apply->name_pattern;
 
 
 ////////////////////////////////////////////////////////
@@ -99,79 +100,8 @@ if ($do_show=='show_entries') {
 	// Setup Table
 	$baseurl = new moodle_url('/mod/apply/show_entries.php');
 	$baseurl->params(array('id'=>$id, 'do_show'=>$do_show, 'show_all'=>$show_all));
-	$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execed');
-
-	$title_pic  = get_string('user_pic',	 'apply');
-	$title_name = get_string($name_pattern);
-	$title_ttl  = get_string('title_title',	 'apply');
-	$title_date = get_string('date');
-	$title_ver  = get_string('title_version','apply');
-	$title_clss = get_string('title_class',  'apply');
-	$title_ack  = get_string('title_ack',	 'apply');
-	$title_exec = get_string('title_exec',   'apply');
-	$title_chk  = get_string('title_check',	 'apply');
-	//$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, $title_chk);
-	$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec);
-
-	// 管理者
-	if (has_capability('mod/apply:deletesubmissions', $context)) {
-		$table_columns[] = 'delete_entry';
-		$table_headers[] = '';
-	}
-
-	$table = new flexible_table('apply-show_entry-list-'.$course->id);
-
-	$table->define_columns($table_columns);
-	$table->define_headers($table_headers);
-	$table->define_baseurl($baseurl);
-
-	$table->sortable(true, 'lastname', SORT_DESC);
-	$table->set_attribute('cellspacing', '0');
-	$table->set_attribute('id', 'show_entrytable');
-	$table->set_attribute('class', 'generaltable generalbox');
-	$table->set_control_variables(array(
-				TABLE_VAR_SORT  => 'ssort',
-				TABLE_VAR_IFIRST=> 'sifirst',
-				TABLE_VAR_ILAST => 'silast',
-				TABLE_VAR_PAGE	=> 'spage'
-				));
-	$table->setup();
-
 	//
-	$sort = $table->get_sql_sort();
-	if (!$sort) $sort = '';
-
-	list($where, $params) = $table->get_sql_where();
-	if ($where) $where .= ' AND';
-
-	if ($name_pattern=='firstname') {
-		$sifirst = optional_param('sifirst', '', PARAM_ALPHA);
-		if ($sifirst) {
-			$where .= "firstname LIKE :sifirst ESCAPE '\\\\' AND";
-			$params['sifirst'] =  $sifirst.'%';
-		}
-	}
-	if ($name_pattern=='lastname') {
-		$silast  = optional_param('silast',  '', PARAM_ALPHA);
-		if ($silast) {
-			$where .= "lastname LIKE :silast ESCAPE '\\\\' AND";
-			$params['silast'] =  $silast.'%';
-		}
-	}
-
-	//
-	$table->initialbars(true);
-
-	if ($show_all) {
-		$start_page = false;
-		$page_count = false;
-		}
-	else {
-		$matchcount = apply_get_valid_submits_count($cm->instance);
-		$table->pagesize($perpage, $matchcount);
-		$start_page = $table->get_page_start();
-		$page_count = $table->get_page_size();
-	}
+	require('show_entry_header.php');
 	//
 	echo $OUTPUT->box_start('mdl-align');
 	echo '<h2>'.$apply->name.'</h2>';
@@ -179,7 +109,7 @@ if ($do_show=='show_entries') {
 
 
 	////////////////////////////////////////////////////////////
-	// Print List of Students
+	// Print Initials Bar
 	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 	echo $OUTPUT->box_start('mdl-align');
 
@@ -201,7 +131,6 @@ if ($do_show=='show_entries') {
 		$table->print_html();
 	} 
 	else {
-		//
 		foreach ($submits as $submit) {
 			$student = apply_get_user_info($submit->user_id);
 			if ($student) {
