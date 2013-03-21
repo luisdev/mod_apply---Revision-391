@@ -22,8 +22,8 @@
  * @package apply
  */
 
-require_once("../../config.php");
-require_once("lib.php");
+require_once('../../config.php');
+require_once('lib.php');
 require_once('edit_form.php');
 
 apply_init_session();
@@ -169,6 +169,8 @@ echo $OUTPUT->header();
 require('tabs.php');
 
 
+echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
+
 ///////////////////////////////////////////////////////////////////////////
 /// Print the main part of the page
 
@@ -195,8 +197,9 @@ if ($savereturn == 'failed') {
 
 ///////////////////////////////////////////////////////////////////////////
 ///print the template-section
-///////////////////////////////////////////////////////////////////////////
-if ($do_show == 'templates') {
+
+if ($do_show=='templates') {
+	//
     echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
     $use_template_form->display();
 
@@ -222,10 +225,12 @@ if ($do_show == 'templates') {
     }
     echo $OUTPUT->box_end();
 }
+
+
 ///////////////////////////////////////////////////////////////////////////
 ///print the Item-Edit-section
-///////////////////////////////////////////////////////////////////////////
-if ($do_show == 'edit') {
+
+if ($do_show=='edit') {
 
     $add_item_form->display();
 
@@ -285,12 +290,14 @@ if ($do_show == 'edit') {
             }
             echo $OUTPUT->box_start('apply_item_box_'.$align.$dependstyle);
             //items without value only are labels
+			/*
             if ($applyitem->hasvalue==1) {
                 $itemnr++;
                 echo $OUTPUT->box_start('apply_item_number_'.$align);
                 echo $itemnr;
                 echo $OUTPUT->box_end();
             }
+			*/
             echo $OUTPUT->box_start('box generalbox boxalign_'.$align);
             echo $OUTPUT->box_start('apply_item_commands_'.$align);
             echo '<span class="apply_item_commands">';
@@ -332,10 +339,7 @@ if ($do_show == 'edit') {
             if ($applyitem->typ != 'pagebreak') {
                 echo '<span class="apply_item_command_edit">';
                 $editurl = new moodle_url('/mod/apply/edit_item.php');
-                $editurl->params(array('do_show'=>$do_show,
-                                         'cmid'=>$id,
-                                         'id'=>$applyitem->id,
-                                         'typ'=>$applyitem->typ));
+                $editurl->params(array('do_show'=>$do_show, 'cmid'=>$id, 'id'=>$applyitem->id, 'typ'=>$applyitem->typ));
 
                 // in edit_item.php the param id is used for the itemid
                 // and the cmid is the id to get the module
@@ -372,9 +376,7 @@ if ($do_show == 'edit') {
             //print the delete-button
             echo '<span class="apply_item_command_toggle">';
             $deleteitemurl = new moodle_url('/mod/apply/delete_item.php');
-            $deleteitemurl->params(array('id'=>$id,
-                                         'do_show'=>$do_show,
-                                         'deleteitem'=>$applyitem->id));
+            $deleteitemurl->params(array('id'=>$id, 'do_show'=>$do_show, 'deleteitem'=>$applyitem->id));
 
             $buttonlink = $deleteitemurl->out();
             $strbutton = get_string('delete_item', 'apply');
@@ -413,9 +415,10 @@ if ($do_show == 'edit') {
                          'generalbox boxaligncenter');
     }
 }
+echo $OUTPUT->box_end();
+
+
+///////////////////////////////////////////////////////////////////////////
 /// Finish the page
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
 
 echo $OUTPUT->footer();
