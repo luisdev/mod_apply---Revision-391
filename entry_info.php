@@ -44,7 +44,7 @@ if ($submit) {
 
 	}
 
-	if ($submit->execed==APPLY_EXECED_DONE) {
+	if ($submit->execed==APPLY_EXEC_DONE) {
 		echo $OUTPUT->box_start('apply_info');
 		echo '<span class="apply_info">';
 		echo get_string('time_close', 'apply').': ';
@@ -54,7 +54,7 @@ if ($submit) {
 		echo '</span>';
 		echo $OUTPUT->box_end();
 	}
-	else if ($submit->execed==APPLY_EXECED_NOTYET) {
+	else if ($submit->execed==APPLY_EXEC_NOTYET) {
 	}
 
 	//
