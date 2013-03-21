@@ -127,7 +127,8 @@ if ($do_show=='show_entries') {
 	}
 
 	////////////////////////////////////////////////////////////
-	// User Data
+	// Submits Data
+	$where   = 'version>0 AND';
 	$submits = apply_get_submits_select($apply->id, 0, $where, $params, $sort, $start_page, $page_count);
 
 	if (!$submits) {

@@ -1,8 +1,7 @@
 <?php
 
 //print the items
-//echo $OUTPUT->box_start('apply_form');
-echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
+echo $OUTPUT->box_start('apply_form boxaligncenter boxwidthwide');
 {
 	echo '<form action="submit.php" method="post" onsubmit=" ">';
 	echo '<fieldset>';
@@ -22,24 +21,23 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 		unset($start_item);
 		$select = 'apply_id=? AND hasvalue=1 AND position<?';
 		$params = array($apply->id, $start_position);
-		$itemnr = $DB->count_records_select('apply_item', $select, $params);
+		$align  = right_to_left() ? 'right' : 'left';
 		$last_break_position = 0;
-		$align = right_to_left() ? 'right' : 'left';
 
-		foreach ($apply_items as $apply_item) {
+		foreach ($items as $item) {
 			if (!isset($start_item)) {
-				if ($apply_item->typ=='pagebreak') continue;
-				$start_item = $apply_item;
+				if ($item->typ=='pagebreak') continue;
+				$start_item = $item;
 			}
-			if ($apply_item->dependitem>0) {
-				$compare_value = apply_compare_item_value($submit_id, $apply_item->dependitem, $apply_item->dependvalue, true);
+			if ($item->dependitem>0) {
+				$compare_value = apply_compare_item_value($submit_id, $item->dependitem, $item->dependvalue, true);
 				if (!isset($submit_id) OR !$compare_value) {
-					$last_item = $apply_item;
-					$last_break_position = $apply_item->position;
+					$last_item = $item;
+					$last_break_position = $item->position;
 					continue;
 				}
 			}
-			if ($apply_item->dependitem>0) {
+			if ($item->dependitem>0) {
 				$depend_style = ' apply_submit_depend';
 			}
 			else {
@@ -47,43 +45,29 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 			}
 
 			//
-			//echo $OUTPUT->box_start('apply_item_box_'.$align.$depend_style);
-			{
-				$value = '';
-				//get the value
-				$frmvaluename = $apply_item->typ . '_'. $apply_item->id;
-				if (isset($save_return)) {
-					$value = isset($formdata->{$frmvaluename}) ? $formdata->{$frmvaluename} : null;
-					$value = apply_clean_input_value($apply_item, $value);
-				}
-				else {
-					if (isset($submit_id)) {
-						$value = apply_get_item_value($submit_id, $apply_item->id, true);
-					}
-				}
-				/*
-				if ($apply_item->hasvalue==1) {
-					$itemnr++;
-					echo $OUTPUT->box_start('apply_item_number_'.$align);
-					echo $itemnr;
-					echo $OUTPUT->box_end();
-				}
-				*/
-				if ($apply_item->typ != 'pagebreak') {
-					echo $OUTPUT->box_start('box generalbox boxalign_'.$align);
-					apply_print_item_submit($apply_item, $value, $highlightrequired);
-					echo $OUTPUT->box_end();
+			$value = '';
+			$frmvaluename = $item->typ.'_'.$item->id;
+			if (isset($save_return)) {
+				$value = isset($formdata->{$frmvaluename}) ? $formdata->{$frmvaluename} : null;
+				$value = apply_clean_input_value($item, $value);
+			}
+			else {
+				if (isset($submit_id)) {
+					$value = apply_get_item_value($submit_id, $item->id, true);
 				}
 			}
-			//echo $OUTPUT->box_end();
-		}
 
-		$last_break_position = $apply_item->position; //last item-pos (item or pagebreak)
-		if ($apply_item->typ=='pagebreak') {
-			break;
-		}
-		else {
-			$last_item = $apply_item;
+			$last_break_position = $item->position; //last item-pos (item or pagebreak)
+			if ($item->typ!='pagebreak') {
+				echo $OUTPUT->box_start('box generalbox boxalign_'.$align);
+				apply_print_item_submit($item, $value, $highlightrequired);
+				echo $OUTPUT->box_end();
+				//
+				$last_item = $item;
+			}
+			else {
+				break;
+			}
 		}
 	}
 	echo $OUTPUT->box_end();

@@ -171,7 +171,7 @@ if ($do_show=='view') {
 		echo $OUTPUT->box_start('mdl-align');
 
 		////////////////////////////////////////////////////////////
-		// User Data
+		// Submits Data
 		$submits = apply_get_submits_select($apply->id, $USER->id, $where, $params, $sort, $start_page, $page_count);
 
 		foreach ($submits as $submit) {

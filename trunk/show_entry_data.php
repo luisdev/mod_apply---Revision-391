@@ -15,7 +15,7 @@ if ($submit) {
 	//
 	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide apply_item');
 
-	$itemnr = 0;
+//	$itemnr = 0;
 	foreach ($items as $item) {
 		//get the values
 		$params = array('submit_id'=>$submit->id, 'item_id'=>$item->id);
