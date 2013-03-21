@@ -116,6 +116,7 @@ $string['class_cancel']  = 'Cancel';
 $string['no_title'] = 'No Title';
 $string['show_all'] = 'Show all {$a}';
 $string['show_perpage'] = 'Show {$a} per page';
+$string['not_submit_data'] = 'Specified application data does not exist';
 
 
 // edit_item

@@ -29,12 +29,13 @@ require_once($CFG->libdir.'/tablelib.php');
 
 ////////////////////////////////////////////////////////
 //get the params
-$id		  = required_param('id', PARAM_INT);
-$do_show  = required_param('do_show',  PARAM_ALPHAEXT);
-$user_id  = optional_param('user_id',  0, PARAM_INT);
-$perpage  = optional_param('perpage',  APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);  // how many per page
-$show_all = optional_param('show_all', 0, PARAM_INT);
-$courseid = optional_param('courseid', 0, PARAM_INT);
+$id		   = required_param('id', PARAM_INT);
+$do_show   = required_param('do_show',   PARAM_ALPHAEXT);
+$user_id   = optional_param('user_id',   0, PARAM_INT);
+$submit_id = optional_param('submit_id', 0, PARAM_INT);
+$perpage   = optional_param('perpage',   APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);  // how many per page
+$show_all  = optional_param('show_all',  0, PARAM_INT);
+$courseid  = optional_param('courseid',  0, PARAM_INT);
 
 $current_tab = $do_show;
 
@@ -52,10 +53,13 @@ if (! $apply = $DB->get_record('apply', array('id'=>$cm->instance))) {
 }
 if (!$courseid) $courseid = $course->id;
 
+//
 $url = new moodle_url('/mod/apply/show_entries.php', array('id'=>$cm->id, 'do_show'=>$do_show));
 $PAGE->set_url($url);
 
 $context = context_module::instance($cm->id);
+
+$name_pattern = $apply->name_pattern;
 
 
 ////////////////////////////////////////////////////////
@@ -97,8 +101,7 @@ if ($do_show=='show_entries') {
 		// Setup Table
 		$baseurl = new moodle_url('/mod/apply/show_entries.php');
 		$baseurl->params(array('id'=>$id, 'do_show'=>$do_show, 'show_all'=>$show_all));
-		$name_pattern  = $apply->name_pattern;
-		$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execed', '');
+		$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execed');
 
 		$title_pic  = get_string('user_pic',	 'apply');
 		$title_name = get_string($name_pattern);
@@ -109,7 +112,8 @@ if ($do_show=='show_entries') {
 		$title_ack  = get_string('title_ack',	 'apply');
 		$title_exec = get_string('title_exec',   'apply');
 		$title_chk  = get_string('title_check',	 'apply');
-		$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, $title_chk, '');
+		//$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, $title_chk);
+		$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec);
 
 		// 管理者
 		if (has_capability('mod/apply:deletesubmissions', $context)) {
@@ -210,7 +214,7 @@ if ($do_show=='show_entries') {
 					$user_url  = $CFG->wwwroot.'/user/view.php?id='.$student->id.'&amp;course='.$courseid;
 					$prof_link = '<strong><a href="'.$user_url.'">'.$user_name.'</a></strong>';
 					$acked_url = $CFG->wwwroot.'/user/view.php?id='.$submit->acked_user.'&amp;course='.$courseid;
-					$entry_url = new moodle_url($url, array('user_id'=>$student->id, 'do_show'=>'show_one_entry'));
+					$entry_url = new moodle_url($url, array('user_id'=>$student->id, 'submit_id'=>$submit->id, 'do_show'=>'show_one_entry'));
 
 					$data = array();
 					//
@@ -246,8 +250,9 @@ if ($do_show=='show_entries') {
 					else 				 $execed = get_string('execed_notyet', 'apply');
 					$data[] = $execed;
 					//
-					$data[] = '';
+					$data[] = 'x';
 
+/*
 					//link to delete the entry
 					if (has_capability('mod/apply:deletesubmissions', $context)) {
 						$delete_url_params = array('id'=>$cm->id, 'submit_id'=>$submit->id, 'do_show'=>'show_one_entry');
@@ -255,6 +260,7 @@ if ($do_show=='show_entries') {
 						$deleteentry_link = '<a href="'.$deleteentry_url->out().'">'.get_string('delete_entry', 'apply').'</a>';
 						$data[] = $deleteentry_link;
 					}
+*/
 
 					$table->add_data($data);
 				}
@@ -280,55 +286,57 @@ if ($do_show=='show_entries') {
 
 ////////////////////////////////////////////////////////
 /// Print the responses of the given user
-//get the responses of given user
-if ($do_show=='show_one_entry') {
-	$params = array('apply_id'=>$apply->id, 'user_id'=>$user_id);
-	$apply_submits = $DB->get_records('apply_submit', $params); 
-	$apply_items   = $DB->get_records('apply_item', array('apply_id'=>$apply->id), 'position');
-}
+if ($do_show=='show_one_entry' and $submit_id) {
+	$params = array('apply_id'=>$apply->id, 'user_id'=>$user_id, 'id'=>$submit_id);
+	$submit = $DB->get_record ('apply_submit', $params); 
+	$items  = $DB->get_records('apply_item', array('apply_id'=>$apply->id), 'position');
 
-if ($do_show=='show_one_entry') {
 	echo $OUTPUT->heading(format_text($apply->name));
 
 	//print the items
-	if (is_array($apply_items)) {
-		$align = right_to_left() ? 'right' : 'left';
-		$usr = $DB->get_record('user', array('id'=>$user_id));
+	if (is_array($items)) {
+		$align   = right_to_left() ? 'right' : 'left';
+		$student = $DB->get_record('user', array('id'=>$user_id));
 
-		if ($applycompleted) {
-			echo $OUTPUT->heading(userdate($applycompleted->time_modified).' ('.fullname($usr).')', 3);
+		if 		($name_pattern=='firstname') $user_name = $student->firstname;
+		else if ($name_pattern=='lastname')  $user_name = $student->lastname;
+		else								 $user_name = fullname($student); 
+
+		if (!$submit) {
+			echo $OUTPUT->heading(get_string('not_submit_data', 'apply'), 3);
 		}
 		else {
-			echo $OUTPUT->heading(get_string('not_completed_yet', 'apply'), 3);
-		}
+			echo $OUTPUT->heading(userdate($submit->time_modified, '%Y/%m/%d %H:%M').' ('.$user_name.')', 3);
+			echo $OUTPUT->box_start('apply_items');
 
-		echo $OUTPUT->box_start('apply_items');
-		$itemnr = 0;
-		foreach ($apply_items as $apply_item) {
-			//get the values
-			$params = array('submit_id'=>$applycompleted->id, 'item_id'=>$apply_item->id);
-			$value = $DB->get_record('apply_value', $params);
-			echo $OUTPUT->box_start('apply_item_box_'.$align);
-			if ($apply_item->hasvalue==1) {
-				$itemnr++;
-				echo $OUTPUT->box_start('apply_item_number_'.$align);
-				echo $itemnr;
-				echo $OUTPUT->box_end();
-			}
+			$itemnr = 0;
+			foreach ($items as $item) {
+				//get the values
+				$params = array('submit_id'=>$submit->id, 'item_id'=>$item->id);
+				$value  = $DB->get_record('apply_value', $params);
 
-			if ($apply_item->typ != 'pagebreak') {
-				echo $OUTPUT->box_start('box generalbox boxalign_'.$align);
-				if (isset($value->value)) {
-					apply_print_item_show_value($apply_item, $value->value);
+				echo $OUTPUT->box_start('apply_item_box_'.$align);
+				if ($item->hasvalue==1) {
+					$itemnr++;
+					echo $OUTPUT->box_start('apply_item_number_'.$align);
+					echo $itemnr;
+					echo $OUTPUT->box_end();
 				}
-				else {
-					apply_print_item_show_value($apply_item, false);
+				if ($item->typ != 'pagebreak') {
+					echo $OUTPUT->box_start('box generalbox boxalign_'.$align);
+					if (isset($value->value)) {
+						apply_print_item_show_value($item, $value->value);
+					}
+					else {
+						apply_print_item_show_value($item, false);
+					}
+					echo $OUTPUT->box_end();
 				}
 				echo $OUTPUT->box_end();
 			}
 			echo $OUTPUT->box_end();
 		}
-		echo $OUTPUT->box_end();
+		//
 	}
 	echo $OUTPUT->continue_button(new moodle_url($url, array('do_show'=>'show_entries')));
 }

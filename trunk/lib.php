@@ -48,7 +48,7 @@ define('APPLY_THOUSAND',		 ',');
 define('APPLY_RESETFORM_RESET',	 'apply_reset_data_');
 define('APPLY_RESETFORM_DROP',	 'apply_drop_apply_');
 define('APPLY_MAX_PIX_LENGTH',	  400);
-define('APPLY_DEFAULT_PAGE_COUNT', 10);
+define('APPLY_DEFAULT_PAGE_COUNT', 20);
 
 
 
@@ -898,8 +898,8 @@ function apply_exec_submit($submit_id)
 	if 		($submit->version==1) $submit->class = APPLY_CLASS_NEW;
 	else if ($submit->version >1) $submit->class = APPLY_CLASS_UPDATE;
 
-	apply_flush_draft_values ($submit->id, $submit->version, $title);
-	apply_delete_draft_values($submit->id);
+	$ret = apply_flush_draft_values ($submit->id, $submit->version, $title);
+	if ($ret) apply_delete_draft_values($submit->id);
 
 	if ($title!='') $submit->title = $title;
 	$ret = $DB->update_record('apply_submit', $submit);
@@ -1080,13 +1080,24 @@ function apply_delete_draft_values($submit_id)
 
 
 
+/**
+ * copy value from draft record to taget version record.
+ * if item label is 'title' and item type 'textfield', that item value is return.
+ *
+ * @global object
+ * @param  $submit_id id of submit(application)
+ * @param  $version target version to copy
+ * @param[out] $title if item label is 'title' and item type 'textfield', that item value is setted.
+ * @return boolean
+ */
 function apply_flush_draft_values($submit_id, $version, &$title)
 {
 	global $DB;
 
 	$values = $DB->get_records('apply_value', array('submit_id'=>$submit_id, 'version'=>0));
-	if (!$values) return;
+	if (!$values) return false;
 
+	$ret   = false;
 	$title = '';
 	$time_modified = time();
 
@@ -1096,13 +1107,14 @@ function apply_flush_draft_values($submit_id, $version, &$title)
 			$value->id = $val->id;
 			$value->version = $val->version;
 			$value->time_modified = $time_modified;
-			$DB->update_record('apply_value', $value);
+			$ret = $DB->update_record('apply_value', $value);
 		}
 		else {
 			$value->version = $version;
 			$value->time_modified = $time_modified;
-			$DB->insert_record('apply_value', $value);
+			$ret = $DB->insert_record('apply_value', $value);
 		}
+		if (!$ret) break;
 
 		//
 		if ($title=='') {
@@ -1114,6 +1126,8 @@ function apply_flush_draft_values($submit_id, $version, &$title)
 			}
 		}
 	}
+
+	return $ret;
 }
 
 
