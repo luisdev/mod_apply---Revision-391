@@ -26,11 +26,11 @@ require_once('../../config.php');
 require_once('lib.php');
 require_once('delete_item_form.php');
 
-$id 		 = required_param('id', PARAM_INT);
-$delete_item = required_param('delete_item', PARAM_INT);
-$courseid 	 = optional_param('courseid', false, PARAM_INT);
+$id 		= required_param('id', PARAM_INT);
+$deleteitem = required_param('deleteitem', PARAM_INT);
+$courseid 	= optional_param('courseid', false, PARAM_INT);
 
-$PAGE->set_url('/mod/apply/delete_item.php', array('id'=>$id, 'delete_item'=>$delete_item));
+$PAGE->set_url('/mod/apply/delete_item.php', array('id'=>$id, 'deleteitem'=>$deleteitem));
 
 if (! $cm = get_coursemodule_from_id('apply', $id)) {
     print_error('invalidcoursemodule');
@@ -50,7 +50,7 @@ require_login($course, true, $cm);
 require_capability('mod/apply:edititems', $context);
 
 $mform = new mod_apply_delete_item_form();
-$newformdata = array('id'=>$id, 'delete_item'=>$delete_item, 'confirmdelete'=>'1'); 
+$newformdata = array('id'=>$id, 'deleteitem'=>$deleteitem, 'confirmdelete'=>'1'); 
 $mform->set_data($newformdata);
 $formdata = $mform->get_data();
 
@@ -59,7 +59,7 @@ if ($mform->is_cancelled()) {
 }
 
 if (isset($formdata->confirmdelete) AND $formdata->confirmdelete == 1) {
-    apply_delete_item($formdata->delete_item);
+    apply_delete_item($formdata->deleteitem);
     redirect('edit.php?id='.$id);
 }
 
@@ -79,7 +79,7 @@ echo $OUTPUT->header();
 
 echo $OUTPUT->heading(format_text($apply->name));
 echo $OUTPUT->box_start('generalbox errorboxcontent boxaligncenter boxwidthnormal');
-echo $OUTPUT->heading(get_string('confirmdelete_item', 'apply'));
+echo $OUTPUT->heading(get_string('confirm_delete_item', 'apply'));
 
 print_string('relateditemsdeleted', 'apply');
 

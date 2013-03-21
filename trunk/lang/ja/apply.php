@@ -194,7 +194,14 @@ $string['submit_the_form'] = '申請する ...';
 
 $string['configallowfullanonymous'] = 'このオプションを有効にした場合，ログインせずに申請フォームを完了することができます．設定はホームページの申請フォームにのみ影響します．';
 $string['confirmdeleteentry'] = '本当にこのエントリを削除してもよろしいですか?';
-$string['confirmdeleteitem'] = '本当にこの要素を削除してもよろしいですか?';
+
+
+// delete_item.php
+$string['confirm_delete_item'] = '本当にこの要素を削除してもよろしいですか?';
+
+
+
+
 $string['confirmdeletetemplate'] = '本当にこのテンプレートを削除してもよろしいですか?';
 $string['confirmusetemplate'] = '本当にこのテンプレートを使用しますか?';
 $string['continue_the_form'] = 'フォームを続ける';

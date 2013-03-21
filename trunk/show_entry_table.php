@@ -23,17 +23,23 @@ else {
 	$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, '-');
 }
 
-
+//
 $table->define_columns($table_columns);
 $table->define_headers($table_headers);
 $table->define_baseurl($baseurl);
 
-$table->sortable(true, 'lastname', SORT_DESC);
-$table->no_sorting('update');
-$table->no_sorting('cancel');
-$table->no_sorting('delete');
-$table->no_sorting('operation');
+if ($req_own_data) {
+	$table->sortable(true, 'time_modified', SORT_DESC);
+	$table->no_sorting('update');
+	$table->no_sorting('cancel');
+	$table->no_sorting('delete');
+}
+else {
+	$table->sortable(true, 'lastname', SORT_ASC);
+	$table->no_sorting('operation');
+}
 
+//
 $table->set_attribute('cellspacing', '0');
 $table->set_attribute('id', 'show_entrytable');
 $table->set_attribute('class', 'generaltable generalbox');
@@ -52,6 +58,7 @@ if (!$sort) $sort = '';
 list($where, $params) = $table->get_sql_where();
 if ($where) $where .= ' AND';
 
+//
 if ($name_pattern=='firstname') {
 	$sifirst = optional_param('sifirst', '', PARAM_ALPHA);
 	if ($sifirst) {

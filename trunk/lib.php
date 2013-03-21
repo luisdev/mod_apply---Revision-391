@@ -31,6 +31,11 @@ defined('MOODLE_INTERNAL') || die;
 /** Include calendar/lib.php */
 //require_once($CFG->dirroot.'/calendar/lib.php');
                     //
+
+define('APPLY_TITLE_TAG',	'title');
+define('APPLY_NODISP_TAG',	'nodisp');
+define('APPLY_ADMIN_TAG',	'foradmin');
+
 define('APPLY_CLASS_DRAFT',  0);
 define('APPLY_CLASS_NEW',    1);
 define('APPLY_CLASS_UPDATE', 2);
@@ -1083,12 +1088,12 @@ function apply_delete_draft_values($submit_id)
 
 /**
  * copy value from draft record to taget version record.
- * if item label is 'title' and item type 'textfield', that item value is return.
+ * if item label is APPLY_TITLE_TAG and item type 'textfield', that item value is return.
  *
  * @global object
  * @param  $submit_id id of submit(application)
  * @param  $version target version to copy
- * @param[out] $title if item label is 'title' and item type 'textfield', that item value is setted.
+ * @param[out] $title if item label is APPLY_TITLE_TAG and item type 'textfield', that item value is setted.
  * @return boolean
  */
 function apply_flush_draft_values($submit_id, $version, &$title)
@@ -1121,7 +1126,7 @@ function apply_flush_draft_values($submit_id, $version, &$title)
 		if ($title=='') {
 			$item = $DB->get_record('apply_item', array('id'=>$value->item_id));
 			if ($item) {
-				if ($item->label=='title' and $item->typ=='textfield') {
+				if ($item->label==APPLY_TITLE_TAG and $item->typ=='textfield') {
 					$title = $value->value;
 				}
 			}

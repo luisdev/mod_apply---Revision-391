@@ -24,7 +24,7 @@ if ($student) {
 	//
 	$title = $submit->title;
 	if ($title=='') $title = get_string('no_title', 'apply');
-	$entry_link = '<a href="'.$entry_url->out().'">'.$title.'</a>';
+	$entry_link = '<strong><a href="'.$entry_url->out().'">'.$title.'</a></strong>';
 	$data[] = $entry_link;
 	//
 	$mod_time = userdate($submit->time_modified, '%Y/%m/%d %H:%M');
@@ -53,22 +53,45 @@ if ($student) {
 	$data[] = $execed;
 	//
 
-//	if (has_capability('mod/apply:deletesubmissions', $context)) {
+	//
 	if ($req_own_data) {
-		$update_url_params = array('submit_id'=>$submit->id);
-		$update_url = new moodle_url($CFG->wwwroot.'/mod/apply/edit.php', $update_url_params);
-		$data[] = '<a href="'.$update_url->out().'">'.get_string('update_entry', 'apply').'</a>';
-		//
-		$cancel_url_params = array('submit_id'=>$submit->id);
-		$cancel_url = new moodle_url($CFG->wwwroot.'/mod/apply/edit.php', $cancel_url_params);
-		$data[] = '<a href="'.$cancel_url->out().'">'.get_string('cancel_entry', 'apply').'</a>';
-		//
-		$delete_url_params = array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
-		$delete_url = new moodle_url($CFG->wwwroot.'/mod/apply/delete_submit.php', $delete_url_params);
-		$data[] = '<a href="'.$delete_url->out().'">'.get_string('delete_entry', 'apply').'</a>';
+		// Update
+		if ($submit->class!=APPLY_CLASS_CANCEL) {
+			$update_url_params = array('submit_id'=>$submit->id);
+			$update_url = new moodle_url($CFG->wwwroot.'/mod/apply/edit.php', $update_url_params);
+			$data[] = '<strong><a href="'.$update_url->out().'">'.get_string('update_entry', 'apply').'</a></strong>';
+		}
+		else {
+			$data[] = '-';
+		}
+		// Cacel
+		if ($submit->acked==APPLY_ACKED_ACCEPT) {
+			$cancel_url_params = array('submit_id'=>$submit->id);
+			$cancel_url = new moodle_url($CFG->wwwroot.'/mod/apply/edit.php', $cancel_url_params);
+			$data[] = '<strong><a href="'.$cancel_url->out().'">'.get_string('cancel_entry', 'apply').'</a></strong>';
+		}
+		else {
+			$data[] = '-';
+		}
+		// Delete
+		if ($submit->acked!=APPLY_ACKED_ACCEPT) {
+			$delete_url_params = array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
+			$delete_url = new moodle_url($CFG->wwwroot.'/mod/apply/delete_submit.php', $delete_url_params);
+			$data[] = '<strong><a href="'.$delete_url->out().'">'.get_string('delete_entry', 'apply').'</a></strong>';
+		}
+		else {
+			$data[] = '-';
+		}
 	}
 	else {
-		$data[] = get_string('operation_entry', 'apply');
+		if ($submit->class!=APPLY_CLASS_CANCEL) {
+			$op_url_params = array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
+			$op_url = new moodle_url($CFG->wwwroot.'/mod/apply/op.php', $op_url_params);
+			$data[] = '<strong><a href="'.$op_url->out().'">'.get_string('operation_entry', 'apply').'</a></strong>';
+		}
+		else {
+			$data[] = '-';
+		}
 	}
 }
 

@@ -59,10 +59,11 @@ echo $OUTPUT->box_start('apply_form boxaligncenter boxwidthwide');
 
 			$last_break_position = $item->position; //last item-pos (item or pagebreak)
 			if ($item->typ!='pagebreak') {
-				echo $OUTPUT->box_start('box generalbox boxalign_'.$align);
-				apply_print_item_submit($item, $value, $highlightrequired);
-				echo $OUTPUT->box_end();
-				//
+				if ($item->label!=APPLY_ADMIN_TAG) {
+					echo $OUTPUT->box_start('box generalbox boxalign_'.$align);
+					apply_print_item_submit($item, $value, $highlightrequired);
+					echo $OUTPUT->box_end();
+				}
 				$last_item = $item;
 			}
 			else {
