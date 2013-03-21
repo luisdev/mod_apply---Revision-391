@@ -102,12 +102,13 @@ $string['entry_saved'] = 'あなたの申請書が送信されました';
 $string['saving_failed'] = '保存に失敗しました';
 $string['saving_failed_because_missing_or_false_values'] = '値が入力されていないか，正しくないため，保存に失敗しました';
 
-$string['update_entry']  = '更新';
-$string['discard_entry'] = '取消';
+$string['update_entry'] = '更新';
+$string['cancel_entry'] = '取消';
+$string['delete_entry'] = '削除';
+$string['operation_entry'] = '操作';
 
 
 // show_entries
-$string['delete_entry']  = '削除';
 $string['user_pic']   	 = '画像';
 $string['acked_notyet']  = '未処理';
 $string['acked_accept']  = '受理';

@@ -13,35 +13,27 @@ $title_chk  = get_string('title_check',	 'apply');
 
 //
 if ($req_own_data) {
-	$title_update  = get_string('update_entry',  'apply');
-	$title_discard = get_string('discard_entry', 'apply');
-	//
-	$table_columns = array('title', 'time_modified', 'version', 'class', 'acked', 'execed');
-	$table_headers = array($title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec);
+	$table_columns = array('title', 'time_modified', 'version', 'class', 'acked', 'execed', 'update', 'cancel', 'delete');
+	$table_headers = array($title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, '-', '-','-');
 }
 else {
 	$title_pic  = get_string('user_pic', 'apply');
 	$title_name = get_string($name_pattern);
-	//
-	$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execed');
-	$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec);
+	$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execed', 'operation');
+	$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, '-');
 }
 
-
-// 管理者
-/*
-if (has_capability('mod/apply:deletesubmissions', $context)) {
-	$table_columns[] = 'delete_entry';
-	$table_headers[] = '';
-}
-*/
-//$table = new flexible_table('apply-show_entry-list-'.$courseid);
 
 $table->define_columns($table_columns);
 $table->define_headers($table_headers);
 $table->define_baseurl($baseurl);
 
 $table->sortable(true, 'lastname', SORT_DESC);
+$table->no_sorting('update');
+$table->no_sorting('cancel');
+$table->no_sorting('delete');
+$table->no_sorting('operation');
+
 $table->set_attribute('cellspacing', '0');
 $table->set_attribute('id', 'show_entrytable');
 $table->set_attribute('class', 'generaltable generalbox');

@@ -1389,6 +1389,7 @@ function apply_print_one_initials_bar($table, $alpha, $current, $class, $title, 
 
 
 
+/*
 function apply_get_primary_sort($table_sorts, $post_sort)
 {
 	if (!$post_sort)   return '';
@@ -1404,4 +1405,4 @@ function apply_get_primary_sort($table_sorts, $post_sort)
 		}	
 	}
 }
-
+*/
