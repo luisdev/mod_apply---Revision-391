@@ -8,16 +8,18 @@ if ($student) {
 	else if ($name_pattern=='lastname')  $user_name = $student->lastname;
 	else								 $user_name = fullname($student); 
 	//
-	$user_url  = $CFG->wwwroot.'/user/view.php?id='.$student->id.'&amp;course='.$courseid;
-	$prof_link = '<strong><a href="'.$user_url.'">'.$user_name.'</a></strong>';
-	$acked_url = $CFG->wwwroot.'/user/view.php?id='.$submit->acked_user.'&amp;course='.$courseid;
-	$entry_url = new moodle_url($url, array('user_id'=>$student->id, 'submit_id'=>$submit->id, 'do_show'=>'show_one_entry'));
+	$entry_url 	= new moodle_url($url, array('user_id'=>$student->id, 'submit_id'=>$submit->id, 'do_show'=>'show_one_entry'));
+	//
+	$user_url  	= $CFG->wwwroot.'/user/view.php?id='.$student->id.'&amp;course='.$courseid;
+	$acked_url	= $CFG->wwwroot.'/user/view.php?id='.$submit->acked_user.'&amp;course='.$courseid;
+	$execed_url = $CFG->wwwroot.'/user/view.php?id='.$submit->execed_user.'&amp;course='.$courseid;
+	$reply_url 	= $CFG->wwwroot.'/user/view.php?id='.$submit->reply_user.'&amp;course='.$courseid;
 
 	///////////////////////////////////////
 	//
 	if (!$req_own_data) {
 		$data[] = $OUTPUT->user_picture($student, array('courseid'=>$courseid));
-		$data[] = $prof_link;
+		$data[] = '<strong><a href="'.$user_url.'">'.$user_name.'</a></strong>';
 	}
 	//
 	$title = $submit->title;
@@ -41,24 +43,32 @@ if ($student) {
 	else if ($submit->acked==APPLY_ACKED_ACCEPT) $acked = get_string('acked_accept',  'apply');
 	else if ($submit->acked==APPLY_ACKED_REJECT) $acked = get_string('acked_reject',  'apply');
 	if ($submit->acked!=APPLY_ACKED_NOTYET) {
-		$acked = '<a href="'.$acked_url->out().'">'.$acked.'</a>';
+		$acked = '<a href="'.$acked_url.'">'.$acked.'</a>';
 	}
 	$data[] = $acked;
 	//
 	if ($submit->execed) $execed = get_string('execed_done',   'apply');
 	else 				 $execed = get_string('execed_notyet', 'apply');
+	if ($submit->execed) $execed = '<a href="'.$execed_url.'">'.$execed.'</a>';
 	$data[] = $execed;
 	//
-//	$data[] = 'x';
 
-/*
-	//link to delete the entry
-	if (has_capability('mod/apply:deletesubmissions', $context)) {
-		$delete_url_params = array('id'=>$cm->id, 'submit_id'=>$submit->id, 'do_show'=>'show_one_entry');
-		$deleteentry_url = new moodle_url($CFG->wwwroot.'/mod/apply/delete_submit.php', $delete_url_params);
-		$deleteentry_link = '<a href="'.$deleteentry_url->out().'">'.get_string('delete_entry', 'apply').'</a>';
-		$data[] = $deleteentry_link;
+//	if (has_capability('mod/apply:deletesubmissions', $context)) {
+	if ($req_own_data) {
+		$update_url_params = array('submit_id'=>$submit->id);
+		$update_url = new moodle_url($CFG->wwwroot.'/mod/apply/edit.php', $update_url_params);
+		$data[] = '<a href="'.$update_url->out().'">'.get_string('update_entry', 'apply').'</a>';
+		//
+		$cancel_url_params = array('submit_id'=>$submit->id);
+		$cancel_url = new moodle_url($CFG->wwwroot.'/mod/apply/edit.php', $cancel_url_params);
+		$data[] = '<a href="'.$cancel_url->out().'">'.get_string('cancel_entry', 'apply').'</a>';
+		//
+		$delete_url_params = array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
+		$delete_url = new moodle_url($CFG->wwwroot.'/mod/apply/delete_submit.php', $delete_url_params);
+		$data[] = '<a href="'.$delete_url->out().'">'.get_string('delete_entry', 'apply').'</a>';
 	}
-*/
+	else {
+		$data[] = get_string('operation_entry', 'apply');
+	}
 }
 

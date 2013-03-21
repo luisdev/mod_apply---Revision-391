@@ -101,12 +101,13 @@ $string['saving_failed'] = 'Saving failed';
 $string['saving_failed_because_missing_or_false_values'] = 'Saving failed because missing or false values.';
 
 $string['update_entry'] = 'Update';
-$string['discard_entry'] = 'Discard';
+$string['cancel_entry'] = 'Cancel';
+$string['delete_entry'] = 'Delete';
+$string['operation_entry'] = 'Operation';
 
 
 
 // show_entries
-$string['delete_entry']  = 'Delete';
 $string['user_pic']  	 = 'Picture';
 $string['acked_notyet']  = 'Not Yet';
 $string['acked_accept']  = 'Accept';
