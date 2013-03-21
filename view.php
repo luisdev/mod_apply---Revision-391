@@ -160,7 +160,7 @@ if ($do_show=='view') {
 		$table = new flexible_table('apply-view-list-'.$courseid);
 		$matchcount = apply_get_valid_submits_count($cm->instance);
 		//
-		require('show_entry_header.php');
+		require('show_entry_table.php');
 
 		echo '<br />';
 		echo $OUTPUT->heading(get_string('entries_list_title', 'apply'), 2);
