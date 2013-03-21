@@ -29,6 +29,12 @@ if ($submit) {
 			}
 		}
 	}
+
+	//
+	require('entry_info.php');
+
+	require('entry_data_button.php');
+
 	echo $OUTPUT->box_end();
 }
 

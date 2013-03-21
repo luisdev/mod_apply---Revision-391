@@ -24,10 +24,10 @@
 
 defined('MOODLE_INTERNAL') OR die('not allowed');
 
-
-echo $OUTPUT->box_start('boxaligncenter boxwidthwide');
-{
-	if ($apply->time_open) {
+if ($submit) {
+	echo $OUTPUT->box_start('boxaligncenter boxwidthwide');
+	//
+	if ($submit->acked==APPLY_ACKED_ACCEPT) {
 		echo $OUTPUT->box_start('apply_info');
 		echo '<span class="apply_info">';
 		echo get_string('time_open', 'apply').': ';
@@ -37,7 +37,14 @@ echo $OUTPUT->box_start('boxaligncenter boxwidthwide');
 		echo '</span>';
 		echo $OUTPUT->box_end();
 	}
-	if ($apply->time_close) {
+	else if ($submit->acked==APPLY_ACKED_REJECT) {
+
+	}
+	else if ($submit->acked==APPLY_ACKED_NOTYET) {
+
+	}
+
+	if ($submit->execed==APPLY_EXECED_DONE) {
 		echo $OUTPUT->box_start('apply_info');
 		echo '<span class="apply_info">';
 		echo get_string('time_close', 'apply').': ';
@@ -47,5 +54,9 @@ echo $OUTPUT->box_start('boxaligncenter boxwidthwide');
 		echo '</span>';
 		echo $OUTPUT->box_end();
 	}
+	else if ($submit->execed==APPLY_EXECED_NOTYET) {
+	}
+
+	//
+	echo $OUTPUT->box_end();
 }
-echo $OUTPUT->box_end();

@@ -93,17 +93,27 @@ echo $OUTPUT->box_start('apply_form boxaligncenter boxwidthwide');
 	echo '<input type="reset" value="'.get_string('clear').'" />';
 	echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 
+	$inputvalue = 'value="'.get_string('save_draft_button', 'apply').'"';
+	echo '<input name="save_draft"  type="submit" '.$inputvalue.' />';
+	echo '&nbsp;&nbsp;&nbsp;&nbsp;';
+	//
+	if ($last_break_position>=$max_item_count) { //last page
+		$inputvalue = 'value="'.get_string('save_entry_button', 'apply').'"';
+		echo '<input name="save_values" type="submit" '.$inputvalue.' />';
+		echo '&nbsp;&nbsp;&nbsp;&nbsp;';
+	}
+	echo '<br />';
+
+	//
 	if ($is_pagebreak and $last_break_position>$first_pagebreak->position) {
-		$inputvalue = 'value="'.get_string('previous_page', 'apply').'"';
+		$inputvalue = 'value="'.get_string('previous_page_button', 'apply').'"';
 		echo '<input name="go_prev_page" type="submit" '.$inputvalue.' />';
+		echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 	}
 	if ($last_break_position<$max_item_count) {
-		$inputvalue = 'value="'.get_string('next_page', 'apply').'"';
+		$inputvalue = 'value="'.get_string('next_page_button', 'apply').'"';
 		echo '<input name="go_next_page" type="submit" '.$inputvalue.' />';
-	}
-	if ($last_break_position>=$max_item_count) { //last page
-		$inputvalue = 'value="'.get_string('save_entries', 'apply').'"';
-		echo '<input name="save_values" type="submit" '.$inputvalue.' />';
+		echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 	}
 
 	echo '</fieldset>';

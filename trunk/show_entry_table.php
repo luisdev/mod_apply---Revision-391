@@ -13,8 +13,8 @@ $title_chk  = get_string('title_check',	 'apply');
 
 //
 if ($req_own_data) {
-	$table_columns = array('title', 'time_modified', 'version', 'class', 'acked', 'execed', 'update', 'cancel', 'delete');
-	$table_headers = array($title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, '-', '-','-');
+	$table_columns = array('title', 'time_modified', 'version', 'class', 'acked', 'execed', 'edit', 'discard');
+	$table_headers = array($title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, '-', '-');
 }
 else {
 	$title_pic  = get_string('user_pic', 'apply');
@@ -30,9 +30,8 @@ $table->define_baseurl($baseurl);
 
 if ($req_own_data) {
 	$table->sortable(true, 'time_modified', SORT_DESC);
-	$table->no_sorting('update');
-	$table->no_sorting('cancel');
-	$table->no_sorting('delete');
+	$table->no_sorting('edit');
+	$table->no_sorting('discard');
 }
 else {
 	$table->sortable(true, 'lastname', SORT_ASC);

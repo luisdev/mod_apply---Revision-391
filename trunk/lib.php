@@ -45,6 +45,9 @@ define('APPLY_ACKED_NOTYET', 0);
 define('APPLY_ACKED_ACCEPT', 1);
 define('APPLY_ACKED_REJECT', 2);
 
+define('APPLY_EXEC_NOTYET',  0);
+define('APPLY_EXEC_DONE',    1);
+
 
 define('APPLY_DECIMAL',			 '.');
 define('APPLY_THOUSAND',		 ',');
@@ -812,7 +815,6 @@ function apply_create_submit($apply_id, $user_id=0)
 	$submit->apply_id		= $apply_id;
 	$submit->user_id		= $user_id;
 	$submit->title			= '';
-	$submit->reply			= '';
 	$submit->time_modified  = time();
 
 	$submit_id = $DB->insert_record('apply_submit', $submit);
@@ -898,16 +900,23 @@ function apply_exec_submit($submit_id)
 	if (!$submit) return false;
 
 	$title = '';
-	$submit->version++;
-	$submit->time_modified = time();
+	if ($submit->calss==APPLY_ACKED_ACCEPT) $submit->version++;
+	//
+	$ret = apply_flush_draft_values($submit->id, $submit->version, $title);
+	if ($ret) apply_delete_draft_values($submit->id);
 
 	if 		($submit->version==1) $submit->class = APPLY_CLASS_NEW;
 	else if ($submit->version >1) $submit->class = APPLY_CLASS_UPDATE;
-
-	$ret = apply_flush_draft_values ($submit->id, $submit->version, $title);
-	if ($ret) apply_delete_draft_values($submit->id);
-
+	//
 	if ($title!='') $submit->title = $title;
+	$submit->acked 		 = APPLY_ACKED_NOTYET;
+	$submit->acked_user  = 0;
+	$submit->acked_time  = 0;
+	$submit->execed 	 = APPLY_EXEC_NOTYET;
+	$submit->execed_user = 0;
+	$submit->execed_time = 0;
+	$submit->time_modified = time();
+
 	$ret = $DB->update_record('apply_submit', $submit);
 
 	return $ret;

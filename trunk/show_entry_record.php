@@ -13,7 +13,6 @@ if ($student) {
 	$user_url  	= $CFG->wwwroot.'/user/view.php?id='.$student->id.'&amp;course='.$courseid;
 	$acked_url	= $CFG->wwwroot.'/user/view.php?id='.$submit->acked_user.'&amp;course='.$courseid;
 	$execed_url = $CFG->wwwroot.'/user/view.php?id='.$submit->execed_user.'&amp;course='.$courseid;
-	$reply_url 	= $CFG->wwwroot.'/user/view.php?id='.$submit->reply_user.'&amp;course='.$courseid;
 
 	///////////////////////////////////////
 	//
@@ -47,40 +46,45 @@ if ($student) {
 	}
 	$data[] = $acked;
 	//
-	if ($submit->execed) $execed = get_string('execed_done',   'apply');
-	else 				 $execed = get_string('execed_notyet', 'apply');
-	if ($submit->execed) $execed = '<a href="'.$execed_url.'">'.$execed.'</a>';
+	if ($submit->execed==APPLY_EXEC_DONE) $execed = get_string('execed_done',   'apply');
+	else 				 				  $execed = get_string('execed_notyet', 'apply');
+	if ($submit->execed==APPLY_EXEC_DONE) $execed = '<a href="'.$execed_url.'">'.$execed.'</a>';
 	$data[] = $execed;
 	//
 
 	//
 	if ($req_own_data) {
+		if ($submit->class==APPLY_CLASS_CANCEL) {
+			$data[] = '-';
+		}
+		// Edit
+		else if ($submit->acked!=APPLY_ACKED_ACCEPT) {
+			$edit_url_params = array('submit_id'=>$submit->id);
+			$edit_url = new moodle_url($CFG->wwwroot.'/mod/apply/edit.php', $edit_url_params);
+			$data[] = '<strong><a href="'.$edit_url->out().'">'.get_string('edit_entry', 'apply').'</a></strong>';
+		}
 		// Update
-		if ($submit->class!=APPLY_CLASS_CANCEL) {
+		else {
 			$update_url_params = array('submit_id'=>$submit->id);
 			$update_url = new moodle_url($CFG->wwwroot.'/mod/apply/edit.php', $update_url_params);
 			$data[] = '<strong><a href="'.$update_url->out().'">'.get_string('update_entry', 'apply').'</a></strong>';
 		}
-		else {
+
+		//
+		if ($submit->class==APPLY_CLASS_CANCEL) {
 			$data[] = '-';
 		}
 		// Cacel
-		if ($submit->acked==APPLY_ACKED_ACCEPT) {
+		else if ($submit->acked==APPLY_ACKED_ACCEPT) {
 			$cancel_url_params = array('submit_id'=>$submit->id);
 			$cancel_url = new moodle_url($CFG->wwwroot.'/mod/apply/edit.php', $cancel_url_params);
 			$data[] = '<strong><a href="'.$cancel_url->out().'">'.get_string('cancel_entry', 'apply').'</a></strong>';
 		}
-		else {
-			$data[] = '-';
-		}
 		// Delete
-		if ($submit->acked!=APPLY_ACKED_ACCEPT) {
+		else {
 			$delete_url_params = array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
 			$delete_url = new moodle_url($CFG->wwwroot.'/mod/apply/delete_submit.php', $delete_url_params);
 			$data[] = '<strong><a href="'.$delete_url->out().'">'.get_string('delete_entry', 'apply').'</a></strong>';
-		}
-		else {
-			$data[] = '-';
 		}
 	}
 	else {

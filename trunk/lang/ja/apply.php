@@ -34,9 +34,16 @@ $string['description'] = '説明';
 
 // Button
 $string['save_entry_button']  = ' 申請書を送信 ';
-$string['save_draft_button']  = ' 下書きとして保存 ';
+$string['save_draft_button']  = ' 下書き保存 ';
 $string['submit_form_button'] = ' 新規申請 ';
-$string['save_entries'] = ' 申請書を送信 ';
+$string['next_page_button'] = ' 次のページ ';
+$string['previous_page_button'] = ' 前のページ ';
+
+$string['edit_entry_button'] = ' 編集 ';
+$string['update_entry_button'] = ' 更新 ';
+$string['cancel_entry_button'] = ' 取消 ';
+$string['delete_entry_button'] = ' 削除 ';
+$string['operation_entry_button'] = ' 操作 ';
 
 
 // Menu
@@ -99,13 +106,17 @@ $string['entries_list_title'] = '提出済み申請書類一覧';
 
 // submit
 $string['entry_saved'] = 'あなたの申請書が送信されました';
+$string['entry_saved_draft'] = 'あなたの申請書は下書きとして保存されました';
 $string['saving_failed'] = '保存に失敗しました';
 $string['saving_failed_because_missing_or_false_values'] = '値が入力されていないか，正しくないため，保存に失敗しました';
 
+$string['edit_entry'] = '編集';
 $string['update_entry'] = '更新';
 $string['cancel_entry'] = '取消';
 $string['delete_entry'] = '削除';
 $string['operation_entry'] = '操作';
+
+
 
 
 // show_entries
@@ -300,7 +311,6 @@ $string['multichoicetype'] = '多肢選択タイプ';
 $string['multichoice_values'] = '多肢選択値';
 
 
-$string['next_page'] = '次のページ';
 $string['no_handler'] = 'アクションハンドラがありません:';
 $string['no_itemlabel'] = 'ラベルなし';
 $string['no_itemname'] = '無題';
@@ -333,7 +343,6 @@ $string['pluginname'] = '申請フォーム';
 $string['position'] = 'ポジション';
 $string['preview'] = 'プレビュー';
 $string['preview_help'] = 'このプレビューにて，あなたは質問の順番を変更することができます．';
-$string['previous_page'] = '前のページ';
 $string['public'] = '公開';
 $string['question'] = '質問question';
 $string['questions'] = '質問questions';
