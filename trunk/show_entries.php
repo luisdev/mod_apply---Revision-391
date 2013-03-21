@@ -103,7 +103,7 @@ if ($do_show=='show_entries') {
 	$table = new flexible_table('apply-show_entry-list-'.$courseid);
     $matchcount = apply_get_valid_submits_count($cm->instance);
 	//
-	require('show_entry_table.php');
+	require('entry_table.php');
 	//
 	echo $OUTPUT->box_start('mdl-align');
 	echo '<h2>'.$apply->name.'</h2>';
@@ -140,7 +140,7 @@ if ($do_show=='show_entries') {
 			if ($student) {
 				$data = array();
 				//
-				require('show_entry_record.php');
+				require('entry_record.php');
 				if (!empty($data)) $table->add_data($data);
 			}
 		}
@@ -173,7 +173,7 @@ if ($do_show=='show_one_entry' and $submit_id) {
 	echo $OUTPUT->heading(format_text($apply->name));
 
 	$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
-	if (is_array($items)) require('show_entry_data.php');
+	if (is_array($items)) require('show_one_entry.php');
 
 //	echo $OUTPUT->continue_button(new moodle_url($url, array('do_show'=>'show_entries')));
 }

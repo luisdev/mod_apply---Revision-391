@@ -160,7 +160,7 @@ if ($do_show=='view') {
 		$table = new flexible_table('apply-view-list-'.$courseid);
 		$matchcount = apply_get_valid_submits_count($cm->instance);
 		//
-		require('show_entry_table.php');
+		require('entry_table.php');
 
 		echo '<br />';
 		echo $OUTPUT->heading(get_string('entries_list_title', 'apply'), 2);
@@ -179,7 +179,7 @@ if ($do_show=='view') {
 			if ($student) {
 				$data = array();
 				//
-				require('show_entry_record.php');
+				require('entry_record.php');
 				if (!empty($data)) $table->add_data($data);
 			}
 		}
@@ -212,7 +212,7 @@ if ($do_show=='show_one_entry' and $submit_id) {
 
 	if ($submit) {
 		$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
-		if (is_array($items)) require('show_entry_data.php');
+		if (is_array($items)) require('show_one_entry.php');
 	}
 	else {
 		echo $OUTPUT->heading(get_string('not_submit_data', 'apply'), 3);
