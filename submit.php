@@ -28,6 +28,7 @@ require_once('lib.php');
 
 apply_init_session();
 
+
 $id 			= required_param('id', PARAM_INT);
 $courseid 	  	= optional_param('courseid', 0, PARAM_INT);
 $submit_id		= optional_param('submit_id', 0, PARAM_INT);
