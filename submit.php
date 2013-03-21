@@ -40,9 +40,18 @@ $last_itempos  	= optional_param('last_itempos',  0, PARAM_INT);
 
 $highlightrequired = false;
 
+
+///////////////////////////////////////////////////////////////////////////
+// Form Data
 if (($formdata = data_submitted()) and !confirm_sesskey()) {
 	print_error('invalidsesskey');
 }
+
+//
+$save_values = false;
+$save_draft  = false;
+if (isset($formdata->save_values)) $save_values = true;
+if (isset($formdata->save_draft))  $save_draft  = true;
 
 // Page
 if ( isset($formdata->sesskey)	  	and
@@ -54,14 +63,6 @@ if ( isset($formdata->sesskey)	  	and
 	$go_page = $formdata->last_page;
 }
 
-if (isset($formdata->save_values)) {
-	$save_values = true;
-} 
-else {
-	$save_values = false;
-}
-
-// page
 if ($go_page<0 and !$save_values) {
 	if (isset($formdata->go_next_page)) {
 		$go_page = $last_page + 1;
@@ -82,6 +83,7 @@ else {
 }
 
 
+///////////////////////////////////////////////////////////////////////////
 //
 if (! $cm = get_coursemodule_from_id('apply', $id)) {
 	print_error('invalidcoursemodule');
@@ -149,11 +151,11 @@ if (!$SESSION->apply->is_started) {
 
 
 ///////////////////////////////////////////////////////////////////////////
-//
+// Submit
+
 if ($prev_values) {
-	//if (!isset($SESSION->apply->is_started) or !$SESSION->apply->is_started==true) {
+	//
 	if (!$SESSION->apply->is_started) {
-		//print_error('error', '', $CFG->wwwroot.'/course/view.php?id='.$courseid);
 		print_error('error', '', $CFG->wwwroot.'/course/view.php?id='.$d);
 	}
 
@@ -162,41 +164,28 @@ if ($prev_values) {
 		$submit_id = apply_save_draft_values($apply->id, $submit_id, $user_id);	// save to draft
 
 		if ($submit_id) {
-			if ($user_id>0) {
-				add_to_log($courseid, 'apply', 'start_apply', 'view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
-			}
-			if (!$go_next_page and !$go_prev_page) {
-				$prev_values = false;
-			}
+			if ($user_id>0) add_to_log($courseid, 'apply', 'start_apply', 'view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
+			if (!$go_next_page and !$go_prev_page) $prev_values = false;
+			if ($save_draft) $save_return = 'draft';
 		}
 		else {
 			$save_return = 'failed';
-			if (isset($last_page)) {
-				$go_page = $last_page;
-			}
-			else {
-				print_error('missingparameter');
-			}
+			if (isset($last_page)) $go_page = $last_page;
+			else print_error('missingparameter');
 		}
 	}
 	//
 	else {
 		$save_return = 'missing';
 		$highlightrequired = true;
-		if (isset($last_page)) {
-			$go_page = $last_page;
-		}
-		else {
-			print_error('missingparameter');
-		}
+		if (isset($last_page)) $go_page = $last_page;
+		else print_error('missingparameter');
 	}
 }
 
 //saving the items
-if ($save_values and !$prev_values) {
+if ($save_values and !$save_draft and !$prev_values) {
 	//
-	//$user_id   = $USER->id; 
-	//$submit_id = apply_save_draft_values($apply->id, $submit_id, $user_id);
 	apply_exec_submit($submit_id);
 
 	if ($submit_id) {
@@ -253,20 +242,31 @@ $SESSION->apply->is_started = false;
 echo $OUTPUT->heading(format_text($apply->name));
 
 //
-if (isset($save_return) && $save_return=='saved') {
+if (isset($save_return) and $save_return=='saved') {
 	echo '<p align="center">';
 	echo '<b><font color="green">';
 	echo get_string('entry_saved', 'apply');
 	echo '</font></b>';
 	echo '</p>';
 
-	//$url = $CFG->wwwroot.'/course/view.php?id='.$courseid;
 	$url = $CFG->wwwroot.'/mod/apply/view.php?id='.$id;
 	echo $OUTPUT->continue_button($url);
 }
 
+// Draft
+else if (isset($save_return) and $save_return=='draft') {
+	echo '<p align="center">';
+	echo '<b><font color="green">';
+	echo get_string('entry_saved_draft', 'apply');
+	echo '</font></b>';
+	echo '</p>';
+
+	$url = $CFG->wwwroot.'/mod/apply/view.php?id='.$id;
+	echo $OUTPUT->continue_button($url);
+}
+
+// Error
 else {
-	// Error
 	if (isset($save_return)) {
 		if ($save_return=='failed') {
  			echo $OUTPUT->box_start('mform error boxaligncenter boxwidthwide');

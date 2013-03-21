@@ -175,7 +175,7 @@ if ($do_show=='show_one_entry' and $submit_id) {
 	$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
 	if (is_array($items)) require('show_entry_data.php');
 
-	echo $OUTPUT->continue_button(new moodle_url($url, array('do_show'=>'show_entries')));
+//	echo $OUTPUT->continue_button(new moodle_url($url, array('do_show'=>'show_entries')));
 }
 
 

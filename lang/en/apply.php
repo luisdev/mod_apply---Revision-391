@@ -34,7 +34,14 @@ $string['description'] = 'Description';
 $string['save_entry_button']  = ' Submit this application ';
 $string['save_draft_button']  = ' Save as draft ';
 $string['submit_form_button'] = ' New Application ';
-$string['save_entries'] = ' Submit your application ';
+$string['next_page_button'] = ' Next page ';
+$string['previous_page_button'] = ' Previous page ';
+
+$string['edit_entry_button'] = ' Edit ';
+$string['update_entry_button'] = ' Update ';
+$string['cancel_entry_button'] = ' Cancel ';
+$string['delete_entry_button'] = ' Delete ';
+$string['operation_entry_button'] = ' Operation ';
 
 
 // Menu
@@ -97,9 +104,11 @@ $string['entries_list_title'] = 'List of submitted Applications';
 
 // submit
 $string['entry_saved'] = 'Your applocation have been saved. Thank you.';
+$string['entry_saved_draft'] = 'Your applocation have been saved as <strong>Draft</strong>';
 $string['saving_failed'] = 'Saving failed';
 $string['saving_failed_because_missing_or_false_values'] = 'Saving failed because missing or false values.';
 
+$string['edit_entry'] = 'Edit';
 $string['update_entry'] = 'Update';
 $string['cancel_entry'] = 'Cancel';
 $string['delete_entry'] = 'Delete';
@@ -291,7 +300,6 @@ $string['multichoice'] = 'Multiple choice';
 $string['multichoicerated'] = 'Multiple choice (rated)';
 $string['multichoicetype'] = 'Multiple choice type';
 $string['multichoice_values'] = 'Multiple choice values';
-$string['next_page'] = 'Next page';
 $string['no_handler'] = 'No action handler exists for';
 $string['no_itemlabel'] = 'No label';
 $string['no_itemname'] = 'No itemname';
@@ -324,7 +332,6 @@ $string['pluginname'] = 'Apply';
 $string['position'] = 'Position';
 $string['preview'] = 'Preview';
 $string['preview_help'] = 'In the preview you can change the order of questions.';
-$string['previous_page'] = 'Previous page';
 $string['public'] = 'Public';
 $string['question'] = 'Question';
 $string['questions'] = 'Questions';
