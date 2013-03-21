@@ -12,7 +12,8 @@ if ($submit) {
 	else								 $user_name = fullname($student); 
 
 	echo $OUTPUT->heading($user_name.' ('.userdate($submit->time_modified, '%Y/%m/%d %H:%M').')', 3);
-	echo $OUTPUT->box_start('apply_items');
+	//
+	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide apply_item');
 
 	$itemnr = 0;
 	foreach ($items as $item) {
@@ -20,24 +21,29 @@ if ($submit) {
 		$params = array('submit_id'=>$submit->id, 'item_id'=>$item->id);
 		$value  = $DB->get_record('apply_value', $params);
 
-		echo $OUTPUT->box_start('apply_item_box_'.$align);
+		//echo $OUTPUT->box_start('apply_item_box_'.$align);
+
+/*
 		if ($item->hasvalue==1) {
 			$itemnr++;
 			echo $OUTPUT->box_start('apply_item_number_'.$align);
 			echo $itemnr;
 			echo $OUTPUT->box_end();
 		}
-		if ($item->typ != 'pagebreak') {
-			echo $OUTPUT->box_start('box generalbox boxalign_'.$align);
+*/
+
+		if ($item->typ!='pagebreak') {
+//			echo $OUTPUT->box_start('box generalbox boxalign_'.$align);
 			if (isset($value->value)) {
 				apply_print_item_show_value($item, $value->value);
 			}
 			else {
 				apply_print_item_show_value($item, false);
 			}
-			echo $OUTPUT->box_end();
+//			echo $OUTPUT->box_end();
 		}
-		echo $OUTPUT->box_end();
+		//
+		//echo $OUTPUT->box_end();
 	}
 	echo $OUTPUT->box_end();
 }

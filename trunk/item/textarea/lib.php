@@ -286,7 +286,7 @@ class apply_item_textarea extends apply_item_base {
 
         //print the question and label
         echo '<div class="apply_item_label_'.$align.'">';
-            echo '('.$item->label.') ';
+        //    echo '('.$item->label.') ';
             echo format_text($item->name . $requiredmark, true, false, false);
         echo '</div>';
 
