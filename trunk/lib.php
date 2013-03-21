@@ -585,12 +585,12 @@ function apply_print_item_preview($item)
 
 
 
-function apply_print_item_complete($item, $value=false, $highlightrequire=false)
+function apply_print_item_submit($item, $value=false, $highlightrequire=false)
 {
 	if ($item->typ=='pagebreak') return;
 
 	$itemobj = apply_get_item_class($item->typ);
-	$itemobj->print_item_complete($item, $value, $highlightrequire);
+	$itemobj->print_item_submit($item, $value, $highlightrequire);
 }
 
 

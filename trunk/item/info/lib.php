@@ -266,7 +266,7 @@ class apply_item_info extends apply_item_base {
      * @param bool $highlightrequire
      * @return void
      */
-    public function print_item_complete($item, $value = '', $highlightrequire = false) {
+    public function print_item_submit($item, $value = '', $highlightrequire = false) {
         global $USER, $DB, $OUTPUT;
         $align = right_to_left() ? 'right' : 'left';
 

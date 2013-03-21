@@ -227,7 +227,7 @@ class apply_item_textfield extends apply_item_base {
      * @param bool $highlightrequire
      * @return void
      */
-    public function print_item_complete($item, $value = '', $highlightrequire = false) {
+    public function print_item_submit($item, $value = '', $highlightrequire = false) {
         global $OUTPUT;
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';

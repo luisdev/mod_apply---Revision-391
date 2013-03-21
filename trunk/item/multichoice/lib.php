@@ -383,7 +383,7 @@ class apply_item_multichoice extends apply_item_base {
      * @param bool $highlightrequire
      * @return void
      */
-    public function print_item_complete($item, $value = null, $highlightrequire = false) {
+    public function print_item_submit($item, $value = null, $highlightrequire = false) {
         global $OUTPUT;
         $info = $this->get_info($item);
         $align = right_to_left() ? 'right' : 'left';

@@ -108,7 +108,7 @@ abstract class apply_item_base {
     abstract public function print_item_preview($item);
 
     /**
-     * print the item at the complete-page of apply
+     * print the item at the submit-page of apply
      *
      * @global object
      * @param object $item
@@ -116,10 +116,10 @@ abstract class apply_item_base {
      * @param bool $highlightrequire
      * @return void
      */
-    abstract public function print_item_complete($item, $value = '', $highlightrequire = false);
+    abstract public function print_item_submit($item, $value = '', $highlightrequire = false);
 
     /**
-     * print the item at the complete-page of apply
+     * print the item at the submit-page of apply
      *
      * @global object
      * @param object $item
@@ -177,7 +177,7 @@ class apply_item_pagebreak extends apply_item_base {
     }
     public function print_item_preview($item) {
     }
-    public function print_item_complete($item, $value = '', $highlightrequire = false) {
+    public function print_item_submit($item, $value = '', $highlightrequire = false) {
     }
     public function print_item_show_value($item, $value = '') {
     }
