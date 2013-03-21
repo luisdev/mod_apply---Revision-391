@@ -96,16 +96,13 @@ if (!$courseid) $courseid = $course->id;
 
 $context = context_module::instance($cm->id);
 
-
 //
 if (!has_capability('mod/apply:submit', $context)) {
 	apply_print_error_messagebox('apply_is_disable', $id);
 	exit;
 }
-
 //
 require_login($course, true, $cm);
-
 
 /// Print the page header
 $strapplys = get_string('modulenameplural', 'apply');
@@ -271,12 +268,12 @@ else {
 	// Error
 	if (isset($save_return)) {
 		if ($save_return=='failed') {
- 				echo $OUTPUT->box_start('mform error');
+ 			echo $OUTPUT->box_start('mform error boxaligncenter boxwidthwide');
 			echo get_string('saving_failed', 'apply');
 			echo $OUTPUT->box_end();
 		}
 		else if ($save_return=='missing') {
-			echo $OUTPUT->box_start('mform error');
+			echo $OUTPUT->box_start('mform error boxaligncenter boxwidthwide');
 			echo get_string('saving_failed_because_missing_or_false_values', 'apply');
 			echo $OUTPUT->box_end();
 		}

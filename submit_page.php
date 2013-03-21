@@ -123,28 +123,22 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 
 	echo '</fieldset>';
 	echo '</form>';
+
+	//
+	//
+	echo $OUTPUT->box_start('apply_submit_cancel');
+	{
+		$action = 'action="'.$CFG->wwwroot.'/mod/apply/view.php?id='.$id.'"';
+
+		echo '<form '.$action.' method="post" onsubmit=" ">';
+		echo '<fieldset>';
+		echo '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
+		echo '<input type="hidden" name="courseid" value="'. $courseid . '" />';
+		echo '<button type="submit">'.get_string('cancel').'</button>';
+		echo '</fieldset>';
+		echo '</form>';
+	}
+	echo $OUTPUT->box_end();
 }
 echo $OUTPUT->box_end();
-
-//
-//
-echo $OUTPUT->box_start('apply_submit_cancel');
-{
-	if ($courseid) {
-		$action = 'action="'.$CFG->wwwroot.'/course/view.php?id='.$courseid.'"';
-	}
-	else {
-		$action = 'action="'.$CFG->wwwroot.'/course/view.php?id='.$course->id.'"';
-	}
-
-	echo '<form '.$action.' method="post" onsubmit=" ">';
-	echo '<fieldset>';
-	echo '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
-	echo '<input type="hidden" name="courseid" value="'. $courseid . '" />';
-	echo '<button type="submit">'.get_string('cancel').'</button>';
-	echo '</fieldset>';
-	echo '</form>';
-}
-echo $OUTPUT->box_end();
-
 
