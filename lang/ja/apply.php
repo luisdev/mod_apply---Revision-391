@@ -118,6 +118,7 @@ $string['class_cancel']  = '取消';
 $string['no_title'] = 'タイトルなし';
 $string['show_all'] = '{$a} 個のデータ全てを表示する';
 $string['show_perpage'] = '1ページあたりの表示数を {$a} にする';
+$string['not_submit_data'] = '指定されたデータは存在しません';
 
 
 // edit_item
