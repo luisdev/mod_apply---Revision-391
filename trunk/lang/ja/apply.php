@@ -35,8 +35,8 @@ $string['description'] = '説明';
 // Button
 $string['save_entry_button']  = ' 申請書を送信 ';
 $string['save_draft_button']  = ' 下書きとして保存 ';
-$string['submit_form_button'] = ' 申請する... ';
-$string['save_entries'] = '申請書を送信';
+$string['submit_form_button'] = ' 新規申請 ';
+$string['save_entries'] = ' 申請書を送信 ';
 
 
 // Menu
@@ -101,6 +101,9 @@ $string['entries_list_title'] = '提出済み申請書類一覧';
 $string['entry_saved'] = 'あなたの申請書が送信されました';
 $string['saving_failed'] = '保存に失敗しました';
 $string['saving_failed_because_missing_or_false_values'] = '値が入力されていないか，正しくないため，保存に失敗しました';
+
+$string['update_entry']  = '更新';
+$string['discard_entry'] = '取消';
 
 
 // show_entries

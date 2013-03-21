@@ -33,7 +33,7 @@ $string['description'] = 'Description';
 // Button
 $string['save_entry_button']  = ' Submit this application ';
 $string['save_draft_button']  = ' Save as draft ';
-$string['submit_form_button'] = ' Sumbit... ';
+$string['submit_form_button'] = ' New Application ';
 $string['save_entries'] = ' Submit your application ';
 
 
@@ -99,6 +99,10 @@ $string['entries_list_title'] = 'List of submitted Applications';
 $string['entry_saved'] = 'Your applocation have been saved. Thank you.';
 $string['saving_failed'] = 'Saving failed';
 $string['saving_failed_because_missing_or_false_values'] = 'Saving failed because missing or false values.';
+
+$string['update_entry'] = 'Update';
+$string['discard_entry'] = 'Discard';
+
 
 
 // show_entries
