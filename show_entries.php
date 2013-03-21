@@ -140,7 +140,7 @@ if ($do_show=='show_entries') {
 			if ($student) {
 				$data = array();
 				//
-				require('show_entry_page.php');
+				require('show_entry_record.php');
 				if (!empty($data)) $table->add_data($data);
 			}
 		}
