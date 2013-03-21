@@ -188,7 +188,10 @@ $string['submit_the_form'] = 'Submit a application...';
 $string['completionsubmit'] = 'View as completed if the apply is submitted';
 $string['configallowfullanonymous'] = 'If this option is set yes so the apply can be completed without any preceding logon. It only affects applys on the homepage.';
 $string['confirmdeleteentry'] = 'Are you sure you want to delete this entry?';
-$string['confirmdeleteitem'] = 'Are you sure you want to delete this element?';
+
+// delete_item
+$string['confirm_delete_item'] = 'Are you sure you want to delete this element?';
+
 $string['confirmdeletetemplate'] = 'Are you sure you want to delete this template?';
 $string['confirmusetemplate'] = 'Are you sure you want to use this template?';
 $string['continue_the_form'] = 'Continue the form';

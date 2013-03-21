@@ -20,7 +20,7 @@ if ($submit) {
 		$params = array('submit_id'=>$submit->id, 'item_id'=>$item->id);
 		$value  = $DB->get_record('apply_value', $params);
 
-		if ($item->typ!='pagebreak') {
+		if ($item->typ!='pagebreak' and $item->label!=APPLY_NODISP_TAG) {
 			if (isset($value->value)) {
 				apply_print_item_show_value($item, $value->value);
 			}
