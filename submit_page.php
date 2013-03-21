@@ -1,7 +1,8 @@
 <?php
 
 //print the items
-echo $OUTPUT->box_start('apply_form');
+//echo $OUTPUT->box_start('apply_form');
+echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 {
 	echo '<form action="submit.php" method="post" onsubmit=" ">';
 	echo '<fieldset>';
@@ -46,7 +47,7 @@ echo $OUTPUT->box_start('apply_form');
 			}
 
 			//
-			echo $OUTPUT->box_start('apply_item_box_'.$align.$depend_style);
+			//echo $OUTPUT->box_start('apply_item_box_'.$align.$depend_style);
 			{
 				$value = '';
 				//get the value
@@ -60,19 +61,21 @@ echo $OUTPUT->box_start('apply_form');
 						$value = apply_get_item_value($submit_id, $apply_item->id, true);
 					}
 				}
+				/*
 				if ($apply_item->hasvalue==1) {
 					$itemnr++;
 					echo $OUTPUT->box_start('apply_item_number_'.$align);
 					echo $itemnr;
 					echo $OUTPUT->box_end();
 				}
+				*/
 				if ($apply_item->typ != 'pagebreak') {
 					echo $OUTPUT->box_start('box generalbox boxalign_'.$align);
-					apply_print_item_complete($apply_item, $value, $highlightrequired);
+					apply_print_item_submit($apply_item, $value, $highlightrequired);
 					echo $OUTPUT->box_end();
 				}
 			}
-			echo $OUTPUT->box_end();
+			//echo $OUTPUT->box_end();
 		}
 
 		$last_break_position = $apply_item->position; //last item-pos (item or pagebreak)
