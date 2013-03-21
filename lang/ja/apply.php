@@ -237,7 +237,7 @@ $string['depending_help'] = '依存アイテムを使用して他のアイテム
 </ol>';
 $string['dependitem'] = 'アイテムに依存する';
 $string['dependvalue'] = '値に依存する';
-$string['do_not_analyse_empty_submits'] = '空の送信を分析しない';
+$string['do_not_analyse_empty_submits'] = '空の送信を無視する';
 $string['dropdown'] = '多肢選択 - 単一回答 (ドロップダウンリスト)';
 $string['dropdownlist'] = '多肢選択 - 単一回答 (ドロップダウン)';
 $string['dropdownrated'] = 'ドロップダウンリスト (評定)';

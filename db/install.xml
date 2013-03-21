@@ -39,11 +39,8 @@
         <FIELD NAME="acked_time" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="acked_user" NEXT="execed"/>
         <FIELD NAME="execed" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="acked_time" NEXT="execed_user"/>
         <FIELD NAME="execed_user" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="execed" NEXT="execed_time"/>
-        <FIELD NAME="execed_time" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="execed_user" NEXT="reply"/>
-        <FIELD NAME="reply" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="execed_time" NEXT="reply_user"/>
-        <FIELD NAME="reply_user" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="reply" NEXT="reply_time"/>
-        <FIELD NAME="reply_time" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="reply_user" NEXT="time_modified"/>
-        <FIELD NAME="time_modified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="reply_time"/>
+        <FIELD NAME="execed_time" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="execed_user" NEXT="time_modified"/>
+        <FIELD NAME="time_modified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="execed_time"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for apply_completed" NEXT="apply_id"/>
