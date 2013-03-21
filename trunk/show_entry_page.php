@@ -1,6 +1,6 @@
 <?php
 
-// need $is_student, $submit, $data, $name_pattern, $courseid, ...
+// need $req_own_data, $submit, $data, $name_pattern, $courseid, ...
 
 $student = apply_get_user_info($submit->user_id);
 if ($student) {
@@ -15,7 +15,7 @@ if ($student) {
 
 	///////////////////////////////////////
 	//
-	if (!$is_student) {
+	if (!$req_own_data) {
 		$data[] = $OUTPUT->user_picture($student, array('courseid'=>$courseid));
 		$data[] = $prof_link;
 	}
