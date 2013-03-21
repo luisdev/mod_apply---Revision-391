@@ -1,7 +1,6 @@
 <?php
 
-////////////////////////////////////////////////////////////
-// Setup Table
+// needs $req_own_data, $table, $courseid, $show_all, ....
 
 
 $title_ttl  = get_string('title_title',	 'apply');
@@ -12,12 +11,13 @@ $title_ack  = get_string('title_ack',	 'apply');
 $title_exec = get_string('title_exec',   'apply');
 $title_chk  = get_string('title_check',	 'apply');
 
-if ($is_student) {
+//
+if ($req_own_data) {
 	$table_columns = array('title', 'time_modified', 'version', 'class', 'acked', 'execed');
 	$table_headers = array($title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec);
 }
 else {
-	$title_pic  = get_string('user_pic',	 'apply');
+	$title_pic  = get_string('user_pic', 'apply');
 	$title_name = get_string($name_pattern);
 	$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execed');
 	$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec);
@@ -31,8 +31,7 @@ if (has_capability('mod/apply:deletesubmissions', $context)) {
 	$table_headers[] = '';
 }
 */
-
-$table = new flexible_table('apply-show_entry-list-'.$course->id);
+//$table = new flexible_table('apply-show_entry-list-'.$courseid);
 
 $table->define_columns($table_columns);
 $table->define_headers($table_headers);
@@ -80,7 +79,6 @@ if ($show_all) {
 	$page_count = false;
 	}
 else {
-	$matchcount = apply_get_valid_submits_count($cm->instance);
 	$table->pagesize($perpage, $matchcount);
 	$start_page = $table->get_page_start();
 	$page_count = $table->get_page_size();

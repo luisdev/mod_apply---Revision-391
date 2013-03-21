@@ -26,8 +26,6 @@ defined('MOODLE_INTERNAL') || die;
 */
 
 
-
-
 /** Include eventslib.php */
 //require_once($CFG->libdir.'/eventslib.php');
 /** Include calendar/lib.php */
@@ -721,7 +719,7 @@ function apply_get_page_to_continue($apply_id, $user_id=0)
 // Submit Handling
 //
 
-function apply_get_submits_select($apply_id, $where='', array $params=null, $sort='', $start_page=false, $page_count=false)
+function apply_get_submits_select($apply_id, $user_id=0, $where='', array $params=null, $sort='', $start_page=false, $page_count=false)
 {
 	global $DB;
 
@@ -730,6 +728,8 @@ function apply_get_submits_select($apply_id, $where='', array $params=null, $sor
 
 	if ($sort) $sortsql = ' ORDER BY '.$sort;
 	else	   $sortsql = '';
+
+	if ($user_id) $where .= ' s.user_id='.$user_id.' AND';
 
 	$sql = 'SELECT s.* FROM {user} u, {apply_submit} s WHERE '.$where.' u.id=s.user_id AND s.apply_id=:apply_id AND s.version>0 '.$sortsql;
 
@@ -807,6 +807,7 @@ function apply_create_submit($apply_id, $user_id=0)
 	$submit->apply_id		= $apply_id;
 	$submit->user_id		= $user_id;
 	$submit->title			= '';
+	$submit->reply			= '';
 	$submit->time_modified  = time();
 
 	$submit_id = $DB->insert_record('apply_submit', $submit);

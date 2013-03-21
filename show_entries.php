@@ -33,9 +33,10 @@ $id		   = required_param('id', PARAM_INT);
 $do_show   = required_param('do_show',   PARAM_ALPHAEXT);
 $user_id   = optional_param('user_id',   0, PARAM_INT);
 $submit_id = optional_param('submit_id', 0, PARAM_INT);
+$courseid  = optional_param('courseid',  0, PARAM_INT);
+
 $perpage   = optional_param('perpage',   APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);  // how many per page
 $show_all  = optional_param('show_all',  0, PARAM_INT);
-$courseid  = optional_param('courseid',  0, PARAM_INT);
 
 $current_tab = $do_show;
 
@@ -54,9 +55,6 @@ if (! $apply = $DB->get_record('apply', array('id'=>$cm->instance))) {
 if (!$courseid) $courseid = $course->id;
 
 //
-$url = new moodle_url('/mod/apply/show_entries.php', array('id'=>$cm->id, 'do_show'=>$do_show));
-$PAGE->set_url($url);
-
 $context = context_module::instance($cm->id);
 
 
@@ -76,8 +74,8 @@ if ($formdata) {
 
 require_capability('mod/apply:viewreports', $context);
 
-$is_student = false;
 $name_pattern = $apply->name_pattern;
+$req_own_data = false;
 
 
 ////////////////////////////////////////////////////////
@@ -85,6 +83,8 @@ $name_pattern = $apply->name_pattern;
 $strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
+$url = new moodle_url('/mod/apply/show_entries.php', array('id'=>$cm->id, 'do_show'=>$do_show));
+$PAGE->set_url($url);
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));
 echo $OUTPUT->header();
@@ -99,7 +99,9 @@ if ($do_show=='show_entries') {
 	////////////////////////////////////////////////////////////
 	// Setup Table
 	$baseurl = new moodle_url('/mod/apply/show_entries.php');
-	$baseurl->params(array('id'=>$id, 'do_show'=>$do_show, 'show_all'=>$show_all));
+	$baseurl->params(array('id'=>$id, 'do_show'=>$do_show, 'show_all'=>$show_all, 'courseid'=>$courseid));
+	$table = new flexible_table('apply-show_entry-list-'.$courseid);
+    $matchcount = apply_get_valid_submits_count($cm->instance);
 	//
 	require('show_entry_header.php');
 	//
@@ -108,11 +110,13 @@ if ($do_show=='show_entries') {
 	echo $OUTPUT->box_end();
 
 
-	////////////////////////////////////////////////////////////
-	// Print Initials Bar
+	///////////////////////////////////////////////////////////////////////
+	//
 	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 	echo $OUTPUT->box_start('mdl-align');
 
+	////////////////////////////////////////////////////////////
+	// Print Initials Bar
 	if ($name_pattern=='firstname') {
 		apply_print_initials_bar($table, true, false);
 		if ($show_all) echo '<br />';
@@ -122,10 +126,9 @@ if ($do_show=='show_entries') {
 		if ($show_all) echo '<br />';
 	}
 
-
 	////////////////////////////////////////////////////////////
 	// User Data
-	$submits = apply_get_submits_select($apply->id, $where, $params, $sort, $start_page, $page_count);
+	$submits = apply_get_submits_select($apply->id, 0, $where, $params, $sort, $start_page, $page_count);
 
 	if (!$submits) {
 		$table->print_html();
@@ -160,7 +163,7 @@ if ($do_show=='show_entries') {
 
 
 ///////////////////////////////////////////////////////////////////////////
-// Print the responses of the given user
+// Print the list of the given user
 
 if ($do_show=='show_one_entry' and $submit_id) {
 	$params = array('apply_id'=>$apply->id, 'user_id'=>$user_id, 'id'=>$submit_id);
