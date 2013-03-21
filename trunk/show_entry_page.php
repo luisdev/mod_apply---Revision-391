@@ -1,6 +1,6 @@
 <?php
 
-// need $submit, $data, $name_pattern, $courseid, ...
+// need $is_student, $submit, $data, $name_pattern, $courseid, ...
 
 $student = apply_get_user_info($submit->user_id);
 if ($student) {
@@ -15,8 +15,10 @@ if ($student) {
 
 	///////////////////////////////////////
 	//
-	$data[] = $OUTPUT->user_picture($student, array('courseid'=>$courseid));
-	$data[] = $prof_link;
+	if (!$is_student) {
+		$data[] = $OUTPUT->user_picture($student, array('courseid'=>$courseid));
+		$data[] = $prof_link;
+	}
 	//
 	$title = $submit->title;
 	if ($title=='') $title = get_string('no_title', 'apply');
@@ -36,8 +38,8 @@ if ($student) {
 	$data[] = $class;
 	//
 	if 		($submit->acked==APPLY_ACKED_NOTYET) $acked = get_string('acked_notyet',  'apply');
-	else if ($submit->acked==APPLY_ACKED_ACCEPT) $acked = get_string('acked_accept', 'apply');
-	else if ($submit->acked==APPLY_ACKED_REJECT) $acked = get_string('acked_reject', 'apply');
+	else if ($submit->acked==APPLY_ACKED_ACCEPT) $acked = get_string('acked_accept',  'apply');
+	else if ($submit->acked==APPLY_ACKED_REJECT) $acked = get_string('acked_reject',  'apply');
 	if ($submit->acked!=APPLY_ACKED_NOTYET) {
 		$acked = '<a href="'.$acked_url->out().'">'.$acked.'</a>';
 	}
@@ -47,7 +49,7 @@ if ($student) {
 	else 				 $execed = get_string('execed_notyet', 'apply');
 	$data[] = $execed;
 	//
-	$data[] = 'x';
+//	$data[] = 'x';
 
 /*
 	//link to delete the entry
