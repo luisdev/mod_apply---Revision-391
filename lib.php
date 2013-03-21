@@ -731,7 +731,7 @@ function apply_get_submits_select($apply_id, $user_id=0, $where='', array $param
 
 	if ($user_id) $where .= ' s.user_id='.$user_id.' AND';
 
-	$sql = 'SELECT s.* FROM {user} u, {apply_submit} s WHERE '.$where.' u.id=s.user_id AND s.apply_id=:apply_id AND s.version>0 '.$sortsql;
+	$sql = 'SELECT s.* FROM {user} u, {apply_submit} s WHERE '.$where.' u.id=s.user_id AND s.apply_id=:apply_id '.$sortsql;
 
 	if ($start_page===false or $page_count===false) {
 		$start_page = false;

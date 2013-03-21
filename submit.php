@@ -210,7 +210,8 @@ if ($save_values and !$prev_values) {
 }
 
 //
-if ($allbreaks = apply_get_all_break_positions($apply->id)) {
+$allbreaks = apply_get_all_break_positions($apply->id);
+if ($allbreaks) {
 	if ($go_page<=0) {
 		$start_position = 0;
 	}
@@ -227,13 +228,13 @@ else {
 }
 
 //
-//get the apply_items after the last shown pagebreak
-$select = 'apply_id = ? AND position > ?';
+//get the items after the last shown pagebreak
+$select = 'apply_id=? AND position>?';
 $params = array($apply->id, $start_position);
-$apply_items = $DB->get_records_select('apply_item', $select, $params, 'position');
+$items  = $DB->get_records_select('apply_item', $select, $params, 'position');
 
 //get the first pagebreak
-$params = array('apply_id' => $apply->id, 'typ' => 'pagebreak');
+$params = array('apply_id'=>$apply->id, 'typ'=>'pagebreak');
 if ($pagebreaks = $DB->get_records('apply_item', $params, 'position')) {
 	$pagebreaks = array_values($pagebreaks);
 	$first_pagebreak = $pagebreaks[0];
@@ -279,7 +280,7 @@ else {
 		}
 	}
 	//
-	if (is_array($apply_items)) {
+	if (is_array($items)) {
 		//
 		require('submit_page.php');
 		//
