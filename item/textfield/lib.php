@@ -265,7 +265,8 @@ class apply_item_textfield extends apply_item_base {
      * @param string $value
      * @return void
      */
-    public function print_item_show_value($item, $value = '') {
+    public function print_item_show_value($item, $value = '')
+	{
         global $OUTPUT;
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
@@ -275,7 +276,7 @@ class apply_item_textfield extends apply_item_base {
 
         //print the question and label
         echo '<div class="apply_item_label_'.$align.'">';
-            echo '('.$item->label.') ';
+        //    echo '('.$item->label.') ';
             echo format_text($item->name . $requiredmark, true, false, false);
         echo '</div>';
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
