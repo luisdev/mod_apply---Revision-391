@@ -57,20 +57,20 @@ $sort = $table->get_sql_sort();
 if (!$sort) $sort = '';
 
 list($where, $params) = $table->get_sql_where();
-if ($where) $where .= ' AND';
+if ($where) $where .= ' AND ';
 
 //
 if ($name_pattern=='firstname') {
 	$sifirst = optional_param('sifirst', '', PARAM_ALPHA);
 	if ($sifirst) {
-		$where .= "firstname LIKE :sifirst ESCAPE '\\\\' AND";
+		$where .= "firstname LIKE :sifirst ESCAPE '\\\\' AND ";
 		$params['sifirst'] =  $sifirst.'%';
 	}
 }
 if ($name_pattern=='lastname') {
 	$silast  = optional_param('silast',  '', PARAM_ALPHA);
 	if ($silast) {
-		$where .= "lastname LIKE :silast ESCAPE '\\\\' AND";
+		$where .= "lastname LIKE :silast ESCAPE '\\\\' AND ";
 		$params['silast'] =  $silast.'%';
 	}
 }

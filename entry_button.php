@@ -1,6 +1,6 @@
 <?php
 
-// needs $sumit, $items, $name_pattern, $user
+// needs $submit, $items, $name_pattern, $user
 
 if ($submit) {
 	//
