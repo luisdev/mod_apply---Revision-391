@@ -38,6 +38,7 @@ $string['save_draft_button']  = ' 下書き保存 ';
 $string['submit_form_button'] = ' 新規申請 ';
 $string['next_page_button'] = ' 次のページ ';
 $string['previous_page_button'] = ' 前のページ ';
+$string['back_button'] = ' 戻る ';
 
 $string['edit_entry_button'] = ' 編集 ';
 $string['update_entry_button'] = ' 更新 ';
@@ -86,15 +87,12 @@ $string['time_open_help']  = 'あなたはユーザが書類提出のため申�
 $string['time_close']  = '終了日時';
 $string['time_close_help'] = 'あなたはユーザが書類提出のため申請フォームにアクセスできないようになる日時を指定することができます．チェックボックスがチェックされない場合，制限は定義されません．';
 $string['apply_options'] = '申請フォームオプション';
-
 $string['email_notification'] = '通知メールを送信する';
 $string['email_notification_help'] = '有効にした場合，申請フォームの送信に関して管理者宛にメール通知されます';
 $string['multiple_submit'] = '複数申請';
 $string['multiple_submit_help'] = 'ユーザは無制限で申請フォームを送信することができます';
-
 $string['use_calendar'] = 'カレンダーに登録';
 $string['use_calendar_help'] = '申請書の提出期間をカレンダーに登録できます';
-
 $string['username_manage'] = 'ユーザ名管理';
 $string['username_manage_help'] = '表示される名前のパターンを選択できます';
 $string['use_item'] = '{$a} を使用する';
@@ -110,13 +108,11 @@ $string['entry_saved_draft'] = 'あなたの申請書は下書きとして保存
 $string['saving_failed'] = '保存に失敗しました';
 $string['saving_failed_because_missing_or_false_values'] = '値が入力されていないか，正しくないため，保存に失敗しました';
 
-$string['edit_entry'] = '編集';
+$string['edit_entry']   = '編集';
 $string['update_entry'] = '更新';
 $string['cancel_entry'] = '取消';
 $string['delete_entry'] = '削除';
 $string['operation_entry'] = '操作';
-
-
 
 
 // show_entries
@@ -134,6 +130,13 @@ $string['no_title'] = 'タイトルなし';
 $string['show_all'] = '{$a} 個のデータ全てを表示する';
 $string['show_perpage'] = '1ページあたりの表示数を {$a} にする';
 $string['not_submit_data'] = '指定されたデータは存在しません';
+
+
+
+// entry_info
+
+
+
 
 
 // edit_item

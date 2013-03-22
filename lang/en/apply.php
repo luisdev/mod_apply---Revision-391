@@ -36,6 +36,7 @@ $string['save_draft_button']  = ' Save as draft ';
 $string['submit_form_button'] = ' New Application ';
 $string['next_page_button'] = ' Next page ';
 $string['previous_page_button'] = ' Previous page ';
+$string['back_button'] = ' Back ';
 
 $string['edit_entry_button'] = ' Edit ';
 $string['update_entry_button'] = ' Update ';

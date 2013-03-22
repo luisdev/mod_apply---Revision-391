@@ -30,14 +30,14 @@ defined('MOODLE_INTERNAL') || die;
 //require_once($CFG->libdir.'/eventslib.php');
 /** Include calendar/lib.php */
 //require_once($CFG->dirroot.'/calendar/lib.php');
-                    //
+					//
 
 define('APPLY_TITLE_TAG',	'title');
 define('APPLY_NODISP_TAG',	'nodisp');
 define('APPLY_ADMIN_TAG',	'foradmin');
 
 define('APPLY_CLASS_DRAFT',  0);
-define('APPLY_CLASS_NEW',    1);
+define('APPLY_CLASS_NEW',	1);
 define('APPLY_CLASS_UPDATE', 2);
 define('APPLY_CLASS_CANCEL', 3);
 
@@ -1160,6 +1160,27 @@ function apply_flush_draft_values($submit_id, $version, &$title)
 //
 // Users
 //
+
+//
+// $user is user object or user id
+//
+function apply_get_user_link($user, $pattern='fullname')
+{
+	global $DB, $CFG;
+
+	if (!is_object($user)) $user = $DB->get_record('user', array('id'=>$user));
+	if (!$user) return '';
+
+	if	  	($pattern=='firstname') $user_name = $user->firstname;
+	else if ($pattern=='lastname')  $user_name = $user->lastname;
+	else						    $user_name = fullname($user);
+	
+	$link = '<a href='.$CFG->wwwroot.'/user/view.php?id='.$user->id.'>'.$user_name.'</a>';
+	
+	return $link;	
+}
+
+
 
 function apply_get_user_info($user_id)
 {

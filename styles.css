@@ -1,4 +1,5 @@
 /* styles using by apply */
+
 .apply_required_mark {
     color: #FF0000;
 }
@@ -11,6 +12,10 @@ div.missingrequire {
 }
 
 span.apply_info {
+	font-weight:bold;
+}
+
+span.entry_info {
 	font-weight:bold;
 }
 
