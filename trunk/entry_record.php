@@ -72,7 +72,7 @@ if ($student) {
 	//
 	if ($req_own_data) {
 		if ($submit->class==APPLY_CLASS_CANCEL and $submit->acked==APPLY_ACKED_ACCEPT) {
-			// 取消が受理されたものは，ユーザは変更できない
+			// 解除が受理されたものは，ユーザは変更できない
 			$data[] = '-';
 			$data[] = '-';
 		}
@@ -92,15 +92,24 @@ if ($student) {
 				$change_label	= get_string('edit_entry_button', 'apply');
 				$change_params  = array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'courseid'=>$courseid, 'go_page'=>0);
 				$change_action  = 'submit.php';
-				// Delete
-				$discard_label	= get_string('delete_entry_button', 'apply');
-				$discard_params	= array('id'=>$id, 'submit_id'=>$submit->id);
-				$discard_action	= 'delete_submit.php';
+				
+				if ($sumit->version<=1) {
+					// Delete
+					$discard_label	= get_string('delete_entry_button', 'apply');
+					$discard_params	= array('id'=>$id, 'submit_id'=>$submit->id);
+					$discard_action	= 'delete_submit.php';
+				}
+				else {
+					// Rollback
+					$discard_label	= get_string('rollback_entry_button', 'apply');
+					$discard_params	= array('id'=>$id, 'submit_id'=>$submit->id);
+					$discard_action	= 'delete_submit.php';
+				}
 			}
 
 			//
 			if ($submit->class==APPLY_CLASS_CANCEL) {
-				// 取消を申請している場合は，内容を編集・更新できない
+				// 解除を申請している場合は，内容を編集・更新できない
 				$data[] = '-';
 			}
 			else {

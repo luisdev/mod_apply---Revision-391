@@ -116,9 +116,9 @@ $string['saving_failed_because_missing_or_false_values'] = '値が入力され�
 
 $string['edit_entry']   = '編集';
 $string['update_entry'] = '更新';
-$string['cancel_entry'] = '取消';
+$string['cancel_entry'] = '解除';
 $string['delete_entry'] = '削除';
-$string['rollback_entry'] = '巻戻';
+$string['rollback_entry'] = '取消';
 
 $string['operation_entry'] = '操作';
 
