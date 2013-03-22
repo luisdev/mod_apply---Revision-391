@@ -32,7 +32,7 @@ if ($submit) {
 
 	//
 	require('entry_info.php');
-
+	//
 	require('entry_button.php');
 
 	echo $OUTPUT->box_end();
