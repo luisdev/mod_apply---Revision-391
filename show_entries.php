@@ -84,8 +84,12 @@ $req_own_data = false;
 $strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
-$url = new moodle_url('/mod/apply/show_entries.php', array('id'=>$cm->id, 'do_show'=>$do_show));
-$PAGE->set_url($url);
+$back_params = array('id'=>$id, 'courseid'=>$courseid, 'do_show'=>'show_entries');
+$back_url = new moodle_url($CFG->wwwroot.'/mod/apply/show_entries.php', $back_params);
+$this_url = new moodle_url('/mod/apply/show_entries.php', array('id'=>$cm->id, 'do_show'=>$do_show));
+
+$PAGE->navbar->add(get_string('apply:show_entries', 'apply'));
+$PAGE->set_url($this_url);
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));
 echo $OUTPUT->header();

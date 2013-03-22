@@ -44,7 +44,7 @@ $switchitemrequired = optional_param('switchitemrequired', false, PARAM_INT);
 
 $current_tab = $do_show;
 
-$url = new moodle_url('/mod/apply/edit.php', array('id'=>$id, 'do_show'=>$do_show));
+$this_url = new moodle_url('/mod/apply/edit.php', array('id'=>$id, 'do_show'=>$do_show));
 
 if (! $cm = get_coursemodule_from_id('apply', $id)) {
 	print_error('invalidcoursemodule');
@@ -91,7 +91,7 @@ else {
 if ($switchitemrequired) {
 	$item = $DB->get_record('apply_item', array('id'=>$switchitemrequired));
 	@apply_switch_item_required($item);
-	redirect($url->out(false));
+	redirect($this_url->out(false));
 	exit;
 }
 
@@ -160,7 +160,9 @@ $use_template_form->set_data(array('id'=>$id));
 $strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
-$PAGE->set_url('/mod/apply/edit.php', array('id'=>$cm->id, 'do_show'=>$do_show));
+$PAGE->navbar->add(get_string('apply:edit_items', 'apply'));
+//$PAGE->set_url('/mod/apply/edit.php', array('id'=>$cm->id, 'do_show'=>$do_show));
+$PAGE->set_url($this_url);
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));
 echo $OUTPUT->header();
@@ -262,7 +264,7 @@ if ($do_show=='edit') {
 		echo $OUTPUT->box_start('apply_items');
 		if (isset($SESSION->apply->moving) AND $SESSION->apply->moving->shouldmoving == 1) {
 			$moveposition = 1;
-			$movehereurl = new moodle_url($url, array('movehere'=>$moveposition));
+			$movehereurl = new moodle_url($this_url, array('movehere'=>$moveposition));
 			//only shown if shouldmoving = 1
 			echo $OUTPUT->box_start('apply_item_box_'.$align.' clipboard');
 			$buttonlink = $movehereurl->out();
@@ -306,7 +308,7 @@ if ($do_show=='edit') {
 			//print the moveup-button
 			if ($applyitem->position > 1) {
 				echo '<span class="apply_item_command_moveup">';
-				$moveupurl = new moodle_url($url, array('moveupitem'=>$applyitem->id));
+				$moveupurl = new moodle_url($this_url, array('moveupitem'=>$applyitem->id));
 				$buttonlink = $moveupurl->out();
 				$strbutton = get_string('moveup_item', 'apply');
 				echo '<a class="icon up" title="'.$strbutton.'" href="'.$buttonlink.'">
@@ -318,7 +320,7 @@ if ($do_show=='edit') {
 			if ($applyitem->position < $lastposition - 1) {
 				echo '<span class="apply_item_command_movedown">';
 				$urlparams = array('movedownitem'=>$applyitem->id);
-				$movedownurl = new moodle_url($url, $urlparams);
+				$movedownurl = new moodle_url($this_url, $urlparams);
 				$buttonlink = $movedownurl->out();
 				$strbutton = get_string('movedown_item', 'apply');
 				echo '<a class="icon down" title="'.$strbutton.'" href="'.$buttonlink.'">
@@ -328,7 +330,7 @@ if ($do_show=='edit') {
 			}
 			//print the move-button
 			echo '<span class="apply_item_command_move">';
-			$moveurl = new moodle_url($url, array('moveitem'=>$applyitem->id));
+			$moveurl = new moodle_url($this_url, array('moveitem'=>$applyitem->id));
 			$buttonlink = $moveurl->out();
 			$strbutton = get_string('move_item', 'apply');
 			echo '<a class="editing_move" title="'.$strbutton.'" href="'.$buttonlink.'">
@@ -362,7 +364,7 @@ if ($do_show=='edit') {
 					$buttonimg = $OUTPUT->pix_url('notrequired', 'apply');
 				}
 				$urlparams = array('switchitemrequired'=>$applyitem->id);
-				$requiredurl = new moodle_url($url, $urlparams);
+				$requiredurl = new moodle_url($this_url, $urlparams);
 				$buttonlink = $requiredurl->out();
 				echo '<a class="icon '.
 						'apply_switchrequired" '.

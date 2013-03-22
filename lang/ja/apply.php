@@ -55,6 +55,9 @@ $string['operate_entry_button'] = ' 操作 ';
 // Menu
 $string['apply:submit'] = '申請の提出';
 $string['apply:operate_submit'] = '認証操作';
+$string['apply:show_entries'] = '証明書の表示';
+$string['apply:view'] = '概要';
+$string['apply:edit_items'] = 'アイテムの編集';
 //
 $string['apply:addinstance'] = '新しい申請フォームを追加する';
 $string['apply:applies'] = '申請を提出する';
@@ -62,10 +65,8 @@ $string['apply:createprivatetemplate'] = 'プライベートテンプレート�
 $string['apply:createpublictemplate'] = 'パブリックテンプレートを作成する';
 $string['apply:deletesubmissions'] = '完了した送信を削除する';
 $string['apply:deletetemplate'] = 'テンプレートを削除する';
-$string['apply:edititems'] = 'アイテムを編集する';
 $string['apply:mapcourse'] = 'コースをグローバル申請フォームにマップする';
 $string['apply:receivemail'] = 'メール通知を受信する';
-$string['apply:view'] = '申請フォームを表示する';
 $string['apply:viewanalysepage'] = '回答送信後，分析ページを表示する';
 $string['apply:viewreports'] = 'レポートを表示する';
 

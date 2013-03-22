@@ -115,9 +115,13 @@ if (!has_capability('mod/apply:submit', $context)) {
 $strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
+$back_params = array('id'=>$cm->id, 'courseid'=>$courseid, 'do_show'=>'view');
+$url_params  = array('id'=>$cm->id, 'courseid'=>$courseid, 'go_page'=>$go_page);
+$back_url = new moodle_url($CFG->wwwroot.'/mod/apply/view.php', $back_params);
+$this_url = new moodle_url('/mod/apply/submit.php', $url_params);
+
 $PAGE->navbar->add(get_string('apply:submit', 'apply'));
-$url_params = array('id'=>$cm->id, 'go_page'=>$go_page, 'courseid'=>$courseid);
-$PAGE->set_url('/mod/apply/submit.php', $url_params);
+$PAGE->set_url($this_url);
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));
 echo $OUTPUT->header();
@@ -258,9 +262,8 @@ if (isset($save_return) and $save_return=='saved') {
 	echo get_string('entry_saved', 'apply');
 	echo '</font></b>';
 	echo '</p>';
-
-	$url = $CFG->wwwroot.'/mod/apply/view.php?id='.$id;
-	echo $OUTPUT->continue_button($url);
+//	$url = $CFG->wwwroot.'/mod/apply/view.php?id='.$id;
+	echo $OUTPUT->continue_button($back_url);
 }
 
 // Draft
@@ -270,9 +273,8 @@ else if (isset($save_return) and $save_return=='draft') {
 	echo get_string('entry_saved_draft', 'apply');
 	echo '</font></b>';
 	echo '</p>';
-
-	$url = $CFG->wwwroot.'/mod/apply/view.php?id='.$id;
-	echo $OUTPUT->continue_button($url);
+//	$url = $CFG->wwwroot.'/mod/apply/view.php?id='.$id;
+	echo $OUTPUT->continue_button($back_url);
 }
 
 // Error

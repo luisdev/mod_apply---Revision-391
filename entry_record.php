@@ -23,7 +23,7 @@ if ($student) {
 	$title = $submit->title;
 	if ($title=='') $title = get_string('no_title', 'apply');
 	$entry_params = array('user_id'=>$student->id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'do_show'=>'show_one_entry');
-	$entry_url = new moodle_url($url, $entry_params);
+	$entry_url = new moodle_url($this_url, $entry_params);
 	$data[] = '<strong><a href="'.$entry_url->out().'">'.$title.'</a></strong>';
 	//
 	$data[] = userdate($submit->time_modified, '%Y/%m/%d %H:%M');
@@ -42,7 +42,7 @@ if ($student) {
 	if ($req_own_data) {
 		if ($submit->version>0 and apply_exist_draft_values($submit->id)) {
 			$draft_params = array('user_id'=>$student->id, 'submit_id'=>$submit->id, 'submit_ver'=>0, 'do_show'=>'show_one_entry');
-			$draft_url = new moodle_url($url, $draft_params);
+			$draft_url = new moodle_url($this_url, $draft_params);
 			$data[] = '<strong><a href="'.$draft_url->out().'">'.get_string('exist', 'apply').'</a></strong>';
 		}
 		else {
