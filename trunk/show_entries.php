@@ -29,14 +29,15 @@ require_once($CFG->libdir.'/tablelib.php');
 
 ////////////////////////////////////////////////////////
 //get the params
-$id		   = required_param('id', PARAM_INT);
-$do_show   = required_param('do_show',   PARAM_ALPHAEXT);
-$user_id   = optional_param('user_id',   0, PARAM_INT);
-$submit_id = optional_param('submit_id', 0, PARAM_INT);
-$courseid  = optional_param('courseid',  0, PARAM_INT);
+$id		    = required_param('id', PARAM_INT);
+$do_show    = required_param('do_show',   PARAM_ALPHAEXT);
+$user_id    = optional_param('user_id',   0, PARAM_INT);
+$submit_id  = optional_param('submit_id', 0, PARAM_INT);
+$submit_ver = optional_param('submit_ver', -1, PARAM_INT);
+$courseid   = optional_param('courseid',  0, PARAM_INT);
 
-$perpage   = optional_param('perpage',   APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);  // how many per page
-$show_all  = optional_param('show_all',  0, PARAM_INT);
+$perpage    = optional_param('perpage',   APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);  // how many per page
+$show_all   = optional_param('show_all',  0, PARAM_INT);
 
 $current_tab = $do_show;
 
@@ -128,7 +129,7 @@ if ($do_show=='show_entries') {
 
 	////////////////////////////////////////////////////////////
 	// Submits Data
-	$where   = 'version>0 AND';
+	$where  .= 'version>0 AND ';
 	$submits = apply_get_submits_select($apply->id, 0, $where, $params, $sort, $start_page, $page_count);
 
 	if (!$submits) {
@@ -174,8 +175,6 @@ if ($do_show=='show_one_entry' and $submit_id) {
 
 	$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
 	if (is_array($items)) require('entry_view.php');
-
-//	echo $OUTPUT->continue_button(new moodle_url($url, array('do_show'=>'show_entries')));
 }
 
 

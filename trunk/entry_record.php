@@ -93,7 +93,7 @@ if ($student) {
 				$change_params  = array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'courseid'=>$courseid, 'go_page'=>0);
 				$change_action  = 'submit.php';
 				
-				if ($sumit->version<=1) {
+				if ($submit->version<=1) {
 					// Delete
 					$discard_label	= get_string('delete_entry_button', 'apply');
 					$discard_params	= array('id'=>$id, 'submit_id'=>$submit->id);
