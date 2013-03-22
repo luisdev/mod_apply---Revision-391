@@ -123,8 +123,8 @@ $string['operation_entry'] = '操作';
 // show_entries
 $string['user_pic']   	 = '画像';
 $string['acked_notyet']  = '未処理';
-$string['acked_accept']  = '受理　';
-$string['acked_reject']  = '却下　';
+$string['acked_accept']  = '受理';
+$string['acked_reject']  = '却下';
 $string['execd_done']	 = '処理済';
 $string['execd_notyet']  = '未処理';
 $string['class_draft']   = '下書き';
