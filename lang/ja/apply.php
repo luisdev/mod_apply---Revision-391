@@ -54,6 +54,7 @@ $string['operate_entry_button'] = ' 操作 ';
 
 // Menu
 $string['apply:submit'] = '申請の提出';
+$string['apply:operate_submit'] = '認証操作';
 //
 $string['apply:addinstance'] = '新しい申請フォームを追加する';
 $string['apply:applies'] = '申請を提出する';
@@ -113,6 +114,7 @@ $string['entry_saved'] = 'あなたの申請書が送信されました';
 $string['entry_saved_draft'] = 'あなたの申請書は下書きとして保存されました';
 $string['saving_failed'] = '保存に失敗しました';
 $string['saving_failed_because_missing_or_false_values'] = '値が入力されていないか，正しくないため，保存に失敗しました';
+$string['apply_is_disable']  = '貴方はこの申請を行う事はできません';
 
 $string['edit_entry']   = '編集';
 $string['update_entry'] = '更新';
@@ -159,6 +161,9 @@ $string['textfield_maxlength'] = '最大文字数';
 $string['textfield_size'] = 'テキストフィールド幅';
 
 
+// operate 
+$string['operate_is_disable']  = '貴方はこの操作を行う事はできません';
+
 
 
 
@@ -175,7 +180,6 @@ $string['add_pagebreak'] = '改ページを追加する';
 $string['apply_is_not_open']  = '申請フォームはまだ利用できません';
 $string['apply_is_not_ready'] = '申請フォームはまだ準備ができていません';
 $string['apply_is_closed']    = '申請期間は既に終了しました';
-$string['apply_is_disable']   = 'この申請を行う事はできません';
 $string['apply_is_already_submitted'] = 'あなたは既に申請済みです';
 $string['apply_is_enable']    = '申請を行う';
 

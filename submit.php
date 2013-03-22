@@ -99,28 +99,32 @@ if (!$courseid) $courseid = $course->id;
 
 $context = context_module::instance($cm->id);
 
+
+///////////////////////////////////////////////////////////////////////////
+// Check 1
+require_login($course, true, $cm);
 //
 if (!has_capability('mod/apply:submit', $context)) {
 	apply_print_error_messagebox('apply_is_disable', $id);
 	exit;
 }
-//
-require_login($course, true, $cm);
 
-/// Print the page header
+
+///////////////////////////////////////////////////////////////////////////
+// Print the page header
 $strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
 $PAGE->navbar->add(get_string('apply:submit', 'apply'));
-$urlparams = array('id'=>$cm->id, 'go_page'=>$go_page, 'courseid'=>$courseid);
-$PAGE->set_url('/mod/apply/submit.php', $urlparams);
+$url_params = array('id'=>$cm->id, 'go_page'=>$go_page, 'courseid'=>$courseid);
+$PAGE->set_url('/mod/apply/submit.php', $url_params);
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));
 echo $OUTPUT->header();
 
 
 ///////////////////////////////////////////////////////////////////////////
-// Check
+// Check 2
 if ((empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities', $context))) {
 	notice(get_string("activityiscurrentlyhidden"));
 }
@@ -141,6 +145,8 @@ if ($apply_is_not_open or $apply_is_closed) {
 	exit;
 }
 
+
+///////////////////////////////////////////////////////////////////////////
 // first time view
 if (!$SESSION->apply->is_started) {
 	$itemscount = $DB->count_records('apply_item', array('apply_id'=>$apply->id, 'hasvalue'=>1));
