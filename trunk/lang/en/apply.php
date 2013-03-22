@@ -30,6 +30,11 @@ $string['modulename_help'] = 'You can make simple Application Forms and make a u
 $string['description'] = 'Description';
 
 
+$string['exist'] = 'Exist';
+$string['not_exist'] = 'not Exist';
+
+
+
 // Button
 $string['save_entry_button']  = ' Submit this application ';
 $string['save_draft_button']  = ' Save as draft ';
@@ -69,6 +74,7 @@ $string['title_ack']   = 'Recept.';
 $string['title_exec']  = 'Exec. ';
 $string['title_class'] = 'Class';
 $string['title_check'] = 'Check';
+$string['title_draft'] = 'Draft';
 
 
 // tabs

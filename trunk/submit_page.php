@@ -58,8 +58,7 @@ echo $OUTPUT->box_start('apply_form boxaligncenter boxwidthwide');
 			}
 			else {
 				if (isset($submit)) {
-					$value = apply_get_item_value($submit_id, $item->id, 0);
-					if (!$value) $value = apply_get_item_value($submit_id, $item->id, $submit_version);
+					$value = apply_get_item_value($submit_id, $item->id, $submit_ver);
 				}
 			}
 
@@ -84,12 +83,10 @@ echo $OUTPUT->box_start('apply_form boxaligncenter boxwidthwide');
 	echo '<input type="hidden" name="id" value="'.$id.'" />';
 	echo '<input type="hidden" name="apply_id" value="'.$apply->id.'" />';
 	echo '<input type="hidden" name="last_page" value="'.$go_page.'" />';
-
-	if (isset($submit_id)) 	$inputvalue = 'value="'.$submit_id.'"';
-	else 					$inputvalue = 'value=""';
 	//
-	echo '<input type="hidden" name="submit_id" '.$inputvalue.' />';
-	echo '<input type="hidden" name="courseid" value="'. $courseid . '" />';
+	echo '<input type="hidden" name="submit_id" value="'.$submit_id.'" />';
+	echo '<input type="hidden" name="submit_ver" value="'.$submit_ver.'" />';
+	echo '<input type="hidden" name="courseid" value="'.$courseid.'" />';
 	echo '<input type="hidden" name="prev_values" value="1" />';
 	if (isset($start_item)) {
 		echo '<input type="hidden" name="start_itempos" value="'.$start_item->position.'" />';

@@ -8,7 +8,7 @@ if ($submit) {
 		if ($submit->acked==APPLY_ACKED_ACCEPT) {
 			// Update
 			$change_label	= get_string('update_entry_button', 'apply');
-			$change_params	= array('submit_id'=>$submit->id);
+			$change_params	= array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit_ver, 'courseid'=>$courseid, 'go_page'=>0);
 			$change_action	= 'submit.php';
 			// Cancel
 			$discard_label 	= get_string('cancel_entry_button', 'apply');
@@ -18,7 +18,7 @@ if ($submit) {
 		else {
 			// Edit
 			$change_label	= get_string('edit_entry_button', 'apply');
-			$change_params	= array('id'=>$id, 'submit_id'=>$submit->id, 'courseid'=>$courseid, 'go_page'=>0);
+			$change_params	= array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit_ver, 'courseid'=>$courseid, 'go_page'=>0);
 			$change_action	= 'submit.php';
 			// Delete
 			$discard_label 	= get_string('delete_entry_button', 'apply');

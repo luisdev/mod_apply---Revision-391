@@ -32,7 +32,7 @@ apply_init_session();
 $id 			= required_param('id', PARAM_INT);
 $courseid 	  	= optional_param('courseid', 0, PARAM_INT);
 $submit_id		= optional_param('submit_id', 0, PARAM_INT);
-$submit_version	= optional_param('submit_version', -1, PARAM_INT);
+$submit_ver		= optional_param('submit_ver', -1, PARAM_INT);
 $prev_values 	= optional_param('prev_values', 0, PARAM_INT);
 $go_page 		= optional_param('go_page', -1, PARAM_INT);
 $last_page 	  	= optional_param('last_page', false, PARAM_INT);
@@ -288,7 +288,7 @@ else {
 		//
 		if ($submit_id) {
 			$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
-			if (apply_exist_draft_values($submit_id)) $submit_version = 0;
+			if ($submit_ver==-1 and apply_exist_draft_values($submit_id)) $submit_ver = 0;
 		}
 		require('submit_page.php');
 		//

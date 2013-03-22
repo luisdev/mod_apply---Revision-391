@@ -13,8 +13,9 @@ $title_chk  = get_string('title_check',	 'apply');
 
 //
 if ($req_own_data) {
-	$table_columns = array('title', 'time_modified', 'version', 'class', 'acked', 'execd', 'edit', 'discard');
-	$table_headers = array($title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, '-', '-');
+	$title_draft   = get_string('title_draft', 'apply');
+	$table_columns = array('title', 'time_modified', 'version', 'class', 'draft', 'acked', 'execd', 'edit', 'discard');
+	$table_headers = array($title_ttl, $title_date, $title_ver, $title_clss, $title_draft, $title_ack, $title_exec, '-', '-');
 }
 else {
 	$title_pic  = get_string('user_pic', 'apply');
@@ -32,6 +33,7 @@ if ($req_own_data) {
 	$table->sortable(true, 'time_modified', SORT_DESC);
 	$table->no_sorting('edit');
 	$table->no_sorting('discard');
+	$table->no_sorting('draft');
 }
 else {
 	$table->sortable(true, 'lastname', SORT_ASC);

@@ -17,7 +17,7 @@ if ($submit) {
 
 	foreach ($items as $item) {
 		//get the values
-		$params = array('submit_id'=>$submit->id, 'item_id'=>$item->id);
+		$params = array('submit_id'=>$submit->id, 'item_id'=>$item->id, 'version'=>$submit_ver);
 		$value  = $DB->get_record('apply_value', $params);
 
 		if ($item->typ!='pagebreak' and $item->label!=APPLY_NODISP_TAG) {
