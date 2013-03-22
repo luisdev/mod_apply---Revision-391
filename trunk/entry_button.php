@@ -50,11 +50,12 @@ if ($submit) {
 
 	// for admin
 	else if (!$req_own_data and $submit->class!=APPLY_CLASS_CANCEL) {
-
-
-
-
-
+		$back_label = get_string('back_button', 'apply');
+		$back_url   = new moodle_url($url, array('do_show'=>'show_entries'));
+		//
+		echo '<div align="center">';
+		echo $OUTPUT->single_button($back_url, $back_label);
+		echo '</div>';
 	}
 
 

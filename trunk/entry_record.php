@@ -125,9 +125,9 @@ if ($student) {
 	// for admin
 	else {
 		if ($submit->class!=APPLY_CLASS_CANCEL) {
-			$op_url_params = array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
-			$op_url = new moodle_url($CFG->wwwroot.'/mod/apply/op.php', $op_url_params);
-			$data[] = '<strong><a href="'.$op_url->out().'">'.get_string('operation_entry', 'apply').'</a></strong>';
+			$operate_params = array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'courseid'=>$courseid);
+			$operate_url = new moodle_url($CFG->wwwroot.'/mod/apply/operate_entry.php', $operate_params);
+			$data[] = '<strong><a href="'.$operate_url->out().'">'.get_string('operate_entry', 'apply').'</a></strong>';
 		}
 		else {
 			$data[] = '-';

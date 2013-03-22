@@ -49,7 +49,7 @@ $string['edit_entry_button'] = ' 編集 ';
 $string['update_entry_button'] = ' 更新 ';
 $string['cancel_entry_button'] = ' 取消 ';
 $string['delete_entry_button'] = ' 削除 ';
-$string['operation_entry_button'] = ' 操作 ';
+$string['operate_entry_button'] = ' 操作 ';
 
 
 // Menu
@@ -119,8 +119,7 @@ $string['update_entry'] = '更新';
 $string['cancel_entry'] = '解除';
 $string['delete_entry'] = '削除';
 $string['rollback_entry'] = '取消';
-
-$string['operation_entry'] = '操作';
+$string['operate_entry'] = '操作';
 
 
 // show_entries

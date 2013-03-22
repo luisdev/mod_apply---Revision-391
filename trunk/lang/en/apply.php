@@ -48,7 +48,7 @@ $string['edit_entry_button'] = ' Edit ';
 $string['update_entry_button'] = ' Update ';
 $string['cancel_entry_button'] = ' Cancel ';
 $string['delete_entry_button'] = ' Delete ';
-$string['operation_entry_button'] = ' Operation ';
+$string['operate_entry_button'] = ' Operate ';
 
 
 // Menu
@@ -121,8 +121,7 @@ $string['update_entry'] = 'Update';
 $string['cancel_entry'] = 'Cancel';
 $string['delete_entry'] = 'Delete';
 $string['rollback_entry'] = 'Rollback';
-
-$string['operation_entry'] = 'Operation';
+$string['operate_entry'] = 'Operate';
 
 
 
