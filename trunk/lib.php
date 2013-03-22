@@ -1179,6 +1179,19 @@ function apply_update_draft_values($submit)
 		//
 		if ($exist) $DB->update_record('apply_value', $newvalue);
 		else 		$DB->insert_record('apply_value', $newvalue);
+
+
+		// for Title of Draft (version=0)
+		if ($title=='') {
+			if ($item->label==APPLY_TITLE_TAG and $item->typ=='textfield') {
+				$title = $newvalue->value;
+			}
+		}
+	}
+
+	if ($title!='' and $submit->version==0) {
+		$submit->title = $title;
+		$DB->update_record('apply_submit', $submit);
 	}
 
 	return $submit->id;
@@ -1308,7 +1321,7 @@ function apply_get_user_link($user, $pattern='fullname')
 
 	if	  	($pattern=='firstname') $user_name = $user->firstname;
 	else if ($pattern=='lastname')  $user_name = $user->lastname;
-	else						    $user_name = fullname($user);
+	else							$user_name = fullname($user);
 	
 	$link = '<a href='.$CFG->wwwroot.'/user/view.php?id='.$user->id.'>'.$user_name.'</a>';
 	

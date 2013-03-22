@@ -160,8 +160,13 @@ $use_template_form->set_data(array('id'=>$id));
 $strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
-$PAGE->navbar->add(get_string('apply:edit_items', 'apply'));
-//$PAGE->set_url('/mod/apply/edit.php', array('id'=>$cm->id, 'do_show'=>$do_show));
+if ($do_show=='templates') {
+	$PAGE->navbar->add(get_string('apply:edit_templates', 'apply'));
+}
+else {
+	$PAGE->navbar->add(get_string('apply:edit_items', 'apply'));
+}
+
 $PAGE->set_url($this_url);
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));
