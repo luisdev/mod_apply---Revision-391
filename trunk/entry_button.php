@@ -50,6 +50,11 @@ if ($submit) {
 
 	// for admin
 	else if (!$req_own_data and $submit->class!=APPLY_CLASS_CANCEL) {
+
+
+
+
+
 	}
 
 

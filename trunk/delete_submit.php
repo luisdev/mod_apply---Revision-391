@@ -92,12 +92,12 @@ if (isset($formdata->confirmdelete) and $formdata->confirmdelete==1) {
         	add_to_log($course->id, 'apply', 'delete',  'view.php?id='.$cm->id, $apply->id, $submit_id);
 		}
 		else if ($submit->acked!=APPLY_ACKED_ACCEPT) {
-			// 最新の申請（未認証）のみ削除可能
+			// 最新の申請（未認証）のみ取消可能（ロールバック）
         	apply_rollback_submit($submit_id);
         	add_to_log($course->id, 'apply', 'rollback', 'view.php?id='.$cm->id, $apply->id, $submit_id);
 		}
 		else {
-			// 申請の取消
+			// 申請の解除
         	apply_cancel_submit($submit_id);
         	add_to_log($course->id, 'apply', 'cancel',   'view.php?id='.$cm->id, $apply->id, $submit_id);
 		}
@@ -117,11 +117,11 @@ if ($submit->version<=1 and $submit->acked!=APPLY_ACKED_ACCEPT) {
 	$PAGE->navbar->add(get_string('delete_entry', 'apply'));
 }
 else if ($submit->acked!=APPLY_ACKED_ACCEPT) {
-	// 最新の申請（未認証）のみ削除可能
+	// 最新の申請（未認証）のみ取消可能（ロールバック）
 	$PAGE->navbar->add(get_string('rollback_entry', 'apply'));
 }
 else {
-	// 申請の取消
+	// 申請の解除
 	$PAGE->navbar->add(get_string('cancel_entry', 'apply'));
 }
 
@@ -140,11 +140,11 @@ if ($submit->version<=1 and $submit->acked!=APPLY_ACKED_ACCEPT) {
 	echo $OUTPUT->heading(get_string('confirm_delete_entry', 'apply'));
 }
 else if ($submit->acked!=APPLY_ACKED_ACCEPT) {
-	// 最新の申請（未認証）のみ削除可能
+	// 最新の申請（未認証）のみ取消可能（ロールバック）
 	echo $OUTPUT->heading(get_string('confirm_rollback_entry', 'apply'));
 }
 else {
-	// 申請の取消
+	// 申請の解除
 	echo $OUTPUT->heading(get_string('confirm_cancel_entry', 'apply'));
 }
 

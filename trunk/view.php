@@ -83,11 +83,11 @@ echo $OUTPUT->header();
 require('tabs.php');
 
 //
-$cap_viewhiddenactivities = has_capability('moodle/course:viewhiddenactivities', $context);
-if ((empty($cm->visible) and !$cap_viewhiddenactivities)) {
+$cap_view_hidden_activities = has_capability('moodle/course:viewhiddenactivities', $context);
+if ((empty($cm->visible) and !$cap_view_hidden_activities)) {
 	notice(get_string('activityiscurrentlyhidden'));
 }
-if ((empty($cm->visible) and !$cap_viewhiddenactivities)) {
+if ((empty($cm->visible) and !$cap_view_hidden_activities)) {
 	notice(get_string('activityiscurrentlyhidden'));
 }
 
