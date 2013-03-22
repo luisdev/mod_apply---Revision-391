@@ -927,10 +927,8 @@ function apply_rollback_submit($submit_id)
 	if ($submit->version<=1 or $submit->acked==APPLY_ACKED_ACCEPT) return false;
 
 	//
-	if ($submit->class!=APPLY_CLASS_CANCEL) {
-		$DB->delete_records('apply_value', array('submit_id'=>$submit->id, 'version'=>$submit->version));
-		$submit->version--;
-	}
+	$DB->delete_records('apply_value', array('submit_id'=>$submit->id, 'version'=>$submit->version));
+	$submit->version--;
 
 	//
 	$submit->title 		 = $submit->otitle;
@@ -968,6 +966,10 @@ function apply_cancel_submit($submit_id)
 	if (!$submit) return false;
 	if ($submit->acked!=APPLY_ACKED_ACCEPT) return false;
 
+	$ret = apply_copy_values($submit_id, $submit->version, $submit->version+1);
+	if (!$ret) return false;
+
+	// Backup
 	$submit->otitle 	 = $submit->title;
 	$submit->oclass 	 = $submit->class;
 	$submit->oacked		 = $submit->acked;
@@ -978,6 +980,7 @@ function apply_cancel_submit($submit_id)
 	$submit->oexecd_time = $submit->execd_time;
 
 	//
+	$submit->version++;
 	$submit->class 		 = APPLY_CLASS_CANCEL;
 	$submit->acked 		 = APPLY_ACKED_NOTYET;
 	$submit->acked_user	 = 0;
@@ -985,8 +988,8 @@ function apply_cancel_submit($submit_id)
 	$submit->execd 	 	 = APPLY_EXECD_NOTYET;
 	$submit->execd_user  = 0;
 	$submit->execd_time  = 0;
-
 	$submit->time_modified = time();
+
 	$ret = $DB->update_record('apply_submit', $submit);
 	if ($ret) apply_delete_draft_values($submit_id);
 
@@ -1023,6 +1026,7 @@ function apply_exec_submit($submit_id)
 	if 		($submit->version==1) $submit->class = APPLY_CLASS_NEW;
 	else if ($submit->version >1) $submit->class = APPLY_CLASS_UPDATE;
 	//
+	$submit->title 		 = $title;
 	$submit->acked 		 = APPLY_ACKED_NOTYET;
 	$submit->acked_user	 = 0;
 	$submit->acked_time	 = 0;
@@ -1035,6 +1039,7 @@ function apply_exec_submit($submit_id)
 
 	return $ret;
 }
+
 
 
 
@@ -1174,19 +1179,6 @@ function apply_update_draft_values($submit)
 		//
 		if ($exist) $DB->update_record('apply_value', $newvalue);
 		else 		$DB->insert_record('apply_value', $newvalue);
-
-		// Title
-		if ($title=='') {
-			if ($item->label==APPLY_TITLE_TAG and $item->typ=='textfield') {
-				$title = $newvalue->value;
-			}
-		}
-	}
-
-
-	if ($title!='' and $submit->version==0) {
-		$submit->title = $title;
-		$DB->update_record('apply_submit', $submit);
 	}
 
 	return $submit->id;
@@ -1263,6 +1255,38 @@ function apply_flush_draft_values($submit_id, $version, &$title)
 
 	return $ret;
 }
+
+
+
+function apply_copy_values($submit_id, $fm_ver, $to_ver)
+{
+	global $DB;
+
+	$values = $DB->get_records('apply_value', array('submit_id'=>$submit_id, 'version'=>$fm_ver));
+	if (!$values) return false;
+
+	$ret = false;
+	$time_modified = time();
+	
+	foreach($values as $value) {
+		$val = $DB->get_record('apply_value', array('submit_id'=>$submit_id, 'item_id'=>$value->item_id, 'version'=>$to_ver));
+		if ($val) {
+			$value->id = $val->id;
+			$value->version = $val->version;
+			$value->time_modified = $time_modified;
+			$ret = $DB->update_record('apply_value', $value);
+		}
+		else {
+			$value->version = $to_ver;
+			$value->time_modified = $time_modified;
+			$ret = $DB->insert_record('apply_value', $value);
+		}
+		if (!$ret) break;
+	}
+
+	return $ret;
+}
+
 
 
 
