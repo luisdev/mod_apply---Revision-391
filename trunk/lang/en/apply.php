@@ -42,6 +42,7 @@ $string['submit_form_button'] = ' New Application ';
 $string['next_page_button'] = ' Next page ';
 $string['previous_page_button'] = ' Previous page ';
 $string['back_button'] = ' Back ';
+$string['yes_button'] = ' Yes ';
 
 $string['edit_entry_button'] = ' Edit ';
 $string['update_entry_button'] = ' Update ';
@@ -119,6 +120,8 @@ $string['edit_entry'] = 'Edit';
 $string['update_entry'] = 'Update';
 $string['cancel_entry'] = 'Cancel';
 $string['delete_entry'] = 'Delete';
+$string['rollback_entry'] = 'Rollback';
+
 $string['operation_entry'] = 'Operation';
 
 
@@ -137,7 +140,7 @@ $string['class_cancel']  = 'Cancel';
 $string['no_title'] = 'No Title';
 $string['show_all'] = 'Show all {$a}';
 $string['show_perpage'] = 'Show {$a} per page';
-$string['not_submit_data'] = 'Specified application data does not exist';
+$string['no_submit_data'] = 'Specified application data does not exist';
 
 
 // edit_item
@@ -203,10 +206,14 @@ $string['submitted_applys'] = 'Submitted applies';
 $string['submit_the_form'] = 'Submit a application...';
 $string['completionsubmit'] = 'View as completed if the apply is submitted';
 $string['configallowfullanonymous'] = 'If this option is set yes so the apply can be completed without any preceding logon. It only affects applys on the homepage.';
-$string['confirmdeleteentry'] = 'Are you sure you want to delete this entry?';
 
 // delete_item
 $string['confirm_delete_item'] = 'Are you sure you want to delete this element?';
+$string['confirm_delete_entry'] = 'Are you sure you want to delete this entry?';
+$string['confirm_cancel_entry'] = 'Are you sure you want to cancel this entry?';
+$string['confirm_rollback_entry'] = 'Are you sure you want to rollback this entry?';
+
+
 
 $string['confirmdeletetemplate'] = 'Are you sure you want to delete this template?';
 $string['confirmusetemplate'] = 'Are you sure you want to use this template?';

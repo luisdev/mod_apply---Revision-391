@@ -43,6 +43,7 @@ $string['submit_form_button'] = ' 新規申請 ';
 $string['next_page_button'] = ' 次のページ ';
 $string['previous_page_button'] = ' 前のページ ';
 $string['back_button'] = ' 戻る ';
+$string['yes_button'] = ' はい ';
 
 $string['edit_entry_button'] = ' 編集 ';
 $string['update_entry_button'] = ' 更新 ';
@@ -117,6 +118,8 @@ $string['edit_entry']   = '編集';
 $string['update_entry'] = '更新';
 $string['cancel_entry'] = '取消';
 $string['delete_entry'] = '削除';
+$string['rollback_entry'] = '巻戻';
+
 $string['operation_entry'] = '操作';
 
 
@@ -134,7 +137,7 @@ $string['class_cancel']  = '取消';
 $string['no_title'] = 'タイトルなし';
 $string['show_all'] = '{$a} 個のデータ全てを表示する';
 $string['show_perpage'] = '1ページあたりの表示数を {$a} にする';
-$string['not_submit_data'] = '指定されたデータは存在しません';
+$string['no_submit_data'] = '指定されたデータは存在しません';
 
 
 
@@ -155,9 +158,6 @@ $string['textarea_width'] = '幅';
 $string['textfield'] = '短文回答';
 $string['textfield_maxlength'] = '最大文字数';
 $string['textfield_size'] = 'テキストフィールド幅';
-
-
-
 
 
 
@@ -212,11 +212,13 @@ $string['submitted_applys'] = '申請書類数';
 $string['submit_the_form'] = '申請する ...';
 
 $string['configallowfullanonymous'] = 'このオプションを有効にした場合，ログインせずに申請フォームを完了することができます．設定はホームページの申請フォームにのみ影響します．';
-$string['confirmdeleteentry'] = '本当にこのエントリを削除してもよろしいですか?';
 
 
-// delete_item.php
+// delete_xxx.php
 $string['confirm_delete_item'] = '本当にこの要素を削除してもよろしいですか?';
+$string['confirm_delete_entry'] = '本当にこのエントリを削除してもよろしいですか?';
+$string['confirm_cancel_entry'] = '本当にこのエントリを取り消してもよろしいですか?';
+$string['confirm_rollback_entry'] = '受け付け待ちエントリを削除してもよろしいですか?';
 
 
 

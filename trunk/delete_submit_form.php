@@ -50,8 +50,7 @@ class mod_apply_delete_submit_form extends moodleform
 
 		//-------------------------------------------------------------------------------
 		// buttons
-		$this->add_action_buttons(true, get_string('yes'));
-
+		$this->add_action_buttons(true, get_string('yes_button','apply'));
 	}
 }
 

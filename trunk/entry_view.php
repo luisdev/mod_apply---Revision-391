@@ -11,7 +11,11 @@ if ($submit) {
 	else if ($name_pattern=='lastname')  $user_name = $student->lastname;
 	else								 $user_name = fullname($student); 
 
-	echo $OUTPUT->heading($user_name.' ('.userdate($submit->time_modified, '%Y/%m/%d %H:%M').')', 3);
+	$title = $user_name.' ('.userdate($submit->time_modified, '%Y/%m/%d %H:%M').')';
+	if ($submit_ver==0) $title .= ' '.get_string('title_draft','apply');
+
+
+	echo $OUTPUT->heading($title, 3);
 	//
 	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide apply_item');
 
@@ -40,6 +44,6 @@ if ($submit) {
 
 //
 else {
-	echo $OUTPUT->heading(get_string('not_submit_data', 'apply'), 3);
+	echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 3);
 }
 

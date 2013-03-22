@@ -219,7 +219,7 @@ if ($do_show=='show_one_entry' and $submit_id) {
 	}
 	else {
 		echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide apply_item');
-		echo $OUTPUT->heading(get_string('not_submit_data', 'apply'), 3);
+		echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 3);
 
         $back_label = get_string('back_button', 'apply');
         $back_url   = new moodle_url($url, array('do_show'=>'view'));
