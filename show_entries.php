@@ -174,8 +174,7 @@ if ($do_show=='show_one_entry' and $submit_id) {
 	echo $OUTPUT->heading(format_text($apply->name));
 
 	$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
-	//if (is_array($items)) require('entry_view.php');
-	if (is_array($items)) require('entry_transact.php');
+	if (is_array($items)) require('entry_view.php');
 }
 
 
