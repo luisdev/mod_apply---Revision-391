@@ -13,13 +13,13 @@ $title_chk  = get_string('title_check',	 'apply');
 
 //
 if ($req_own_data) {
-	$table_columns = array('title', 'time_modified', 'version', 'class', 'acked', 'execed', 'edit', 'discard');
+	$table_columns = array('title', 'time_modified', 'version', 'class', 'acked', 'execd', 'edit', 'discard');
 	$table_headers = array($title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, '-', '-');
 }
 else {
 	$title_pic  = get_string('user_pic', 'apply');
 	$title_name = get_string($name_pattern);
-	$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execed', 'operation');
+	$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execd', 'operation');
 	$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, '-');
 }
 

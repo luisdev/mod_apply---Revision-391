@@ -36,11 +36,11 @@
         <FIELD NAME="class" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="version" NEXT="acked"/>
         <FIELD NAME="acked" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="class" NEXT="acked_user"/>
         <FIELD NAME="acked_user" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="acked" NEXT="acked_time"/>
-        <FIELD NAME="acked_time" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="acked_user" NEXT="execed"/>
-        <FIELD NAME="execed" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="acked_time" NEXT="execed_user"/>
-        <FIELD NAME="execed_user" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="execed" NEXT="execed_time"/>
-        <FIELD NAME="execed_time" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="execed_user" NEXT="time_modified"/>
-        <FIELD NAME="time_modified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="execed_time"/>
+        <FIELD NAME="acked_time" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="acked_user" NEXT="execd"/>
+        <FIELD NAME="execd" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="acked_time" NEXT="execd_user"/>
+        <FIELD NAME="execd_user" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="execd" NEXT="execd_time"/>
+        <FIELD NAME="execd_time" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="execd_user" NEXT="time_modified"/>
+        <FIELD NAME="time_modified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="execd_time"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for apply_completed" NEXT="apply_id"/>
