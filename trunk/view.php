@@ -73,8 +73,13 @@ add_to_log($course->id, 'apply', 'view', 'view.php?id='.$cm->id, $apply->id, $cm
 $strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
-$url = new moodle_url('/mod/apply/view.php', array('id'=>$cm->id, 'do_show'=>'view'));
-$PAGE->set_url($url);
+//
+$back_params = array('id'=>$id, 'courseid'=>$courseid, 'do_show'=>'view');
+$back_url = new moodle_url($CFG->wwwroot.'/mod/apply/view.php', $back_params);
+$this_url = new moodle_url('/mod/apply/view.php', array('id'=>$cm->id, 'do_show'=>'view'));
+
+$PAGE->navbar->add(get_string('apply:view', 'apply'));
+$PAGE->set_url($this_url);
 $PAGE->set_title(format_string($apply->name));
 $PAGE->set_heading(format_string($course->fullname));
 

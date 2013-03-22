@@ -54,6 +54,9 @@ $string['operate_entry_button'] = ' Operate ';
 // Menu
 $string['apply:submit'] = 'Submit a Application';
 $string['apply:operate_submit'] = 'Operation of Entry';
+$string['apply:show_entries'] = 'List of Entries';
+$string['apply:view'] = 'View a Apply';
+$string['apply:edit_items'] = 'Edit Items';
 //
 $string['apply:addinstance'] = 'Add a new apply';
 $string['apply:applies'] = 'issue a apply';
@@ -61,10 +64,8 @@ $string['apply:createprivatetemplate'] = 'Create private template';
 $string['apply:createpublictemplate'] = 'Create public template';
 $string['apply:deletesubmissions'] = 'Delete completed submissions';
 $string['apply:deletetemplate'] = 'Delete template';
-$string['apply:edititems'] = 'Edit items';
 $string['apply:mapcourse'] = 'Map courses to global applys';
 $string['apply:receivemail'] = 'Receive email notification';
-$string['apply:view'] = 'View a apply';
 $string['apply:viewanalysepage'] = 'View the analysis page after submit';
 $string['apply:viewreports'] = 'View reports';
 

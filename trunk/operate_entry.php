@@ -82,10 +82,13 @@ if (!has_capability('mod/apply:operatesubmit', $context)) {
 $strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
+$back_params = array('id'=>$cm->id, 'courseid'=>$courseid, 'do_show'=>'show_entries');
+$url_params  = array('id'=>$cm->id, 'courseid'=>$courseid);
+$back_url = new moodle_url($CFG->wwwroot.'/mod/apply/show_entries.php', $back_params);
+$this_url = new moodle_url('/mod/apply/operate_entry.php', $url_params);
+
 $PAGE->navbar->add(get_string('apply:operate_submit', 'apply'));
-$url_params = array('id'=>$cm->id, 'courseid'=>$courseid);
-$url = new moodle_url('/mod/apply/oerate_entry.php', $url_params);
-$PAGE->set_url($url);
+$PAGE->set_url($this_url);
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));
 echo $OUTPUT->header();
