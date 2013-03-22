@@ -52,7 +52,8 @@ $string['operate_entry_button'] = ' Operate ';
 
 
 // Menu
-$string['apply:submit'] = 'Submit a application';
+$string['apply:submit'] = 'Submit a Application';
+$string['apply:operate_submit'] = 'Operation of Entry';
 //
 $string['apply:addinstance'] = 'Add a new apply';
 $string['apply:applies'] = 'issue a apply';
@@ -115,6 +116,7 @@ $string['entry_saved'] = 'Your applocation have been saved. Thank you.';
 $string['entry_saved_draft'] = 'Your applocation have been saved as <strong>Draft</strong>';
 $string['saving_failed'] = 'Saving failed';
 $string['saving_failed_because_missing_or_false_values'] = 'Saving failed because missing or false values.';
+$string['apply_is_disable'] = 'You ca not use this Apply';
 
 $string['edit_entry'] = 'Edit';
 $string['update_entry'] = 'Update';
@@ -155,6 +157,15 @@ $string['textfield_maxlength'] = 'Maximum characters accepted';
 $string['textfield_size'] = 'Textfield width';
 
 
+// operate 
+$string['operate_is_disable'] = 'You ca not use this Operation';
+
+
+
+
+
+
+
 
 
 $string['template'] = 'Template';
@@ -173,7 +184,6 @@ $string['add_items'] = 'Add application items to activity';
 $string['apply_is_not_open']  = 'This Apply is not open yet';
 $string['apply_is_not_ready'] = 'This Apply is not ready';
 $string['apply_is_closed']    = 'This Apply is already closed';
-$string['apply_is_disable']  = 'You ca not use this Apply';
 $string['apply_is_already_submitted'] = 'You\'ve already submitted this Apply';
 $string['apply_is_enable']  = 'Submit a this Apply';
 

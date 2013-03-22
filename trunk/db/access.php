@@ -62,7 +62,7 @@ $capabilities = array(
         )
     ),
 
-    'mod/apply:transactsubmit' => array(
+    'mod/apply:operatesubmit' => array(
 
         'riskbitmask' => RISK_SPAM | RISK_XSS,
 
