@@ -102,7 +102,7 @@ echo $OUTPUT->box_start('apply_form boxaligncenter boxwidthwide');
 		echo '<input name="save_values" type="submit" '.$inputvalue.' />';
 		echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 	}
-	echo '<br />';
+	echo '<br /><br />';
 
 	//
 	if ($is_pagebreak and $last_break_position>$first_pagebreak->position) {

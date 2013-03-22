@@ -221,7 +221,7 @@ function apply_init_session()
 	global $SESSION;
 
 	if (!empty($SESSION)) {
-		if (!isset($SESSION->apply) OR !is_object($SESSION->apply)) {
+		if (!isset($SESSION->apply) or !is_object($SESSION->apply)) {
 			$SESSION->apply = new stdClass();
 		}
 	}
@@ -908,7 +908,7 @@ function apply_exec_submit($submit_id)
 	if (!$submit) return false;
 
 	$title = '';
-	if ($submit->calss==APPLY_ACKED_ACCEPT or $submit->version==0) $submit->version++;
+	if ($submit->class==APPLY_ACKED_ACCEPT or $submit->version==0) $submit->version++;
 	//
 	$ret = apply_flush_draft_values($submit->id, $submit->version, $title);
 	if ($ret) apply_delete_draft_values($submit->id);
