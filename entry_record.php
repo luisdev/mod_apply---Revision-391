@@ -31,62 +31,64 @@ if ($student) {
 	$data[] = $entry_link;
 	//
 	$data[] = $submit->version;
+
 	//
 	if 		($submit->class==APPLY_CLASS_DRAFT)  $class = get_string('class_draft',   'apply');
 	else if ($submit->class==APPLY_CLASS_NEW)    $class = get_string('class_newpost', 'apply');
 	else if ($submit->class==APPLY_CLASS_UPDATE) $class = get_string('class_update',  'apply');
 	else if ($submit->class==APPLY_CLASS_CANCEL) $class = get_string('class_cancel',  'apply');
+	if ($submit->class==APPLY_CLASS_DRAFT)  $class = '<strong>'.$class.'</strong>';
 	$data[] = $class;
+
 	//
-	if 		($submit->acked==APPLY_ACKED_NOTYET) $acked = get_string('acked_notyet',  'apply');
+	if 		($submit->class==APPLY_CLASS_DRAFT)  $acked = '-';
+	else if ($submit->acked==APPLY_ACKED_NOTYET) $acked = get_string('acked_notyet',  'apply');
 	else if ($submit->acked==APPLY_ACKED_ACCEPT) $acked = get_string('acked_accept',  'apply');
 	else if ($submit->acked==APPLY_ACKED_REJECT) $acked = get_string('acked_reject',  'apply');
 	if ($submit->acked!=APPLY_ACKED_NOTYET) {
 		$acked = '<a href="'.$acked_url.'">'.$acked.'</a>';
 	}
 	$data[] = $acked;
+
 	//
-	if ($submit->execd==APPLY_EXECD_DONE) $execd = get_string('execd_done',   'apply');
-	else 				 				  $execd = get_string('execd_notyet', 'apply');
+	if 		($submit->class==APPLY_CLASS_DRAFT) $execd = '-';
+	else if ($submit->execd==APPLY_EXECD_DONE)  $execd = get_string('execd_done',   'apply');
+	else 				 				  		$execd = get_string('execd_notyet', 'apply');
 	if ($submit->execd==APPLY_EXECD_DONE) $execd = '<a href="'.$execd_url.'">'.$execd.'</a>';
 	$data[] = $execd;
-	//
 
 	//
 	if ($req_own_data) {
-		if ($submit->class==APPLY_CLASS_CANCEL) {
-			$data[] = '-';
-		}
-		// Edit
-		else if ($submit->acked!=APPLY_ACKED_ACCEPT) {
-			$edit_url_params = array('submit_id'=>$submit->id);
-			$edit_url = new moodle_url($CFG->wwwroot.'/mod/apply/edit.php', $edit_url_params);
-			$data[] = '<strong><a href="'.$edit_url->out().'">'.get_string('edit_entry', 'apply').'</a></strong>';
-		}
-		// Update
-		else {
-			$update_url_params = array('submit_id'=>$submit->id);
-			$update_url = new moodle_url($CFG->wwwroot.'/mod/apply/edit.php', $update_url_params);
-			$data[] = '<strong><a href="'.$update_url->out().'">'.get_string('update_entry', 'apply').'</a></strong>';
-		}
-
-		//
-		if ($submit->class==APPLY_CLASS_CANCEL) {
-			$data[] = '-';
-		}
-		// Cacel
-		else if ($submit->acked==APPLY_ACKED_ACCEPT) {
-			$cancel_url_params = array('submit_id'=>$submit->id);
-			$cancel_url = new moodle_url($CFG->wwwroot.'/mod/apply/edit.php', $cancel_url_params);
-			$data[] = '<strong><a href="'.$cancel_url->out().'">'.get_string('cancel_entry', 'apply').'</a></strong>';
-		}
-		// Delete
-		else {
-			$delete_url_params = array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
-			$delete_url = new moodle_url($CFG->wwwroot.'/mod/apply/delete_submit.php', $delete_url_params);
-			$data[] = '<strong><a href="'.$delete_url->out().'">'.get_string('delete_entry', 'apply').'</a></strong>';
+		if ($submit->class!=APPLY_CLASS_CANCEL) {
+			if ($submit->acked==APPLY_ACKED_ACCEPT) {
+				// Update
+				$change_label	= get_string('update_entry_button', 'apply');
+ 				$change_params	= array('submit_id'=>$submit->id);
+				$cahnge_action  = 'submit.php';
+				// Cancel
+				$discard_label	= get_string('cancel_entry_button', 'apply');
+				$discard_params	= array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
+				$discard_action	= 'delete_submit.php';
+			}
+			else {
+				// Edit
+				$change_label	= get_string('edit_entry_button', 'apply');
+ 				$change_params	= array('submit_id'=>$submit->id);
+				$cahnge_action  = 'submit.php';
+				// Delete
+				$discard_label	= get_string('delete_entry_button', 'apply');
+				$discard_params	= array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
+				$discard_action	= 'delete_submit.php';
+			}
+			//
+			$change_url  = new moodle_url($CFG->wwwroot.'/mod/apply/'.$change_action, $change_params);
+			$discard_url = new moodle_url($CFG->wwwroot.'/mod/apply/'.$discard_action, $discard_params);
+			$data[] = '<strong><a href="'.$change_url->out().'">'. $change_label. '</a></strong>';
+			$data[] = '<strong><a href="'.$discard_url->out().'">'.$discard_label.'</a></strong>';
 		}
 	}
+
+	// for admin
 	else {
 		if ($submit->class!=APPLY_CLASS_CANCEL) {
 			$op_url_params = array('submit_id'=>$submit->id, 'acked'=>$submit->acked);

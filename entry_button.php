@@ -5,34 +5,32 @@
 if ($submit) {
 	//
 	if ($req_own_data and $submit->class!=APPLY_CLASS_CANCEL) {
-		// Edit
-		if ($submit->acked!=APPLY_ACKED_ACCEPT) {
-			$change_params	= array('submit_id'=>$submit->id);
-			$change_label	= get_string('edit_entry_button', 'apply');
-			$change_url		= new moodle_url($CFG->wwwroot.'/mod/apply/submit.php', $change_params);
-		}
-		// Update
-		else {
-			$change_params	= array('submit_id'=>$submit->id);
-			$change_label	= get_string('update_entry_button', 'apply');
-			$change_url		= new moodle_url($CFG->wwwroot.'/mod/apply/submis.php', $change_params);
-		}
-
-		// Cancel
 		if ($submit->acked==APPLY_ACKED_ACCEPT) {
+			// Update
+			$change_label	= get_string('update_entry_button', 'apply');
+			$change_params	= array('submit_id'=>$submit->id);
+			$change_action	= 'submis.php';
+			// Cancel
+			$discard_label 	= get_string('cancel_entry_button', 'apply');
 			$discard_params = array('submit_id'=>$submit->id);
-			$discard_label 	= get_string('edit_entry_button', 'apply');
-			$discard_url	= new moodle_url($CFG->wwwroot.'/mod/apply/deete_submit.php', $discard_params);
+			$discard_action	= 'deete_submit.php';
 		}
-		// Delete
 		else {
-			$discard_params = array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
+			// Edit
+			$change_label	= get_string('edit_entry_button', 'apply');
+			$change_params	= array('submit_id'=>$submit->id);
+			$change_action	= 'submis.php';
+			// Delete
 			$discard_label 	= get_string('delete_entry_button', 'apply');
-			$discard_url 	= new moodle_url($CFG->wwwroot.'/mod/apply/delete_submit.php', $discard_params);
+			$discard_params = array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
+			$discard_action	= 'deete_submit.php';
 		}
+		$back_label  = get_string('back_button', 'apply');
 
-		$back_label = get_string('back_button', 'apply');
-		$back_url   = new moodle_url($url, array('do_show'=>'view'));
+		//
+		$change_url	 = new moodle_url($CFG->wwwroot.'/mod/apply/'.$cahnge_action,  $change_params);
+		$discard_url = new moodle_url($CFG->wwwroot.'/mod/apply/'.$discard_action, $discard_params);
+		$back_url    = new moodle_url($url, array('do_show'=>'view'));
 
 		//	
 		echo '<div align="center">';
@@ -49,8 +47,14 @@ if ($submit) {
 		echo '</div>';
 	}
 
-	//
+
+	// for admin
 	else if (!$req_own_data and $submit->class!=APPLY_CLASS_CANCEL) {
+	}
+
+
+	// APPLY_CLASS_CANCEL
+	else {
 		$back_label = get_string('back_button', 'apply');
 		$back_url   = new moodle_url($url, array('do_show'=>'show_entries'));
 		//
