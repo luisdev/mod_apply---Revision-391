@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/apply/db" VERSION="20130321" COMMENT="XMLDB file for Moodle mod/apply"
+<XMLDB PATH="mod/apply/db" VERSION="20130322" COMMENT="XMLDB file for Moodle mod/apply"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -30,17 +30,25 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="apply_id"/>
         <FIELD NAME="apply_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="user_id"/>
-        <FIELD NAME="user_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="apply_id" NEXT="title"/>
-        <FIELD NAME="title" TYPE="char" LENGTH="32" NOTNULL="true" SEQUENCE="false" PREVIOUS="user_id" NEXT="version"/>
-        <FIELD NAME="version" TYPE="int" LENGTH="6" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="0:Draft, 1:New, 2: 2nd, ..." PREVIOUS="title" NEXT="class"/>
-        <FIELD NAME="class" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="version" NEXT="acked"/>
+        <FIELD NAME="user_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="apply_id" NEXT="version"/>
+        <FIELD NAME="version" TYPE="int" LENGTH="6" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="0:Draft, 1:New, 2: 2nd, ..." PREVIOUS="user_id" NEXT="title"/>
+        <FIELD NAME="title" TYPE="char" LENGTH="32" NOTNULL="true" SEQUENCE="false" PREVIOUS="version" NEXT="class"/>
+        <FIELD NAME="class" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="title" NEXT="acked"/>
         <FIELD NAME="acked" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="class" NEXT="acked_user"/>
         <FIELD NAME="acked_user" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="acked" NEXT="acked_time"/>
         <FIELD NAME="acked_time" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="acked_user" NEXT="execd"/>
         <FIELD NAME="execd" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="acked_time" NEXT="execd_user"/>
         <FIELD NAME="execd_user" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="execd" NEXT="execd_time"/>
         <FIELD NAME="execd_time" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="execd_user" NEXT="time_modified"/>
-        <FIELD NAME="time_modified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="execd_time"/>
+        <FIELD NAME="time_modified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="execd_time" NEXT="otitle"/>
+        <FIELD NAME="otitle" TYPE="char" LENGTH="32" NOTNULL="true" SEQUENCE="false" PREVIOUS="time_modified" NEXT="oclass"/>
+        <FIELD NAME="oclass" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="otitle" NEXT="oacked"/>
+        <FIELD NAME="oacked" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="oclass" NEXT="oacked_user"/>
+        <FIELD NAME="oacked_user" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="oacked" NEXT="oacked_time"/>
+        <FIELD NAME="oacked_time" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="oacked_user" NEXT="oexecd"/>
+        <FIELD NAME="oexecd" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="oacked_time" NEXT="oexecd_user"/>
+        <FIELD NAME="oexecd_user" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="oexecd" NEXT="oexecd_time"/>
+        <FIELD NAME="oexecd_time" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="oexecd_user"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for apply_completed" NEXT="apply_id"/>

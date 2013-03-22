@@ -61,17 +61,22 @@ if ($student) {
 	$data[] = $acked;
 
 	//
-	if 		($submit->class==APPLY_CLASS_DRAFT) $execd = '-';
-	else if ($submit->execd==APPLY_EXECD_DONE)  $execd = get_string('execd_done',   'apply');
-	else 				 				  		$execd = get_string('execd_notyet', 'apply');
-	if ($submit->execd==APPLY_EXECD_DONE) {
+	if		($submit->class==APPLY_CLASS_DRAFT)  $execd = '-';
+	else if ($submit->execd==APPLY_EXECD_DONE)   $execd = get_string('execd_done',   'apply');
+	else 				 				  		 $execd = get_string('execd_notyet', 'apply');
+	if ($submit->execd!=APPLY_EXECD_NOTYET) {
 		$execd = '<strong><a href="'.$execd_url.'">'.$execd.'</a></strong>';
 	}
 	$data[] = $execd;
 
 	//
 	if ($req_own_data) {
-		if ($submit->class!=APPLY_CLASS_CANCEL) {
+		if ($submit->class==APPLY_CLASS_CANCEL and $submit->acked==APPLY_ACKED_ACCEPT) {
+			// 取消が受理されたものは，ユーザは変更できない
+			$data[] = '-';
+			$data[] = '-';
+		}
+		else {
 			if ($submit->acked==APPLY_ACKED_ACCEPT) {
 				// Update
 				$change_label	= get_string('update_entry_button', 'apply');
@@ -79,7 +84,7 @@ if ($student) {
 				$change_action  = 'submit.php';
 				// Cancel
 				$discard_label	= get_string('cancel_entry_button', 'apply');
-				$discard_params	= array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
+				$discard_params	= array('id'=>$id, 'submit_id'=>$submit->id);
 				$discard_action	= 'delete_submit.php';
 			}
 			else {
@@ -89,13 +94,21 @@ if ($student) {
 				$change_action  = 'submit.php';
 				// Delete
 				$discard_label	= get_string('delete_entry_button', 'apply');
-				$discard_params	= array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
+				$discard_params	= array('id'=>$id, 'submit_id'=>$submit->id);
 				$discard_action	= 'delete_submit.php';
 			}
+
 			//
-			$change_url  = new moodle_url($CFG->wwwroot.'/mod/apply/'.$change_action,  $change_params);
+			if ($submit->class==APPLY_CLASS_CANCEL) {
+				// 取消を申請している場合は，内容を編集・更新できない
+				$data[] = '-';
+			}
+			else {
+				$change_url  = new moodle_url($CFG->wwwroot.'/mod/apply/'.$change_action,  $change_params);
+				$data[] = '<strong><a href="'.$change_url->out().'">'. $change_label. '</a></strong>';
+			}
+			//
 			$discard_url = new moodle_url($CFG->wwwroot.'/mod/apply/'.$discard_action, $discard_params);
-			$data[] = '<strong><a href="'.$change_url->out().'">'. $change_label. '</a></strong>';
 			$data[] = '<strong><a href="'.$discard_url->out().'">'.$discard_label.'</a></strong>';
 		}
 	}

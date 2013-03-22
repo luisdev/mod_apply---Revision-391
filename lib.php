@@ -814,8 +814,8 @@ function apply_create_submit($apply_id, $user_id=0)
 	$submit = new stdClass();
 	$submit->apply_id		= $apply_id;
 	$submit->user_id		= $user_id;
-	$submit->title			= '';
 	$submit->version		= 0;
+	$submit->title			= '';
 	$submit->class			= APPLY_CLASS_DRAFT;
 	$submit->acked			= APPLY_ACKED_NOTYET;
 	$submit->acked_user		= 0;
@@ -824,6 +824,15 @@ function apply_create_submit($apply_id, $user_id=0)
 	$submit->execd_user		= 0;
 	$submit->execd_time		= 0;
 	$submit->time_modified  = time();
+
+	$submit->otitle			= '';
+	$submit->oclass			= 0;
+	$submit->oacked			= 0;
+	$submit->oacked_user	= 0;
+	$submit->oacked_time	= 0;
+	$submit->oexecd			= 0;
+	$submit->oexecd_user	= 0;
+	$submit->oexecd_time	= 0;
 
 	$submit_id = $DB->insert_record('apply_submit', $submit);
 	$submit	= $DB->get_record('apply_submit', array('id'=>$submit_id));
@@ -864,15 +873,6 @@ function apply_delete_submit($submit_id)
 	if (!$submit = $DB->get_record('apply_submit', array('id'=>$submit_id))) {
 		return false;
 	}
-	if (!$apply  = $DB->get_record('apply', array('id'=>$submit->apply_id))) {
-		return false;
-	}
-	if (!$course = $DB->get_record('course', array('id'=>$apply->course))) {
-		return false;
-	}
-	if (!$cm = get_coursemodule_from_instance('apply', $apply->id)) {
-		return false;
-	}
 
 	$DB->delete_records('apply_value', array('submit_id'=>$submit->id));
 
@@ -886,14 +886,109 @@ function apply_delete_all_submits($apply_id)
 {
 	global $DB;
 
-	$ret = false;
-
 	$submits = $DB->get_records('apply_submit', array('apply_id'=>$apply_id));
-	if (!$submits) return $ret;
+	if (!$submits) return false;
 
+	$ret = true;
 	foreach ($submits as $submit) {
-		$ret = apply_delete_submit($submit->id);
+		$del = apply_delete_submit($submit->id);
+		if (!$del) $ret = false;
 	}
+
+	return $ret;
+}
+
+
+
+function apply_delete_submit_safe($submit_id)
+{
+	global $DB;
+
+	if (!$submit = $DB->get_record('apply_submit', array('id'=>$submit_id))) {
+		return false;
+	}
+	if ($submit->version>1 and $submit->acked==APPLY_ACKED_ACCEPT) return false;
+
+	//
+	$DB->delete_records('apply_value', array('submit_id'=>$submit->id));
+
+	$ret = $DB->delete_records('apply_submit', array('id'=>$submit->id));
+	return $ret;
+}
+
+
+
+function apply_rollback_submit($submit_id)
+{
+	global $DB;
+
+	$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
+	if (!$submit) return false;
+	if ($submit->version<=1 or $submit->acked==APPLY_ACKED_ACCEPT) return false;
+
+	//
+	if ($submit->class!=APPLY_CLASS_CANCEL) {
+		$DB->delete_records('apply_value', array('submit_id'=>$submit->id, 'version'=>$submit->version));
+		$submit->version--;
+	}
+
+	//
+	$submit->title 		 = $submit->otitle;
+	$submit->class 		 = $submit->oclass;
+	$submit->acked 		 = $submit->oacked;
+	$submit->acked_user  = $submit->oacked_user;
+	$submit->acked_time  = $submit->oacked_time;
+	$submit->execd 		 = $submit->oexecd;
+	$submit->execd_user  = $submit->oexecd_user;
+	$submit->execd_time  = $submit->oexecd_user;
+
+	$submit->otitle		 = '';
+	$submit->oclass		 = 0;
+	$submit->oacked		 = 0;
+	$submit->oacked_user = 0;
+	$submit->oacked_time = 0;
+	$submit->oexecd		 = 0;
+	$submit->oexecd_user = 0;
+	$submit->oexecd_user = 0;
+	$submit->time_modified = time();
+
+	$ret = $DB->update_record('apply_submit', $submit);
+	if ($ret) apply_delete_draft_values($submit_id);
+
+	return $ret;
+}
+
+
+
+function apply_cancel_submit($submit_id)
+{
+	global $DB;
+
+	$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
+	if (!$submit) return false;
+	if ($submit->acked!=APPLY_ACKED_ACCEPT) return false;
+
+	$submit->otitle 	 = $submit->title;
+	$submit->oclass 	 = $submit->class;
+	$submit->oacked		 = $submit->acked;
+	$submit->oacked_user = $submit->acked_user;
+	$submit->oacked_time = $submit->acked_time;
+	$submit->oexecd		 = $submit->execd;
+	$submit->oexecd_user = $submit->execd_user;
+	$submit->oexecd_time = $submit->execd_time;
+
+	//
+	$submit->class 		 = APPLY_CLASS_CANCEL;
+	$submit->acked 		 = APPLY_ACKED_NOTYET;
+	$submit->acked_user	 = 0;
+	$submit->acked_time	 = 0;
+	$submit->execd 	 	 = APPLY_EXECD_NOTYET;
+	$submit->execd_user  = 0;
+	$submit->execd_time  = 0;
+
+	$submit->time_modified = time();
+	$ret = $DB->update_record('apply_submit', $submit);
+	if ($ret) apply_delete_draft_values($submit_id);
 
 	return $ret;
 }
@@ -914,42 +1009,32 @@ function apply_exec_submit($submit_id)
 	$ret = apply_flush_draft_values($submit->id, $submit->version, $title);
 	if ($ret) apply_delete_draft_values($submit->id);
 
+	//
+	$submit->otitle 	 = $submit->title;
+	$submit->oclass 	 = $submit->class;
+	$submit->oacked		 = $submit->acked;
+	$submit->oacked_user = $submit->acked_user;
+	$submit->oacked_time = $submit->acked_time;
+	$submit->oexecd		 = $submit->execd;
+	$submit->oexecd_user = $submit->execd_user;
+	$submit->oexecd_time = $submit->execd_time;
+
+	//
 	if 		($submit->version==1) $submit->class = APPLY_CLASS_NEW;
 	else if ($submit->version >1) $submit->class = APPLY_CLASS_UPDATE;
 	//
-	if ($title!='') $submit->title = $title;
-	$submit->acked 		= APPLY_ACKED_NOTYET;
-	$submit->acked_user	= 0;
-	$submit->acked_time	= 0;
-	$submit->execd 	 	= APPLY_EXECD_NOTYET;
-	$submit->execd_user = 0;
-	$submit->execd_time = 0;
+	$submit->acked 		 = APPLY_ACKED_NOTYET;
+	$submit->acked_user	 = 0;
+	$submit->acked_time	 = 0;
+	$submit->execd 	 	 = APPLY_EXECD_NOTYET;
+	$submit->execd_user  = 0;
+	$submit->execd_time  = 0;
 	$submit->time_modified = time();
 
 	$ret = $DB->update_record('apply_submit', $submit);
 
 	return $ret;
 }
-
-
-
-function apply_cancel_submit($submit_id)
-{
-	global $DB;
-
-	$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
-	if (!$submit) return false;
-	if ($submit->version==0) return false;
-
-	$submit->class = APPLY_CLASS_CANCEL;
-	$submit->time_modified = time();
-	$ret = $DB->update_record('apply_submit', $submit);
-
-	return $ret;
-}
-
-
-
 
 
 

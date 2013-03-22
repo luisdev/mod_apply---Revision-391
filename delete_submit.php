@@ -22,21 +22,29 @@
  * @package apply
  */
 
-require_once("../../config.php");
-require_once("lib.php");
+require_once('../../config.php');
+require_once('lib.php');
 require_once('delete_submit_form.php');
 
 
 $id 		= required_param('id', PARAM_INT);
-$submit_id 	= optional_param('submit_id', 0, PARAM_INT);
+$submit_id 	= required_param('submit_id', PARAM_INT);
+
+$submit_ver = optional_param('submit_ver', -1, PARAM_INT);
 $return 	= optional_param('return',  'entries', PARAM_ALPHAEXT);
 $courseid 	= optional_param('courseid', false, PARAM_INT);
 
-
-if ($submit_id==0) {
-    print_error('no_submit_to_delete', 'apply', 'show_entries.php?id='.$id.'&do_show=show_entries');
+//
+if (!$submit_id) {
+    print_error('no_submit_data', 'apply', 'mod/apply/view.php?id='.$id.'&do_show=view');
 }
 
+$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
+if (!$submit) {
+    print_error('no_submit_data', 'apply', 'mod/apply/view.php?id='.$id.'&do_show=view');
+}
+
+//
 $PAGE->set_url('/mod/apply/delete_submit.php', array('id'=>$id, 'submit_id'=>$submit_id));
 
 if (! $cm = get_coursemodule_from_id('apply', $id)) {
@@ -50,32 +58,51 @@ if (! $apply = $DB->get_record('apply', array('id'=>$cm->instance))) {
 }
 if (!$courseid) $courseid = $course->id;
 
+
+//
+require_login($course, true, $cm);
+
+//
 $context = context_module::instance($cm->id);
 
-require_login($course, true, $cm);
-require_capability('mod/apply:deletesubmissions', $context);
+if ($USER->id!=$submit->user_id) {
+	require_capability('mod/apply:deletesubmissions', $context);
+}
+
 
 //
 $mform = new mod_apply_delete_submit_form();
-$newformdata = array('id'=>$id,
-                     'submit_id'=>$submit_id,
-                     'confirmdelete'=>'1',
-                     'do_show'=>'edit',
-                     'return'=>$return);
+$newformdata = array('id'=>$id, 'submit_id'=>$submit_id, 'confirmdelete'=>'1', 'do_show'=>'edit', 'return'=>$return);
 
 $mform->set_data($newformdata);
 $formdata = $mform->get_data();
 
 if ($mform->is_cancelled()) {
-	redirect('show_entries.php?id='.$id.'&do_show=show_entries');
+	redirect('view.php?id='.$id.'&do_show=view');
 }
 
 
-if (isset($formdata->confirmdelete) AND $formdata->confirmdelete==1) {
+// Discard
+if (isset($formdata->confirmdelete) and $formdata->confirmdelete==1) {
     if ($submit = $DB->get_record('apply_submit', array('id'=>$submit_id))) {
-        apply_delete_submit($submit_id);
-        add_to_log($course->id, 'apply', 'delete', 'view.php?id='.$cm->id, $apply->id, $cm->id);
-        redirect('show_entries.php?id='.$id.'&do_show=show_entries');
+		//
+		if ($submit->version<=1 and $submit->acked!=APPLY_ACKED_ACCEPT) {
+			// 全体を削除可能
+        	apply_delete_submit_safe($submit_id);
+        	add_to_log($course->id, 'apply', 'delete',  'view.php?id='.$cm->id, $apply->id, $submit_id);
+		}
+		else if ($submit->acked!=APPLY_ACKED_ACCEPT) {
+			// 最新の申請（未認証）のみ削除可能
+        	apply_rollback_submit($submit_id);
+        	add_to_log($course->id, 'apply', 'rollback', 'view.php?id='.$cm->id, $apply->id, $submit_id);
+		}
+		else {
+			// 申請の取消
+        	apply_cancel_submit($submit_id);
+        	add_to_log($course->id, 'apply', 'cancel',   'view.php?id='.$cm->id, $apply->id, $submit_id);
+		}
+
+        redirect('view.php?id='.$id.'&do_show=view');
     }
 }
 
@@ -85,7 +112,19 @@ if (isset($formdata->confirmdelete) AND $formdata->confirmdelete==1) {
 $strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
-$PAGE->navbar->add(get_string('delete_entry', 'apply'));
+if ($submit->version<=1 and $submit->acked!=APPLY_ACKED_ACCEPT) {
+	// 全体を削除可能
+	$PAGE->navbar->add(get_string('delete_entry', 'apply'));
+}
+else if ($submit->acked!=APPLY_ACKED_ACCEPT) {
+	// 最新の申請（未認証）のみ削除可能
+	$PAGE->navbar->add(get_string('rollback_entry', 'apply'));
+}
+else {
+	// 申請の取消
+	$PAGE->navbar->add(get_string('cancel_entry', 'apply'));
+}
+
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));
 echo $OUTPUT->header();
@@ -95,8 +134,22 @@ echo $OUTPUT->header();
 ///Print the main part of the page
 echo $OUTPUT->heading(format_text($apply->name));
 echo $OUTPUT->box_start('generalbox errorboxcontent boxaligncenter boxwidthnormal');
-echo $OUTPUT->heading(get_string('confirmdeleteentry', 'apply'));
-$mform->display();
-echo $OUTPUT->box_end();
 
+if ($submit->version<=1 and $submit->acked!=APPLY_ACKED_ACCEPT) {
+	// 全体を削除可能
+	echo $OUTPUT->heading(get_string('confirm_delete_entry', 'apply'));
+}
+else if ($submit->acked!=APPLY_ACKED_ACCEPT) {
+	// 最新の申請（未認証）のみ削除可能
+	echo $OUTPUT->heading(get_string('confirm_rollback_entry', 'apply'));
+}
+else {
+	// 申請の取消
+	echo $OUTPUT->heading(get_string('confirm_cancel_entry', 'apply'));
+}
+
+$mform->display();
+
+echo $OUTPUT->box_end();
 echo $OUTPUT->footer();
+
