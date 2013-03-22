@@ -208,17 +208,24 @@ if ($do_show=='show_one_entry' and $submit_id) {
 	$submit = $DB->get_record('apply_submit', $params);
 
 	echo '<br />';
-//	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide apply_item');
 
 	if ($submit) {
 		$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
 		if (is_array($items)) require('entry_data.php');
 	}
 	else {
+		echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide apply_item');
 		echo $OUTPUT->heading(get_string('not_submit_data', 'apply'), 3);
-		echo $OUTPUT->continue_button(new moodle_url($url, array('do_show'=>'view')));
+
+        $back_label = get_string('back_button', 'apply');
+        $back_url   = new moodle_url($url, array('do_show'=>'view'));
+        //
+        echo '<div align="center">';
+        echo $OUTPUT->single_button($back_url, $back_label);
+       	echo '</div>';
+		//
+		echo $OUTPUT->box_end();
 	}
-//	echo $OUTPUT->box_end();
 }
 
 

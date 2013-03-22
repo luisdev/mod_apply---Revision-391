@@ -31,11 +31,14 @@ if ($submit) {
 			$discard_url 	= new moodle_url($CFG->wwwroot.'/mod/apply/delete_submit.php', $discard_params);
 		}
 
+		$back_label = get_string('back_button', 'apply');
+		$back_url   = new moodle_url($url, array('do_show'=>'view'));
+
 		//	
 		echo '<div align="center">';
 		echo '<table border="0">';
 		echo '<tr>';
-		echo '<td>'.$OUTPUT->continue_button(new moodle_url($url, array('do_show'=>'view'))).'</td>';
+		echo '<td>'.$OUTPUT->single_button($back_url, 	 $back_label).'</td>';
 		echo '<td>&nbsp;&nbsp;&nbsp;</td>';
 		echo '<td>'.$OUTPUT->single_button($change_url,  $change_label). '</td>';
 		echo '<td>&nbsp;&nbsp;&nbsp;</td>';
@@ -48,7 +51,12 @@ if ($submit) {
 
 	//
 	else if (!$req_own_data and $submit->class!=APPLY_CLASS_CANCEL) {
-		echo $OUTPUT->continue_button(new moodle_url($url, array('do_show'=>'show_entries')));
+		$back_label = get_string('back_button', 'apply');
+		$back_url   = new moodle_url($url, array('do_show'=>'show_entries'));
+		//
+		echo '<div align="center">';
+		echo $OUTPUT->single_button($back_url, $back_label);
+		echo '</div>';
 	}
 }
 
