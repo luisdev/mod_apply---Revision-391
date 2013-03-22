@@ -926,13 +926,6 @@ function apply_exec_submit($submit_id)
 	$submit->execd_time = 0;
 	$submit->time_modified = time();
 
-$submit->acked 		= APPLY_ACKED_REJECT;
-$submit->acked_user	= 4;
-$submit->acked_time	= time();
-$submit->execd 	 	= APPLY_EXECD_DONE;
-$submit->execd_user = 4;
-$submit->execd_time = time();
-
 	$ret = $DB->update_record('apply_submit', $submit);
 
 	return $ret;
