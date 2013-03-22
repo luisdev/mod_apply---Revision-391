@@ -15,7 +15,8 @@ span.apply_info {
 	font-weight:bold;
 }
 
-span.entry_info {
+table.entry_info {
+	line-height: 30%;
 	font-weight:bold;
 }
 

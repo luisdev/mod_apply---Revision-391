@@ -32,6 +32,10 @@ $string['modulename_help'] = '各種の簡単な申請書を作成し，ユー�
 $string['description'] = '説明';
 
 
+$string['exist'] = '有り';
+$string['not_exist'] = '無し';
+
+
 // Button
 $string['save_entry_button']  = ' 申請書を送信 ';
 $string['save_draft_button']  = ' 下書き保存 ';
@@ -71,6 +75,7 @@ $string['title_class'] = '区分';
 $string['title_ack']   = '受付';
 $string['title_exec']  = '処理';
 $string['title_check'] = 'チェック';
+$string['title_draft'] = '下書き';
 
 
 // tabs
@@ -118,8 +123,8 @@ $string['operation_entry'] = '操作';
 // show_entries
 $string['user_pic']   	 = '画像';
 $string['acked_notyet']  = '未処理';
-$string['acked_accept']  = '受理';
-$string['acked_reject']  = '却下';
+$string['acked_accept']  = '受理　';
+$string['acked_reject']  = '却下　';
 $string['execd_done']	 = '処理済';
 $string['execd_notyet']  = '未処理';
 $string['class_draft']   = '下書き';

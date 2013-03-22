@@ -8,7 +8,6 @@ if ($student) {
 	else if ($name_pattern=='lastname')  $user_name = $student->lastname;
 	else								 $user_name = fullname($student); 
 	//
-	$entry_url = new moodle_url($url, array('user_id'=>$student->id, 'submit_id'=>$submit->id, 'do_show'=>'show_one_entry'));
 	//
 	$user_url  = $CFG->wwwroot.'/user/view.php?id='.$student->id.'&amp;course='.$courseid;
 	$acked_url = $CFG->wwwroot.'/user/view.php?id='.$submit->acked_user.'&amp;course='.$courseid;
@@ -23,12 +22,11 @@ if ($student) {
 	//
 	$title = $submit->title;
 	if ($title=='') $title = get_string('no_title', 'apply');
-	$entry_link = '<strong><a href="'.$entry_url->out().'">'.$title.'</a></strong>';
-	$data[] = $entry_link;
+	$entry_params = array('user_id'=>$student->id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'do_show'=>'show_one_entry');
+	$entry_url = new moodle_url($url, $entry_params);
+	$data[] = '<strong><a href="'.$entry_url->out().'">'.$title.'</a></strong>';
 	//
-	$mod_time = userdate($submit->time_modified, '%Y/%m/%d %H:%M');
-	$entry_link = '<a href="'.$entry_url->out().'">'.$mod_time.'</a>';
-	$data[] = $entry_link;
+	$data[] = userdate($submit->time_modified, '%Y/%m/%d %H:%M');
 	//
 	$data[] = $submit->version;
 
@@ -41,12 +39,24 @@ if ($student) {
 	$data[] = $class;
 
 	//
+	if ($req_own_data) {
+		if ($submit->version>0 and apply_exist_draft_values($submit->id)) {
+			$draft_params = array('user_id'=>$student->id, 'submit_id'=>$submit->id, 'submit_ver'=>0, 'do_show'=>'show_one_entry');
+			$draft_url = new moodle_url($url, $draft_params);
+			$data[] = '<strong><a href="'.$draft_url->out().'">'.get_string('exist', 'apply').'</a></strong>';
+		}
+		else {
+			$data[] = '-';
+		}
+	}
+
+	//
 	if 		($submit->class==APPLY_CLASS_DRAFT)  $acked = '-';
 	else if ($submit->acked==APPLY_ACKED_NOTYET) $acked = get_string('acked_notyet',  'apply');
 	else if ($submit->acked==APPLY_ACKED_ACCEPT) $acked = get_string('acked_accept',  'apply');
 	else if ($submit->acked==APPLY_ACKED_REJECT) $acked = get_string('acked_reject',  'apply');
 	if ($submit->acked!=APPLY_ACKED_NOTYET) {
-		$acked = '<a href="'.$acked_url.'">'.$acked.'</a>';
+		$acked = '<strong><a href="'.$acked_url.'">'.$acked.'</a></strong>';
 	}
 	$data[] = $acked;
 
@@ -54,7 +64,9 @@ if ($student) {
 	if 		($submit->class==APPLY_CLASS_DRAFT) $execd = '-';
 	else if ($submit->execd==APPLY_EXECD_DONE)  $execd = get_string('execd_done',   'apply');
 	else 				 				  		$execd = get_string('execd_notyet', 'apply');
-	if ($submit->execd==APPLY_EXECD_DONE) $execd = '<a href="'.$execd_url.'">'.$execd.'</a>';
+	if ($submit->execd==APPLY_EXECD_DONE) {
+		$execd = '<strong><a href="'.$execd_url.'">'.$execd.'</a></strong>';
+	}
 	$data[] = $execd;
 
 	//
@@ -63,7 +75,7 @@ if ($student) {
 			if ($submit->acked==APPLY_ACKED_ACCEPT) {
 				// Update
 				$change_label	= get_string('update_entry_button', 'apply');
- 				$change_params	= array('submit_id'=>$submit->id);
+				$change_params  = array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'courseid'=>$courseid, 'go_page'=>0);
 				$change_action  = 'submit.php';
 				// Cancel
 				$discard_label	= get_string('cancel_entry_button', 'apply');
@@ -73,7 +85,7 @@ if ($student) {
 			else {
 				// Edit
 				$change_label	= get_string('edit_entry_button', 'apply');
-				$change_params  = array('id'=>$id, 'submit_id'=>$submit->id, 'courseid'=>$courseid, 'go_page'=>0);
+				$change_params  = array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'courseid'=>$courseid, 'go_page'=>0);
 				$change_action  = 'submit.php';
 				// Delete
 				$discard_label	= get_string('delete_entry_button', 'apply');
@@ -81,7 +93,7 @@ if ($student) {
 				$discard_action	= 'delete_submit.php';
 			}
 			//
-			$change_url  = new moodle_url($CFG->wwwroot.'/mod/apply/'.$change_action, $change_params);
+			$change_url  = new moodle_url($CFG->wwwroot.'/mod/apply/'.$change_action,  $change_params);
 			$discard_url = new moodle_url($CFG->wwwroot.'/mod/apply/'.$discard_action, $discard_params);
 			$data[] = '<strong><a href="'.$change_url->out().'">'. $change_label. '</a></strong>';
 			$data[] = '<strong><a href="'.$discard_url->out().'">'.$discard_label.'</a></strong>';

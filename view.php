@@ -30,11 +30,12 @@ apply_init_session();
 
 //
 $id = required_param('id', PARAM_INT);
-$courseid  = optional_param('courseid', false, PARAM_INT);
-$perpage   = optional_param('perpage',   APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);
-$show_all  = optional_param('show_all',  0, PARAM_INT);
-$do_show   = optional_param('do_show', 'view', PARAM_ALPHAEXT);
-$submit_id = optional_param('submit_id', 0, PARAM_INT);
+$courseid   = optional_param('courseid', false, PARAM_INT);
+$perpage    = optional_param('perpage',   APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);
+$show_all   = optional_param('show_all',  0, PARAM_INT);
+$do_show    = optional_param('do_show', 'view', PARAM_ALPHAEXT);
+$submit_id  = optional_param('submit_id', 0, PARAM_INT);
+$submit_ver = optional_param('submit_ver', -1, PARAM_INT);
 
 $current_tab = 'view';
 
@@ -211,7 +212,10 @@ if ($do_show=='show_one_entry' and $submit_id) {
 
 	if ($submit) {
 		$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
-		if (is_array($items)) require('entry_data.php');
+		if (is_array($items)) {
+            if ($submit_ver==-1 and apply_exist_draft_values($submit->id)) $submit_ver = 0;
+			require('entry_view.php');
+		}
 	}
 	else {
 		echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide apply_item');

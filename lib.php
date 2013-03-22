@@ -821,8 +821,8 @@ function apply_create_submit($apply_id, $user_id=0)
 	$submit->acked_user		= 0;
 	$submit->acked_time		= 0;
 	$submit->execd			= APPLY_EXECD_NOTYET;
-	$submit->execd_user	= 0;
-	$submit->execd_time	= 0;
+	$submit->execd_user		= 0;
+	$submit->execd_time		= 0;
 	$submit->time_modified  = time();
 
 	$submit_id = $DB->insert_record('apply_submit', $submit);
@@ -908,7 +908,8 @@ function apply_exec_submit($submit_id)
 	if (!$submit) return false;
 
 	$title = '';
-	if ($submit->class==APPLY_ACKED_ACCEPT or $submit->version==0) $submit->version++;
+	if ($submit->acked==APPLY_ACKED_ACCEPT or $submit->version==0) $submit->version++;
+
 	//
 	$ret = apply_flush_draft_values($submit->id, $submit->version, $title);
 	if ($ret) apply_delete_draft_values($submit->id);
@@ -924,6 +925,13 @@ function apply_exec_submit($submit_id)
 	$submit->execd_user = 0;
 	$submit->execd_time = 0;
 	$submit->time_modified = time();
+
+$submit->acked 		= APPLY_ACKED_REJECT;
+$submit->acked_user	= 4;
+$submit->acked_time	= time();
+$submit->execd 	 	= APPLY_EXECD_DONE;
+$submit->execd_user = 4;
+$submit->execd_time = time();
 
 	$ret = $DB->update_record('apply_submit', $submit);
 

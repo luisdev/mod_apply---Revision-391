@@ -25,8 +25,8 @@
 defined('MOODLE_INTERNAL') OR die('not allowed');
 
 
-echo $OUTPUT->box_start('boxaligncenter boxwidthwide');
-{
+//echo $OUTPUT->box_start('boxaligncenter boxwidthwide');
+//{
 	if ($apply->time_open) {
 		echo $OUTPUT->box_start('apply_info');
 		echo '<span class="apply_info">';
@@ -47,5 +47,5 @@ echo $OUTPUT->box_start('boxaligncenter boxwidthwide');
 		echo '</span>';
 		echo $OUTPUT->box_end();
 	}
-}
-echo $OUTPUT->box_end();
+//}
+//echo $OUTPUT->box_end();
