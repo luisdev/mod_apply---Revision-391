@@ -9,7 +9,7 @@ if ($submit) {
 			// Update
 			$change_label	= get_string('update_entry_button', 'apply');
 			$change_params	= array('submit_id'=>$submit->id);
-			$change_action	= 'submis.php';
+			$change_action	= 'submit.php';
 			// Cancel
 			$discard_label 	= get_string('cancel_entry_button', 'apply');
 			$discard_params = array('submit_id'=>$submit->id);
@@ -18,8 +18,8 @@ if ($submit) {
 		else {
 			// Edit
 			$change_label	= get_string('edit_entry_button', 'apply');
-			$change_params	= array('submit_id'=>$submit->id);
-			$change_action	= 'submis.php';
+			$change_params	= array('id'=>$id, 'submit_id'=>$submit->id, 'courseid'=>$courseid, 'go_page'=>0);
+			$change_action	= 'submit.php';
 			// Delete
 			$discard_label 	= get_string('delete_entry_button', 'apply');
 			$discard_params = array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
@@ -28,7 +28,7 @@ if ($submit) {
 		$back_label  = get_string('back_button', 'apply');
 
 		//
-		$change_url	 = new moodle_url($CFG->wwwroot.'/mod/apply/'.$cahnge_action,  $change_params);
+		$change_url	 = new moodle_url($CFG->wwwroot.'/mod/apply/'.$change_action,  $change_params);
 		$discard_url = new moodle_url($CFG->wwwroot.'/mod/apply/'.$discard_action, $discard_params);
 		$back_url    = new moodle_url($url, array('do_show'=>'view'));
 

@@ -32,6 +32,7 @@ apply_init_session();
 $id 			= required_param('id', PARAM_INT);
 $courseid 	  	= optional_param('courseid', 0, PARAM_INT);
 $submit_id		= optional_param('submit_id', 0, PARAM_INT);
+$submit_version	= optional_param('submit_version', -1, PARAM_INT);
 $prev_values 	= optional_param('prev_values', 0, PARAM_INT);
 $go_page 		= optional_param('go_page', -1, PARAM_INT);
 $last_page 	  	= optional_param('last_page', false, PARAM_INT);
@@ -164,8 +165,9 @@ if ($prev_values) {
 		$submit_id = apply_save_draft_values($apply->id, $submit_id, $user_id);	// save to draft
 
 		if ($submit_id) {
-			if ($user_id>0) add_to_log($courseid, 'apply', 'start_apply', 'view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
-			if (!$go_next_page and !$go_prev_page) $prev_values = false;
+			add_to_log($courseid, 'apply', 'start_apply', 'view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
+			if ($go_next_page or $go_prev_page) $save_return = 'page';
+			else 								$prev_values = false;
 			if ($save_draft) $save_return = 'draft';
 		}
 		else {
@@ -198,6 +200,8 @@ if ($save_values and !$save_draft and !$prev_values) {
 	}
 }
 
+
+///////////////////////////////////////////////////////////////////////////
 //
 $allbreaks = apply_get_all_break_positions($apply->id);
 if ($allbreaks) {
@@ -282,6 +286,10 @@ else {
 	//
 	if (is_array($items)) {
 		//
+		if ($submit_id) {
+			$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
+			if (apply_exist_draft_values($submit_id)) $submit_version = 0;
+		}
 		require('submit_page.php');
 		//
 		$SESSION->apply->is_started = true;

@@ -1050,6 +1050,7 @@ function apply_update_draft_values($submit)
 	if (!$items) return false;
 	$values = $DB->get_records('apply_value', array('submit_id'=>$submit->id, 'version'=>0));
 
+	$title = '';
 	$time_modified = time();
 
 	foreach ($items as $item) {
@@ -1087,6 +1088,19 @@ function apply_update_draft_values($submit)
 		//
 		if ($exist) $DB->update_record('apply_value', $newvalue);
 		else 		$DB->insert_record('apply_value', $newvalue);
+
+		// Title
+		if ($title=='') {
+			if ($item->label==APPLY_TITLE_TAG and $item->typ=='textfield') {
+				$title = $newvalue->value;
+			}
+		}
+	}
+
+
+	if ($title!='' and $submit->version==0) {
+		$submit->title = $title;
+		$DB->update_record('apply_submit', $submit);
 	}
 
 	return $submit->id;
@@ -1099,6 +1113,17 @@ function apply_delete_draft_values($submit_id)
 	global $DB;
 
 	$DB->delete_records('apply_value', array('submit_id'=>$submit_id, 'version'=>0));
+}
+
+
+
+function apply_exist_draft_values($submit_id)
+{
+	global $DB;
+
+	$ret = $DB->get_records('apply_value', array('submit_id'=>$submit_id, 'version'=>0));
+	if ($ret) return true;
+	return false;
 }
 
 

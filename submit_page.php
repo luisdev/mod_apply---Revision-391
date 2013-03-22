@@ -44,19 +44,26 @@ echo $OUTPUT->box_start('apply_form boxaligncenter boxwidthwide');
 				$depend_style = '';
 			}
 
-			//
+			// restore value
 			$value = '';
 			$frmvaluename = $item->typ.'_'.$item->id;
 			if (isset($save_return)) {
-				$value = isset($formdata->{$frmvaluename}) ? $formdata->{$frmvaluename} : null;
-				$value = apply_clean_input_value($item, $value);
+				if (isset($formdata->{$frmvaluename})) {
+					$value = $formdata->{$frmvaluename};
+					$value = apply_clean_input_value($item, $value);
+				}
+				else {
+					$value = apply_get_item_value($submit_id, $item->id, 0);	// from draft
+				}
 			}
 			else {
-				if (isset($submit_id)) {
-					$value = apply_get_item_value($submit_id, $item->id, true);
+				if (isset($submit)) {
+					$value = apply_get_item_value($submit_id, $item->id, 0);
+					if (!$value) $value = apply_get_item_value($submit_id, $item->id, $submit_version);
 				}
 			}
 
+			//
 			$last_break_position = $item->position; //last item-pos (item or pagebreak)
 			if ($item->typ!='pagebreak') {
 				if ($item->label!=APPLY_ADMIN_TAG) {

@@ -64,7 +64,7 @@ if ($student) {
 				// Update
 				$change_label	= get_string('update_entry_button', 'apply');
  				$change_params	= array('submit_id'=>$submit->id);
-				$cahnge_action  = 'submit.php';
+				$change_action  = 'submit.php';
 				// Cancel
 				$discard_label	= get_string('cancel_entry_button', 'apply');
 				$discard_params	= array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
@@ -73,8 +73,8 @@ if ($student) {
 			else {
 				// Edit
 				$change_label	= get_string('edit_entry_button', 'apply');
- 				$change_params	= array('submit_id'=>$submit->id);
-				$cahnge_action  = 'submit.php';
+				$change_params  = array('id'=>$id, 'submit_id'=>$submit->id, 'courseid'=>$courseid, 'go_page'=>0);
+				$change_action  = 'submit.php';
 				// Delete
 				$discard_label	= get_string('delete_entry_button', 'apply');
 				$discard_params	= array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
