@@ -103,7 +103,7 @@ if ($do_show=='show_entries') {
 	$table = new flexible_table('apply-show_entry-list-'.$courseid);
     $matchcount = apply_get_valid_submits_count($cm->instance);
 	//
-	require('entry_table.php');
+	require('entry_header.php');
 	//
 	echo $OUTPUT->box_start('mdl-align');
 	echo '<h2>'.$apply->name.'</h2>';
