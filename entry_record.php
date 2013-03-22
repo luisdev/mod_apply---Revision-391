@@ -12,7 +12,7 @@ if ($student) {
 	//
 	$user_url  	= $CFG->wwwroot.'/user/view.php?id='.$student->id.'&amp;course='.$courseid;
 	$acked_url	= $CFG->wwwroot.'/user/view.php?id='.$submit->acked_user.'&amp;course='.$courseid;
-	$execed_url = $CFG->wwwroot.'/user/view.php?id='.$submit->execed_user.'&amp;course='.$courseid;
+	$execd_url = $CFG->wwwroot.'/user/view.php?id='.$submit->execd_user.'&amp;course='.$courseid;
 
 	///////////////////////////////////////
 	//
@@ -46,10 +46,10 @@ if ($student) {
 	}
 	$data[] = $acked;
 	//
-	if ($submit->execed==APPLY_EXEC_DONE) $execed = get_string('execed_done',   'apply');
-	else 				 				  $execed = get_string('execed_notyet', 'apply');
-	if ($submit->execed==APPLY_EXEC_DONE) $execed = '<a href="'.$execed_url.'">'.$execed.'</a>';
-	$data[] = $execed;
+	if ($submit->execd==APPLY_EXECD_DONE) $execd = get_string('execd_done',   'apply');
+	else 				 				  $execd = get_string('execd_notyet', 'apply');
+	if ($submit->execd==APPLY_EXECD_DONE) $execd = '<a href="'.$execd_url.'">'.$execd.'</a>';
+	$data[] = $execd;
 	//
 
 	//
