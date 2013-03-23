@@ -1041,6 +1041,40 @@ function apply_exec_submit($submit_id)
 }
 
 
+function apply_operate_submit($submit_id, $submit_ver, $accept, $execd)
+{
+	global $DB, $USER;
+	
+	$flag = false;
+
+	$submit = $DB->get_record('apply_submit', array('id'=>$submit_id, 'version'=>$submit_ver));
+	if (!$submit) return false;
+
+	$time_modified = time();
+
+	if ($accept=='accept' or $accept=='reject')	{
+		if ($accept=='accept') $submit->acked = APPLY_ACKED_ACCEPT;
+		else				   $submit->acked = APPLY_ACKED_REJECT;
+		$submit->acked_user = $USER->id;
+		$submit->acked_time = $time_modified;
+		$flag = true;
+	}
+	if ($execd=='done')	{
+		$submit->execd = APPLY_EXECD_DONE;
+		$submit->execd_user = $USER->id;
+		$submit->execd_time = $time_modified;
+		$flag = true;
+	}
+
+	if ($flag) {
+		$submit->tiome_modified = $time_modified;
+		$ret = $DB->update_record('apply_submit', $submit);
+	}
+
+	return true;
+}
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -1138,7 +1172,7 @@ function apply_update_draft_values($submit)
 	global $DB;
 
 	$items  = $DB->get_records('apply_item',  array('apply_id'=>$submit->apply_id));
-	if (!$items) return false;
+	if (!$items) return 0;
 	$values = $DB->get_records('apply_value', array('submit_id'=>$submit->id, 'version'=>0));
 
 	$title = '';
@@ -1195,6 +1229,74 @@ function apply_update_draft_values($submit)
 	}
 
 	return $submit->id;
+}
+
+
+
+
+function apply_save_admin_values($submit_id, $submit_ver)
+{
+	global $DB;
+
+	$submit = $DB->get_record('apply_submit', array('id'=>$submit_id, 'version'=>$submit_ver));
+	if (!$submit) return null;
+	//
+	$submit = apply_update_admin_values($submit);
+
+	return $submit;
+}
+
+
+
+function apply_update_admin_values($submit)
+{
+	global $DB;
+
+	$items  = $DB->get_records('apply_item',  array('apply_id'=>$submit->apply_id));
+	if (!$items) return null;
+	$values = $DB->get_records('apply_value', array('submit_id'=>$submit->id, 'version'=>$submit->version));
+
+	$time_modified = time();
+
+	foreach ($items as $item) {
+		if ($item->hasvalue and $item->label==APPLY_ADMIN_TAG) {
+			//
+			$itemobj = apply_get_item_class($item->typ);
+			$keyname = $item->typ.'_'.$item->id;
+
+			if ($itemobj->value_is_array()) {
+				$itemvalue = optional_param_array($keyname, null, $itemobj->value_type());
+			}
+			else {
+				$itemvalue = optional_param($keyname, null, $itemobj->value_type());
+			}
+			if (is_null($itemvalue)) continue;
+
+			//
+			$newvalue = new stdClass();
+			$newvalue->submit_id = $submit->id;
+			$newvalue->item_id 	 = $item->id;
+			$newvalue->version 	 = $submit->version;
+			$newvalue->value 	 = $itemobj->create_value($itemvalue);
+			$newvalue->time_modified = $time_modified;
+
+			$exist = false;
+			if ($values) {
+				foreach ($values as $value) {
+					if ($value->item_id==$newvalue->item_id) {
+						$newvalue->id = $value->id;
+						$exist = true;
+						break;
+					}
+				}
+			}
+			//
+			if ($exist) $DB->update_record('apply_value', $newvalue);
+			else 		$DB->insert_record('apply_value', $newvalue);
+		}
+	}
+
+	return $submit;
 }
 
 

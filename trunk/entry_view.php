@@ -12,7 +12,8 @@ if ($submit) {
 	else								 $user_name = fullname($student); 
 
 	$title = $user_name.' ('.userdate($submit->time_modified, '%Y/%m/%d %H:%M').')';
-	if ($submit_ver==0) $title .= ' '.get_string('title_draft','apply');
+	if 		($submit->class==APPLY_CLASS_DRAFT)  $title .= ' '.get_string('class_draft', 'apply');
+	else if ($submit->class==APPLY_CLASS_CANCEL) $title .= ' '.get_string('class_cancel', 'apply');
 
 
 	echo $OUTPUT->heading($title, 3);
