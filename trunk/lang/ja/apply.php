@@ -44,6 +44,7 @@ $string['next_page_button'] = ' 次のページ ';
 $string['previous_page_button'] = ' 前のページ ';
 $string['back_button'] = ' 戻る ';
 $string['yes_button'] = ' はい ';
+$string['operate_entry_button'] = ' 処理 ';
 
 $string['edit_entry_button'] = ' 編集 ';
 $string['update_entry_button'] = ' 更新 ';
@@ -108,7 +109,7 @@ $string['use_item'] = '{$a} を使用する';
 
 
 // view
-$string['entries_list_title'] = '提出済み申請書類一覧';
+$string['entries_list_title'] = '申請書類一覧';
 
 
 // submit

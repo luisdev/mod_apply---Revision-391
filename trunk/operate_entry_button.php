@@ -2,62 +2,42 @@
 
 // needs $submit, $items, $name_pattern, $user
 
+echo $back_url;
+$back_button = $OUTPUT->single_button($back_url, get_string('back_button', 'apply'));
+
+
 if ($submit) {
 	//
-	if ($req_own_data and $submit->class!=APPLY_CLASS_CANCEL) {
-		if ($submit->acked==APPLY_ACKED_ACCEPT) {
-			// Update
-			$change_label	= get_string('update_entry_button', 'apply');
-			$change_params	= array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit_ver, 'courseid'=>$courseid, 'go_page'=>0);
-			$change_action	= 'submit.php';
-			// Cancel
-			$discard_label 	= get_string('cancel_entry_button', 'apply');
-			$discard_params = array('submit_id'=>$submit->id);
-			$discard_action	= 'deete_submit.php';
-		}
-		else {
-			// Edit
-			$change_label	= get_string('edit_entry_button', 'apply');
-			$change_params	= array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit_ver, 'courseid'=>$courseid, 'go_page'=>0);
-			$change_action	= 'submit.php';
-			// Delete
-			$discard_label 	= get_string('delete_entry_button', 'apply');
-			$discard_params = array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
-			$discard_action	= 'deete_submit.php';
-		}
-		//
-		$change_url	 = new moodle_url($CFG->wwwroot.'/mod/apply/'.$change_action,  $change_params);
-		$discard_url = new moodle_url($CFG->wwwroot.'/mod/apply/'.$discard_action, $discard_params);
+	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 
-		//	
-		echo '<div align="center">';
-		echo '<table border="0">';
-		echo '<tr>';
-		echo '<td>'.$OUTPUT->single_button($back_url, get_string('back_button', 'apply')).'</td>';
-		echo '<td>&nbsp;&nbsp;&nbsp;</td>';
-		echo '<td>'.$OUTPUT->single_button($change_url,  $change_label). '</td>';
-		echo '<td>&nbsp;&nbsp;&nbsp;</td>';
-		echo '<td>'.$OUTPUT->single_button($discard_url, $discard_label).'</td>';
-		echo '<td>&nbsp;&nbsp;&nbsp;</td>';
-		echo '</tr>';
-		echo '</table>';
-		echo '</div>';
-	}
+	echo '<input type="radio" name="example" value="サンプル" />サンプル';
+	echo '<input type="radio" name="example" value="サンプル" checked />サンプル';
+	echo '<br />';
+	echo '<input type="checkbox" name="example" value="サンプル">サンプル';
 
+	$inputvalue = 'value="'.get_string('operate_entry_button', 'apply').'"';
+	$submit_button = '<input name="oprate_values" type="submit" '.$inputvalue.' />';
+	$reset_button  = '<input type="reset" value="'.get_string('clear').'" />';
 
-	// for admin
-	else if (!$req_own_data and $submit->class!=APPLY_CLASS_CANCEL) {
-		echo '<div align="center">';
-		echo $OUTPUT->single_button($back_url, get_string('back_button', 'apply'));
-		echo '</div>';
-	}
+	//
+	echo '<div align="center">';
+	echo '<table border="0">';
+	echo '<tr>';
+	echo '<td>'.$back_button.'</td>';
+	echo '<td>&nbsp;&nbsp;&nbsp;</td>';
+	echo '<td>'.$reset_button.'</td>';
+	echo '<td>&nbsp;&nbsp;&nbsp;</td>';
+	echo '<td>'.$submit_button.'</td>';
+	echo '</tr>';
+	echo '</table>';
+	echo '</div>';
 
-
-	// APPLY_CLASS_CANCEL
-	else {
-		echo '<div align="center">';
-		echo $OUTPUT->single_button($back_url, get_string('back_button', 'apply'));
-		echo '</div>';
-	}
+	echo $OUTPUT->box_end();
 }
 
+//
+else {
+	echo '<div align="center">';
+	echo $back_button;
+	echo '</div>';
+}

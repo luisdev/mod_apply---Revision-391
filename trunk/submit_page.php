@@ -135,7 +135,7 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 		echo '<fieldset>';
 		echo '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
 		echo '<input type="hidden" name="courseid" value="'. $courseid . '" />';
-		echo '<button type="submit">'.get_string('cancel').'</button>';
+		echo '<button type="submit">'.get_string('back_button', 'apply').'</button>';
 		echo '</fieldset>';
 		echo '</form>';
 	}

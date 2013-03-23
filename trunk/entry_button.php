@@ -2,6 +2,9 @@
 
 // needs $submit, $items, $name_pattern, $user
 
+$back_button = $OUTPUT->single_button($back_url, get_string('back_button', 'apply'));
+
+
 if ($submit) {
 	//
 	if ($req_own_data and $submit->class!=APPLY_CLASS_CANCEL) {
@@ -33,12 +36,11 @@ if ($submit) {
 		echo '<div align="center">';
 		echo '<table border="0">';
 		echo '<tr>';
-		echo '<td>'.$OUTPUT->single_button($back_url, get_string('back_button', 'apply')).'</td>';
+		echo '<td>'.$back_boutton.'</td>';
 		echo '<td>&nbsp;&nbsp;&nbsp;</td>';
 		echo '<td>'.$OUTPUT->single_button($change_url,  $change_label). '</td>';
 		echo '<td>&nbsp;&nbsp;&nbsp;</td>';
 		echo '<td>'.$OUTPUT->single_button($discard_url, $discard_label).'</td>';
-		echo '<td>&nbsp;&nbsp;&nbsp;</td>';
 		echo '</tr>';
 		echo '</table>';
 		echo '</div>';
@@ -48,7 +50,7 @@ if ($submit) {
 	// for admin
 	else if (!$req_own_data and $submit->class!=APPLY_CLASS_CANCEL) {
 		echo '<div align="center">';
-		echo $OUTPUT->single_button($back_url, get_string('back_button', 'apply'));
+		echo $back_button;
 		echo '</div>';
 	}
 
@@ -56,13 +58,13 @@ if ($submit) {
 	// APPLY_CLASS_CANCEL
 	else {
 		echo '<div align="center">';
-		echo $OUTPUT->single_button($back_url, get_string('back_button', 'apply'));
+		echo $back_button;
 		echo '</div>';
 	}
 }
 
 else {
 	echo '<div align="center">';
-	echo $OUTPUT->single_button($back_url, get_string('back_button', 'apply'));
+	echo $back_button;
 	echo '</div>';
 }
