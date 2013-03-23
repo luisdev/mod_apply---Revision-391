@@ -16,13 +16,11 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 	}
 	
 	//
-	//echo $OUTPUT->box_start('apply_items');
 	echo $OUTPUT->box_start('generalbox');
 	{
 		unset($start_item);
 		$select = 'apply_id=? AND hasvalue=1 AND position<?';
 		$params = array($apply->id, $start_position);
-//		$align  = right_to_left() ? 'right' : 'left';
 		$last_break_position = 0;
 
 		foreach ($items as $item) {
@@ -67,7 +65,7 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 			$last_break_position = $item->position; //last item-pos (item or pagebreak)
 			if ($item->typ!='pagebreak') {
 				if ($item->label!=APPLY_ADMIN_TAG) {
-					echo $OUTPUT->box_start('apply_submit_page_item');
+					echo $OUTPUT->box_start('apply_print_item');
 					apply_print_item_submit($item, $value, $highlightrequired);
 					echo $OUTPUT->box_end();
 				}
@@ -108,9 +106,11 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 		echo '<input name="save_values" type="submit" '.$inputvalue.' />';
 		echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 	}
-	echo '<br /><br />';
 
 	//
+	if (($is_pagebreak and $last_break_position>$first_pagebreak->position) or $last_break_position<$max_item_count) {
+		echo '<br /><br />';
+	}
 	if ($is_pagebreak and $last_break_position>$first_pagebreak->position) {
 		$inputvalue = 'value="'.get_string('previous_page_button', 'apply').'"';
 		echo '<input name="go_prev_page" type="submit" '.$inputvalue.' />';

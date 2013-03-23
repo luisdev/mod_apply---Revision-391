@@ -174,7 +174,6 @@ if ($do_show=='view') {
 		///////////////////////////////////////////////////////////////////////
 		//
 		echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
-//		echo $OUTPUT->box_start('mdl-align');
 
 		////////////////////////////////////////////////////////////
 		// Submits Data
@@ -184,7 +183,6 @@ if ($do_show=='view') {
 			$student = apply_get_user_info($submit->user_id);
 			if ($student) {
 				$data = array();
-				//
 				require('entry_record.php');
 				if (!empty($data)) $table->add_data($data);
 			}
@@ -201,7 +199,6 @@ if ($do_show=='view') {
 			echo $OUTPUT->container(html_writer::link($allurl, get_string('show_all', 'apply', $matchcount)), array(), 'show_all');
 		}
 
-//		echo $OUTPUT->box_end();
 		echo $OUTPUT->box_end();
 	}
 }
@@ -223,7 +220,6 @@ if ($do_show=='show_one_entry' and $submit_id) {
 		}
 	}
 	else {
-		echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide apply_item');
 		echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 3);
 
         $back_label = get_string('back_button', 'apply');
@@ -232,8 +228,6 @@ if ($do_show=='show_one_entry' and $submit_id) {
         echo '<div align="center">';
         echo $OUTPUT->single_button($back_url, $back_label);
        	echo '</div>';
-		//
-		echo $OUTPUT->box_end();
 	}
 }
 

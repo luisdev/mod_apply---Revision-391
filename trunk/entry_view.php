@@ -17,33 +17,32 @@ if ($submit) {
 
 	echo $OUTPUT->heading($title, 3);
 	//
-	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide apply_item');
-
+	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 	foreach ($items as $item) {
 		//get the values
 		$params = array('submit_id'=>$submit->id, 'item_id'=>$item->id, 'version'=>$submit_ver);
 		$value  = $DB->get_record('apply_value', $params);
 
-		echo $OUTPUT->box_start('apply_entry_view_item');
 		if ($item->typ!='pagebreak' and $item->label!=APPLY_NODISP_TAG) {
+			echo $OUTPUT->box_start('apply_print_item');
 			if (isset($value->value)) {
 				apply_print_item_show_value($item, $value->value);
 			}
 			else {
 				apply_print_item_show_value($item, false);
 			}
+			echo $OUTPUT->box_end();
 		}
-		echo $OUTPUT->box_end();
 	}
 	require('entry_info.php');
+	echo $OUTPUT->box_end();
 
 	require('entry_button.php');
-
-	echo $OUTPUT->box_end();
 }
 
 //
 else {
 	echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 3);
+	require('entry_button.php');
 }
 

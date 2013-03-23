@@ -30,7 +30,7 @@ if ($submit) {
 		$params = array('submit_id'=>$submit->id, 'item_id'=>$item->id, 'version'=>$submit_ver);
 		$value  = $DB->get_record('apply_value', $params);
 
-		echo $OUTPUT->box_start('apply_operate_entry_page_item');
+		echo $OUTPUT->box_start('apply_print_item');
 		if ($item->typ!='pagebreak' and $item->label!=APPLY_NODISP_TAG and $item->label!=APPLY_ADMIN_TAG) {
 			if (isset($value->value)) {
 				apply_print_item_show_value($item, $value->value);
@@ -51,19 +51,20 @@ if ($submit) {
 	}
 	require('entry_info.php');
 
-	require('operate_entry_button.php');
-
 	echo $OUTPUT->box_end();
+
+	//
+	require('operate_entry_button.php');
 
     echo '<input type="hidden" name="submit_id"  value="'.$submit->id.'" />';
     echo '<input type="hidden" name="submit_ver" value="'.$submit->version.'" />';
 	echo '</fieldset>';
     echo '</form>';
-
 }
 
 //
 else {
 	echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 3);
+	require('operate_entry_button.php');
 }
 
