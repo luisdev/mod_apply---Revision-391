@@ -22,7 +22,7 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 		unset($start_item);
 		$select = 'apply_id=? AND hasvalue=1 AND position<?';
 		$params = array($apply->id, $start_position);
-		$align  = right_to_left() ? 'right' : 'left';
+//		$align  = right_to_left() ? 'right' : 'left';
 		$last_break_position = 0;
 
 		foreach ($items as $item) {
@@ -67,7 +67,7 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 			$last_break_position = $item->position; //last item-pos (item or pagebreak)
 			if ($item->typ!='pagebreak') {
 				if ($item->label!=APPLY_ADMIN_TAG) {
-					echo $OUTPUT->box_start('box generalbox boxalign_'.$align);
+					echo $OUTPUT->box_start('apply_submit_page_item');
 					apply_print_item_submit($item, $value, $highlightrequired);
 					echo $OUTPUT->box_end();
 				}
