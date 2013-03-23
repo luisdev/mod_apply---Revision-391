@@ -1,7 +1,7 @@
 <?php
 
 //print the items
-echo $OUTPUT->box_start('apply_form boxaligncenter boxwidthwide');
+echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 {
 	echo '<form action="submit.php" method="post" onsubmit=" ">';
 	echo '<fieldset>';
@@ -16,7 +16,8 @@ echo $OUTPUT->box_start('apply_form boxaligncenter boxwidthwide');
 	}
 	
 	//
-	echo $OUTPUT->box_start('apply_items');
+	//echo $OUTPUT->box_start('apply_items');
+	echo $OUTPUT->box_start('generalbox');
 	{
 		unset($start_item);
 		$select = 'apply_id=? AND hasvalue=1 AND position<?';
