@@ -97,13 +97,13 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 	echo '<input type="reset" value="'.get_string('clear').'" />';
 	echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 
-	$inputvalue = 'value="'.get_string('save_draft_button', 'apply').'"';
-	echo '<input name="save_draft"  type="submit" '.$inputvalue.' />';
+	$input_value = 'value="'.get_string('save_draft_button', 'apply').'"';
+	echo '<input name="save_draft"  type="submit" '.$input_value.' />';
 	echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 	//
 	if ($last_break_position>=$max_item_count) { //last page
-		$inputvalue = 'value="'.get_string('save_entry_button', 'apply').'"';
-		echo '<input name="save_values" type="submit" '.$inputvalue.' />';
+		$input_value = 'value="'.get_string('save_entry_button', 'apply').'"';
+		echo '<input name="save_values" type="submit" '.$input_value.' />';
 		echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 	}
 
@@ -112,13 +112,13 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 		echo '<br /><br />';
 	}
 	if ($is_pagebreak and $last_break_position>$first_pagebreak->position) {
-		$inputvalue = 'value="'.get_string('previous_page_button', 'apply').'"';
-		echo '<input name="go_prev_page" type="submit" '.$inputvalue.' />';
+		$input_value = 'value="'.get_string('previous_page_button', 'apply').'"';
+		echo '<input name="go_prev_page" type="submit" '.$input_value.' />';
 		echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 	}
 	if ($last_break_position<$max_item_count) {
-		$inputvalue = 'value="'.get_string('next_page_button', 'apply').'"';
-		echo '<input name="go_next_page" type="submit" '.$inputvalue.' />';
+		$input_value = 'value="'.get_string('next_page_button', 'apply').'"';
+		echo '<input name="go_next_page" type="submit" '.$input_value.' />';
 		echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 	}
 

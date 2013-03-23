@@ -20,6 +20,11 @@ table.entry_info {
 	font-weight:bold;
 }
 
+table.operation_submit {
+	line-height: 30%;
+	font-weight:bold;
+}
+
 
 /* Box */
 div.apply_info {
@@ -27,6 +32,12 @@ div.apply_info {
 
 div.apply_print_item {
 	padding:5px 0 15px 0;
+}
+
+div.error{
+    color: #FF0000;
+	font-size:18px;
+	font-weight:bold;
 }
 
 

@@ -43,13 +43,13 @@ $string['next_page_button'] = ' Next page ';
 $string['previous_page_button'] = ' Previous page ';
 $string['back_button'] = ' Back ';
 $string['yes_button'] = ' Yes ';
-$string['operate_entry_button'] = ' Operate ';
+$string['operate_submit_button'] = ' Operate ';
 
 $string['edit_entry_button'] = ' Edit ';
 $string['update_entry_button'] = ' Update ';
 $string['cancel_entry_button'] = ' Cancel ';
 $string['delete_entry_button'] = ' Delete ';
-$string['operate_entry_button'] = ' Operate ';
+$string['operate_submit_button'] = ' Operate ';
 
 
 // Menu
@@ -126,7 +126,7 @@ $string['update_entry'] = 'Update';
 $string['cancel_entry'] = 'Cancel';
 $string['delete_entry'] = 'Delete';
 $string['rollback_entry'] = 'Rollback';
-$string['operate_entry'] = 'Operate';
+$string['operate_submit'] = 'Operate';
 
 
 
@@ -162,7 +162,10 @@ $string['textfield_size'] = 'Textfield width';
 
 // operate 
 $string['operate_is_disable'] = 'You ca not use this Operation';
-
+$string['accept_entry'] = 'accept';
+$string['reject_entry'] = 'reject';
+$string['execd_entry']  = 'done';
+$string['operation_error_execd'] = 'When you do not accept entry, you can not checke "done"';
 
 
 
