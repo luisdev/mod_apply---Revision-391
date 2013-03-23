@@ -61,3 +61,8 @@ if ($submit) {
 	}
 }
 
+else {
+	echo '<div align="center">';
+	echo $OUTPUT->single_button($back_url, get_string('back_button', 'apply'));
+	echo '</div>';
+}
