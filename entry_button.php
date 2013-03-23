@@ -36,7 +36,7 @@ if ($submit) {
 		echo '<div align="center">';
 		echo '<table border="0">';
 		echo '<tr>';
-		echo '<td>'.$back_boutton.'</td>';
+		echo '<td>'.$back_button.'</td>';
 		echo '<td>&nbsp;&nbsp;&nbsp;</td>';
 		echo '<td>'.$OUTPUT->single_button($change_url,  $change_label). '</td>';
 		echo '<td>&nbsp;&nbsp;&nbsp;</td>';
@@ -46,16 +46,6 @@ if ($submit) {
 		echo '</div>';
 	}
 
-
-	// for admin
-	else if (!$req_own_data and $submit->class!=APPLY_CLASS_CANCEL) {
-		echo '<div align="center">';
-		echo $back_button;
-		echo '</div>';
-	}
-
-
-	// APPLY_CLASS_CANCEL
 	else {
 		echo '<div align="center">';
 		echo $back_button;

@@ -60,6 +60,14 @@ if (! $apply = $DB->get_record('apply', array('id'=>$cm->instance))) {
 }
 if (!$courseid) $courseid = $course->id;
 
+
+////////////////////////////////////////////////////////
+$back_params = array('id'=>$cm->id, 'courseid'=>$courseid, 'do_show'=>'show_entries');
+$back_url = new moodle_url($CFG->wwwroot.'/mod/apply/show_entries.php', $back_params);
+if (isset($formdata->back_to_entries)) {
+	redirect($back_url->out());
+}
+
 //
 $context = context_module::instance($cm->id);
 
@@ -78,14 +86,22 @@ if (!has_capability('mod/apply:operatesubmit', $context)) {
 
 
 ////////////////////////////////////////////////////////
+// 
+$accept  = '';
+$execd   = false;
+$sbmtted = false;
+if (isset($formdata->radiobtn_accept)) $accept  = $formdata->radiobtn_accept;
+if (isset($formdata->checkbox_execd))  $execd   = true;
+if (isset($formdata->operate_values))  $sbmtted = true;
+
+
+////////////////////////////////////////////////////////
 /// Print the page header
 $strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
-$back_params = array('id'=>$cm->id, 'courseid'=>$courseid, 'do_show'=>'show_entries');
 $url_params  = array('id'=>$cm->id, 'courseid'=>$courseid);
-$back_url = new moodle_url($CFG->wwwroot.'/mod/apply/show_entries.php', $back_params);
-$this_url = new moodle_url('/mod/apply/operate_entry.php', $url_params);
+$this_url = new moodle_url('/mod/apply/operate_submit.php', $url_params);
 
 $PAGE->navbar->add(get_string('apply:operate_submit', 'apply'));
 $PAGE->set_url($this_url);
@@ -93,16 +109,36 @@ $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));
 echo $OUTPUT->header();
 
+
+///////////////////////////////////////////////////////////////////////////
+// Check 2
+if ((empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities', $context))) {
+    notice(get_string("activityiscurrentlyhidden"));
+}
+
+
+//
 require('tabs.php');
 
 
 ///////////////////////////////////////////////////////////////////////////
 // Operate
 
-if ($operate=='operate') {
+$err_message = '';
+
+if ($operate=='operate' and $sbmtted) {
     if (!$SESSION->apply->is_started) {
-        //print_error('error', '', $CFG->wwwroot.'/course/view.php?id='.$id);
         print_error('error', '', $CFG->wwwroot.'/mod/apply/view.php?id='.$id);
+	}
+	if ($accept!='accept' and $execd) {
+		$operate = 'show_page';
+		$err_message = get_string('operation_error_execd', 'apply');
+	}
+	else {
+
+
+
+
 	}
 }
 
@@ -120,7 +156,7 @@ if ($operate=='show_page' and $submit_id) {
 
 	$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
 	if (is_array($items)) {
-		require('operate_entry_page.php');
+		require('operate_submit_page.php');
 		//
 		$SESSION->apply->is_started = true;
 	}

@@ -44,13 +44,17 @@ $string['next_page_button'] = ' 次のページ ';
 $string['previous_page_button'] = ' 前のページ ';
 $string['back_button'] = ' 戻る ';
 $string['yes_button'] = ' はい ';
-$string['operate_entry_button'] = ' 処理 ';
+$string['operate_submit_button'] = ' 処理 ';
 
 $string['edit_entry_button'] = ' 編集 ';
 $string['update_entry_button'] = ' 更新 ';
 $string['cancel_entry_button'] = ' 取消 ';
 $string['delete_entry_button'] = ' 削除 ';
-$string['operate_entry_button'] = ' 操作 ';
+$string['operate_submit_button'] = ' 操作 ';
+
+//$string['accept_entry_button'] = ' 受理 ';
+//$string['reject_entry_button'] = ' 却下 ';
+//$string['execd_entry_button'] = ' 処理済 ';
 
 
 // Menu
@@ -124,7 +128,7 @@ $string['update_entry'] = '更新';
 $string['cancel_entry'] = '解除';
 $string['delete_entry'] = '削除';
 $string['rollback_entry'] = '取消';
-$string['operate_entry'] = '操作';
+$string['operate_submit'] = '操作';
 
 
 // show_entries
@@ -166,6 +170,12 @@ $string['textfield_size'] = 'テキストフィールド幅';
 
 // operate 
 $string['operate_is_disable']  = '貴方はこの操作を行う事はできません';
+$string['accept_entry'] = '受理';
+$string['reject_entry'] = '却下';
+$string['execd_entry']  = '処理済';
+
+$string['operation_error_execd'] = '書類を受理しなければ，処理済にすることはできません';
+
 
 
 
