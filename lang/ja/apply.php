@@ -48,8 +48,9 @@ $string['operate_submit_button'] = ' 処理 ';
 
 $string['edit_entry_button'] = ' 編集 ';
 $string['update_entry_button'] = ' 更新 ';
-$string['cancel_entry_button'] = ' 取消 ';
+$string['cancel_entry_button'] = ' 解除 ';
 $string['delete_entry_button'] = ' 削除 ';
+$string['rollback_entry_button'] = ' 取消 ';
 $string['operate_submit_button'] = ' 操作 ';
 
 //$string['accept_entry_button'] = ' 受理 ';
@@ -119,6 +120,7 @@ $string['entries_list_title'] = '申請書類一覧';
 // submit
 $string['entry_saved'] = 'あなたの申請書が送信されました';
 $string['entry_saved_draft'] = 'あなたの申請書は下書きとして保存されました';
+$string['entry_saved_operation'] = 'リクエストは処理されました';
 $string['saving_failed'] = '保存に失敗しました';
 $string['saving_failed_because_missing_or_false_values'] = '値が入力されていないか，正しくないため，保存に失敗しました';
 $string['apply_is_disable']  = '貴方はこの申請を行う事はできません';
@@ -141,7 +143,7 @@ $string['execd_notyet']  = '未処理';
 $string['class_draft']   = '下書き';
 $string['class_newpost'] = '新規';
 $string['class_update']  = '更新';
-$string['class_cancel']  = '取消';
+$string['class_cancel']  = '解除';
 $string['no_title'] = 'タイトルなし';
 $string['show_all'] = '{$a} 個のデータ全てを表示する';
 $string['show_perpage'] = '1ページあたりの表示数を {$a} にする';
@@ -233,8 +235,8 @@ $string['configallowfullanonymous'] = 'このオプションを有効にした�
 // delete_xxx.php
 $string['confirm_delete_item'] = '本当にこの要素を削除してもよろしいですか?';
 $string['confirm_delete_entry'] = '本当にこのエントリを削除してもよろしいですか?';
-$string['confirm_cancel_entry'] = '本当にこのエントリを取り消してもよろしいですか?';
-$string['confirm_rollback_entry'] = '受け付け待ちエントリを削除してもよろしいですか?';
+$string['confirm_cancel_entry'] = '本当にこのエントリを解除してもよろしいですか?';
+$string['confirm_rollback_entry'] = '受け付け待ちエントリを取り消してもよろしいですか?';
 
 
 

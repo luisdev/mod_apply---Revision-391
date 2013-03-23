@@ -64,7 +64,7 @@ $req_own_data = true;
 
 //
 require_login($course, true, $cm);
-add_to_log($course->id, 'apply', 'view', 'view.php?id='.$cm->id, $apply->id, $cm->id);
+add_to_log($course->id, 'apply', 'view', 'mod/apply/view.php?id='.$cm->id, $apply->id, $cm->id);
 
 
 ///////////////////////////////////////////////////////////////////////////

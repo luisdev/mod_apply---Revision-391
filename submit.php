@@ -176,7 +176,7 @@ if ($prev_values) {
 		$submit_id = apply_save_draft_values($apply->id, $submit_id, $user_id);	// save to draft
 
 		if ($submit_id) {
-			add_to_log($courseid, 'apply', 'start_apply', 'view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
+			add_to_log($courseid, 'apply', 'start_apply', 'mod/apply/view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
 			if ($go_next_page or $go_prev_page) $save_return = 'page';
 			else 								$prev_values = false;
 			if ($save_draft) $save_return = 'draft';
@@ -204,7 +204,7 @@ if ($save_values and !$save_draft and !$prev_values) {
 
 	if ($submit_id) {
 		$save_return = 'saved';
-		add_to_log($courseid, 'apply', 'submit', 'view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
+		add_to_log($courseid, 'apply', 'submit', 'mod/apply/view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
 		apply_send_email($cm, $apply, $course, $user_id);
 	}
 	else {
@@ -259,23 +259,21 @@ echo $OUTPUT->heading(format_text($apply->name));
 
 //
 if (isset($save_return) and $save_return=='saved') {
-	echo '<p align="center">';
-	echo '<b><font color="green">';
+	echo '<div align="center">';
+	echo '<strong><font color="green">';
 	echo get_string('entry_saved', 'apply');
-	echo '</font></b>';
-	echo '</p>';
-//	$url = $CFG->wwwroot.'/mod/apply/view.php?id='.$id;
+	echo '</font></strong>';
+	echo '</strong>';
 	echo $OUTPUT->continue_button($back_url);
 }
 
 // Draft
 else if (isset($save_return) and $save_return=='draft') {
-	echo '<p align="center">';
-	echo '<b><font color="green">';
+	echo '<div align="center">';
+	echo '<strong><font color="green">';
 	echo get_string('entry_saved_draft', 'apply');
-	echo '</font></b>';
-	echo '</p>';
-//	$url = $CFG->wwwroot.'/mod/apply/view.php?id='.$id;
+	echo '</font></strong>';
+	echo '</strong>';
 	echo $OUTPUT->continue_button($back_url);
 }
 

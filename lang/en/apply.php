@@ -36,7 +36,7 @@ $string['not_exist'] = 'not Exist';
 
 
 // Button
-$string['save_entry_button']  = ' Submit this application ';
+$string['save_entry_button']  = ' Submit this entry ';
 $string['save_draft_button']  = ' Save as draft ';
 $string['submit_form_button'] = ' New Application ';
 $string['next_page_button'] = ' Next page ';
@@ -49,11 +49,12 @@ $string['edit_entry_button'] = ' Edit ';
 $string['update_entry_button'] = ' Update ';
 $string['cancel_entry_button'] = ' Cancel ';
 $string['delete_entry_button'] = ' Delete ';
+$string['rollback_entry_button'] = ' Rollback ';
 $string['operate_submit_button'] = ' Operate ';
 
 
 // Menu
-$string['apply:submit'] = 'Submit a Application';
+$string['apply:submit'] = 'Submit a Entry';
 $string['apply:operate_submit'] = 'Operation of Entry';
 $string['apply:show_entries'] = 'List of Entries';
 $string['apply:view'] = 'View a Apply';
@@ -84,7 +85,7 @@ $string['title_draft'] = 'Draft';
 
 // tabs
 $string['overview'] = 'Overview';
-$string['show_entries'] = 'Show Applications';
+$string['show_entries'] = 'Show Entries';
 $string['edit_items'] = 'Edit Items';
 $string['templates'] = 'Templates';
 
@@ -111,12 +112,13 @@ $string['use_item'] = 'use {$a}';
 
 
 // view
-$string['entries_list_title'] = 'List of Applications';
+$string['entries_list_title'] = 'List of Entries';
 
 
 // submit
-$string['entry_saved'] = 'Your applocation have been saved. Thank you.';
-$string['entry_saved_draft'] = 'Your applocation have been saved as <strong>Draft</strong>';
+$string['entry_saved'] = 'Your applocation has been saved. Thank you.';
+$string['entry_saved_draft'] = 'Your applocation has been saved as <strong>Draft</strong>.';
+$string['entry_saved_operation'] = 'Your request has been processed.';
 $string['saving_failed'] = 'Saving failed';
 $string['saving_failed_because_missing_or_false_values'] = 'Saving failed because missing or false values.';
 $string['apply_is_disable'] = 'You ca not use this Apply';
@@ -144,12 +146,12 @@ $string['class_cancel']  = 'Cancel';
 $string['no_title'] = 'No Title';
 $string['show_all'] = 'Show all {$a}';
 $string['show_perpage'] = 'Show {$a} per page';
-$string['no_submit_data'] = 'Specified application data does not exist';
+$string['no_submit_data'] = 'Specified entry data does not exist';
 
 
 // edit_item
 $string['save_item'] = 'Save item';
-$string['add_item']  = 'Add application item to activity';
+$string['add_item']  = 'Add entry item to activity';
 $string['items_are_required'] = 'Answers are required to starred items.';
 
 $string['textarea'] = 'Longer text answer';
@@ -182,7 +184,7 @@ $string['name_required'] = 'Name required';
 
 
 
-$string['add_items'] = 'Add application items to activity';
+$string['add_items'] = 'Add entry items to activity';
 
 
 
@@ -218,7 +220,7 @@ $string['captcha'] = 'Captcha';
 $string['captchanotset'] = 'Captcha hasn\'t been set.';
 $string['submitted'] = 'submitted';
 $string['submitted_applys'] = 'Submitted applies';
-$string['submit_the_form'] = 'Submit a application...';
+$string['submit_the_form'] = 'Submit a entry...';
 $string['completionsubmit'] = 'View as completed if the apply is submitted';
 $string['configallowfullanonymous'] = 'If this option is set yes so the apply can be completed without any preceding logon. It only affects applys on the homepage.';
 
@@ -414,4 +416,4 @@ $string['using_templates'] = 'Use a template';
 $string['vertical'] = 'vertical';
 $string['viewcompleted'] = 'completed applys';
 $string['viewcompleted_help'] = 'You may view completed apply forms, searchable by course and/or by question.
-Application responses may be exported to Excel.';
+Entry responses may be exported to Excel.';

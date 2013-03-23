@@ -89,17 +89,17 @@ if (isset($formdata->confirmdelete) and $formdata->confirmdelete==1) {
 		if ($submit->version<=1 and $submit->acked!=APPLY_ACKED_ACCEPT) {
 			// 全体を削除可能
         	apply_delete_submit_safe($submit_id);
-        	add_to_log($course->id, 'apply', 'delete',  'view.php?id='.$cm->id, $apply->id, $submit_id);
+        	add_to_log($course->id, 'apply', 'delete',   'mod/apply/view.php?id='.$cm->id, $apply->id, $submit_id);
 		}
 		else if ($submit->acked!=APPLY_ACKED_ACCEPT) {
 			// 最新の申請（未認証）のみ取消可能（ロールバック）
         	apply_rollback_submit($submit_id);
-        	add_to_log($course->id, 'apply', 'rollback', 'view.php?id='.$cm->id, $apply->id, $submit_id);
+        	add_to_log($course->id, 'apply', 'rollback', 'mod/apply/view.php?id='.$cm->id, $apply->id, $submit_id);
 		}
 		else {
 			// 申請の解除
         	apply_cancel_submit($submit_id);
-        	add_to_log($course->id, 'apply', 'cancel',   'view.php?id='.$cm->id, $apply->id, $submit_id);
+        	add_to_log($course->id, 'apply', 'cancel',   'mod/apply/view.php?id='.$cm->id, $apply->id, $submit_id);
 		}
 
         redirect('view.php?id='.$id.'&do_show=view');

@@ -30,12 +30,12 @@ apply_init_session();
 
 ////////////////////////////////////////////////////////
 //get the params
-$id		    = required_param('id', PARAM_INT);
-$user_id    = optional_param('user_id',   0, PARAM_INT);
+$id			= required_param('id', PARAM_INT);
+$user_id	= optional_param('user_id',   0, PARAM_INT);
 $submit_id  = optional_param('submit_id', 0, PARAM_INT);
 $submit_ver = optional_param('submit_ver', -1, PARAM_INT);
 $courseid   = optional_param('courseid',  0, PARAM_INT);
-$operate    = optional_param('operate',  'show_page', PARAM_ALPHAEXT);
+$operate	= optional_param('operate',  'show_page', PARAM_ALPHAEXT);
 
 $current_tab = '';
 
@@ -43,7 +43,7 @@ $current_tab = '';
 ///////////////////////////////////////////////////////////////////////////
 // Form Data
 if (($formdata = data_submitted()) and !confirm_sesskey()) {
-    print_error('invalidsesskey');
+	print_error('invalidsesskey');
 }
 
 
@@ -80,18 +80,18 @@ $req_own_data = false;
 require_login($course, true, $cm);
 //
 if (!has_capability('mod/apply:operatesubmit', $context)) {
-    apply_print_error_messagebox('operate_is_disable', $id);
-    exit;
+	apply_print_error_messagebox('operate_is_disable', $id);
+	exit;
 }
 
 
 ////////////////////////////////////////////////////////
 // 
 $accept  = '';
-$execd   = false;
+$execd   = '';
 $sbmtted = false;
 if (isset($formdata->radiobtn_accept)) $accept  = $formdata->radiobtn_accept;
-if (isset($formdata->checkbox_execd))  $execd   = true;
+if (isset($formdata->checkbox_execd))  $execd   = 'done';
 if (isset($formdata->operate_values))  $sbmtted = true;
 
 
@@ -113,7 +113,7 @@ echo $OUTPUT->header();
 ///////////////////////////////////////////////////////////////////////////
 // Check 2
 if ((empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities', $context))) {
-    notice(get_string("activityiscurrentlyhidden"));
+	notice(get_string("activityiscurrentlyhidden"));
 }
 
 
@@ -127,18 +127,50 @@ require('tabs.php');
 $err_message = '';
 
 if ($operate=='operate' and $sbmtted) {
-    if (!$SESSION->apply->is_started) {
-        print_error('error', '', $CFG->wwwroot.'/mod/apply/view.php?id='.$id);
+	if (!$SESSION->apply->is_started) {
+		print_error('error', '', $CFG->wwwroot.'/mod/apply/view.php?id='.$id);
 	}
-	if ($accept!='accept' and $execd) {
-		$operate = 'show_page';
-		$err_message = get_string('operation_error_execd', 'apply');
+
+	//
+	$submit = apply_save_admin_values($submit_id, $submit_ver); 
+	
+	if ($submit) {
+		if ($execd=='done') {
+			if ($accept!='accept') {
+				if ($submit->acked!=APPLY_ACKED_ACCEPT) {
+					$err_message = get_string('operation_error_execd', 'apply');
+					$operate = 'show_page';
+				}
+			}
+		}
+		//
+		if ($operate=='operate') {
+			$ret = apply_operate_submit($submit->id, $submit->version, $accept, $execd);
+			if ($ret) {
+				add_to_log($courseid, 'apply', "operate $accept $execd", 'mode/apply/view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
+				//
+				echo '<div align="center">';
+				echo '<strong><font color="green">';
+				echo get_string('entry_saved_operation', 'apply');
+				echo '</font></strong>';
+				echo '</div>';
+				echo $OUTPUT->continue_button($back_url);
+			}
+			else {
+				echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 3);
+				echo '<div align="center">';
+				echo $OUTPUT->single_button($back_url, get_string('back_button', 'apply'));
+				echo '</div>';
+			}
+		}
 	}
+
+	// Error
 	else {
-
-
-
-
+		echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 3);
+		echo '<div align="center">';
+		echo $OUTPUT->single_button($back_url, get_string('back_button', 'apply'));
+		echo '</div>';
 	}
 }
 
