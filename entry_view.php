@@ -24,6 +24,7 @@ if ($submit) {
 		$params = array('submit_id'=>$submit->id, 'item_id'=>$item->id, 'version'=>$submit_ver);
 		$value  = $DB->get_record('apply_value', $params);
 
+		echo $OUTPUT->box_start('apply_entry_view_item');
 		if ($item->typ!='pagebreak' and $item->label!=APPLY_NODISP_TAG) {
 			if (isset($value->value)) {
 				apply_print_item_show_value($item, $value->value);
@@ -32,11 +33,10 @@ if ($submit) {
 				apply_print_item_show_value($item, false);
 			}
 		}
+		echo $OUTPUT->box_end();
 	}
-
-	//
 	require('entry_info.php');
-	//
+
 	require('entry_button.php');
 
 	echo $OUTPUT->box_end();

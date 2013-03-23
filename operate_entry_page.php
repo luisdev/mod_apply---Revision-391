@@ -3,6 +3,12 @@
 // needs $submit, $items, $name_pattern, $user
 
 if ($submit) {
+
+    echo '<form action="operate_entry.php" method="post">';
+    echo '<fieldset>';
+    echo '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
+    echo '<input type="hidden" name="operate" value="operate" />';
+
 	//
 	$align   = right_to_left() ? 'right' : 'left';
 	$student = $DB->get_record('user', array('id'=>$submit->user_id));
@@ -17,14 +23,15 @@ if ($submit) {
 
 	echo $OUTPUT->heading($title, 3);
 	//
-	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide apply_item');
+	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 
 	foreach ($items as $item) {
 		//get the values
 		$params = array('submit_id'=>$submit->id, 'item_id'=>$item->id, 'version'=>$submit_ver);
 		$value  = $DB->get_record('apply_value', $params);
 
-		if ($item->typ!='pagebreak' and $item->label!=APPLY_NODISP_TAG) {
+		echo $OUTPUT->box_start('apply_operate_entry_page_item');
+		if ($item->typ!='pagebreak' and $item->label!=APPLY_NODISP_TAG and $item->label!=APPLY_ADMIN_TAG) {
 			if (isset($value->value)) {
 				apply_print_item_show_value($item, $value->value);
 			}
@@ -32,14 +39,27 @@ if ($submit) {
 				apply_print_item_show_value($item, false);
 			}
 		}
+        else if ($item->label==APPLY_ADMIN_TAG) {
+			if (isset($value->value)) {
+            	apply_print_item_submit($item, $value->value);
+			}
+			else {
+            	apply_print_item_submit($item, false);
+			}
+        }
+		echo $OUTPUT->box_end();
 	}
-
-	//
 	require('entry_info.php');
-	//
-	require('entry_button.php');
+
+	require('operate_entry_button.php');
 
 	echo $OUTPUT->box_end();
+
+    echo '<input type="hidden" name="submit_id"  value="'.$submit->id.'" />';
+    echo '<input type="hidden" name="submit_ver" value="'.$submit->version.'" />';
+	echo '</fieldset>';
+    echo '</form>';
+
 }
 
 //

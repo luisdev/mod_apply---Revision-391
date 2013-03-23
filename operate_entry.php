@@ -100,6 +100,10 @@ require('tabs.php');
 // Operate
 
 if ($operate=='operate') {
+    if (!$SESSION->apply->is_started) {
+        //print_error('error', '', $CFG->wwwroot.'/course/view.php?id='.$id);
+        print_error('error', '', $CFG->wwwroot.'/mod/apply/view.php?id='.$id);
+	}
 }
 
 
@@ -107,6 +111,7 @@ if ($operate=='operate') {
 ///////////////////////////////////////////////////////////////////////////
 // Print Entry
 
+$SESSION->apply->is_started = false;
 if ($operate=='show_page' and $submit_id) {
 	$params = array('id'=>$submit_id);
 	$submit = $DB->get_record('apply_submit', $params); 
@@ -114,7 +119,11 @@ if ($operate=='show_page' and $submit_id) {
 	echo $OUTPUT->heading(format_text($apply->name));
 
 	$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
-	if (is_array($items)) require('entry_transact.php');
+	if (is_array($items)) {
+		require('operate_entry_page.php');
+		//
+		$SESSION->apply->is_started = true;
+	}
 }
 
 

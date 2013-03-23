@@ -94,6 +94,7 @@ echo $OUTPUT->box_start('apply_form boxaligncenter boxwidthwide');
 	}
 	
 	// Button
+	echo '<br />';
 	echo '<input type="reset" value="'.get_string('clear').'" />';
 	echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 
