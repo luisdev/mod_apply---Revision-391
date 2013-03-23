@@ -43,6 +43,7 @@ $string['next_page_button'] = ' Next page ';
 $string['previous_page_button'] = ' Previous page ';
 $string['back_button'] = ' Back ';
 $string['yes_button'] = ' Yes ';
+$string['operate_entry_button'] = ' Operate ';
 
 $string['edit_entry_button'] = ' Edit ';
 $string['update_entry_button'] = ' Update ';
@@ -110,7 +111,7 @@ $string['use_item'] = 'use {$a}';
 
 
 // view
-$string['entries_list_title'] = 'List of submitted Applications';
+$string['entries_list_title'] = 'List of Applications';
 
 
 // submit
