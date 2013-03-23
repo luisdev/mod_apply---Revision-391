@@ -61,7 +61,6 @@ if ($submit) {
 	echo '<td>'.$execd_time.'</td>';
 	echo '</tr>';
 	echo '</table>';
-	echo '<br />';
 
 	//
 //	echo $OUTPUT->box_end();

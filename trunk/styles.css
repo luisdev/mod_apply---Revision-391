@@ -20,9 +20,19 @@ table.entry_info {
 	font-weight:bold;
 }
 
-div.apply_item_box_left, div.apply_item_box_right {
+
+/* Box */
+div.apply_info {
 }
 
+div.apply_entry_view_item {
+}
+
+div.apply_operate_entry_page_item {
+}
+
+
+/* */
 div.apply_depend {
 	background:#DDDDDD;
 }
@@ -35,9 +45,19 @@ span.apply_depend {
 	color:#ff0000;
 }
 
+
+/* apply_item */
+
+div.apply_item {
+}
+
+div.apply_item_box_left, div.apply_item_box_right {
+}
+
 div.apply_item_number_left, div.apply_item_left {
 	float:left;
 }
+
 div.apply_item_number_right, div.apply_item_right {
 	float:right;
 }
@@ -77,12 +97,15 @@ div.apply_item_captcha_img_left {
 	display:inline;
 	margin: 5px;
 }
+
 div.apply_item_captcha_text_right,
 div.apply_item_captcha_img_right {
 	display:inline;
 	margin: 5px;
 }
 
+
+/* */
 hr.apply_pagebreak {
 	height:8px;
 	color:#aaaaaa;
