@@ -83,7 +83,7 @@ $back_url->params(array('submit_id'=>$submit_id, 'submit_ver'=>$submit_ver, 'use
 // Print the page header
 $PAGE->navbar->add(get_string('apply:preview', 'apply'));
 $PAGE->set_url($this_url);
-$PAGE->set_pagelayout('embedded');
+$PAGE->set_pagelayout('print');
 
 $PAGE->set_title(format_string($apply->name));
 $PAGE->set_heading(format_string($course->fullname));

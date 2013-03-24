@@ -2,7 +2,7 @@
 
 // needs  $submit, $items, $name_pattern, $user
 
-if ($submit->id!=$USER->id) {
+if ($submit->user_id!=$USER->id) {
     require_capability('mod/apply:viewreports', $context);
 }
 
@@ -27,7 +27,7 @@ if ($this_action!='preview') {
 echo $OUTPUT->heading(format_text($title), 3);
 
 //
-echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
+echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide entry_view');
 foreach ($items as $item) {
 	//get the values
 	$params = array('submit_id'=>$submit->id, 'item_id'=>$item->id, 'version'=>$submit_ver);
