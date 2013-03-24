@@ -31,7 +31,7 @@ apply_init_session();
 $id = required_param('id', PARAM_INT);
 $courseid = optional_param('courseid', false, PARAM_INT);
 
-if (($formdata = data_submitted()) AND !confirm_sesskey()) {
+if (($formdata = data_submitted()) and !confirm_sesskey()) {
 	print_error('invalidsesskey');
 }
 
@@ -43,6 +43,7 @@ $movehere 	  = optional_param('movehere', false, PARAM_INT);
 $switchitemrequired = optional_param('switchitemrequired', false, PARAM_INT);
 
 $current_tab = $do_show;
+$this_action = 'edit';
 
 $this_url = new moodle_url('/mod/apply/edit.php', array('id'=>$id, 'do_show'=>$do_show));
 
@@ -185,21 +186,15 @@ $savereturn=isset($savereturn)?$savereturn:'';
 
 //print the messages
 if ($savereturn == 'notsaved_name') {
-	echo '<p align="center"><b><font color="red">'.
-		  get_string('name_required', 'apply').
-		  '</font></b></p>';
+	echo '<p align="center"><b><font color="red">'.get_string('name_required', 'apply').'</font></b></p>';
 }
 
 if ($savereturn == 'saved') {
-	echo '<p align="center"><b><font color="green">'.
-		  get_string('template_saved', 'apply').
-		  '</font></b></p>';
+	echo '<p align="center"><b><font color="green">'.get_string('template_saved', 'apply').'</font></b></p>';
 }
 
 if ($savereturn == 'failed') {
-	echo '<p align="center"><b><font color="red">'.
-		  get_string('saving_failed', 'apply').
-		  '</font></b></p>';
+	echo '<p align="center"><b><font color="red">'.get_string('saving_failed', 'apply').'</font></b></p>';
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -221,15 +216,18 @@ if ($do_show=='templates') {
 		echo '&nbsp;';
 	}
 
+/*
+	//Import & Export
 	if (has_capability('mod/apply:edititems', $context)) {
 		$urlparams = array('action'=>'exportfile', 'id'=>$id);
 		$exporturl = new moodle_url('/mod/apply/export.php', $urlparams);
 		$importurl = new moodle_url('/mod/apply/import.php', array('id'=>$id));
 		echo '<p>
-			<a href="'.$exporturl->out().'">'.get_string('export_questions', 'apply').'</a>/
-			<a href="'.$importurl->out().'">'.get_string('import_questions', 'apply').'</a>
+			<a href="'.$exporturl->out().'">'.get_string('export_templates', 'apply').'</a>/
+			<a href="'.$importurl->out().'">'.get_string('import_templates', 'apply').'</a>
 		</p>';
 	}
+*/
 	echo $OUTPUT->box_end();
 }
 

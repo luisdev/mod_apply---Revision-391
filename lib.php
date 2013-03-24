@@ -1669,56 +1669,56 @@ function apply_print_one_initials_bar($table, $alpha, $current, $class, $title, 
 
 function apply_set_events($apply)
 {
-    global $DB;
+	global $DB;
 
-    $DB->delete_records('event', array('modulename'=>'apply', 'instance'=>$apply->id));
+	$DB->delete_records('event', array('modulename'=>'apply', 'instance'=>$apply->id));
 
 	if (!$apply->use_calendar) return;
 
-    if (!isset($apply->coursemodule)) {
-        $cm = get_coursemodule_from_id('apply', $apply->id);
-        $apply->coursemodule = $cm->id;
-    }
+	if (!isset($apply->coursemodule)) {
+		$cm = get_coursemodule_from_id('apply', $apply->id);
+		$apply->coursemodule = $cm->id;
+	}
 
-    // the open-event
-    if ($apply->time_open > 0) {
-        $event = new stdClass();
-        $event->name         = get_string('start', 'apply').' '.$apply->name;
-        $event->description  = format_module_intro('apply', $apply, $apply->coursemodule);
-        $event->courseid     = $apply->course;
-        $event->groupid      = 0;
-        $event->userid       = 0;
-        $event->modulename   = 'apply';
-        $event->instance     = $apply->id;
-        $event->eventtype    = 'open';
-        $event->timestart    = $apply->time_open;
-        $event->visible      = instance_is_visible('apply', $apply);
-        if ($apply->time_close > 0) {
-            $event->timeduration = ($apply->time_close - $apply->time_open);
-        } else {
-            $event->timeduration = 0;
-        }
+	// the open-event
+	if ($apply->time_open > 0) {
+		$event = new stdClass();
+		$event->name		 = get_string('start', 'apply').' '.$apply->name;
+		$event->description  = format_module_intro('apply', $apply, $apply->coursemodule);
+		$event->courseid	 = $apply->course;
+		$event->groupid	  = 0;
+		$event->userid	   = 0;
+		$event->modulename   = 'apply';
+		$event->instance	 = $apply->id;
+		$event->eventtype	= 'open';
+		$event->timestart	= $apply->time_open;
+		$event->visible	  = instance_is_visible('apply', $apply);
+		if ($apply->time_close > 0) {
+			$event->timeduration = ($apply->time_close - $apply->time_open);
+		} else {
+			$event->timeduration = 0;
+		}
 
-        calendar_event::create($event);
-    }
+		calendar_event::create($event);
+	}
 
-    // the close-event
-    if ($apply->time_close > 0) {
-        $event = new stdClass();
-        $event->name         = get_string('stop', 'apply').' '.$apply->name;
-        $event->description  = format_module_intro('apply', $apply, $apply->coursemodule);
-        $event->courseid     = $apply->course;
-        $event->groupid      = 0;
-        $event->userid       = 0;
-        $event->modulename   = 'apply';
-        $event->instance     = $apply->id;
-        $event->eventtype    = 'close';
-        $event->timestart    = $apply->time_close;
-        $event->visible      = instance_is_visible('apply', $apply);
-        $event->timeduration = 0;
+	// the close-event
+	if ($apply->time_close > 0) {
+		$event = new stdClass();
+		$event->name		 = get_string('stop', 'apply').' '.$apply->name;
+		$event->description  = format_module_intro('apply', $apply, $apply->coursemodule);
+		$event->courseid	 = $apply->course;
+		$event->groupid	  = 0;
+		$event->userid	   = 0;
+		$event->modulename   = 'apply';
+		$event->instance	 = $apply->id;
+		$event->eventtype	= 'close';
+		$event->timestart	= $apply->time_close;
+		$event->visible	  = instance_is_visible('apply', $apply);
+		$event->timeduration = 0;
 
-        calendar_event::create($event);
-    }
+		calendar_event::create($event);
+	}
 }
 
 
@@ -1731,176 +1731,175 @@ function apply_set_events($apply)
 
 function apply_create_template($courseid, $name, $ispublic=0) 
 {
-    global $DB;
+	global $DB;
 
-    $templ = new stdClass();
-    $templ->course   = ($ispublic ? 0 : $courseid);
-    $templ->name     = $name;
-    $templ->ispublic = $ispublic;
+	$templ = new stdClass();
+	$templ->course   = ($ispublic ? 0 : $courseid);
+	$templ->name	 = $name;
+	$templ->ispublic = $ispublic;
 
-    $templ_id = $DB->insert_record('apply_template', $templ);
-    $newtempl = $DB->get_record('apply_template', array('id'=>$templ_id));
+	$templ_id = $DB->insert_record('apply_template', $templ);
+	$newtempl = $DB->get_record('apply_template', array('id'=>$templ_id));
 
-    return $newtempl;
+	return $newtempl;
 }
 
 
 
 function apply_save_as_template($apply, $name, $ispublic=0)
 {
-    global $DB;
-    $fs = get_file_storage();
+	global $DB;
+	$fs = get_file_storage();
 
-    if (!$applyitems = $DB->get_records('apply_item', array('apply'=>$apply->id))) {
-        return false;
-    }
+	if (!$applyitems = $DB->get_records('apply_item', array('apply_id'=>$apply->id))) {
+		return false;
+	}
 
-    if (!$newtempl = apply_create_template($apply->course, $name, $ispublic)) {
-        return false;
-    }
+	if (!$newtempl = apply_create_template($apply->course, $name, $ispublic)) {
+		return false;
+	}
 
-    if ($ispublic) {
-        $s_context = get_system_context();
-    }
+	if ($ispublic) {
+		$s_context = get_system_context();
+	}
 	else {
-        $s_context = context_course::instance($newtempl->course);
-    }
-    $cm = get_coursemodule_from_instance('apply', $apply->id);
-    $f_context = context_module::instance($cm->id);
+		$s_context = context_course::instance($newtempl->course);
+	}
+	$cm = get_coursemodule_from_instance('apply', $apply->id);
+	$f_context = context_module::instance($cm->id);
 
-    $dependitemsmap = array();
-    $itembackup = array();
+	$dependitemsmap = array();
+	$itembackup = array();
 
 	//
-    foreach ($applyitems as $item) {
-        $t_item = clone($item);
-        unset($t_item->id);
-        $t_item->apply = 0;
-        $t_item->template     = $newtempl->id;
-        $t_item->id = $DB->insert_record('apply_item', $t_item);
-        $itemfiles = $fs->get_area_files($f_context->id, 'mod_apply', 'item', $item->id, 'id', false);
+	foreach ($applyitems as $item) {
+		$t_item = clone($item);
+		unset($t_item->id);
+		$t_item->apply = 0;
+		$t_item->template = $newtempl->id;
+		$t_item->id = $DB->insert_record('apply_item', $t_item);
+		$itemfiles = $fs->get_area_files($f_context->id, 'mod_apply', 'item', $item->id, 'id', false);
 		//
-        if ($itemfiles) {
-            foreach ($itemfiles as $ifile) {
-                $file_record = new stdClass();
-                $file_record->contextid = $s_context->id;
-                $file_record->component = 'mod_apply';
-                $file_record->filearea = 'template';
-                $file_record->itemid = $t_item->id;
-                $fs->create_file_from_storedfile($file_record, $ifile);
-            }
-        }
+		if ($itemfiles) {
+			foreach ($itemfiles as $ifile) {
+				$file_record = new stdClass();
+				$file_record->contextid = $s_context->id;
+				$file_record->component = 'mod_apply';
+				$file_record->filearea = 'template';
+				$file_record->itemid = $t_item->id;
+				$fs->create_file_from_storedfile($file_record, $ifile);
+			}
+		}
 
-        $itembackup[$item->id] = $t_item->id;
-        if ($t_item->dependitem) {
-            $dependitemsmap[$t_item->id] = $t_item->dependitem;
-        }
+		$itembackup[$item->id] = $t_item->id;
+		if ($t_item->dependitem) {
+			$dependitemsmap[$t_item->id] = $t_item->dependitem;
+		}
+	}
 
-    }
+	foreach ($dependitemsmap as $key=>$dependitem) {
+		$newitem = $DB->get_record('apply_item', array('id'=>$key));
+		$newitem->dependitem = $itembackup[$newitem->dependitem];
+		$DB->update_record('apply_item', $newitem);
+	}
 
-    foreach ($dependitemsmap as $key=>$dependitem) {
-        $newitem = $DB->get_record('apply_item', array('id'=>$key));
-        $newitem->dependitem = $itembackup[$newitem->dependitem];
-        $DB->update_record('apply_item', $newitem);
-    }
-
-    return true;
+	return true;
 }
 
 
 
 function apply_delete_template($template)
 {
-    global $DB;
+	global $DB;
 
-    if ($t_items = $DB->get_records('apply_item', array('template'=>$template->id))) {
-        foreach ($t_items as $t_item) {
-            apply_delete_item($t_item->id, false, $template);
-        }
-    }
-    $DB->delete_records('apply_template', array('id'=>$template->id));
+	if ($t_items = $DB->get_records('apply_item', array('template'=>$template->id))) {
+		foreach ($t_items as $t_item) {
+			apply_delete_item($t_item->id, false, $template);
+		}
+	}
+	$DB->delete_records('apply_template', array('id'=>$template->id));
 }
 
 
 
 function apply_items_from_template($apply, $template_id, $deleteold=false)
 {
-    global $DB, $CFG;
+	global $DB, $CFG;
 
-    $fs = get_file_storage();
+	$fs = get_file_storage();
 
-    if (!$template = $DB->get_record('apply_template', array('id'=>$template_id))) {
-        return false;
-    }
-    if (!$templitems = $DB->get_records('apply_item', array('template'=>$template_id))) {
-        return false;
-    }
+	if (!$template = $DB->get_record('apply_template', array('id'=>$template_id))) {
+		return false;
+	}
+	if (!$templitems = $DB->get_records('apply_item', array('template'=>$template_id))) {
+		return false;
+	}
 
-    if ($template->ispublic) {
-        $s_context = get_system_context();
-    }
+	if ($template->ispublic) {
+		$s_context = get_system_context();
+	}
 	else {
-        $s_context = context_course::instance($apply->course);
-    }
+		$s_context = context_course::instance($apply->course);
+	}
 	//
-    $course = $DB->get_record('course', array('id'=>$apply->course));
-    $cm = get_coursemodule_from_instance('apply', $apply->id);
-    $f_context = context_module::instance($cm->id);
+	$course = $DB->get_record('course', array('id'=>$apply->course));
+	$cm = get_coursemodule_from_instance('apply', $apply->id);
+	$f_context = context_module::instance($cm->id);
 
-    if ($deleteold) {
-        if ($applyitems = $DB->get_records('apply_item', array('apply_id'=>$apply->id))) {
-            foreach ($applyitems as $item) {
-                apply_delete_item($item->id, false);
-            }
+	if ($deleteold) {
+		if ($applyitems = $DB->get_records('apply_item', array('apply_id'=>$apply->id))) {
+			foreach ($applyitems as $item) {
+				apply_delete_item($item->id, false);
+			}
 
-            $params = array('apply_id'=>$apply->id);
-            if ($submits = $DB->get_records('apply_submit', $params)) {
-                foreach ($submits as $submit) {
-                    $DB->delete_records('apply_submit', array('id'=>$submit->id));
-                }
-            }
-        }
-        $positionoffset = 0;
-    }
+			$params = array('apply_id'=>$apply->id);
+			if ($submits = $DB->get_records('apply_submit', $params)) {
+				foreach ($submits as $submit) {
+					$DB->delete_records('apply_submit', array('id'=>$submit->id));
+				}
+			}
+		}
+		$positionoffset = 0;
+	}
 	else {
-        $positionoffset = $DB->count_records('apply_item', array('apply'=>$apply->id));
-    }
+		$positionoffset = $DB->count_records('apply_item', array('apply'=>$apply->id));
+	}
 
-    $dependitemsmap = array();
-    $itembackup = array();
+	$dependitemsmap = array();
+	$itembackup = array();
 	//
-    foreach ($templitems as $t_item) {
-        $item = clone($t_item);
-        unset($item->id);
-        $item->apply = $apply->id;
-        $item->template = 0;
-        $item->position = $item->position + $positionoffset;
+	foreach ($templitems as $t_item) {
+		$item = clone($t_item);
+		unset($item->id);
+		$item->apply = $apply->id;
+		$item->template = 0;
+		$item->position = $item->position + $positionoffset;
 
-        $item->id = $DB->insert_record('apply_item', $item);
+		$item->id = $DB->insert_record('apply_item', $item);
 
-        $templatefiles = $fs->get_area_files($s_context->id, 'mod_apply', 'template', $t_item->id, 'id', false);
-        if ($templatefiles) {
-            foreach ($templatefiles as $tfile) {
-                $file_record = new stdClass();
-                $file_record->contextid = $f_context->id;
-                $file_record->component = 'mod_apply';
-                $file_record->filearea = 'item';
-                $file_record->itemid = $item->id;
-                $fs->create_file_from_storedfile($file_record, $tfile);
-            }
-        }
+		$templatefiles = $fs->get_area_files($s_context->id, 'mod_apply', 'template', $t_item->id, 'id', false);
+		if ($templatefiles) {
+			foreach ($templatefiles as $tfile) {
+				$file_record = new stdClass();
+				$file_record->contextid = $f_context->id;
+				$file_record->component = 'mod_apply';
+				$file_record->filearea = 'item';
+				$file_record->itemid = $item->id;
+				$fs->create_file_from_storedfile($file_record, $tfile);
+			}
+		}
 
-        $itembackup[$t_item->id] = $item->id;
-        if ($item->dependitem) {
-            $dependitemsmap[$item->id] = $item->dependitem;
-        }
-    }
+		$itembackup[$t_item->id] = $item->id;
+		if ($item->dependitem) {
+			$dependitemsmap[$item->id] = $item->dependitem;
+		}
+	}
 
-    foreach ($dependitemsmap as $key => $dependitem) {
-        $newitem = $DB->get_record('apply_item', array('id'=>$key));
-        $newitem->dependitem = $itembackup[$newitem->dependitem];
-        $DB->update_record('apply_item', $newitem);
-    }
+	foreach ($dependitemsmap as $key => $dependitem) {
+		$newitem = $DB->get_record('apply_item', array('id'=>$key));
+		$newitem->dependitem = $itembackup[$newitem->dependitem];
+		$DB->update_record('apply_item', $newitem);
+	}
 }
 
 

@@ -39,14 +39,14 @@ class mod_apply_delete_template_form extends moodleform
 		// hidden elements
 		$mform->addElement('hidden', 'id');
 		$mform->setType('id', PARAM_INT);
-		$mform->addElement('hidden', 'deletetempl');
-		$mform->setType('deletetempl', PARAM_INT);
-		$mform->addElement('hidden', 'confirmdelete');
-		$mform->setType('confirmdelete', PARAM_INT);
+		$mform->addElement('hidden', 'delete_templ');
+		$mform->setType('delete_templ', PARAM_INT);
+		$mform->addElement('hidden', 'confirm_delete');
+		$mform->setType('confirm_delete', PARAM_INT);
 
 		//-------------------------------------------------------------------------------
 		// buttons
-		$this->add_action_buttons(true, get_string('yes'));
+		$this->add_action_buttons(true, get_string('yes_button', 'apply'));
 
 	}
 }
