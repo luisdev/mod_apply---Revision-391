@@ -189,11 +189,19 @@ if ($do_show=='view_one_entry' and $submit_id) {
 	$params = array('apply_id'=>$apply->id, 'user_id'=>$user_id, 'id'=>$submit_id);
 	$submit = $DB->get_record('apply_submit', $params); 
 
-	echo $OUTPUT->heading(format_text($apply->name));
-
-	$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
-	if (is_array($items)) {
-		require('entry_view.php');
+	if ($submit) {
+		echo $OUTPUT->heading(format_text($apply->name));
+		$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
+		if (is_array($items)) {
+			require('entry_view.php');
+			require('entry_button.php');
+		}
+	}
+	else {
+		echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 3);
+		echo '<div align="center">';
+		echo $OUTPUT->single_button($back_url->out(), get_string('back_button', 'apply'));
+		echo '</div>';
 	}
 }
 
