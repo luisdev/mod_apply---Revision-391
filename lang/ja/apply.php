@@ -67,6 +67,7 @@ $string['apply:edit_items'] = 'アイテムの編集';
 $string['apply:edit_templates'] = 'テンプレートの編集';
 $string['apply:preview'] = 'プレビュー';
 //
+/*
 $string['apply:addinstance'] = '新しい申請フォームを追加する';
 $string['apply:applies'] = '申請を提出する';
 $string['apply:createprivatetemplate'] = 'プライベートテンプレートを作成する';
@@ -77,6 +78,7 @@ $string['apply:mapcourse'] = 'コースをグローバル申請フォームに�
 $string['apply:receivemail'] = 'メール通知を受信する';
 $string['apply:viewanalysepage'] = '回答送信後，分析ページを表示する';
 $string['apply:viewreports'] = 'レポートを表示する';
+*/
 
 
 // Title
@@ -181,6 +183,7 @@ $string['operation_error_execd'] = '書類を受理しなければ，処理済�
 
 
 
+// Mail
 $string['emailteachermail'] = '{$a->username} が申請フォーム「 {$a->apply} 」を投稿しました．
 
 下記ページにて内容を閲覧できます:
@@ -190,6 +193,7 @@ $string['emailteachermailhtml'] = '{$a->username} が申請フォーム「 {$a->
 <a href="{$a->url}">このページ</a>で詳細を閲覧できます．';
 
 
+// Event
 $string['start'] = '開始';
 $string['started'] = '開始済み';
 $string['stop'] = '終了';
@@ -198,8 +202,24 @@ $string['subject'] = '件名';
 
 
 
+// Template
+$string['confirmdeletetemplate'] = '本当にこのテンプレートを削除してもよろしいですか?';
+$string['confirmusetemplate'] = '本当にこのテンプレートを使用しますか?';
+$string['creating_templates'] = 'これらの質問を新しいテンプレートとして保存する';
+$string['delete_template'] = 'テンプレートを削除する';
+$string['delete_templates'] = 'テンプレートを削除する ...';
+$string['no_templates_available_yet'] = 'テンプレートはまだ利用できません．';
+$string['save_as_new_template'] = '新しいテンプレートとして保存する';
+$string['template_saved'] = 'テンプレートが保存されました．';
+$string['use_this_template'] = 'このテンプレートを使用する';
+$string['using_templates'] = 'テンプレートの使用';
 
 
+
+
+
+
+/*
 $string['name_required'] = '名称を入力してください';
 //
 
@@ -431,3 +451,6 @@ $string['using_templates'] = 'テンプレートの使用';
 $string['vertical'] = '垂直';
 $string['viewcompleted'] = '完了済み申請フォーム';
 $string['viewcompleted_help'] = 'あなたはコースまたは質問により検索可能な完了済み申請フォームフォームを閲覧することができます．申請フォームの回答はExcelにエクスポートすることができます．';
+
+
+*/

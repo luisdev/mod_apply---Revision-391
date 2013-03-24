@@ -62,6 +62,7 @@ $string['apply:edit_items'] = 'Edit Items';
 $string['apply:edit_templates'] = 'Edit Templates';
 $string['apply:preview'] = 'Preview';
 //
+/*
 $string['apply:addinstance'] = 'Add a new apply';
 $string['apply:applies'] = 'issue a apply';
 $string['apply:createprivatetemplate'] = 'Create private template';
@@ -72,6 +73,7 @@ $string['apply:mapcourse'] = 'Map courses to global applys';
 $string['apply:receivemail'] = 'Receive email notification';
 $string['apply:viewanalysepage'] = 'View the analysis page after submit';
 $string['apply:viewreports'] = 'View reports';
+*/
 
 
 // Title
@@ -173,7 +175,7 @@ $string['operation_error_execd'] = 'When you do not accept entry, you can not ch
 
 
 
-
+// Mail
 $string['emailteachermail'] = '{$a->username} has submitted apply activity : \'{$a->apply}\'
 
 You can view it here:
@@ -183,6 +185,7 @@ $string['emailteachermailhtml'] = '{$a->username} has submitted apply activity :
 You can view it <a href="{$a->url}">here</a>.';
 
 
+// Event
 $string['start'] = 'Start';
 $string['started'] = 'started';
 $string['stop'] = 'End';
@@ -190,9 +193,23 @@ $string['subject'] = 'Subject';
 
 
 
+// Template
+$string['cannotsavetempl'] = 'saving templates is not allowed';
+$string['confirmdeletetemplate'] = 'Are you sure you want to delete this template?';
+$string['confirmusetemplate'] = 'Are you sure you want to use this template?';
+$string['creating_templates'] = 'Save these questions as a new template';
+$string['delete_template'] = 'Delete template';
+$string['delete_templates'] = 'Delete template...';
+$string['no_templates_available_yet'] = 'No templates available yet';
+$string['save_as_new_template'] = 'Save as new template';
+$string['template_saved'] = 'Template saved';
+$string['use_this_template'] = 'Use this template';
+$string['using_templates'] = 'Use a template';
 
-$string['template'] = 'Template';
 
+
+
+/*
 
 $string['name_required'] = 'Name required';
 
@@ -229,7 +246,6 @@ $string['average'] = 'Average';
 $string['bold'] = 'Bold';
 $string['cancel_moving'] = 'Cancel moving';
 $string['cannotmapapply'] = 'Database problem, unable to map apply to course';
-$string['cannotsavetempl'] = 'saving templates is not allowed';
 $string['cannotunmap'] = 'Database problem, unable to unmap';
 $string['captcha'] = 'Captcha';
 $string['captchanotset'] = 'Captcha hasn\'t been set.';
@@ -247,16 +263,11 @@ $string['confirm_rollback_entry'] = 'Are you sure you want to rollback this entr
 
 
 
-$string['confirmdeletetemplate'] = 'Are you sure you want to delete this template?';
-$string['confirmusetemplate'] = 'Are you sure you want to use this template?';
 $string['continue_the_form'] = 'Continue the form';
 $string['count_of_nums'] = 'Count of numbers';
 $string['courseid'] = 'courseid';
-$string['creating_templates'] = 'Save these questions as a new template';
 $string['delete_item'] = 'Delete question';
 $string['delete_old_items'] = 'Delete old items';
-$string['delete_template'] = 'Delete template';
-$string['delete_templates'] = 'Delete template...';
 $string['depending'] = 'Dependencies';
 $string['depending_help'] = 'It is possible to show an item depending on the value of another item.<br />
 <strong>Here is an example.</strong><br />
@@ -349,7 +360,6 @@ $string['non_respondents_students'] = 'non respondents students';
 $string['notavailable'] = 'this apply is not available';
 $string['not_completed_yet'] = 'Not completed yet';
 $string['not_started'] = 'not started';
-$string['no_templates_available_yet'] = 'No templates available yet';
 $string['not_selected'] = 'Not selected';
 $string['numeric'] = 'Numeric answer';
 $string['numeric_range_from'] = 'Range from';
@@ -388,7 +398,6 @@ $string['response_nr'] = 'Response number';
 $string['responses'] = 'Responses';
 $string['responsetime'] = 'Responsestime';
 $string['save_as_new_item'] = 'Save as new question';
-$string['save_as_new_template'] = 'Save as new template';
 $string['search_course'] = 'Search course';
 $string['searchcourses'] = 'Search courses';
 $string['searchcourses_help'] = 'Search for the code or name of the course(s) that you wish to associate with this apply.';
@@ -405,7 +414,6 @@ $string['sort_by_course'] = 'Sort by course';
 $string['switch_group'] = 'Switch group';
 $string['switch_item_to_not_required'] = 'switch to: answer not required';
 $string['switch_item_to_required'] = 'switch to: answer required';
-$string['template_saved'] = 'Template saved';
 $string['there_are_no_settings_for_recaptcha'] = 'There are no settings for captcha';
 
 
@@ -415,9 +423,10 @@ $string['url_for_continue'] = 'URL for continue-button';
 $string['url_for_continue_help'] = 'By default after a apply is submitted the target of the continue button is the course page. You can define here another target URL for this continue button.';
 $string['url_for_continue_button'] = 'URL for continue button';
 $string['use_one_line_for_each_value'] = '<br />Use one line for each answer!';
-$string['use_this_template'] = 'Use this template';
-$string['using_templates'] = 'Use a template';
 $string['vertical'] = 'vertical';
 $string['viewcompleted'] = 'completed applys';
 $string['viewcompleted_help'] = 'You may view completed apply forms, searchable by course and/or by question.
 Entry responses may be exported to Excel.';
+
+
+*/
