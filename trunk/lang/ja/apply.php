@@ -66,6 +66,7 @@ $string['apply:view'] = '概要';
 $string['apply:edit_items'] = 'アイテムの編集';
 $string['apply:edit_templates'] = 'テンプレートの編集';
 $string['apply:preview'] = 'プレビュー';
+$string['apply:delete_template'] = 'テンプレートの削除';
 //
 /*
 $string['apply:addinstance'] = '新しい申請フォームを追加する';
@@ -73,7 +74,6 @@ $string['apply:applies'] = '申請を提出する';
 $string['apply:createprivatetemplate'] = 'プライベートテンプレートを作成する';
 $string['apply:createpublictemplate'] = 'パブリックテンプレートを作成する';
 $string['apply:deletesubmissions'] = '完了した送信を削除する';
-$string['apply:deletetemplate'] = 'テンプレートを削除する';
 $string['apply:mapcourse'] = 'コースをグローバル申請フォームにマップする';
 $string['apply:receivemail'] = 'メール通知を受信する';
 $string['apply:viewanalysepage'] = '回答送信後，分析ページを表示する';
@@ -203,9 +203,10 @@ $string['subject'] = '件名';
 
 
 // Template
-$string['confirmdeletetemplate'] = '本当にこのテンプレートを削除してもよろしいですか?';
-$string['confirmusetemplate'] = '本当にこのテンプレートを使用しますか?';
-$string['creating_templates'] = 'これらの質問を新しいテンプレートとして保存する';
+$string['cannot_save_templ'] = 'テンプレートを保存することはできません';
+$string['confirm_delete_template'] = '本当にこのテンプレートを削除してもよろしいですか?';
+$string['confirm_use_template'] = '本当にこのテンプレートを使用しますか?';
+$string['creating_templates'] = 'これらの項目を新しいテンプレートとして保存する';
 $string['delete_template'] = 'テンプレートを削除する';
 $string['delete_templates'] = 'テンプレートを削除する ...';
 $string['no_templates_available_yet'] = 'テンプレートはまだ利用できません．';
@@ -214,12 +215,12 @@ $string['template_saved'] = 'テンプレートが保存されました．';
 $string['use_this_template'] = 'このテンプレートを使用する';
 $string['using_templates'] = 'テンプレートの使用';
 
+$string['import_templates'] = 'テンプレートをインポートする';
+$string['export_templates'] = 'テンプレートをエクスポートする';
 
 
 
 
-
-/*
 $string['name_required'] = '名称を入力してください';
 //
 
@@ -283,7 +284,6 @@ $string['confirmusetemplate'] = '本当にこのテンプレートを使用し�
 $string['continue_the_form'] = 'フォームを続ける';
 $string['count_of_nums'] = '桁数';
 $string['courseid'] = 'コースID';
-$string['creating_templates'] = 'これらの質問を新しいテンプレートとして保存する';
 $string['delete_item'] = '質問を削除する';
 $string['delete_old_items'] = '古いアイテムを削除する';
 $string['delete_template'] = 'テンプレートを削除する';
@@ -321,7 +321,6 @@ $string['dropdown_values'] = '回答';
 
 $string['drop_apply'] = 'このコースから削除する';
 $string['edit_item']  = '申請書を編集する';
-$string['export_questions'] = '質問をエクスポートする';
 $string['export_to_excel'] = 'Excelにエクスポートする';
 $string['apply_closes'] = '終了日時';
 
@@ -335,7 +334,6 @@ $string['handling_error'] = '申請フォーム処理中にエラーが発生し
 $string['hide_no_select_option'] = '「未選択」オプションを隠す';
 $string['horizontal'] = '水平';
 $string['importfromthisfile'] = 'このファイルからインポートする';
-$string['import_questions'] = '質問をインポートする';
 $string['import_successfully'] = '正常にインポートされました．';
 $string['info'] = '情報';
 $string['infotype'] = '情報タイプ';
@@ -452,5 +450,3 @@ $string['vertical'] = '垂直';
 $string['viewcompleted'] = '完了済み申請フォーム';
 $string['viewcompleted_help'] = 'あなたはコースまたは質問により検索可能な完了済み申請フォームフォームを閲覧することができます．申請フォームの回答はExcelにエクスポートすることができます．';
 
-
-*/

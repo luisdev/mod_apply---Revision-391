@@ -61,6 +61,7 @@ $string['apply:view'] = 'View a Apply';
 $string['apply:edit_items'] = 'Edit Items';
 $string['apply:edit_templates'] = 'Edit Templates';
 $string['apply:preview'] = 'Preview';
+$string['apply:delete_template'] = 'Delete template';
 //
 /*
 $string['apply:addinstance'] = 'Add a new apply';
@@ -68,7 +69,6 @@ $string['apply:applies'] = 'issue a apply';
 $string['apply:createprivatetemplate'] = 'Create private template';
 $string['apply:createpublictemplate'] = 'Create public template';
 $string['apply:deletesubmissions'] = 'Delete completed submissions';
-$string['apply:deletetemplate'] = 'Delete template';
 $string['apply:mapcourse'] = 'Map courses to global applys';
 $string['apply:receivemail'] = 'Receive email notification';
 $string['apply:viewanalysepage'] = 'View the analysis page after submit';
@@ -194,9 +194,9 @@ $string['subject'] = 'Subject';
 
 
 // Template
-$string['cannotsavetempl'] = 'saving templates is not allowed';
-$string['confirmdeletetemplate'] = 'Are you sure you want to delete this template?';
-$string['confirmusetemplate'] = 'Are you sure you want to use this template?';
+$string['cannot_save_templ'] = 'saving templates is not allowed';
+$string['confirm_delete_template'] = 'Are you sure you want to delete this template?';
+$string['confirm_use_template'] = 'Are you sure you want to use this template?';
 $string['creating_templates'] = 'Save these questions as a new template';
 $string['delete_template'] = 'Delete template';
 $string['delete_templates'] = 'Delete template...';
@@ -206,10 +206,11 @@ $string['template_saved'] = 'Template saved';
 $string['use_this_template'] = 'Use this template';
 $string['using_templates'] = 'Use a template';
 
+$string['import_templates'] = 'Import templates';
+$string['export_templates'] = 'Export templates';
 
 
 
-/*
 
 $string['name_required'] = 'Name required';
 
@@ -428,5 +429,3 @@ $string['viewcompleted'] = 'completed applys';
 $string['viewcompleted_help'] = 'You may view completed apply forms, searchable by course and/or by question.
 Entry responses may be exported to Excel.';
 
-
-*/
