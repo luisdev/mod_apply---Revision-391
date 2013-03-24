@@ -132,8 +132,9 @@ if ($student) {
 
 	// for admin
 	else {
-		if (($submit->class!=APPLY_CLASS_CANCEL or $submit->acked!=APPLY_ACKED_ACCEPT) and 
-			($submit->acked==APPLY_ACKED_NOTYET or $submit->execd==APPLY_EXECD_NOTYET)) {
+//		if (($submit->class!=APPLY_CLASS_CANCEL or $submit->execd!=APPLY_EXECD_DONE) and 
+//			($submit->acked==APPLY_ACKED_NOTYET or $submit->execd==APPLY_EXECD_NOTYET)) {
+		if ($submit->acked==APPLY_ACKED_NOTYET or $submit->execd==APPLY_EXECD_NOTYET) {
 			$operate_params = array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'courseid'=>$courseid);
 			$operate_url = new moodle_url($CFG->wwwroot.'/mod/apply/operate_submit.php', $operate_params);
 			$data[] = '<strong><a href="'.$operate_url->out().'">'.get_string('operate_submit', 'apply').'</a></strong>';

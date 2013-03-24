@@ -62,8 +62,10 @@ if (has_capability('mod/apply:edititems', $context)) {
     $editurl = new moodle_url('/mod/apply/edit.php', array('id'=>$used_id, 'do_show'=>'edit'));
     $row[] 	 = new tabobject('edit', $editurl->out(), get_string('edit_items', 'apply'));
 	//
+/*
     $templateurl = new moodle_url('/mod/apply/edit.php', array('id'=>$used_id, 'do_show'=>'templates'));
     $row[]		 = new tabobject('templates', $templateurl->out(), get_string('templates', 'apply'));
+*/
 }
 
 

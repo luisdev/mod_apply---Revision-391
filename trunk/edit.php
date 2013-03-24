@@ -188,11 +188,9 @@ $savereturn=isset($savereturn)?$savereturn:'';
 if ($savereturn == 'notsaved_name') {
 	echo '<p align="center"><b><font color="red">'.get_string('name_required', 'apply').'</font></b></p>';
 }
-
 if ($savereturn == 'saved') {
 	echo '<p align="center"><b><font color="green">'.get_string('template_saved', 'apply').'</font></b></p>';
 }
-
 if ($savereturn == 'failed') {
 	echo '<p align="center"><b><font color="red">'.get_string('saving_failed', 'apply').'</font></b></p>';
 }
@@ -212,7 +210,8 @@ if ($do_show=='templates') {
 		echo '<p><a href="'.$deleteurl->out().'">'.
 			 get_string('delete_templates', 'apply').
 			 '</a></p>';
-	} else {
+	}
+	else {
 		echo '&nbsp;';
 	}
 
@@ -290,7 +289,8 @@ if ($do_show=='edit') {
 			}
 			if ($applyitem->dependitem > 0) {
 				$dependstyle = ' apply_depend';
-			} else {
+			}
+			else {
 				$dependstyle = '';
 			}
 			echo $OUTPUT->box_start('apply_item_box_'.$align.$dependstyle);
@@ -362,7 +362,8 @@ if ($do_show=='edit') {
 				if ($applyitem->required == 1) {
 					$buttontitle = get_string('switch_item_to_not_required', 'apply');
 					$buttonimg = $OUTPUT->pix_url('required', 'apply');
-				} else {
+				}
+				else {
 					$buttontitle = get_string('switch_item_to_required', 'apply');
 					$buttonimg = $OUTPUT->pix_url('notrequired', 'apply');
 				}
@@ -393,7 +394,8 @@ if ($do_show=='edit') {
 			echo $OUTPUT->box_end();
 			if ($applyitem->typ != 'pagebreak') {
 				apply_print_item_preview($applyitem);
-			} else {
+			}
+			else {
 				echo $OUTPUT->box_start('apply_pagebreak');
 				echo get_string('pagebreak', 'apply').'<hr class="apply_pagebreak" />';
 				echo $OUTPUT->box_end();
@@ -415,9 +417,9 @@ if ($do_show=='edit') {
 			echo '<div class="clearer">&nbsp;</div>';
 		}
 		echo $OUTPUT->box_end();
-	} else {
-		echo $OUTPUT->box(get_string('no_items_available_yet', 'apply'),
-						 'generalbox boxaligncenter');
+	}
+	else {
+		echo $OUTPUT->box(get_string('no_items_available_yet', 'apply'), 'generalbox boxaligncenter');
 	}
 }
 echo $OUTPUT->box_end();
