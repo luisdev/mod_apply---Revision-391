@@ -1512,7 +1512,7 @@ function apply_send_email($cm, $apply, $course, $user_id)
 			$info = new stdClass();
 			$info->username = $printusername;
 			$info->apply = format_string($apply->name, true);
-			$info->url= $CFG->wwwroot.'/mod/apply/show_entries.php?id='.$cm->id.'&user_id='.$user_id.'&do_show=show_entries';
+			$info->url= $CFG->wwwroot.'/mod/apply/view_entries.php?id='.$cm->id.'&user_id='.$user_id.'&do_show=view_entries';
 
 			$postsubject = $submitted.': '.$info->username.' -> '.$apply->name;
 			$posttext = apply_send_email_text($info, $course);

@@ -61,7 +61,7 @@ $string['operate_submit_button'] = ' 操作 ';
 // Menu
 $string['apply:submit'] = '申請の提出';
 $string['apply:operate_submit'] = '認証操作';
-$string['apply:show_entries'] = '証明書の表示';
+$string['apply:view_entries'] = '証明書の表示';
 $string['apply:view'] = '概要';
 $string['apply:edit_items'] = 'アイテムの編集';
 $string['apply:edit_templates'] = 'テンプレートの編集';
@@ -90,7 +90,7 @@ $string['title_draft'] = '下書き';
 
 // tabs
 $string['overview'] = '概要';
-$string['show_entries'] = '申請書の表示';
+$string['view_entries'] = '申請書の表示';
 $string['edit_items'] = '申請項目の編集';
 $string['templates'] = 'テンプレート';
 
@@ -133,7 +133,7 @@ $string['rollback_entry'] = '取消';
 $string['operate_submit'] = '操作';
 
 
-// show_entries
+// view_entries
 $string['user_pic']   	 = '画像';
 $string['acked_notyet']  = '未処理';
 $string['acked_accept']  = '受理';

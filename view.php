@@ -104,7 +104,7 @@ if ((empty($cm->visible) and !$cap_view_hidden_activities)) {
 
 $heading_ttl = $apply->name;
 
-if ($do_show=='show_one_entry') {
+if ($do_show=='view_one_entry') {
 	$preview_img = $OUTPUT->pix_icon('t/preview', get_string('preview'));
 	$preview_url = $CFG->wwwroot.'/mod/apply/print.php?id='.$id.'&submit_id='.$submit_id.'&submit_ver='.$submit_ver;
 	$heading_ttl.= ' <a href="'.$preview_url.'">'.$preview_img.'</a>';
@@ -117,7 +117,7 @@ echo $OUTPUT->heading(get_string('description', 'apply'), 4);
 echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 echo format_module_intro('apply', $apply, $cm->id);
 
-require('view_info.php');
+require('period_info.php');
 
 echo $OUTPUT->box_end();
 
@@ -213,7 +213,7 @@ if ($do_show=='view') {
 
 ///////////////////////////////////////////////////////////////////////////
 //
-if ($do_show=='show_one_entry' and $submit_id) {
+if ($do_show=='view_one_entry' and $submit_id) {
 	$params = array('apply_id'=>$apply->id, 'user_id'=>$USER->id, 'id'=>$submit_id);
 	$submit = $DB->get_record('apply_submit', $params);
 
