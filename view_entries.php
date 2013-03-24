@@ -39,9 +39,7 @@ $show_all   = optional_param('show_all',  0, PARAM_INT);
 $perpage	= optional_param('perpage',   APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);  // how many per page
 
 $current_tab = $do_show;
-//
-$action_file = 'view_entries.php';
-$submit_file = 'submit.php';
+$this_action = 'view_entries';
 
 
 ////////////////////////////////////////////////////////
@@ -84,7 +82,7 @@ require_capability('mod/apply:viewreports', $context);
 $strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
-$base_url = new moodle_url('/mod/apply/'.$action_file);
+$base_url = new moodle_url('/mod/apply/'.$this_action.'.php');
 $base_url->params(array('id'=>$id, 'courseid'=>$courseid));
 //
 $this_url = new moodle_url($base_url);

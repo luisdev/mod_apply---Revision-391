@@ -17,9 +17,9 @@
 /**
  * print a printview of apply-items
  *
- * @author Andreas Grabs
+ * @author Fumi Iseki
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package apply
+ * @package mod_apply (modified from mod_feedback that by Andreas Grabs)
  */
 
 require_once('../../config.php');
@@ -30,6 +30,8 @@ $courseid   = optional_param('courseid', false, PARAM_INT);
 $submit_id  = optional_param('submit_id', 0, PARAM_INT);
 $submit_ver = optional_param('submit_ver', -1, PARAM_INT);
 $prv_action = optional_param('action', 'view', PARAM_ALPHAEXT);
+
+$this_action = 'preview';
 
 //
 if (! $cm = get_coursemodule_from_id('apply', $id)) {
