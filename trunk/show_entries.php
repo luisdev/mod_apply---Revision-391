@@ -103,8 +103,8 @@ require('tabs.php');
 if ($do_show=='show_entries') {
 	////////////////////////////////////////////////////////////
 	// Setup Table
-	$baseurl = new moodle_url('/mod/apply/show_entries.php');
-	$baseurl->params(array('id'=>$id, 'do_show'=>$do_show, 'show_all'=>$show_all, 'courseid'=>$courseid));
+	$base_url = new moodle_url('/mod/apply/show_entries.php');
+	$base_url->params(array('id'=>$id, 'do_show'=>$do_show, 'show_all'=>$show_all, 'courseid'=>$courseid));
 	$table = new flexible_table('apply-show_entry-list-'.$courseid);
     $matchcount = apply_get_valid_submits_count($cm->instance);
 	//
@@ -151,7 +151,7 @@ if ($do_show=='show_entries') {
 		}
 		$table->print_html();
 
-		$allurl = new moodle_url($baseurl);
+		$allurl = new moodle_url($base_url);
 		if ($show_all) {
 			$allurl->param('show_all', 0);
 			echo $OUTPUT->container(html_writer::link($allurl, get_string('show_perpage', 'apply', APPLY_DEFAULT_PAGE_COUNT)), array(), 'show_all');

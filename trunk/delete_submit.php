@@ -44,7 +44,7 @@ if (!$submit) {
 }
 
 //
-$PAGE->set_url('/mod/apply/delete_submit.php', array('id'=>$id, 'submit_id'=>$submit_id));
+$PAGE->set_url('/mod/apply/delete_submit.php', array('id'=>$id, 'submit_id'=>$submit_id, 'submit_ver'=>$submit_ver));
 
 if (! $cm = get_coursemodule_from_id('apply', $id)) {
     print_error('invalidcoursemodule');
