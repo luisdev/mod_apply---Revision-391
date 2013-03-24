@@ -56,7 +56,7 @@ $string['operate_submit_button'] = ' Operate ';
 // Menu
 $string['apply:submit'] = 'Submit a Entry';
 $string['apply:operate_submit'] = 'Operation of Entry';
-$string['apply:show_entries'] = 'List of Entries';
+$string['apply:view_entries'] = 'List of Entries';
 $string['apply:view'] = 'View a Apply';
 $string['apply:edit_items'] = 'Edit Items';
 $string['apply:edit_templates'] = 'Edit Templates';
@@ -85,7 +85,7 @@ $string['title_draft'] = 'Draft';
 
 // tabs
 $string['overview'] = 'Overview';
-$string['show_entries'] = 'Show Entries';
+$string['view_entries'] = 'Show Entries';
 $string['edit_items'] = 'Edit Items';
 $string['templates'] = 'Templates';
 
@@ -132,7 +132,7 @@ $string['operate_submit'] = 'Operate';
 
 
 
-// show_entries
+// view_entries
 $string['user_pic']  	 = 'Picture';
 $string['acked_notyet']  = 'Not Yet';
 $string['acked_accept']  = 'Accept';

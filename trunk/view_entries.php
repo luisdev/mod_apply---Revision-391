@@ -84,11 +84,11 @@ $req_own_data = false;
 $strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
-$back_params = array('id'=>$id, 'courseid'=>$courseid, 'do_show'=>'show_entries');
-$back_url = new moodle_url($CFG->wwwroot.'/mod/apply/show_entries.php', $back_params);
-$this_url = new moodle_url('/mod/apply/show_entries.php', array('id'=>$cm->id, 'do_show'=>$do_show));
+$back_params = array('id'=>$id, 'courseid'=>$courseid, 'do_show'=>'view_entries');
+$back_url = new moodle_url($CFG->wwwroot.'/mod/apply/view_entries.php', $back_params);
+$this_url = new moodle_url('/mod/apply/view_entries.php', array('id'=>$cm->id, 'do_show'=>$do_show));
 
-$PAGE->navbar->add(get_string('apply:show_entries', 'apply'));
+$PAGE->navbar->add(get_string('apply:view_entries', 'apply'));
 $PAGE->set_url($this_url);
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));
@@ -100,10 +100,10 @@ require('tabs.php');
 ///////////////////////////////////////////////////////////////////////////
 // Print the main part of the page
 
-if ($do_show=='show_entries') {
+if ($do_show=='view_entries') {
 	////////////////////////////////////////////////////////////
 	// Setup Table
-	$base_url = new moodle_url('/mod/apply/show_entries.php');
+	$base_url = new moodle_url('/mod/apply/view_entries.php');
 	$base_url->params(array('id'=>$id, 'do_show'=>$do_show, 'show_all'=>$show_all, 'courseid'=>$courseid));
 	$table = new flexible_table('apply-show_entry-list-'.$courseid);
     $matchcount = apply_get_valid_submits_count($cm->instance);
@@ -171,7 +171,7 @@ if ($do_show=='show_entries') {
 ///////////////////////////////////////////////////////////////////////////
 // Print the list of the given user
 
-if ($do_show=='show_one_entry' and $submit_id) {
+if ($do_show=='view_one_entry' and $submit_id) {
 	$params = array('apply_id'=>$apply->id, 'user_id'=>$user_id, 'id'=>$submit_id);
 	$submit = $DB->get_record('apply_submit', $params); 
 

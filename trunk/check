@@ -18,10 +18,10 @@ php -l mod_form.php
 php -l operate_submit.php
 php -l operate_submit_page.php
 php -l print.php
-php -l show_entries.php
+php -l view_entries.php
 php -l submit.php
 php -l submit_page.php
 php -l tabs.php
 php -l version.php
 php -l view.php
-php -l view_info.php
+php -l period_info.php

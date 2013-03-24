@@ -51,9 +51,9 @@ $row[] 	 = new tabobject('view', $viewurl->out(), get_string('overview', 'apply'
 
 // View all Report
 if (has_capability('mod/apply:viewreports', $context)) {
-    $url_params = array('id'=>$used_id, 'do_show'=>'show_entries');
-    $reporturl  = new moodle_url('/mod/apply/show_entries.php', $url_params);
-    $row[] 	    = new tabobject('show_entries', $reporturl->out(), get_string('show_entries', 'apply'));
+    $url_params = array('id'=>$used_id, 'do_show'=>'view_entries');
+    $reporturl  = new moodle_url('/mod/apply/view_entries.php', $url_params);
+    $row[] 	    = new tabobject('view_entries', $reporturl->out(), get_string('view_entries', 'apply'));
 }
 
 // Edit Item and Template
