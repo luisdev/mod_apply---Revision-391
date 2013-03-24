@@ -7,22 +7,42 @@ $string['add_item']  = '項目を追加する';
 $string['add_items'] = '項目を追加する';
 $string['add_pagebreak'] = '改ページを追加する';
 $string['adjustment'] = '表示方向';
+$string['apply:addinstance'] = '新しい申請フォームを追加する';
+$string['apply:applies'] = '申請を提出する';
+$string['apply:createprivatetemplate'] = 'プライベートテンプレートを作成する';
+$string['apply:createpublictemplate'] = 'パブリックテンプレートを作成する';
+$string['apply:delete_template'] = 'テンプレートの削除';
+$string['apply:deletesubmissions'] = '完了した送信を削除する';
+$string['apply:edit_items'] = 'アイテムの編集';
+$string['apply:edit_templates'] = 'テンプレートの編集';
+$string['apply:mapcourse'] = 'コースをグローバル申請フォームにマップする';
+$string['apply:operate_submit'] = '認証操作';
+$string['apply:preview'] = 'プレビュー';
+$string['apply:receivemail'] = 'メール通知を受信する';
+$string['apply:submit'] = '申請の提出';
+$string['apply:view'] = '概要';
+$string['apply:view_entries'] = '証明書の表示';
+$string['apply:viewanalysepage'] = '回答送信後，分析ページを表示する';
+$string['apply:viewreports'] = 'レポートを表示する';
+$string['apply_is_disable']  = '貴方はこの申請を行う事はできません';
 $string['apply_options'] = '申請フォームオプション';
 $string['average'] = '平均';
 $string['back_button'] = ' 戻る ';
-$string['cancel_entry'] = '解除';
-$string['cancel_entry_button'] = ' 解除 ';
+$string['cancel_entry'] = '取消';
+$string['cancel_entry_button'] = ' 取消 ';
 $string['cancel_moving'] = '移動をキャンセルする';
+$string['cannot_save_templ'] = 'テンプレートを保存することはできません';
 $string['captcha'] = 'Captcha';
-$string['class_cancel']  = '解除';
+$string['class_cancel']  = '取消';
 $string['class_draft']   = '下書き';
 $string['class_newpost'] = '新規';
 $string['class_update']  = '更新';
-$string['confirm_cancel_entry'] = '本当にこのエントリを解除してもよろしいですか?';
+$string['confirm_cancel_entry'] = '本当にこのエントリを取消してもよろしいですか?';
 $string['confirm_delete_entry'] = '本当にこのエントリを削除してもよろしいですか?';
 $string['confirm_delete_item'] = '本当にこの要素を削除してもよろしいですか?';
 $string['confirm_delete_template'] = '本当にこのテンプレートを削除してもよろしいですか?';
-$string['confirm_rollback_entry'] = '受け付け待ちエントリを取り消してもよろしいですか?';
+$string['confirm_rollback_entry'] = '受け付け待ちエントリを取り下げてもよろしいですか?';
+$string['confirm_use_template'] = '本当にこのテンプレートを使用しますか?';
 $string['count_of_nums'] = '桁数';
 $string['creating_templates'] = 'これらの項目を新しいテンプレートとして保存する';
 $string['delete_entry'] = '削除';
@@ -30,15 +50,41 @@ $string['delete_entry_button'] = ' 削除 ';
 $string['delete_item'] = '質問を削除する';
 $string['delete_template'] = 'テンプレートを削除する';
 $string['delete_templates'] = 'テンプレートを削除する ...';
+$string['depending'] = '依存関係';
+$string['depending_help'] = '依存アイテムを使用して他のアイテムの値に依存するアイテムを表示することができます．
+<br />
+<strong>以下，使用例です．</strong>
+<br />
+ <ul>
+ <li>最初に他のアイテムが値を依存することになるアイテムを作成してください．</li>
+<li>次に改ページ (Page break) を追加してください．</li>
+<li>そして，最初に作成したアイテムの値に依存するアイテムを追加してください．アイテム作成フォーム内の「依存アイテム」リストから依存アイテム，そして「依存値」テキストボックスに必要な
+値を入力してください．</li>
+</ul>
+<strong>構造は次のようになります:</strong>
+<ol>
+<li>Item Q: あなたは自動車を所有していますか? A: yes/no</li>
+<li>改ページ (Page break)</li>
+<li>Item Q: あなたの自動車の色は何色ですか?
+<br />
+(このアイテムはアイテム1の値=yesに依存します)</li>
+<li>Item Q: あなたはなぜ自動車を所有していないのですか?
+<br />
+ (このアイテムはアイテム1の値=noに依存します)</li>
+ <li>
+ ... 他のアイテム</li>
+</ol>';
 $string['dependitem'] = 'アイテムに依存する';
 $string['dependvalue'] = '値に依存する';
 $string['description'] = '説明';
 $string['do_not_analyse_empty_submits'] = '空の送信を無視する';
 $string['dropdown'] = '多肢選択 - 単一回答 (ドロップダウンリスト)';
+$string['edit_entry']   = '編集';
 $string['edit_entry_button'] = ' 編集 ';
 $string['edit_item']  = '申請書を編集する';
 $string['edit_items'] = '申請項目の編集';
 $string['email_notification'] = '通知メールを送信する';
+$string['email_notification_help'] = '有効にした場合，申請フォームの送信に関して管理者宛にメール通知されます';
 $string['emailteachermail'] = '{$a->username} が申請フォーム「 {$a->apply} 」を投稿しました．
 
 下記ページにて内容を閲覧できます:
@@ -51,6 +97,7 @@ $string['entry_saved'] = 'あなたの申請書が送信されました';
 $string['entry_saved_draft'] = 'あなたの申請書は下書きとして保存されました';
 $string['entry_saved_operation'] = 'リクエストは処理されました';
 $string['execd_done']	 = '処理済';
+$string['execd_done']    = '処理済';
 $string['execd_entry']  = '処理済';
 $string['execd_notyet']  = '未処理';
 $string['exist'] = '有り';
@@ -58,45 +105,58 @@ $string['export_templates'] = 'テンプレートをエクスポートする';
 $string['hide_no_select_option'] = '「未選択」オプションを隠す';
 $string['horizontal'] = '水平';
 $string['import_templates'] = 'テンプレートをインポートする';
+$string['info'] = '情報';
 $string['infotype'] = '情報タイプ';
 $string['item_label'] = 'ラベル';
 $string['item_name'] = '申請書の項目数';
 $string['items_are_required'] = 'アスタリスクが付けられた質問は必須回答です．';
+$string['label'] = 'ラベル';
 $string['maximal'] = '最大';
 $string['modulename'] = '申請フォーム';
+$string['modulename_help'] = '各種の簡単な申請書を作成し，ユーザに提出させることができます．';
 $string['modulenameplural'] = '申請フォーム';
 $string['move_here'] = 'ここに移動する';
 $string['move_item'] = 'この質問を移動する';
 $string['movedown_item'] = 'この質問を下げる';
 $string['moveup_item'] = 'この質問を上げる';
+$string['multichoice'] = '多肢選択';
+$string['multichoicerated'] = '多肢選択 (評定)';
 $string['multichoicetype'] = '多肢選択タイプ';
 $string['multiple_submit'] = '複数申請';
+$string['multiple_submit_help'] = 'ユーザは無制限で申請フォームを送信することができます';
 $string['name'] = '名称';
 $string['name_required'] = '名称を入力してください';
 $string['next_page_button'] = ' 次のページ ';
 $string['no_itemlabel'] = 'ラベルなし';
+$string['no_itemname'] = '無題';
 $string['no_items_available_yet'] = '質問はまだ設定されていません．';
 $string['no_submit_data'] = '指定されたデータは存在しません';
 $string['no_templates_available_yet'] = 'テンプレートはまだ利用できません．';
 $string['no_title'] = 'タイトルなし';
+$string['not_exist'] = '無し';
+$string['numeric'] = '数値回答';
 $string['numeric_range_from'] = '開始数値';
 $string['numeric_range_to'] = '終了数値';
 $string['only_one_captcha_allowed'] = '1申請フォームあたり，1つのCAPTCHAのみ許可されています．';
-$string['operate_submit'] = '操作';
+$string['operate_is_disable']  = '貴方はこの操作を行う事はできません';
+$string['operate_submit'] = '処理';
 $string['operate_submit_button'] = ' 処理 ';
-$string['operate_submit_button'] = ' 操作 ';
 $string['operation_error_execd'] = '書類を受理しなければ，処理済にすることはできません';
 $string['overview'] = '概要';
 $string['pagebreak'] = 'ページブレーク';
+$string['pluginadministration'] = '申請フォーム管理';
 $string['position'] = 'ポジション';
 $string['preview'] = 'プレビュー';
+$string['preview_help'] = 'このプレビューにて，あなたは質問の順番を変更することができます．';
 $string['previous_page_button'] = ' 前のページ ';
 $string['public'] = '公開';
 $string['reject_entry'] = '却下';
+$string['related_items_deleted'] = 'この問題に関する，すべてのユーザの回答も削除されます．';
 $string['required'] = '必須';
+$string['resetting_data'] = '申請フォームをリセットする';
 $string['responsetime'] = '回答時間';
-$string['rollback_entry'] = '取消';
-$string['rollback_entry_button'] = ' 取消 ';
+$string['rollback_entry'] = '取下げ';
+$string['rollback_entry_button'] = ' 取下げ ';
 $string['save_as_new_item'] = '新しい質問として保存する';
 $string['save_as_new_template'] = '新しいテンプレートとして保存する';
 $string['save_draft_button']  = ' 下書き保存 ';
@@ -106,21 +166,30 @@ $string['saving_failed'] = '保存に失敗しました';
 $string['saving_failed_because_missing_or_false_values'] = '値が入力されていないか，正しくないため，保存に失敗しました';
 $string['separator_decimal'] = '.';
 $string['separator_thousand'] = ',';
+$string['show_all'] = '{$a} 個のデータ全てを表示する';
+$string['show_perpage'] = '1ページあたりの表示数を {$a} にする';
 $string['start'] = '開始';
+$string['started'] = '開始済み';
 $string['stop'] = '終了';
+$string['subject'] = '件名';
 $string['submit_form_button'] = ' 新規申請 ';
+$string['submit_new_apply']   = '新規申請を行う';
 $string['submitted'] = '送信';
-$string['switch_item_to_not_required'] = '必須回答を解除する';
+$string['switch_item_to_not_required'] = '必須回答を取消する';
 $string['switch_item_to_required'] = '必須回答にする';
 $string['template_saved'] = 'テンプレートが保存されました．';
 $string['templates'] = 'テンプレート';
+$string['textarea'] = '長文回答';
 $string['textarea_height'] = '行数';
 $string['textarea_width'] = '幅';
+$string['textfield'] = '短文回答';
 $string['textfield_maxlength'] = '最大文字数';
 $string['textfield_size'] = 'テキストフィールド幅';
 $string['there_are_no_settings_for_recaptcha'] = 'CAPTCHAが設定されていません．';
 $string['time_close']  = '終了日時';
+$string['time_close_help'] = 'あなたはユーザが書類提出のため申請フォームにアクセスできないようになる日時を指定することができます．チェックボックスがチェックされない場合，制限は定義されません．';
 $string['time_open']   = '開始日時';
+$string['time_open_help']  = 'あなたはユーザが書類提出のため申請フォームにアクセスできるようになる日時を指定することができます．チェックボックスがチェックされない場合，制限は定義されません．';
 $string['title_ack']   = '受付';
 $string['title_check'] = 'チェック';
 $string['title_class'] = '区分';
@@ -128,13 +197,17 @@ $string['title_draft'] = '下書き';
 $string['title_exec']  = '処理';
 $string['title_title'] = 'タイトル';
 $string['title_version'] = 'Ver.';
+$string['update_entry'] = '更新';
 $string['update_entry_button'] = ' 更新 ';
 $string['update_item'] = '質問の変更を保存する';
 $string['use_calendar'] = 'カレンダーに登録';
+$string['use_calendar_help'] = '申請書の提出期間をカレンダーに登録できます';
+$string['use_item'] = '{$a} を使用する';
 $string['use_one_line_for_each_value'] = '<br />1行に1つの回答を入力してください!';
 $string['use_this_template'] = 'このテンプレートを使用する';
-$string['user_pic']   	 = '画像';
+$string['user_pic']      = '画像';
 $string['username_manage'] = 'ユーザ名管理';
+$string['username_manage_help'] = '表示される名前のパターンを選択できます';
 $string['using_templates'] = 'テンプレートの使用';
 $string['view_entries'] = '申請書の表示';
 $string['yes_button'] = ' はい ';

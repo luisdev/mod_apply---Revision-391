@@ -81,7 +81,7 @@ echo $OUTPUT->heading(format_text($apply->name));
 echo $OUTPUT->box_start('generalbox errorboxcontent boxaligncenter boxwidthnormal');
 echo $OUTPUT->heading(get_string('confirm_delete_item', 'apply'));
 
-print_string('relateditemsdeleted', 'apply');
+print_string('related_items_deleted', 'apply');
 
 $mform->display();
 echo $OUTPUT->box_end();
