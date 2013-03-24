@@ -1905,6 +1905,7 @@ function apply_items_from_template($apply, $template_id, $deleteold=false)
 
 
 
+
 function apply_get_template_list($course, $onlyownorpublic='') 
 {
 	global $DB;
