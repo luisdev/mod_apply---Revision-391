@@ -31,7 +31,7 @@ apply_init_session();
 //
 $id = required_param('id', PARAM_INT);
 $courseid   = optional_param('courseid', false, PARAM_INT);
-$perpage    = optional_param('perpage',   APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);
+$perpage    = optional_param('perpage', APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);
 $show_all   = optional_param('show_all',  0, PARAM_INT);
 $do_show    = optional_param('do_show', 'view', PARAM_ALPHAEXT);
 $submit_id  = optional_param('submit_id', 0, PARAM_INT);
@@ -65,7 +65,7 @@ $req_own_data = true;
 //
 require_login($course, true, $cm);
 
-$log_url = 'view.php?id='.$cm->id.'&do_show='.$dow_show.'&submit_id='.$submit_id.'$submit_ver='.$submit_ver;
+$log_url = 'view.php?id='.$cm->id.'&do_show='.$do_show.'&submit_id='.$submit_id.'$submit_ver='.$submit_ver;
 add_to_log($course->id, 'apply', 'view', $log_url, 'apply_id='.$apply->id);
 
 
@@ -102,10 +102,15 @@ if ((empty($cm->visible) and !$cap_view_hidden_activities)) {
 ///////////////////////////////////////////////////////////////////////////
 // Print the main part of the page
 
-$previewimg = $OUTPUT->pix_icon('t/preview', get_string('preview'));
-$previewlnk = '<a href="'.$CFG->wwwroot.'/mod/apply/print.php?id='.$id.'">'.$previewimg.'</a>';
+$heading_ttl = $apply->name;
 
-echo $OUTPUT->heading(format_text($apply->name.' '.$previewlnk));
+if ($do_show=='show_one_entry') {
+	$preview_img = $OUTPUT->pix_icon('t/preview', get_string('preview'));
+	$preview_url = $CFG->wwwroot.'/mod/apply/print.php?id='.$id.'&submit_id='.$submit_id.'&submit_ver='.$submit_ver;
+	$heading_ttl.= ' <a href="'.$preview_url.'">'.$preview_img.'</a>';
+}
+
+echo $OUTPUT->heading(format_text($heading_ttl));
 
 //show some infos to the apply
 echo $OUTPUT->heading(get_string('description', 'apply'), 4);
@@ -163,8 +168,8 @@ if ($do_show=='view') {
 	$submits = apply_get_all_submits($apply->id, $USER->id);
 	if ($submits) {
 		//
-		$baseurl = new moodle_url('/mod/apply/view.php');
-		$baseurl->params(array('id'=>$id, 'courseid'=>$courseid));
+		$base_url = new moodle_url('/mod/apply/view.php');
+		$base_url->params(array('id'=>$id, 'courseid'=>$courseid));
 		$table = new flexible_table('apply-view-list-'.$courseid);
 		$matchcount = apply_get_valid_submits_count($cm->instance);
 		//
@@ -191,14 +196,14 @@ if ($do_show=='view') {
 		}
 		$table->print_html();
 
-		$allurl = new moodle_url($baseurl);
+		$all_url = new moodle_url($base_url);
 		if ($show_all) {
-			$allurl->param('show_all', 0);
-			echo $OUTPUT->container(html_writer::link($allurl, get_string('show_perpage', 'apply', APPLY_DEFAULT_PAGE_COUNT)), array(), 'show_all');
+			$all_url->param('show_all', 0);
+			echo $OUTPUT->container(html_writer::link($all_url, get_string('show_perpage', 'apply', APPLY_DEFAULT_PAGE_COUNT)), array(), 'show_all');
 		}
 		else if ($matchcount>0 && $perpage<$matchcount) {
-			$allurl->param('show_all', 1);
-			echo $OUTPUT->container(html_writer::link($allurl, get_string('show_all', 'apply', $matchcount)), array(), 'show_all');
+			$all_url->param('show_all', 1);
+			echo $OUTPUT->container(html_writer::link($all_url, get_string('show_all', 'apply', $matchcount)), array(), 'show_all');
 		}
 
 		echo $OUTPUT->box_end();

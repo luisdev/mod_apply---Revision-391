@@ -27,7 +27,7 @@ else {
 //
 $table->define_columns($table_columns);
 $table->define_headers($table_headers);
-$table->define_baseurl($baseurl);
+$table->define_baseurl($base_url);
 
 if ($req_own_data) {
 	$table->sortable(true, 'time_modified', SORT_DESC);

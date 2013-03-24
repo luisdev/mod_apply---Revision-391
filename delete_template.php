@@ -80,10 +80,10 @@ $newformdata = array('id'=>$id, 'delete_templ'=>$delete_templ, 'confirmdelete'=>
 $mform->set_data($newformdata);
 $formdata = $mform->get_data();
 
-$deleteurl = new moodle_url('/mod/apply/delete_template.php', array('id'=>$id));
+$delete_url = new moodle_url('/mod/apply/delete_template.php', array('id'=>$id));
 
 if ($mform->is_cancelled()) {
-    redirect($deleteurl->out(false));
+    redirect($delete_url->out(false));
 }
 
 if (isset($formdata->confirmdelete) AND $formdata->confirmdelete == 1) {
@@ -96,7 +96,7 @@ if (isset($formdata->confirmdelete) AND $formdata->confirmdelete == 1) {
         require_capability('mod/apply:delete_template', $systemcontext);
     }
     apply_delete_template($template);
-    redirect($deleteurl->out(false));
+    redirect($delete_url->out(false));
 }
 
 
@@ -139,7 +139,7 @@ else {
 
         $tablecourse->define_columns($tablecolumns);
         $tablecourse->define_headers($tableheaders);
-        $tablecourse->define_baseurl($deleteurl);
+        $tablecourse->define_baseurl($delete_url);
         $tablecourse->column_style('action', 'width', '10%');
 
         $tablecourse->sortable(false);
@@ -150,7 +150,7 @@ else {
         foreach ($templates as $template) {
             $data = array();
             $data[] = $template->name;
-            $url = new moodle_url($deleteurl, array('id'=>$id, 'delete_templ'=>$template->id, 'should_delete'=>1,));
+            $url = new moodle_url($delete_url, array('id'=>$id, 'delete_templ'=>$template->id, 'should_delete'=>1,));
 
             $data[] = $OUTPUT->single_button($url, $strdeleteapply, 'post');
             $tablecourse->add_data($data);
@@ -175,7 +175,7 @@ else {
 
             $tablepublic->define_columns($tablecolumns);
             $tablepublic->define_headers($tableheaders);
-            $tablepublic->define_baseurl($deleteurl);
+            $tablepublic->define_baseurl($delet_eurl);
             $tablepublic->column_style('action', 'width', '10%');
 
             $tablepublic->sortable(false);
@@ -186,7 +186,7 @@ else {
             foreach ($templates as $template) {
                 $data = array();
                 $data[] = $template->name;
-                $url = new moodle_url($deleteurl, array('id'=>$id, 'delete_templ'=>$template->id, 'should_delete'=>1,));
+                $url = new moodle_url($delete_url, array('id'=>$id, 'delete_templ'=>$template->id, 'should_delete'=>1,));
 
                 $data[] = $OUTPUT->single_button($url, $strdeleteapply, 'post');
                 $tablepublic->add_data($data);
@@ -197,7 +197,7 @@ else {
     }
 
     echo $OUTPUT->box_start('boxaligncenter boxwidthnormal');
-    $url = new moodle_url($deleteurl, array('id'=>$id, 'cancel_delete'=>1,));
+    $url = new moodle_url($delete_url, array('id'=>$id, 'cancel_delete'=>1,));
 
     echo $OUTPUT->single_button($url, get_string('back'), 'post');
     echo $OUTPUT->box_end();
