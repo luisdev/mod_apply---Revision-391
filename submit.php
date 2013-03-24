@@ -130,7 +130,7 @@ echo $OUTPUT->header();
 ///////////////////////////////////////////////////////////////////////////
 // Check 2
 if ((empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities', $context))) {
-	notice(get_string("activityiscurrentlyhidden"));
+	notice(get_string('activityiscurrentlyhidden'));
 }
 
 if (!$apply->multiple_submit) {
