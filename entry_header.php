@@ -2,7 +2,6 @@
 
 // needs $req_own_data, $table, $courseid, $show_all, ....
 
-
 $title_ttl  = get_string('title_title',	 'apply');
 $title_date = get_string('date');
 $title_ver  = get_string('title_version','apply');

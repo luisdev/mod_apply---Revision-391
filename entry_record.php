@@ -2,6 +2,13 @@
 
 // need $req_own_data, $submit, $data, $name_pattern, $courseid, ...
 
+
+//
+if (!$req_own_data) {
+    require_capability('mod/apply:viewreports', $context);
+}
+
+
 $student = apply_get_user_info($submit->user_id);
 if ($student) {
 	if 		($name_pattern=='firstname') $user_name = $student->firstname;

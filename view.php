@@ -27,19 +27,26 @@ require_once('lib.php');
 require_once($CFG->libdir.'/tablelib.php');
 
 apply_init_session();
+$SESSION->apply->is_started = false;
 
 //
-$id = required_param('id', PARAM_INT);
-$courseid   = optional_param('courseid', false, PARAM_INT);
-$perpage    = optional_param('perpage', APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);
-$show_all   = optional_param('show_all',  0, PARAM_INT);
+$id 		= required_param('id', PARAM_INT);
 $do_show    = optional_param('do_show', 'view', PARAM_ALPHAEXT);
+$courseid   = optional_param('courseid', false, PARAM_INT);
 $submit_id  = optional_param('submit_id', 0, PARAM_INT);
 $submit_ver = optional_param('submit_ver', -1, PARAM_INT);
+$show_all   = optional_param('show_all',  0, PARAM_INT);
+$perpage    = optional_param('perpage', APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);
+$user_id 	= $USER->id;
 
 $current_tab = 'view';
+//
+$action_file = 'view.php';
+$submit_file = 'submit.php';
 
 
+////////////////////////////////////////////////////////
+//get the objects
 if (! $cm = get_coursemodule_from_id('apply', $id)) {
 	print_error('invalidcoursemodule');
 }
@@ -51,40 +58,44 @@ if (! $apply = $DB->get_record('apply', array('id'=>$cm->instance))) {
 }
 if (!$courseid) $courseid = $course->id;
 
-$SESSION->apply->is_started = false;
+$req_own_data = true;
+$name_pattern = $apply->name_pattern;
 $context = context_module::instance($cm->id);
 
+
+////////////////////////////////////////////////////////
+// Check
+require_login($course, true, $cm);
+//
 $apply_submit_cap = false;
 if (has_capability('mod/apply:submit', $context)) {
 	$apply_submit_cap = true;
 }
 
-$name_pattern = $apply->name_pattern;
-$req_own_data = true;
 
+///////////////////////////////////////////////////////////////////////////
+// URL
+$strapplys = get_string('modulenameplural', 'apply');
+$strapply  = get_string('modulename', 'apply');
+
+$base_url = new moodle_url('/mod/apply/'.$action_file);
+$base_url->params(array('id'=>$id, 'courseid'=>$courseid));
 //
-require_login($course, true, $cm);
+$this_url = new moodle_url($base_url);
+$back_url = new moodle_url($base_url);
+$this_url->params(array('do_show'=>$do_show, 'show_all'=>$show_all, 'submit_id'=>$submit_id, 'submit_ver'=>$submit_ver));
+$back_url->params(array('do_show'=>'view'));
 
-$log_url = 'view.php?id='.$cm->id.'&do_show='.$do_show.'&submit_id='.$submit_id.'$submit_ver='.$submit_ver;
-add_to_log($course->id, 'apply', 'view', $log_url, 'apply_id='.$apply->id);
+$log_url = explode('/', $this_url);
+add_to_log($course->id, 'apply', 'view', end($log_url), 'apply_id='.$apply->id);
 
 
 ///////////////////////////////////////////////////////////////////////////
 // Print the page header
-
-$strapplys = get_string('modulenameplural', 'apply');
-$strapply  = get_string('modulename', 'apply');
-
-//
-$back_params = array('id'=>$id, 'courseid'=>$courseid, 'do_show'=>'view');
-$back_url = new moodle_url($CFG->wwwroot.'/mod/apply/view.php', $back_params);
-$this_url = new moodle_url('/mod/apply/view.php', array('id'=>$cm->id, 'do_show'=>'view'));
-
 $PAGE->navbar->add(get_string('apply:view', 'apply'));
 $PAGE->set_url($this_url);
 $PAGE->set_title(format_string($apply->name));
 $PAGE->set_heading(format_string($course->fullname));
-
 echo $OUTPUT->header();
 
 require('tabs.php');
@@ -102,25 +113,13 @@ if ((empty($cm->visible) and !$cap_view_hidden_activities)) {
 ///////////////////////////////////////////////////////////////////////////
 // Print the main part of the page
 
-$heading_ttl = $apply->name;
-
-if ($do_show=='view_one_entry') {
-	$preview_img = $OUTPUT->pix_icon('t/preview', get_string('preview'));
-	$preview_url = $CFG->wwwroot.'/mod/apply/print.php?id='.$id.'&submit_id='.$submit_id.'&submit_ver='.$submit_ver;
-	$heading_ttl.= ' <a href="'.$preview_url.'">'.$preview_img.'</a>';
-}
-
-echo $OUTPUT->heading(format_text($heading_ttl));
-
-//show some infos to the apply
+echo $OUTPUT->heading(format_text($apply->name));
+//
 echo $OUTPUT->heading(get_string('description', 'apply'), 4);
 echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 echo format_module_intro('apply', $apply, $cm->id);
-
 require('period_info.php');
-
 echo $OUTPUT->box_end();
-
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -130,13 +129,11 @@ if (!$apply_submit_cap) {
 	exit;
 }
 
-$continue_link = $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$courseid);
-//
 $apply_can_submit = true;
 if (!$apply->multiple_submit) {
 	if (apply_get_valid_submits_count($apply->id, $USER->id)>0) {
 		$apply_can_submit = false;
-		apply_print_messagebox('apply_is_already_submitted', $continue_link);
+		apply_print_messagebox('apply_is_already_submitted', $back_url->out());
 	}
 }
 
@@ -146,15 +143,16 @@ if ($apply_can_submit) {
 	$apply_is_not_open =  $apply->time_open>$checktime;
 	$apply_is_closed   = ($apply->time_close<$checktime and $apply->time_close>0);
 	if ($apply_is_not_open or $apply_is_closed) {
-		if ($apply_is_not_open) apply_print_messagebox('apply_is_not_open', $continue_link);
-		else					apply_print_messagebox('apply_is_closed',   $continue_link);
+		if ($apply_is_not_open) apply_print_messagebox('apply_is_not_open', $back_url->out());
+		else					apply_print_messagebox('apply_is_closed',   $back_url->out());
 		$apply_can_submit = false;
 	}
 }
 
-//
+
+///////////////////////////////////////////////////////////////////////////
+// 新規登録
 if ($apply_can_submit) {
-	$submit_file = 'submit.php';
 	$url_params  = array('id'=>$id, 'courseid'=>$courseid, 'go_page'=>0);
 	$submit_url  = new moodle_url('/mod/apply/'.$submit_file, $url_params);
 	$submit_link = '<div align="center">'.$OUTPUT->single_button($submit_url->out(), get_string('submit_form_button', 'apply')).'</div>';
@@ -163,13 +161,11 @@ if ($apply_can_submit) {
 
 
 ///////////////////////////////////////////////////////////////////////////
-//
+// リスト表示
 if ($do_show=='view') {
 	$submits = apply_get_all_submits($apply->id, $USER->id);
 	if ($submits) {
 		//
-		$base_url = new moodle_url('/mod/apply/view.php');
-		$base_url->params(array('id'=>$id, 'courseid'=>$courseid));
 		$table = new flexible_table('apply-view-list-'.$courseid);
 		$matchcount = apply_get_valid_submits_count($cm->instance);
 		//
@@ -212,13 +208,12 @@ if ($do_show=='view') {
 
 
 ///////////////////////////////////////////////////////////////////////////
-//
+// エントリ内容の表示
 if ($do_show=='view_one_entry' and $submit_id) {
 	$params = array('apply_id'=>$apply->id, 'user_id'=>$USER->id, 'id'=>$submit_id);
 	$submit = $DB->get_record('apply_submit', $params);
 
 	echo '<br />';
-
 	if ($submit) {
 		$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
 		if (is_array($items)) {
