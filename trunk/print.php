@@ -26,25 +26,46 @@ require_once('../../config.php');
 require_once('lib.php');
 
 $id = required_param('id', PARAM_INT);
+$courseid   = optional_param('courseid', false, PARAM_INT);
+$submit_id  = optional_param('submit_id', 0, PARAM_INT);
+$submit_ver = optional_param('submit_ver', -1, PARAM_INT);
+$prv_action = optional_param('action', 'view', PARAM_ALPHAEXT);
 
-$PAGE->set_url('/mod/apply/print.php', array('id'=>$id));
-
+//
 if (! $cm = get_coursemodule_from_id('apply', $id)) {
     print_error('invalidcoursemodule');
 }
-if (! $course = $DB->get_record("course", array("id"=>$cm->course))) {
+if (! $course = $DB->get_record('course', array("id"=>$cm->course))) {
     print_error('coursemisconf');
 }
-if (! $apply = $DB->get_record("apply", array("id"=>$cm->instance))) {
+if (! $apply = $DB->get_record('apply', array("id"=>$cm->instance))) {
     print_error('invalidcoursemodule');
 }
+if (!$courseid) $courseid = $course->id;
 
 $context = context_module::instance($cm->id);
+$name_pattern = $apply->name_pattern;
+
 
 require_login($course, true, $cm);
-
 require_capability('mod/apply:view', $context);
+
+
+$PAGE->set_url('/mod/apply/print.php', array('id'=>$id));
 $PAGE->set_pagelayout('embedded');
+
+$back_params = array('id'=>$id, 'courseid'=>$courseid, 'do_show'=>'view_one_entry', 'submit_id'=>$submit_id, 'submit_ver'=>$submit_ver);
+if ($do_show=='view_one_entry') {
+	$back_url = new moodle_url($CFG->wwwroot.'/mod/apply/view_entries.php', $back_params);
+}
+else {
+	$back_url = new moodle_url($CFG->wwwroot.'/mod/apply/view.php', $back_params);
+}
+
+
+
+
+
 
 /// Print the page header
 $strapplys = get_string('modulenameplural', 'apply');
@@ -56,11 +77,28 @@ $PAGE->navbar->add(format_string($apply->name));
 
 $PAGE->set_title(format_string($apply->name));
 $PAGE->set_heading(format_string($course->fullname));
+
 echo $OUTPUT->header();
+echo $OUTPUT->heading(format_text($apply->name));
+echo '<br />';
+
+$submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
+if ($submit) {
+	$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
+	if (is_array($items)) {
+		if ($submit_ver==-1 and apply_exist_draft_values($submit->id)) $submit_ver = 0;
+		require('entry_view.php');
+	}
+}
+
+
+
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////
 /// Print the main part of the page
-echo $OUTPUT->heading(format_text($apply->name));
 
 $applyitems = $DB->get_records('apply_item', array('apply_id'=>$apply->id), 'position');
 echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');

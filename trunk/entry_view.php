@@ -2,9 +2,13 @@
 
 // needs $submit, $items, $name_pattern, $user
 
+if (!$req_own_data) {
+    require_capability('mod/apply:viewreports', $context);
+}
+
 if ($submit) {
 	//
-	$align   = right_to_left() ? 'right' : 'left';
+//	$align   = right_to_left() ? 'right' : 'left';
 	$student = $DB->get_record('user', array('id'=>$submit->user_id));
 
 	if 		($name_pattern=='firstname') $user_name = $student->firstname;
@@ -12,11 +16,15 @@ if ($submit) {
 	else								 $user_name = fullname($student); 
 
 	$title = $user_name.' ('.userdate($submit->time_modified, '%Y/%m/%d %H:%M').')';
-	if 		($submit->class==APPLY_CLASS_DRAFT)  $title .= ' '.get_string('class_draft', 'apply');
-	else if ($submit->class==APPLY_CLASS_CANCEL) $title .= ' '.get_string('class_cancel', 'apply');
+	if 		($submit->class==APPLY_CLASS_DRAFT)  $title .= '&nbsp;<font color="#e22">'.get_string('class_draft', 'apply').'</font>';
+	else if ($submit->class==APPLY_CLASS_CANCEL) $title .= '&nbsp;<font color="#e22">'.get_string('class_cancel','apply').'</font>';
 
+	$preview_img = $OUTPUT->pix_icon('t/preview', get_string('preview'));
+	$preview_url = $CFG->wwwroot.'/mod/apply/print.php?id='.$id.'&submit_id='.$submit_id.'&submit_ver='.$submit_ver;
+	$title .= '&nbsp;&nbsp;<a href="'.$preview_url.'">'.$preview_img.'</a>';
 
-	echo $OUTPUT->heading($title, 3);
+	echo $OUTPUT->heading(format_text($title), 3);
+
 	//
 	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 	foreach ($items as $item) {

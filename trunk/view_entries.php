@@ -29,17 +29,19 @@ require_once($CFG->libdir.'/tablelib.php');
 
 ////////////////////////////////////////////////////////
 //get the params
-$id		    = required_param('id', PARAM_INT);
-$do_show    = required_param('do_show',   PARAM_ALPHAEXT);
-$user_id    = optional_param('user_id',   0, PARAM_INT);
+$id			= required_param('id', PARAM_INT);
+$do_show	= required_param('do_show',   PARAM_ALPHAEXT);
+$courseid   = optional_param('courseid',  0, PARAM_INT);
+$user_id	= optional_param('user_id',   0, PARAM_INT);
 $submit_id  = optional_param('submit_id', 0, PARAM_INT);
 $submit_ver = optional_param('submit_ver', -1, PARAM_INT);
-$courseid   = optional_param('courseid',  0, PARAM_INT);
-
-$perpage    = optional_param('perpage',   APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);  // how many per page
 $show_all   = optional_param('show_all',  0, PARAM_INT);
+$perpage	= optional_param('perpage',   APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);  // how many per page
 
 $current_tab = $do_show;
+//
+$action_file = 'view_entries.php';
+$submit_file = 'submit.php';
 
 
 ////////////////////////////////////////////////////////
@@ -55,7 +57,8 @@ if (! $apply = $DB->get_record('apply', array('id'=>$cm->instance))) {
 }
 if (!$courseid) $courseid = $course->id;
 
-//
+$req_own_data = false;
+$name_pattern = $apply->name_pattern;
 $context = context_module::instance($cm->id);
 
 
@@ -75,19 +78,26 @@ if ($formdata) {
 
 require_capability('mod/apply:viewreports', $context);
 
-$name_pattern = $apply->name_pattern;
-$req_own_data = false;
+
+///////////////////////////////////////////////////////////////////////////
+// URL
+$strapplys = get_string('modulenameplural', 'apply');
+$strapply  = get_string('modulename', 'apply');
+
+$base_url = new moodle_url('/mod/apply/'.$action_file);
+$base_url->params(array('id'=>$id, 'courseid'=>$courseid));
+//
+$this_url = new moodle_url($base_url);
+$back_url = new moodle_url($base_url);
+$this_url->params(array('do_show'=>$do_show, 'show_all'=>$show_all, 'submit_id'=>$submit_id, 'submit_ver'=>$submit_ver));
+$back_url->params(array('do_show'=>'view_entries'));
+
+$log_url = explode('/', $this_url);
+add_to_log($course->id, 'apply', 'view_entries', end($log_url), 'apply_id='.$apply->id);
 
 
 ////////////////////////////////////////////////////////
 /// Print the page header
-$strapplys = get_string('modulenameplural', 'apply');
-$strapply  = get_string('modulename', 'apply');
-
-$back_params = array('id'=>$id, 'courseid'=>$courseid, 'do_show'=>'view_entries');
-$back_url = new moodle_url($CFG->wwwroot.'/mod/apply/view_entries.php', $back_params);
-$this_url = new moodle_url('/mod/apply/view_entries.php', array('id'=>$cm->id, 'do_show'=>$do_show));
-
 $PAGE->navbar->add(get_string('apply:view_entries', 'apply'));
 $PAGE->set_url($this_url);
 $PAGE->set_heading(format_string($course->fullname));
@@ -96,6 +106,15 @@ echo $OUTPUT->header();
 
 require('tabs.php');
 
+//
+$cap_view_hidden_activities = has_capability('moodle/course:viewhiddenactivities', $context);
+if ((empty($cm->visible) and !$cap_view_hidden_activities)) {
+	notice(get_string('activityiscurrentlyhidden'));
+}
+if ((empty($cm->visible) and !$cap_view_hidden_activities)) {
+	notice(get_string('activityiscurrentlyhidden'));
+}
+
 
 ///////////////////////////////////////////////////////////////////////////
 // Print the main part of the page
@@ -103,17 +122,14 @@ require('tabs.php');
 if ($do_show=='view_entries') {
 	////////////////////////////////////////////////////////////
 	// Setup Table
-	$base_url = new moodle_url('/mod/apply/view_entries.php');
-	$base_url->params(array('id'=>$id, 'do_show'=>$do_show, 'show_all'=>$show_all, 'courseid'=>$courseid));
 	$table = new flexible_table('apply-show_entry-list-'.$courseid);
-    $matchcount = apply_get_valid_submits_count($cm->instance);
+	$matchcount = apply_get_valid_submits_count($cm->instance);
 	//
 	require('entry_header.php');
 	//
 	echo $OUTPUT->box_start('mdl-align');
 	echo '<h2>'.$apply->name.'</h2>';
 	echo $OUTPUT->box_end();
-
 
 	///////////////////////////////////////////////////////////////////////
 	//
