@@ -30,7 +30,7 @@ require_once($CFG->libdir.'/tablelib.php');
 ////////////////////////////////////////////////////////
 //get the params
 $id			= required_param('id', PARAM_INT);
-$do_show	= required_param('do_show',   PARAM_ALPHAEXT);
+$do_show	= optional_param('do_show', 'view_entries', PARAM_ALPHAEXT);
 $courseid   = optional_param('courseid',  0, PARAM_INT);
 $user_id	= optional_param('user_id',   0, PARAM_INT);
 $submit_id  = optional_param('submit_id', 0, PARAM_INT);

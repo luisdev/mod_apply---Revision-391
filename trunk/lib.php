@@ -22,13 +22,9 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-/*
-*/
 
 
-/** Include eventslib.php */
 require_once($CFG->libdir.'/eventslib.php');
-/** Include calendar/lib.php */
 require_once($CFG->dirroot.'/calendar/lib.php');
 //
 
@@ -329,6 +325,7 @@ function apply_get_depend_candidates_for_item($apply, $item)
 
 
 
+/*
 function apply_create_item($data)
 {
 	global $DB;
@@ -336,7 +333,7 @@ function apply_create_item($data)
 	$item = new stdClass();
 	$item->apply_id = $data->apply_id;
 
-	$item->template=0;
+	$item->template = 0;
 	if (isset($data->templateid)) {
 		$item->template = intval($data->templateid);
 	}
@@ -372,6 +369,7 @@ function apply_create_item($data)
 
 	return $itemobj->postupdate($data);
 }
+*/
 
 
 
@@ -611,25 +609,6 @@ function apply_print_item_show_value($item, $value=false)
 	$itemobj->print_item_show_value($item, $value);
 }
 
-
-
-function apply_get_template_list($course, $onlyownorpublic='') 
-{
-	global $DB;
-
-	switch($onlyownorpublic) {
-		case '':
-			$templates = $DB->get_records_select('apply_template', 'course = ? OR ispublic=1', array($course->id), 'name');
-			break;
-		case 'own':
-			$templates = $DB->get_records('apply_template', array('course'=>$course->id), 'name'); 
-			break;
-		case 'public':
-			$templates = $DB->get_records('apply_template', array('ispublic'=>1), 'name');
-			break;
-	}
-	return $templates;
-}
 
 
 
@@ -1682,31 +1661,16 @@ function apply_print_one_initials_bar($table, $alpha, $current, $class, $title, 
 
 
 
-/*
-function apply_get_primary_sort($table_sorts, $post_sort)
-{
-	if (!$post_sort)   return '';
-	if (!$table_sorts) return $post_sort;
 
-
-	$tsorts = explode(',', $table_sorts);
-	if (!$tsorts) return '';
-
-	foreach ($tsorts as $tsort) {
-		if (!strncmp($tsort, $post_sort, strlen($post_sort))) {
-			return $tsort;
-		}	
-	}
-}
-*/
-
-
+///////////////////////////////////////////////////////////////////////////////////
+//
+// Event
+//
 
 function apply_set_events($apply)
 {
     global $DB;
 
-    // adding the apply to the eventtable (I have seen this at quiz-module)
     $DB->delete_records('event', array('modulename'=>'apply', 'instance'=>$apply->id));
 
 	if (!$apply->use_calendar) return;
@@ -1756,4 +1720,207 @@ function apply_set_events($apply)
         calendar_event::create($event);
     }
 }
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+//
+// Template
+//
+
+function apply_create_template($courseid, $name, $ispublic=0) 
+{
+    global $DB;
+
+    $templ = new stdClass();
+    $templ->course   = ($ispublic ? 0 : $courseid);
+    $templ->name     = $name;
+    $templ->ispublic = $ispublic;
+
+    $templ_id = $DB->insert_record('apply_template', $templ);
+    $newtempl = $DB->get_record('apply_template', array('id'=>$templ_id));
+
+    return $newtempl;
+}
+
+
+
+function apply_save_as_template($apply, $name, $ispublic=0)
+{
+    global $DB;
+    $fs = get_file_storage();
+
+    if (!$applyitems = $DB->get_records('apply_item', array('apply'=>$apply->id))) {
+        return false;
+    }
+
+    if (!$newtempl = apply_create_template($apply->course, $name, $ispublic)) {
+        return false;
+    }
+
+    if ($ispublic) {
+        $s_context = get_system_context();
+    }
+	else {
+        $s_context = context_course::instance($newtempl->course);
+    }
+    $cm = get_coursemodule_from_instance('apply', $apply->id);
+    $f_context = context_module::instance($cm->id);
+
+    $dependitemsmap = array();
+    $itembackup = array();
+
+	//
+    foreach ($applyitems as $item) {
+        $t_item = clone($item);
+        unset($t_item->id);
+        $t_item->apply = 0;
+        $t_item->template     = $newtempl->id;
+        $t_item->id = $DB->insert_record('apply_item', $t_item);
+        $itemfiles = $fs->get_area_files($f_context->id, 'mod_apply', 'item', $item->id, 'id', false);
+		//
+        if ($itemfiles) {
+            foreach ($itemfiles as $ifile) {
+                $file_record = new stdClass();
+                $file_record->contextid = $s_context->id;
+                $file_record->component = 'mod_apply';
+                $file_record->filearea = 'template';
+                $file_record->itemid = $t_item->id;
+                $fs->create_file_from_storedfile($file_record, $ifile);
+            }
+        }
+
+        $itembackup[$item->id] = $t_item->id;
+        if ($t_item->dependitem) {
+            $dependitemsmap[$t_item->id] = $t_item->dependitem;
+        }
+
+    }
+
+    foreach ($dependitemsmap as $key=>$dependitem) {
+        $newitem = $DB->get_record('apply_item', array('id'=>$key));
+        $newitem->dependitem = $itembackup[$newitem->dependitem];
+        $DB->update_record('apply_item', $newitem);
+    }
+
+    return true;
+}
+
+
+
+function apply_delete_template($template)
+{
+    global $DB;
+
+    if ($t_items = $DB->get_records('apply_item', array('template'=>$template->id))) {
+        foreach ($t_items as $t_item) {
+            apply_delete_item($t_item->id, false, $template);
+        }
+    }
+    $DB->delete_records('apply_template', array('id'=>$template->id));
+}
+
+
+
+function apply_items_from_template($apply, $template_id, $deleteold=false)
+{
+    global $DB, $CFG;
+
+    $fs = get_file_storage();
+
+    if (!$template = $DB->get_record('apply_template', array('id'=>$template_id))) {
+        return false;
+    }
+    if (!$templitems = $DB->get_records('apply_item', array('template'=>$template_id))) {
+        return false;
+    }
+
+    if ($template->ispublic) {
+        $s_context = get_system_context();
+    }
+	else {
+        $s_context = context_course::instance($apply->course);
+    }
+	//
+    $course = $DB->get_record('course', array('id'=>$apply->course));
+    $cm = get_coursemodule_from_instance('apply', $apply->id);
+    $f_context = context_module::instance($cm->id);
+
+    if ($deleteold) {
+        if ($applyitems = $DB->get_records('apply_item', array('apply_id'=>$apply->id))) {
+            foreach ($applyitems as $item) {
+                apply_delete_item($item->id, false);
+            }
+
+            $params = array('apply_id'=>$apply->id);
+            if ($submits = $DB->get_records('apply_submit', $params)) {
+                foreach ($submits as $submit) {
+                    $DB->delete_records('apply_submit', array('id'=>$submit->id));
+                }
+            }
+        }
+        $positionoffset = 0;
+    }
+	else {
+        $positionoffset = $DB->count_records('apply_item', array('apply'=>$apply->id));
+    }
+
+    $dependitemsmap = array();
+    $itembackup = array();
+	//
+    foreach ($templitems as $t_item) {
+        $item = clone($t_item);
+        unset($item->id);
+        $item->apply = $apply->id;
+        $item->template = 0;
+        $item->position = $item->position + $positionoffset;
+
+        $item->id = $DB->insert_record('apply_item', $item);
+
+        $templatefiles = $fs->get_area_files($s_context->id, 'mod_apply', 'template', $t_item->id, 'id', false);
+        if ($templatefiles) {
+            foreach ($templatefiles as $tfile) {
+                $file_record = new stdClass();
+                $file_record->contextid = $f_context->id;
+                $file_record->component = 'mod_apply';
+                $file_record->filearea = 'item';
+                $file_record->itemid = $item->id;
+                $fs->create_file_from_storedfile($file_record, $tfile);
+            }
+        }
+
+        $itembackup[$t_item->id] = $item->id;
+        if ($item->dependitem) {
+            $dependitemsmap[$item->id] = $item->dependitem;
+        }
+    }
+
+    foreach ($dependitemsmap as $key => $dependitem) {
+        $newitem = $DB->get_record('apply_item', array('id'=>$key));
+        $newitem->dependitem = $itembackup[$newitem->dependitem];
+        $DB->update_record('apply_item', $newitem);
+    }
+}
+
+
+
+function apply_get_template_list($course, $onlyownorpublic='') 
+{
+	global $DB;
+
+	switch($onlyownorpublic) {
+		case '':
+			$templates = $DB->get_records_select('apply_template', 'course = ? OR ispublic=1', array($course->id), 'name');
+			break;
+		case 'own':
+			$templates = $DB->get_records('apply_template', array('course'=>$course->id), 'name'); 
+			break;
+		case 'public':
+			$templates = $DB->get_records('apply_template', array('ispublic'=>1), 'name');
+			break;
+	}
+	return $templates;
+}
+
 
