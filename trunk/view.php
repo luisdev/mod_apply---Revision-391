@@ -31,12 +31,12 @@ $SESSION->apply->is_started = false;
 
 //
 $id 		= required_param('id', PARAM_INT);
-$do_show    = optional_param('do_show', 'view', PARAM_ALPHAEXT);
+$do_show	= optional_param('do_show', 'view', PARAM_ALPHAEXT);
 $courseid   = optional_param('courseid', false, PARAM_INT);
 $submit_id  = optional_param('submit_id', 0, PARAM_INT);
 $submit_ver = optional_param('submit_ver', -1, PARAM_INT);
 $show_all   = optional_param('show_all',  0, PARAM_INT);
-$perpage    = optional_param('perpage', APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);
+$perpage	= optional_param('perpage', APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);
 $user_id 	= $USER->id;
 
 $current_tab = 'view';
@@ -215,19 +215,16 @@ if ($do_show=='view_one_entry' and $submit_id) {
 	if ($submit) {
 		$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
 		if (is_array($items)) {
-            if ($submit_ver==-1 and apply_exist_draft_values($submit->id)) $submit_ver = 0;
+			if ($submit_ver==-1 and apply_exist_draft_values($submit->id)) $submit_ver = 0;
 			require('entry_view.php');
+			require('entry_button.php');
 		}
 	}
 	else {
 		echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 3);
-
-        $back_label = get_string('back_button', 'apply');
-        $back_url   = new moodle_url($url, array('do_show'=>'view'));
-        //
-        echo '<div align="center">';
-        echo $OUTPUT->single_button($back_url, $back_label);
-       	echo '</div>';
+		echo '<div align="center">';
+		echo $OUTPUT->single_button($back_url->out(), get_string('back_button', 'apply'));
+	   	echo '</div>';
 	}
 }
 

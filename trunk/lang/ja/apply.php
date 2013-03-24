@@ -65,6 +65,7 @@ $string['apply:view_entries'] = '証明書の表示';
 $string['apply:view'] = '概要';
 $string['apply:edit_items'] = 'アイテムの編集';
 $string['apply:edit_templates'] = 'テンプレートの編集';
+$string['apply:preview'] = 'プレビュー';
 //
 $string['apply:addinstance'] = '新しい申請フォームを追加する';
 $string['apply:applies'] = '申請を提出する';

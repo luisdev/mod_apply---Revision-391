@@ -60,6 +60,7 @@ $string['apply:view_entries'] = 'List of Entries';
 $string['apply:view'] = 'View a Apply';
 $string['apply:edit_items'] = 'Edit Items';
 $string['apply:edit_templates'] = 'Edit Templates';
+$string['apply:preview'] = 'Preview';
 //
 $string['apply:addinstance'] = 'Add a new apply';
 $string['apply:applies'] = 'issue a apply';
