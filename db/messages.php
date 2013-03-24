@@ -15,19 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Apply version information
- *
- * @package    mod
- * @subpackage apply 
- * @author     Fumi Iseki
- * @license    GPL
- * @attention  modified from mod_feedback that by Andreas Grabs
+ * @package mod_apply
  */
 
-defined('MOODLE_INTERNAL') || die();
+$messageproviders = array (
 
-$module->version   = 2013032400;    // The current module version (Date: YYYYMMDDXX)
-$module->requires  = 2012112900;    // Requires this Moodle version
-$module->component = 'mod_apply';   // Full name of the plugin (used for diagnostics)
-$module->cron      = 0;
+/// Submitting a apply
+    'submission' => array (
+    ),
+/// Message to nonrespondents
+    'message' => array (
+    )
 
+);

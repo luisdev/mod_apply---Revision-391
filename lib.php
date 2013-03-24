@@ -27,10 +27,10 @@ defined('MOODLE_INTERNAL') || die;
 
 
 /** Include eventslib.php */
-//require_once($CFG->libdir.'/eventslib.php');
+require_once($CFG->libdir.'/eventslib.php');
 /** Include calendar/lib.php */
-//require_once($CFG->dirroot.'/calendar/lib.php');
-					//
+require_once($CFG->dirroot.'/calendar/lib.php');
+//
 
 define('APPLY_TITLE_TAG',	'title');
 define('APPLY_NODISP_TAG',	'nodisp');
@@ -97,7 +97,7 @@ function apply_add_instance($apply)
 	$apply->id = $apply_id;
 
 	// Calendar
-	//apply_set_events($apply);
+	apply_set_events($apply);
 
 	if (!isset($apply->coursemodule)) {
 		$cm = get_coursemodule_from_id('apply', $apply->id);
@@ -125,7 +125,7 @@ function apply_update_instance($apply)
 		$apply->time_close = 0;
 	}
 
-//	apply_set_events($apply);
+	apply_set_events($apply);
 
 	$DB->update_record('apply', $apply);
 
@@ -1699,3 +1699,61 @@ function apply_get_primary_sort($table_sorts, $post_sort)
 	}
 }
 */
+
+
+
+function apply_set_events($apply)
+{
+    global $DB;
+
+    // adding the apply to the eventtable (I have seen this at quiz-module)
+    $DB->delete_records('event', array('modulename'=>'apply', 'instance'=>$apply->id));
+
+	if (!$apply->use_calendar) return;
+
+    if (!isset($apply->coursemodule)) {
+        $cm = get_coursemodule_from_id('apply', $apply->id);
+        $apply->coursemodule = $cm->id;
+    }
+
+    // the open-event
+    if ($apply->time_open > 0) {
+        $event = new stdClass();
+        $event->name         = get_string('start', 'apply').' '.$apply->name;
+        $event->description  = format_module_intro('apply', $apply, $apply->coursemodule);
+        $event->courseid     = $apply->course;
+        $event->groupid      = 0;
+        $event->userid       = 0;
+        $event->modulename   = 'apply';
+        $event->instance     = $apply->id;
+        $event->eventtype    = 'open';
+        $event->timestart    = $apply->time_open;
+        $event->visible      = instance_is_visible('apply', $apply);
+        if ($apply->time_close > 0) {
+            $event->timeduration = ($apply->time_close - $apply->time_open);
+        } else {
+            $event->timeduration = 0;
+        }
+
+        calendar_event::create($event);
+    }
+
+    // the close-event
+    if ($apply->time_close > 0) {
+        $event = new stdClass();
+        $event->name         = get_string('stop', 'apply').' '.$apply->name;
+        $event->description  = format_module_intro('apply', $apply, $apply->coursemodule);
+        $event->courseid     = $apply->course;
+        $event->groupid      = 0;
+        $event->userid       = 0;
+        $event->modulename   = 'apply';
+        $event->instance     = $apply->id;
+        $event->eventtype    = 'close';
+        $event->timestart    = $apply->time_close;
+        $event->visible      = instance_is_visible('apply', $apply);
+        $event->timeduration = 0;
+
+        calendar_event::create($event);
+    }
+}
+
