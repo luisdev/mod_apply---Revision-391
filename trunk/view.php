@@ -40,9 +40,7 @@ $perpage    = optional_param('perpage', APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);
 $user_id 	= $USER->id;
 
 $current_tab = 'view';
-//
-$action_file = 'view.php';
-$submit_file = 'submit.php';
+$this_action = 'view';
 
 
 ////////////////////////////////////////////////////////
@@ -78,7 +76,7 @@ if (has_capability('mod/apply:submit', $context)) {
 $strapplys = get_string('modulenameplural', 'apply');
 $strapply  = get_string('modulename', 'apply');
 
-$base_url = new moodle_url('/mod/apply/'.$action_file);
+$base_url = new moodle_url('/mod/apply/'.$this_action.'.php');
 $base_url->params(array('id'=>$id, 'courseid'=>$courseid));
 //
 $this_url = new moodle_url($base_url);
@@ -154,7 +152,7 @@ if ($apply_can_submit) {
 // 新規登録
 if ($apply_can_submit) {
 	$url_params  = array('id'=>$id, 'courseid'=>$courseid, 'go_page'=>0);
-	$submit_url  = new moodle_url('/mod/apply/'.$submit_file, $url_params);
+	$submit_url  = new moodle_url('/mod/apply/submit.php', $url_params);
 	$submit_link = '<div align="center">'.$OUTPUT->single_button($submit_url->out(), get_string('submit_form_button', 'apply')).'</div>';
 	apply_print_messagebox('submit_new_apply', $submit_link, 'green');
 }

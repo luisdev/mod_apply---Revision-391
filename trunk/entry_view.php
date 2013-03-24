@@ -1,8 +1,8 @@
 <?php
 
-// needs $submit, $items, $name_pattern, $user
+// needs  $submit, $items, $name_pattern, $user
 
-if (!$req_own_data) {
+if ($submit->id!=$USER->id) {
     require_capability('mod/apply:viewreports', $context);
 }
 
@@ -18,10 +18,13 @@ if ($submit) {
 	$title = $user_name.' ('.userdate($submit->time_modified, '%Y/%m/%d %H:%M').')';
 	if 		($submit->class==APPLY_CLASS_DRAFT)  $title .= '&nbsp;<font color="#e22">'.get_string('class_draft', 'apply').'</font>';
 	else if ($submit->class==APPLY_CLASS_CANCEL) $title .= '&nbsp;<font color="#e22">'.get_string('class_cancel','apply').'</font>';
-
-	$preview_img = $OUTPUT->pix_icon('t/preview', get_string('preview'));
-	$preview_url = $CFG->wwwroot.'/mod/apply/print.php?id='.$id.'&submit_id='.$submit_id.'&submit_ver='.$submit_ver;
-	$title .= '&nbsp;&nbsp;<a href="'.$preview_url.'">'.$preview_img.'</a>';
+	//
+	if ($this_action!='print') {
+		$preview_img = $OUTPUT->pix_icon('t/preview', get_string('preview'));
+		$preview_url = new moodle_url('/mod/apply/print.php');
+		$preview_url->params(array('id'=>$cm->id, 'submit_id'=>$submit_id, 'submit_ver'=>$submit_ver, 'action'=>$this_action));
+		$title .= '&nbsp;&nbsp;<a href="'.$preview_url->out().'">'.$preview_img.'</a>';
+	}
 
 	echo $OUTPUT->heading(format_text($title), 3);
 
