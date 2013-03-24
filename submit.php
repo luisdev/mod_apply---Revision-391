@@ -176,7 +176,8 @@ if ($prev_values) {
 		$submit_id = apply_save_draft_values($apply->id, $submit_id, $user_id);	// save to draft
 
 		if ($submit_id) {
-			add_to_log($courseid, 'apply', 'start_apply', 'mod/apply/view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
+			$log_url = 'submit.php?id='.$cm->id.'&apply_id='.$apply_id.'&submit_id='.$submit_id.'$submit_ver='.$submit_ver;
+			add_to_log($courseid, 'apply', 'submit', $log_url, 'draft');
 			if ($go_next_page or $go_prev_page) $save_return = 'page';
 			else 								$prev_values = false;
 			if ($save_draft) $save_return = 'draft';
@@ -204,7 +205,9 @@ if ($save_values and !$save_draft and !$prev_values) {
 
 	if ($submit_id) {
 		$save_return = 'saved';
-		add_to_log($courseid, 'apply', 'submit', 'mod/apply/view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
+		$log_url = 'submit.php?id='.$cm->id.'&apply_id='.$apply_id.'&submit_id='.$submit_id.'$submit_ver='.$submit_ver;
+		add_to_log($courseid, 'apply', 'submit', $log_url, 'submit');
+		//
 		apply_send_email($cm, $apply, $course, $user_id);
 	}
 	else {

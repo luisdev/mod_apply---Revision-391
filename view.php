@@ -64,7 +64,9 @@ $req_own_data = true;
 
 //
 require_login($course, true, $cm);
-add_to_log($course->id, 'apply', 'view', 'mod/apply/view.php?id='.$cm->id, $apply->id, $cm->id);
+
+$log_url = 'view.php?id='.$cm->id.'&do_show='.$dow_show.'&submit_id='.$submit_id.'$submit_ver='.$submit_ver;
+add_to_log($course->id, 'apply', 'view', $log_url, 'apply_id='.$apply->id);
 
 
 ///////////////////////////////////////////////////////////////////////////

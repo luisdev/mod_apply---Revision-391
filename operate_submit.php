@@ -147,7 +147,9 @@ if ($operate=='operate' and $sbmtted) {
 		if ($operate=='operate') {
 			$ret = apply_operate_submit($submit->id, $submit->version, $accept, $execd);
 			if ($ret) {
-				add_to_log($courseid, 'apply', "operate $accept $execd", 'mode/apply/view.php?id='.$cm->id, $apply->id, $cm->id, $user_id);
+				$log_url  = 'operate_submit.php?id='.$cm->id.'&submit_id='.$submit_id.'&submit_ver='.$submit_ver;
+				$log_info = 'accept='.$accept.' exec='.$execd;
+				add_to_log($courseid, 'apply', 'operate_submit', $log_url, $log_info);
 				//
 				echo '<div align="center">';
 				echo '<strong><font color="green">';

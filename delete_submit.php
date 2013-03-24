@@ -29,7 +29,6 @@ require_once('delete_submit_form.php');
 
 $id 		= required_param('id', PARAM_INT);
 $submit_id 	= required_param('submit_id', PARAM_INT);
-
 $submit_ver = optional_param('submit_ver', -1, PARAM_INT);
 $return 	= optional_param('return',  'entries', PARAM_ALPHAEXT);
 $courseid 	= optional_param('courseid', false, PARAM_INT);
@@ -86,20 +85,21 @@ if ($mform->is_cancelled()) {
 if (isset($formdata->confirmdelete) and $formdata->confirmdelete==1) {
     if ($submit = $DB->get_record('apply_submit', array('id'=>$submit_id))) {
 		//
+		$log_url = 'delete_submit.php?id='.$cm->id.'&submit_id='.$submit_id.'&submit_ver='.$submit_ver;
 		if ($submit->version<=1 and $submit->acked!=APPLY_ACKED_ACCEPT) {
 			// 全体を削除可能
         	apply_delete_submit_safe($submit_id);
-        	add_to_log($course->id, 'apply', 'delete',   'mod/apply/view.php?id='.$cm->id, $apply->id, $submit_id);
+        	add_to_log($course_id, 'apply', 'delete_submit', $log_url, 'delete');
 		}
 		else if ($submit->acked!=APPLY_ACKED_ACCEPT) {
 			// 最新の申請（未認証）のみ取消可能（ロールバック）
         	apply_rollback_submit($submit_id);
-        	add_to_log($course->id, 'apply', 'rollback', 'mod/apply/view.php?id='.$cm->id, $apply->id, $submit_id);
+        	add_to_log($course_id, 'apply', 'delete_submit', $log_url, 'rollback');
 		}
 		else {
 			// 申請の解除
         	apply_cancel_submit($submit_id);
-        	add_to_log($course->id, 'apply', 'cancel',   'mod/apply/view.php?id='.$cm->id, $apply->id, $submit_id);
+        	add_to_log($course_id, 'apply', 'delete_submit', $log_url, 'cancel');
 		}
 
         redirect('view.php?id='.$id.'&do_show=view');
