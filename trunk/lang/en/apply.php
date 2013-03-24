@@ -174,6 +174,20 @@ $string['operation_error_execd'] = 'When you do not accept entry, you can not ch
 
 
 
+$string['emailteachermail'] = '{$a->username} has submitted apply activity : \'{$a->apply}\'
+
+You can view it here:
+
+{$a->url}';
+$string['emailteachermailhtml'] = '{$a->username} has submitted apply activity : <i>\'{$a->apply}\'</i><br /><br />
+You can view it <a href="{$a->url}">here</a>.';
+
+
+$string['start'] = 'Start';
+$string['started'] = 'started';
+$string['stop'] = 'End';
+$string['subject'] = 'Subject';
+
 
 
 
@@ -270,13 +284,6 @@ $string['dropdownrated'] = 'Dropdownlist (rated)';
 $string['dropdown_values'] = 'Answers';
 $string['drop_apply'] = 'Remove from this course';
 $string['edit_item'] = 'Edit question';
-$string['emailteachermail'] = '{$a->username} has completed apply activity : \'{$a->apply}\'
-
-You can view it here:
-
-{$a->url}';
-$string['emailteachermailhtml'] = '{$a->username} has completed apply activity : <i>\'{$a->apply}\'</i><br /><br />
-You can view it <a href="{$a->url}">here</a>.';
 $string['export_questions'] = 'Export questions';
 $string['export_to_excel'] = 'Export to Excel';
 
@@ -395,10 +402,6 @@ $string['show_entry'] = 'Show response';
 $string['show_nonrespondents'] = 'Show non-respondents';
 $string['site_after_submit'] = 'Site after submit';
 $string['sort_by_course'] = 'Sort by course';
-$string['start'] = 'Start';
-$string['started'] = 'started';
-$string['stop'] = 'End';
-$string['subject'] = 'Subject';
 $string['switch_group'] = 'Switch group';
 $string['switch_item_to_not_required'] = 'switch to: answer not required';
 $string['switch_item_to_required'] = 'switch to: answer required';

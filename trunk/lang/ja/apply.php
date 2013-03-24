@@ -181,6 +181,22 @@ $string['operation_error_execd'] = '書類を受理しなければ，処理済�
 
 
 
+$string['emailteachermail'] = '{$a->username} が申請フォーム「 {$a->apply} 」を投稿しました．
+
+下記ページにて内容を閲覧できます:
+
+{$a->url}';
+$string['emailteachermailhtml'] = '{$a->username} が申請フォーム「 {$a->apply} 」を投稿しました．<br /><br />
+<a href="{$a->url}">このページ</a>で詳細を閲覧できます．';
+
+
+$string['start'] = '開始';
+$string['started'] = '開始済み';
+$string['stop'] = '終了';
+$string['subject'] = '件名';
+
+
+
 
 
 
@@ -282,22 +298,16 @@ $string['dropdown'] = '多肢選択 - 単一回答 (ドロップダウンリス�
 $string['dropdownlist'] = '多肢選択 - 単一回答 (ドロップダウン)';
 $string['dropdownrated'] = 'ドロップダウンリスト (評定)';
 $string['dropdown_values'] = '回答';
+
 $string['drop_apply'] = 'このコースから削除する';
 $string['edit_item']  = '申請書を編集する';
-$string['emailteachermail'] = '{$a->username} が申請フォーム「 {$a->apply} 」を完了しました．
-
-下記ページにて内容を閲覧できます:
-
-{$a->url}';
-$string['emailteachermailhtml'] = '{$a->username} が申請フォーム「 {$a->apply} 」を完了しました．<br /><br />
-<a href="{$a->url}">このページ</a>で詳細を閲覧できます．';
 $string['export_questions'] = '質問をエクスポートする';
 $string['export_to_excel'] = 'Excelにエクスポートする';
 $string['apply_closes'] = '終了日時';
 
 //
 
-$string['apply_is_not_for_anonymous'] = '匿名ユーザは，申請フォームを利用できません．';
+//$string['apply_is_not_for_anonymous'] = '匿名ユーザは，申請フォームを利用できません．';
 $string['apply_opens'] = '開始日時';
 $string['file'] = 'ファイル';
 $string['filter_by_course'] = 'コースでフィルタする';
@@ -404,10 +414,6 @@ $string['show_entry'] = '申請を表示する';
 $string['show_nonrespondents'] = '未回答者を表示する';
 $string['site_after_submit'] = '回答送信後のサイト';
 $string['sort_by_course'] = 'コース名で並び替える';
-$string['start'] = '開始';
-$string['started'] = '開始済み';
-$string['stop'] = '終了';
-$string['subject'] = '件名';
 $string['switch_group'] = 'グループを切り替える';
 $string['switch_item_to_not_required'] = '必須回答を解除する';
 $string['switch_item_to_required'] = '必須回答にする';
