@@ -377,6 +377,10 @@ function apply_update_item($item)
 {
 	global $DB;
 
+	if ($item->label==APPLY_ADMIN_TAG) {
+		$item->required = 0;
+	}
+
 	return $DB->update_record('apply_item', $item);
 }
 
@@ -463,6 +467,8 @@ function apply_delete_all_items($apply_id)
 function apply_switch_item_required($item)
 {
 	global $DB;
+
+	if ($item->label==APPLY_ADMIN_TAG) return false;
 
 	$itemobj = apply_get_item_class($item->typ);
 
@@ -1729,6 +1735,7 @@ function apply_set_events($apply)
 // Template
 //
 
+/*
 function apply_create_template($courseid, $name, $ispublic=0) 
 {
 	global $DB;
@@ -1901,7 +1908,7 @@ function apply_items_from_template($apply, $template_id, $deleteold=false)
 		$DB->update_record('apply_item', $newitem);
 	}
 }
-
+*/
 
 
 
