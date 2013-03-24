@@ -11,17 +11,20 @@ div.missingrequire {
 	background:#FFAAAA;
 }
 
+div.entry_view {
+}
+
 span.apply_info {
 	font-weight:bold;
 }
 
 table.entry_info {
-	line-height: 30%;
+	line-height: 50%;
 	font-weight:bold;
 }
 
 table.operation_submit {
-	line-height: 30%;
+	line-height: 50%;
 	font-weight:bold;
 }
 

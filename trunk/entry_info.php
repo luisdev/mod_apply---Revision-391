@@ -47,7 +47,7 @@ if ($submit) {
 	}
 
 	echo '<br />';
-	echo '<table border="0" class="entry_info">';
+	echo '<table border="1" class="entry_info">';
 	echo '<tr>';
 	echo '<td>'.get_string('title_ack', 'apply').': </td>';
 	echo '<td>'.$acked_str.'</td>';

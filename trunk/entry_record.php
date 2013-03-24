@@ -4,7 +4,7 @@
 
 
 //
-if (!$req_own_data or $submit->id!=$USER->id) {
+if (!$req_own_data or $submit->user_id!=$USER->id) {
     require_capability('mod/apply:viewreports', $context);
 }
 
