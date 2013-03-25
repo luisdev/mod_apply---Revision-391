@@ -1,4 +1,27 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Strings for component 'apply', language 'en', branch 'MOODLE_20_STABLE'
+ *
+ * @package   mod_apply
+ * @copyright Fumi.Iseki http://www.nsl.tuis.ac.jp, 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 $string['accept_entry'] = 'accept';
 $string['acked_accept']  = 'Accept';
 $string['acked_notyet']  = 'Not Yet';
@@ -12,7 +35,7 @@ $string['apply:applies'] = 'issue a apply';
 $string['apply:createprivatetemplate'] = 'Create private template';
 $string['apply:createpublictemplate'] = 'Create public template';
 $string['apply:delete_template'] = 'Delete template';
-$string['apply:deletesubmissions'] = 'Delete completed submissions';
+$string['apply:deletesubmissions'] = 'Delete submissions';
 $string['apply:edit_items'] = 'Edit Items';
 $string['apply:edit_templates'] = 'Edit Templates';
 $string['apply:mapcourse'] = 'Map courses to global applys';
@@ -38,16 +61,16 @@ $string['class_draft']   = 'Draft';
 $string['class_newpost'] = 'New Post';
 $string['class_update']  = 'Update';
 $string['confirm_cancel_entry'] = 'Are you sure you want to cancel this entry?';
-$string['confirm_delete_entry'] = 'Are you sure you want to delete this entry?';
+$string['confirm_delete_entry'] = 'Are you sure you want to cancel this entry?';
 $string['confirm_delete_item'] = 'Are you sure you want to delete this element?';
 $string['confirm_delete_template'] = 'Are you sure you want to delete this template?';
 $string['confirm_rollback_entry'] = 'Are you sure you want to rollback this entry?';
 $string['confirm_use_template'] = 'Are you sure you want to use this template?';
 $string['count_of_nums'] = 'Count of numbers';
 $string['creating_templates'] = 'Save these questions as a new template';
-$string['delete_entry'] = 'Delete';
-$string['delete_entry_button'] = ' Delete ';
-$string['delete_item'] = 'Delete question';
+$string['delete_entry'] = 'Cancel';
+$string['delete_entry_button'] = ' Cancel ';
+$string['delete_item'] = 'Delete item';
 $string['delete_template'] = 'Delete template';
 $string['delete_templates'] = 'Delete template...';
 $string['depending'] = 'Dependencies';

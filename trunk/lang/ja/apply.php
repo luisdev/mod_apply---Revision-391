@@ -1,4 +1,27 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Strings for component 'apply', language 'en', branch 'MOODLE_20_STABLE'
+ *
+ * @package   mod_apply
+ * @copyright Fumi.Iseki http://www.nsl.tuis.ac.jp, 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 $string['accept_entry'] = '受理';
 $string['acked_accept']  = '受理';
 $string['acked_notyet']  = '未処理';
@@ -12,7 +35,7 @@ $string['apply:applies'] = '申請を提出する';
 $string['apply:createprivatetemplate'] = 'プライベートテンプレートを作成する';
 $string['apply:createpublictemplate'] = 'パブリックテンプレートを作成する';
 $string['apply:delete_template'] = 'テンプレートの削除';
-$string['apply:deletesubmissions'] = '完了した送信を削除する';
+$string['apply:deletesubmissions'] = '書類の削除';
 $string['apply:edit_items'] = 'アイテムの編集';
 $string['apply:edit_templates'] = 'テンプレートの編集';
 $string['apply:mapcourse'] = 'コースをグローバル申請フォームにマップする';
@@ -38,16 +61,16 @@ $string['class_draft']   = '下書き';
 $string['class_newpost'] = '新規';
 $string['class_update']  = '更新';
 $string['confirm_cancel_entry'] = '本当にこのエントリを取消してもよろしいですか?';
-$string['confirm_delete_entry'] = '本当にこのエントリを削除してもよろしいですか?';
+$string['confirm_delete_entry'] = '本当にこのエントリを取消してもよろしいですか?';
 $string['confirm_delete_item'] = '本当にこの要素を削除してもよろしいですか?';
 $string['confirm_delete_template'] = '本当にこのテンプレートを削除してもよろしいですか?';
 $string['confirm_rollback_entry'] = '受け付け待ちエントリを取り下げてもよろしいですか?';
 $string['confirm_use_template'] = '本当にこのテンプレートを使用しますか?';
 $string['count_of_nums'] = '桁数';
 $string['creating_templates'] = 'これらの項目を新しいテンプレートとして保存する';
-$string['delete_entry'] = '削除';
-$string['delete_entry_button'] = ' 削除 ';
-$string['delete_item'] = '質問を削除する';
+$string['delete_entry'] = '取消';
+$string['delete_entry_button'] = ' 取消 ';
+$string['delete_item'] = '項目を削除する';
 $string['delete_template'] = 'テンプレートを削除する';
 $string['delete_templates'] = 'テンプレートを削除する ...';
 $string['depending'] = '依存関係';
@@ -151,7 +174,7 @@ $string['preview_help'] = 'このプレビューにて，あなたは質問の�
 $string['previous_page_button'] = ' 前のページ ';
 $string['public'] = '公開';
 $string['reject_entry'] = '却下';
-$string['related_items_deleted'] = 'この問題に関する，すべてのユーザの回答も削除されます．';
+$string['related_items_deleted'] = 'この問題に関する，すべてのユーザの申請も削除されます．';
 $string['required'] = '必須';
 $string['resetting_data'] = '申請フォームをリセットする';
 $string['responsetime'] = '回答時間';
