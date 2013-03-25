@@ -18,7 +18,7 @@
  * Strings for component 'apply', language 'en', branch 'MOODLE_20_STABLE'
  *
  * @package   mod_apply
- * @copyright Fumi.Iseki http://www.nsl.tuis.ac.jp, 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @copyright Fumi.Iseki {@link http://www.nsl.tuis.ac.jp}, 1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -56,6 +56,8 @@ $string['cancel_entry_button'] = ' 取消 ';
 $string['cancel_moving'] = '移動をキャンセルする';
 $string['cannot_save_templ'] = 'テンプレートを保存することはできません';
 $string['captcha'] = 'Captcha';
+$string['check'] = 'チェックボックス';
+$string['checkbox'] = 'チェックボックス';
 $string['class_cancel']  = '取消';
 $string['class_draft']   = '下書き';
 $string['class_newpost'] = '新規';
@@ -101,7 +103,7 @@ $string['dependitem'] = 'アイテムに依存する';
 $string['dependvalue'] = '値に依存する';
 $string['description'] = '説明';
 $string['do_not_analyse_empty_submits'] = '空の送信を無視する';
-$string['dropdown'] = '多肢選択 - 単一回答 (ドロップダウンリスト)';
+$string['dropdown'] = 'ドロップダウンリスト';
 $string['edit_entry']   = '編集';
 $string['edit_entry_button'] = ' 編集 ';
 $string['edit_item']  = '申請書を編集する';
@@ -119,7 +121,6 @@ $string['entries_list_title'] = '申請書類一覧';
 $string['entry_saved'] = 'あなたの申請書が送信されました';
 $string['entry_saved_draft'] = 'あなたの申請書は下書きとして保存されました';
 $string['entry_saved_operation'] = 'リクエストは処理されました';
-$string['execd_done']	 = '処理済';
 $string['execd_done']    = '処理済';
 $string['execd_entry']  = '処理済';
 $string['execd_notyet']  = '未処理';
@@ -143,6 +144,7 @@ $string['move_item'] = 'この質問を移動する';
 $string['movedown_item'] = 'この質問を下げる';
 $string['moveup_item'] = 'この質問を上げる';
 $string['multichoice'] = '多肢選択';
+$string['multichoice_values'] = '多肢選択';
 $string['multichoicerated'] = '多肢選択 (評定)';
 $string['multichoicetype'] = '多肢選択タイプ';
 $string['multiple_submit'] = '複数申請';
@@ -173,6 +175,10 @@ $string['preview'] = 'プレビュー';
 $string['preview_help'] = 'このプレビューにて，あなたは質問の順番を変更することができます．';
 $string['previous_page_button'] = ' 前のページ ';
 $string['public'] = '公開';
+$string['radio'] = 'ラジオボタン';
+$string['radiobutton'] = 'ラジオボタン';
+$string['radiobutton_rated'] = 'ラジオボタン (評定)';
+$string['radiorated'] = 'ラジオボタン (評定)';
 $string['reject_entry'] = '却下';
 $string['related_items_deleted'] = 'この問題に関する，すべてのユーザの申請も削除されます．';
 $string['required'] = '必須';
@@ -232,5 +238,6 @@ $string['user_pic']      = '画像';
 $string['username_manage'] = 'ユーザ名管理';
 $string['username_manage_help'] = '表示される名前のパターンを選択できます';
 $string['using_templates'] = 'テンプレートの使用';
+$string['vertical'] = '垂直';
 $string['view_entries'] = '申請書の表示';
 $string['yes_button'] = ' はい ';
