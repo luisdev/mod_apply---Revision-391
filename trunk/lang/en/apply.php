@@ -18,7 +18,7 @@
  * Strings for component 'apply', language 'en', branch 'MOODLE_20_STABLE'
  *
  * @package   mod_apply
- * @copyright Fumi.Iseki http://www.nsl.tuis.ac.jp, 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @copyright Fumi.Iseki {@link http://www.nsl.tuis.ac.jp}, 1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -56,6 +56,8 @@ $string['cancel_entry_button'] = ' Cancel ';
 $string['cancel_moving'] = 'Cancel moving';
 $string['cannot_save_templ'] = 'saving templates is not allowed';
 $string['captcha'] = 'Captcha';
+$string['check'] = 'Check Box';
+$string['checkbox'] = 'Check Boxes';
 $string['class_cancel']  = 'Cancel';
 $string['class_draft']   = 'Draft';
 $string['class_newpost'] = 'New Post';
@@ -95,7 +97,7 @@ $string['dependitem'] = 'Dependence item';
 $string['dependvalue'] = 'Dependence value';
 $string['description'] = 'Description';
 $string['do_not_analyse_empty_submits'] = 'Do not analyse empty submits';
-$string['dropdown'] = 'Multiple choice - single answer allowed (dropdownlist)';
+$string['dropdown'] = 'Dropdown List';
 $string['edit_entry'] = 'Edit';
 $string['edit_entry_button'] = ' Edit ';
 $string['edit_item'] = 'Edit question';
@@ -167,6 +169,10 @@ $string['preview'] = 'Preview';
 $string['preview_help'] = 'In the preview you can change the order of questions.';
 $string['previous_page_button'] = ' Previous page ';
 $string['public'] = 'Public';
+$string['radio'] = 'Radio Button';
+$string['radiobutton'] = 'Radio Button';
+$string['radiobutton_rated'] = 'Radio Button (Rated)';
+$string['radiorated'] = 'Radio Button (Rated)';
 $string['reject_entry'] = 'reject';
 $string['related_items_deleted'] = 'All your user\'s responses for this question will also be deleted';
 $string['required'] = 'Required';
@@ -226,5 +232,6 @@ $string['user_pic']  	 = 'Picture';
 $string['username_manage'] = 'Management of Username';
 $string['username_manage_help'] = 'You can select displied name pattern in this module.';
 $string['using_templates'] = 'Use a template';
+$string['vertical'] = 'vertical';
 $string['view_entries'] = 'Show Entries';
 $string['yes_button'] = ' Yes ';
