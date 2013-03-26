@@ -1595,7 +1595,8 @@ function apply_print_error_messagebox($str, $id)
 		echo '</div></font></h2>';
 	}
 
-	echo $OUTPUT->continue_button($CFG->wwwroot.'/mod/apply/view.php?id='.$id);
+//	echo $OUTPUT->continue_button($CFG->wwwroot.'/mod/apply/view.php?id='.$id);
+	echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$id);
 	echo $OUTPUT->box_end();
 	echo $OUTPUT->footer();
 }
