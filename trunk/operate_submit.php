@@ -134,6 +134,7 @@ if ($operate=='operate' and $sbmtted) {
 	// POST/GETデータを拾う
 	$submit = apply_save_admin_values($submit_id, $submit_ver); 
 
+print "===>".$operate."  ".$execd."  ".$accept;
 	if ($submit) {
 		if ($execd=='done') {
 			if ($accept!='accept') {
