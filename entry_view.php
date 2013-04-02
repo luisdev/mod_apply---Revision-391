@@ -33,7 +33,7 @@ foreach ($items as $item) {
 	$params = array('submit_id'=>$submit->id, 'item_id'=>$item->id, 'version'=>$submit_ver);
 	$value  = $DB->get_record('apply_value', $params);
 
-	if ($item->typ!='pagebreak' and $item->label!=APPLY_NODISP_TAG) {
+	if ($item->typ!='pagebreak' and $item->label!=APPLY_SUBMIT_ONLY_TAG and $item->label!=APPLY_ADMIN_ONLY_TAG) {
 		echo $OUTPUT->box_start('apply_print_item');
 		if (isset($value->value)) {
 			apply_print_item_show_value($item, $value->value);
@@ -43,6 +43,18 @@ foreach ($items as $item) {
 		}
 		echo $OUTPUT->box_end();
 	}
+	//
+	else if ($item->label==APPLY_ADMIN_ONLY_TAG and has_capability('mod/apply:viewreports', $context)) {
+		echo $OUTPUT->box_start('apply_print_item');
+		if (isset($value->value)) {
+			apply_print_item_show_value($item, $value->value);
+		}
+		else {
+			apply_print_item_show_value($item, false);
+		}
+		echo $OUTPUT->box_end();
+	}
+	
 }
 require('entry_info.php');
 echo $OUTPUT->box_end();

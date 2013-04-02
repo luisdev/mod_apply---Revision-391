@@ -28,9 +28,10 @@ require_once($CFG->libdir.'/eventslib.php');
 require_once($CFG->dirroot.'/calendar/lib.php');
 //
 
-define('APPLY_TITLE_TAG',	'title');
-define('APPLY_NODISP_TAG',	'nodisp');
-define('APPLY_ADMIN_TAG',	'foradmin');
+define('APPLY_SUBMIT_TITLE_TAG','submit_title');
+define('APPLY_SUBMIT_ONLY_TAG',	'submit_only');
+define('APPLY_ADMIN_REPLY_TAG',	'admin_reply');
+define('APPLY_ADMIN_ONLY_TAG',	'admin_only');
 
 define('APPLY_CLASS_DRAFT',  0);
 define('APPLY_CLASS_NEW',	1);
@@ -377,7 +378,7 @@ function apply_update_item($item)
 {
 	global $DB;
 
-	if ($item->label==APPLY_ADMIN_TAG) {
+	if ($item->label==APPLY_ADMIN_REPLY_TAG or $item->label==APPLY_ADMIN_ONLY_TAG) {
 		$item->required = 0;
 	}
 
@@ -468,7 +469,7 @@ function apply_switch_item_required($item)
 {
 	global $DB;
 
-	if ($item->label==APPLY_ADMIN_TAG) return false;
+	if ($item->label==APPLY_ADMIN_REPLY_TAG or $item->label==APPLY_ADMIN_ONLY_TAG) return false;
 
 	$itemobj = apply_get_item_class($item->typ);
 
@@ -1202,7 +1203,7 @@ function apply_update_draft_values($submit)
 
 		// for Title of Draft (version=0)
 		if ($title=='') {
-			if ($item->label==APPLY_TITLE_TAG and $item->typ=='textfield') {
+			if ($item->label==APPLY_SUBMIT_TITLE_TAG and $item->typ=='textfield') {
 				$title = $newvalue->value;
 			}
 		}
@@ -1244,7 +1245,7 @@ function apply_update_admin_values($submit)
 	$time_modified = time();
 
 	foreach ($items as $item) {
-		if ($item->hasvalue and $item->label==APPLY_ADMIN_TAG) {
+		if ($item->hasvalue and ($item->label==APPLY_ADMIN_REPLY_TAG or $item->label==APPLY_ADMIN_ONLY_TAG)) {
 			//
 			$itemobj = apply_get_item_class($item->typ);
 			$keyname = $item->typ.'_'.$item->id;
@@ -1308,12 +1309,12 @@ function apply_exist_draft_values($submit_id)
 
 /**
  * copy value from draft record to taget version record.
- * if item label is APPLY_TITLE_TAG and item type 'textfield', that item value is return.
+ * if item label is APPLY_SUBMIT_TITLE_TAG and item type 'textfield', that item value is return.
  *
  * @global object
  * @param  $submit_id id of submit(application)
  * @param  $version target version to copy
- * @param[out] $title if item label is APPLY_TITLE_TAG and item type 'textfield', that item value is setted.
+ * @param[out] $title if item label is APPLY_SUBMIT_TITLE_TAG and item type 'textfield', that item value is setted.
  * @return boolean
  */
 function apply_flush_draft_values($submit_id, $version, &$title)
@@ -1346,7 +1347,7 @@ function apply_flush_draft_values($submit_id, $version, &$title)
 		if ($title=='') {
 			$item = $DB->get_record('apply_item', array('id'=>$value->item_id));
 			if ($item) {
-				if ($item->label==APPLY_TITLE_TAG and $item->typ=='textfield') {
+				if ($item->label==APPLY_SUBMIT_TITLE_TAG and $item->typ=='textfield') {
 					$title = $value->value;
 				}
 			}
