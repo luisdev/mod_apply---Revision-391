@@ -147,7 +147,6 @@ else {
     $templates = apply_get_template_list($course, 'own');
     if (!is_array($templates)) {
         echo $OUTPUT->box(get_string('no_templates_available_yet', 'apply'), 'generalbox boxaligncenter');
-ecbo "SSSSSSSSSS";
         echo $OUTPUT->box(get_string('no_templates_available_yet', 'apply'), 'generalbox boxaligncenter boxwidthwide');
     }
 	else {

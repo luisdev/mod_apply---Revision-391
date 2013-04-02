@@ -123,7 +123,7 @@ echo $OUTPUT->box_end();
 ///////////////////////////////////////////////////////////////////////////
 // Check
 if (!$apply_submit_cap) {
-	apply_print_error_messagebox('apply_is_disable', $courseid);
+	apply_print_error_messagebox('apply_is_disable', $courseid, 'course');
 	exit;
 }
 
