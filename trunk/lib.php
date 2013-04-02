@@ -1583,7 +1583,7 @@ function apply_send_email_html($info, $course, $cm)
 // Tools
 //
 
-function apply_print_error_messagebox($str, $id)
+function apply_print_error_messagebox($str, $id, $view_url='mod/apply')
 {
 	global $OUTPUT, $CFG;
 
@@ -1595,8 +1595,7 @@ function apply_print_error_messagebox($str, $id)
 		echo '</div></font></h2>';
 	}
 
-//	echo $OUTPUT->continue_button($CFG->wwwroot.'/mod/apply/view.php?id='.$id);
-	echo $OUTPUT->continue_button($CFG->wwwroot.'/course/view.php?id='.$id);
+	echo $OUTPUT->continue_button($CFG->wwwroot.'/'.$view_url.'/view.php?id='.$id);
 	echo $OUTPUT->box_end();
 	echo $OUTPUT->footer();
 }
