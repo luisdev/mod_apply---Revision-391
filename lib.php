@@ -1031,8 +1031,6 @@ function apply_operate_submit($submit_id, $submit_ver, $accept, $execd)
 {
 	global $DB, $USER;
 	
-	$flag = false;
-
 	$submit = $DB->get_record('apply_submit', array('id'=>$submit_id, 'version'=>$submit_ver));
 	if (!$submit) return false;
 
@@ -1042,7 +1040,11 @@ function apply_operate_submit($submit_id, $submit_ver, $accept, $execd)
 		$submit->execd = APPLY_EXECD_DONE;
 		$submit->execd_user = $USER->id;
 		$submit->execd_time = $time_modified;
-		$flag = true;
+	}
+	else {
+		$submit->execd = APPLY_EXECD_NOTYET;
+		$submit->execd_user = 0;
+		$submit->execd_time = 0;
 	}
 	//
 	if ($accept=='accept' or $accept=='reject')	{
@@ -1057,15 +1059,12 @@ function apply_operate_submit($submit_id, $submit_ver, $accept, $execd)
 		}
 		$submit->acked_user = $USER->id;
 		$submit->acked_time = $time_modified;
-		$flag = true;
 	}
 
-	if ($flag) {
-		$submit->tiome_modified = $time_modified;
-		$ret = $DB->update_record('apply_submit', $submit);
-	}
+	$submit->tiome_modified = $time_modified;
+	$ret = $DB->update_record('apply_submit', $submit);
 
-	return true;
+	return $ret;
 }
 
 
