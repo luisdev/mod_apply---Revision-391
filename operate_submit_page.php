@@ -71,15 +71,15 @@ if ($submit) {
 			$accept_str = get_string('accept_entry', 'apply');
 			$reject_str = get_string('reject_entry', 'apply');
 			echo '<tr>';
-			echo '<td><input type="radio" name="radiobtn_accept" value="accept" /><strong>'.$accept_str.'</strong></td>';
+			echo '<td><input type="radio" name="radiobtn_accept" value="accept" /><strong> '.$accept_str.'</strong></td>';
 			echo '<td>&nbsp;&nbsp;&nbsp;</td>';
-			echo '<td><input type="radio" name="radiobtn_accept" value="reject" /><strong>'.$reject_str.'</strong></td>';
+			echo '<td><input type="radio" name="radiobtn_accept" value="reject" /><strong> '.$reject_str.'</strong></td>';
 			echo '</tr>';
 		}
 		if ($submit->execd==APPLY_EXECD_NOTYET) {
 			$execd_str = get_string('execd_entry', 'apply');
 			echo '<tr>';
-			echo '<td><input type="checkbox" name="checkbox_execd" value="execd" /><strong>'.$execd_str.'</strong></td>';
+			echo '<td><input type="checkbox" name="checkbox_execd" value="execd" /><strong> '.$execd_str.'</strong></td>';
 			echo '<td>&nbsp;&nbsp;&nbsp;</td>';
 			echo '<td>&nbsp;&nbsp;&nbsp;</td>';
 			echo '</tr>';
@@ -104,11 +104,11 @@ if ($submit) {
 	echo '<div align="center">';
 	echo '<table border="0">';
 	echo '<tr>';
-	echo '<td>'.$back_button.'</td>';
+	echo '<td>'.$submit_button.'</td>';
 	echo '<td>&nbsp;&nbsp;&nbsp;</td>';
 	echo '<td>'.$reset_button.'</td>';
 	echo '<td>&nbsp;&nbsp;&nbsp;</td>';
-	echo '<td>'.$submit_button.'</td>';
+	echo '<td>'.$back_button.'</td>';
 	echo '</tr>';
 	echo '</table>';
 	echo '</div>';
