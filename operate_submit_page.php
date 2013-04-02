@@ -64,30 +64,33 @@ if ($submit) {
 	echo $OUTPUT->box_end();
 
 	//
-	if ($submit->acked==APPLY_ACKED_NOTYET or $submit->execd==APPLY_EXECD_NOTYET) {
-		echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
-		//
-		echo '<table border="0" class="operation_submit">';
-		if ($submit->acked==APPLY_ACKED_NOTYET) {
-			$accept_str = get_string('accept_entry', 'apply');
-			$reject_str = get_string('reject_entry', 'apply');
-			echo '<tr>';
-			echo '<td><input type="radio" name="radiobtn_accept" value="accept" /><strong> '.$accept_str.'</strong></td>';
-			echo '<td>&nbsp;&nbsp;&nbsp;</td>';
-			echo '<td><input type="radio" name="radiobtn_accept" value="reject" /><strong> '.$reject_str.'</strong></td>';
-			echo '</tr>';
-		}
-		if ($submit->execd==APPLY_EXECD_NOTYET) {
-			$execd_str = get_string('execd_entry', 'apply');
-			echo '<tr>';
-			echo '<td><input type="checkbox" name="checkbox_execd" value="execd" /><strong> '.$execd_str.'</strong></td>';
-			echo '<td>&nbsp;&nbsp;&nbsp;</td>';
-			echo '<td>&nbsp;&nbsp;&nbsp;</td>';
-			echo '</tr>';
-			echo '</table>';
-		}
-		echo $OUTPUT->box_end();
-	}
+	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
+	echo '<table border="0" class="operation_submit">';
+
+	$accept = '';
+	$reject = '';
+	if 		($submit->acked==APPLY_ACKED_ACCEPT) $accept = 'checked';
+	else if ($submit->acked==APPLY_ACKED_REJECT) $reject = 'checked';
+	$accept_str = get_string('accept_entry', 'apply');
+	$reject_str = get_string('reject_entry', 'apply');
+	//
+	echo '<tr>';
+	echo '<td><input type="radio" name="radiobtn_accept" value="accept" '.$accept.'/><strong> '.$accept_str.'</strong></td>';
+	echo '<td>&nbsp;&nbsp;&nbsp;</td>';
+	echo '<td><input type="radio" name="radiobtn_accept" value="reject" '.$reject.'/><strong> '.$reject_str.'</strong></td>';
+	echo '</tr>';
+
+	if ($submit->execd==APPLY_EXECD_DONE) $checked = 'checked';
+	else								  $checked = '';
+	$execd_str = get_string('execd_entry', 'apply');
+
+	echo '<tr>';
+	echo '<td><input type="checkbox" name="checkbox_execd" value="execd" '.$checked.'/><strong> '.$execd_str.'</strong></td>';
+	echo '<td>&nbsp;&nbsp;&nbsp;</td>';
+	echo '<td>&nbsp;&nbsp;&nbsp;</td>';
+	echo '</tr>';
+	echo '</table>';
+	echo $OUTPUT->box_end();
 
 	//
 	$submit_value  = 'value="'.get_string('operate_submit_button', 'apply').'"';

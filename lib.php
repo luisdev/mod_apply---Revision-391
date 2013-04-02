@@ -1038,17 +1038,25 @@ function apply_operate_submit($submit_id, $submit_ver, $accept, $execd)
 
 	$time_modified = time();
 
-	if ($accept=='accept' or $accept=='reject')	{
-		if ($accept=='accept') $submit->acked = APPLY_ACKED_ACCEPT;
-		else				   $submit->acked = APPLY_ACKED_REJECT;
-		$submit->acked_user = $USER->id;
-		$submit->acked_time = $time_modified;
-		$flag = true;
-	}
 	if ($execd=='done')	{
 		$submit->execd = APPLY_EXECD_DONE;
 		$submit->execd_user = $USER->id;
 		$submit->execd_time = $time_modified;
+		$flag = true;
+	}
+	//
+	if ($accept=='accept' or $accept=='reject')	{
+		if ($accept=='accept') {
+			$submit->acked = APPLY_ACKED_ACCEPT;
+		}
+		else {
+			$submit->acked = APPLY_ACKED_REJECT;
+			$submit->execd = APPLY_EXECD_NOTYET;
+			$submit->execd_user = 0;
+			$submit->execd_time = 0;
+		}
+		$submit->acked_user = $USER->id;
+		$submit->acked_time = $time_modified;
 		$flag = true;
 	}
 
@@ -1618,6 +1626,24 @@ function apply_print_messagebox($str, $append=null, $color='steel blue')
 	if ($append!=null) echo $append;
 	echo $OUTPUT->box_end();
 }
+
+
+
+function apply_single_button($url, array $params, $label, $method='POST')
+{
+    $form = '<form action="'.$url.'" method="'.$method.'">';
+
+	foreach($params as $key => $param) {
+        $form.= '<input type="hidden" name="'.$key.'" value="'.$param.'" />';
+	}
+	$form.= '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
+	$form.= '<input name="single_button" type="submit" value="'.$label.'" />';
+	$form.= '</form>';
+
+	return $form;
+}
+
+
 
 
 

@@ -145,27 +145,17 @@ if ($student) {
 				$data[] = '-';
 			}
 			else {
-				$change_url  = new moodle_url($CFG->wwwroot.'/mod/apply/'.$change_action,  $change_params);
-				$data[] = '<strong><a href="'.$change_url->out().'">'. $change_label. '</a></strong>';
+				$data[] = apply_single_button($CFG->wwwroot.'/mod/apply/'.$change_action, $change_params, $change_label);
 			}
-			//
-			$discard_url = new moodle_url($CFG->wwwroot.'/mod/apply/'.$discard_action, $discard_params);
-			$data[] = '<strong><a href="'.$discard_url->out().'">'.$discard_label.'</a></strong>';
+			$data[] = apply_single_button($CFG->wwwroot.'/mod/apply/'.$discard_action, $discard_params, $discard_label);
 		}
 	}
 
 	// for admin
 	else {
-//		if (($submit->class!=APPLY_CLASS_CANCEL or $submit->execd!=APPLY_EXECD_DONE) and 
-//			($submit->acked==APPLY_ACKED_NOTYET or $submit->execd==APPLY_EXECD_NOTYET)) {
-		if ($submit->acked==APPLY_ACKED_NOTYET or $submit->execd==APPLY_EXECD_NOTYET) {
-			$operate_params = array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'courseid'=>$courseid);
-			$operate_url = new moodle_url($CFG->wwwroot.'/mod/apply/operate_submit.php', $operate_params);
-			$data[] = '<strong><a href="'.$operate_url->out().'">'.get_string('operate_submit', 'apply').'</a></strong>';
-		}
-		else {
-			$data[] = '-';
-		}
+		$operate_params = array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'courseid'=>$courseid);
+		$operate_url = $CFG->wwwroot.'/mod/apply/operate_submit.php';
+		$data[] = apply_single_button($operate_url, $operate_params, get_string('operate_submit', 'apply'));
 	}
 }
 
