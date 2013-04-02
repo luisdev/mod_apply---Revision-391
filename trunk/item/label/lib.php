@@ -178,8 +178,13 @@ class apply_item_label extends apply_item_base {
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item) {
+    public function print_item_preview($item)
+	{
         global $OUTPUT, $DB;
+
+		$align = right_to_left() ? 'right' : 'left';
+		echo '<div class="apply_item_label_'.$align.'">';
+		echo '('.$item->label.') ';
 
         if ($item->dependitem) {
             if ($dependitem = $DB->get_record('apply_item', array('id'=>$item->dependitem))) {
@@ -188,6 +193,8 @@ class apply_item_label extends apply_item_base {
                 echo '</span>';
             }
         }
+		echo '</div>';
+
         $this->print_item($item);
     }
 
