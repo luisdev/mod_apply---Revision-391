@@ -92,7 +92,8 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading(format_text($apply->name));
 echo '<br />';
 
-$submit = $DB->get_record('apply_submit', array('id'=>$submit_id, 'version'=>$submit_ver, 'user_id'=>$user_id));
+//$submit = $DB->get_record('apply_submit', array('id'=>$submit_id, 'version'=>$submit_ver, 'user_id'=>$user_id));
+$submit = $DB->get_record('apply_submit', array('id'=>$submit_id, 'user_id'=>$user_id));
 if ($submit) {
 	$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
 	if (is_array($items)) {
