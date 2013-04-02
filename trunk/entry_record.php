@@ -68,9 +68,10 @@ if ($student) {
 		}
 		$form.= '<option value="'.$prev_ver.'" selected="selected">'.$prev_ver.'</option>';
 		$form.= '</select>&nbsp;';
-		$form.= '<input name="do_show" type="hidden" value="view_one_entry" />';
-		$form.= '<input name="submit_id" type="hidden" value="'.$submit->id.'" />';
-		$form.= '<input name="user_id" type="hidden" value="'.$submit->user_id.'" />';
+		$form.= '<input type="hidden" name="do_show"  value="view_one_entry" />';
+		$form.= '<input type="hidden" name="submit_id" value="'.$submit->id.'" />';
+		$form.= '<input type="hidden" name="user_id" value="'.$submit->user_id.'" />';
+		$form.= '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
 		$form.= '<input name="before_apply" type="submit" value="'.get_string('display_button', 'apply').'" />';
 		$form.= '</form>';
 
