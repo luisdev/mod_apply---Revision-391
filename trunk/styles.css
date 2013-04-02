@@ -29,6 +29,15 @@ table.operation_submit {
 }
 
 
+div.apply_item_label_left {
+	font-weight:bold;
+}
+
+div.apply_item_label_right {
+	font-weight:bold;
+}
+
+
 /* Box */
 div.apply_info {
 }
