@@ -175,6 +175,7 @@ if ($do_show=='view') {
 		///////////////////////////////////////////////////////////////////////
 		//
 		echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
+		echo $OUTPUT->box_start('mdl-align');
 
 		////////////////////////////////////////////////////////////
 		// Submits Data
@@ -200,6 +201,7 @@ if ($do_show=='view') {
 			echo $OUTPUT->container(html_writer::link($all_url, get_string('show_all', 'apply', $matchcount)), array(), 'show_all');
 		}
 
+		echo $OUTPUT->box_end();
 		echo $OUTPUT->box_end();
 	}
 }

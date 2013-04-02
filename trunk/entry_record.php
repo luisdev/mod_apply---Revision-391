@@ -59,29 +59,6 @@ if ($student) {
 	}
 
 	//
-	if ($submit->version>1) {
-		$prev_ver = $submit->version - 1;
-		$form = '<form action="'.$base_url->out().'" method="POST">';
-		$form.= '<select name="submit_ver">';
-		for ($i=1; $i<$prev_ver; $i++) {
-			$form.= '<option value="'.$i.'">'.$i.'</option>';
-		}
-		$form.= '<option value="'.$prev_ver.'" selected="selected">'.$prev_ver.'</option>';
-		$form.= '</select>&nbsp;';
-		$form.= '<input type="hidden" name="do_show"  value="view_one_entry" />';
-		$form.= '<input type="hidden" name="submit_id" value="'.$submit->id.'" />';
-		$form.= '<input type="hidden" name="user_id" value="'.$submit->user_id.'" />';
-		$form.= '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
-		$form.= '<input name="before_apply" type="submit" value="'.get_string('display_button', 'apply').'" />';
-		$form.= '</form>';
-
-		$data[] = $form;
-	}
-	else {
-		$data[] = '-';
-	}
-
-	//
 	if 		($submit->class==APPLY_CLASS_DRAFT)  $acked = '-';
 	else if ($submit->acked==APPLY_ACKED_NOTYET) $acked = get_string('acked_notyet',  'apply');
 	else if ($submit->acked==APPLY_ACKED_ACCEPT) $acked = get_string('acked_accept',  'apply');
@@ -99,6 +76,30 @@ if ($student) {
 		$execd = '<strong><a href="'.$execd_url.'">'.$execd.'</a></strong>';
 	}
 	$data[] = $execd;
+
+
+	//
+	if ($submit->version>1) {
+		$prev_ver = $submit->version - 1;
+		$form = '<form action="'.$base_url->out().'" method="POST">';
+		$form.= '<select name="submit_ver">';
+		for ($i=1; $i<$prev_ver; $i++) {
+			$form.= '<option value="'.$i.'">'.$i.'</option>';
+		}
+		$form.= '<option value="'.$prev_ver.'" selected="selected">'.$prev_ver.'</option>';
+		$form.= '</select>&nbsp;';
+		$form.= '<input type="hidden" name="do_show"  value="view_one_entry" />';
+		$form.= '<input type="hidden" name="submit_id" value="'.$submit->id.'" />';
+		$form.= '<input type="hidden" name="user_id" value="'.$submit->user_id.'" />';
+		$form.= '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
+		$form.= '<input name="before_apply" type="submit" value="'.get_string('display_button', 'apply').'" />';
+		$form.= '</form>';
+	}
+	else {
+		$form = '-';
+	}
+	$data[] = $form;
+
 
 	//
 	if ($req_own_data) {
