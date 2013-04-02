@@ -113,7 +113,7 @@ echo $OUTPUT->header();
 ///////////////////////////////////////////////////////////////////////////
 // Check 2
 if ((empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities', $context))) {
-	notice(get_string("activityiscurrentlyhidden"));
+	notice(get_string('activityiscurrentlyhidden'));
 }
 
 
@@ -131,9 +131,9 @@ if ($operate=='operate' and $sbmtted) {
 		print_error('error', '', $CFG->wwwroot.'/mod/apply/view.php?id='.$id);
 	}
 
-	//
+	// POST/GETデータを拾う
 	$submit = apply_save_admin_values($submit_id, $submit_ver); 
-	
+
 	if ($submit) {
 		if ($execd=='done') {
 			if ($accept!='accept') {
