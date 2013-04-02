@@ -20,7 +20,7 @@ if ($this_action!='preview') {
 	$preview_img = $OUTPUT->pix_icon('t/preview', get_string('preview'));
 	$preview_url = new moodle_url('/mod/apply/preview.php');
 	$preview_url->params(array('id'=>$cm->id, 'courseid'=>$courseid, 'action'=>$this_action));
-	$preview_url->params(array('submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'user_id'=>$user_id));
+	$preview_url->params(array('submit_id'=>$submit->id, 'submit_ver'=>$submit_ver, 'user_id'=>$user_id));
 	$title .= '&nbsp;&nbsp;<a href="'.$preview_url->out().'">'.$preview_img.'</a>';
 }
 

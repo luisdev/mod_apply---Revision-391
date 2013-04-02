@@ -12,8 +12,8 @@ if ($req_own_data and $submit->class!=APPLY_CLASS_CANCEL) {
 		$change_action	= 'submit.php';
 		// Cancel
 		$discard_label 	= get_string('cancel_entry_button', 'apply');
-		$discard_params = array('submit_id'=>$submit->id);
-		$discard_action	= 'deete_submit.php';
+		$discard_params = array('id'=>$id, 'submit_id'=>$submit->id);
+		$discard_action	= 'delete_submit.php';
 	}
 	else {
 		// Edit
@@ -22,8 +22,8 @@ if ($req_own_data and $submit->class!=APPLY_CLASS_CANCEL) {
 		$change_action	= 'submit.php';
 		// Delete
 		$discard_label 	= get_string('delete_entry_button', 'apply');
-		$discard_params = array('submit_id'=>$submit->id, 'acked'=>$submit->acked);
-		$discard_action	= 'deete_submit.php';
+		$discard_params = array('id'=>$id, 'submit_id'=>$submit->id, 'acked'=>$submit->acked);
+		$discard_action	= 'delete_submit.php';
 	}
 	//
 	$change_url	 = new moodle_url($CFG->wwwroot.'/mod/apply/'.$change_action,  $change_params);
@@ -36,8 +36,11 @@ if ($req_own_data and $submit->class!=APPLY_CLASS_CANCEL) {
 	echo '<td>'.$back_button.'</td>';
 	echo '<td>&nbsp;&nbsp;&nbsp;</td>';
 	echo '<td>'.$OUTPUT->single_button($change_url,  $change_label). '</td>';
-	echo '<td>&nbsp;&nbsp;&nbsp;</td>';
-	echo '<td>'.$OUTPUT->single_button($discard_url, $discard_label).'</td>';
+	//
+	if ($submit->version==$submit_ver) {
+		echo '<td>&nbsp;&nbsp;&nbsp;</td>';
+		echo '<td>'.$OUTPUT->single_button($discard_url, $discard_label).'</td>';
+	}
 	echo '</tr>';
 	echo '</table>';
 	echo '</div>';
