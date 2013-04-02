@@ -14,14 +14,14 @@ $title_bfr  = get_string('title_before', 'apply');
 //
 if ($req_own_data) {
 	$title_draft   = get_string('title_draft', 'apply');
-	$table_columns = array('title', 'time_modified', 'version', 'class', 'draft', 'before', 'acked', 'execd', 'edit', 'discard');
-	$table_headers = array($title_ttl, $title_date, $title_ver, $title_clss, $title_draft, $title_bfr, $title_ack, $title_exec, '-', '-');
+	$table_columns = array('title', 'time_modified', 'version', 'class', 'draft', 'acked', 'execd', 'before', 'edit', 'discard');
+	$table_headers = array($title_ttl, $title_date, $title_ver, $title_clss, $title_draft, $title_ack, $title_exec, $title_bfr, '-', '-');
 }
 else {
 	$title_pic  = get_string('user_pic', 'apply');
 	$title_name = get_string($name_pattern);
-	$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'before', 'acked', 'execd', 'operation');
-	$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_bfr, $title_ack, $title_exec, '-');
+	$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execd', 'before', 'operation');
+	$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, $title_bfr, '-');
 }
 
 //
