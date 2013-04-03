@@ -25,7 +25,7 @@
 $string['accept_entry'] = '受理';
 $string['acked_accept']  = '受理';
 $string['acked_notyet']  = '未処理';
-$string['acked_reject']  = '不受理';
+$string['acked_reject']  = '却下';
 $string['add_item']  = '項目を追加する';
 $string['add_items'] = '項目を追加する';
 $string['add_pagebreak'] = '改ページを追加する';
