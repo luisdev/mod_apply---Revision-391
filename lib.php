@@ -164,13 +164,15 @@ function apply_user_complete($course, $user, $mod, $apply)
 
 
 
-function apply_user_outline($course, $user, $mod, $apply) {
+function apply_user_outline($course, $user, $mod, $apply)
+{
 	return null;
 }
 
 
 
-function appply_cron () {
+function appply_cron()
+{
 	return true;
 }
 
@@ -178,7 +180,7 @@ function appply_cron () {
 
 function apply_print_recent_activity($course, $viewfullnames, $timestart)
 {
-	return;
+	return false;
 }
 
 
