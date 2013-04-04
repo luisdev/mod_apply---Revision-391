@@ -166,6 +166,7 @@ $string['operation_error_execd'] = 'When you do not accept entry, you can not ch
 $string['overview'] = 'Overview';
 $string['pagebreak'] = 'Page break';
 $string['pluginadministration'] = 'Apply administration';
+$string['pluginname'] = 'Application Form';
 $string['position'] = 'Position';
 $string['preview'] = 'Preview';
 $string['preview_help'] = 'In the preview you can change the order of questions.';

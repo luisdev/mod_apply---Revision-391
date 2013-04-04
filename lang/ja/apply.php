@@ -172,6 +172,7 @@ $string['operation_error_execd'] = '書類を受理しなければ，処理済�
 $string['overview'] = '概要';
 $string['pagebreak'] = 'ページブレーク';
 $string['pluginadministration'] = '申請フォーム管理';
+$string['pluginname'] = '申請フォーム';
 $string['position'] = 'ポジション';
 $string['preview'] = 'プレビュー';
 $string['preview_help'] = 'このプレビューにて，あなたは質問の順番を変更することができます．';
