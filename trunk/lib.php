@@ -157,6 +157,36 @@ function apply_delete_instance($apply_id)
 
 
 
+function apply_user_complete($course, $user, $mod, $apply)
+{
+	return true;
+}
+
+
+
+function apply_user_outline($course, $user, $mod, $apply) {
+	return null;
+}
+
+
+
+function appply_cron () {
+	return true;
+}
+
+
+
+function apply_print_recent_activity($course, $viewfullnames, $timestart)
+{
+	return;
+}
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+//
+
 function apply_get_view_actions() 
 {
 	return array('view', 'view all');
@@ -1645,10 +1675,10 @@ function apply_print_messagebox($str, $append=null, $color='steel blue')
 
 function apply_single_button($url, array $params, $label, $method='POST')
 {
-    $form = '<form action="'.$url.'" method="'.$method.'">';
+	$form = '<form action="'.$url.'" method="'.$method.'">';
 
 	foreach($params as $key => $param) {
-        $form.= '<input type="hidden" name="'.$key.'" value="'.$param.'" />';
+		$form.= '<input type="hidden" name="'.$key.'" value="'.$param.'" />';
 	}
 	$form.= '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
 	$form.= '<input name="single_button" type="submit" value="'.$label.'" />';
