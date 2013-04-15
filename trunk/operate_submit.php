@@ -154,6 +154,7 @@ if ($operate=='operate' and $sbmtted) {
 				echo '<div align="center">';
 				echo '<strong><font color="green">';
 				echo get_string('entry_saved_operation', 'apply');
+				echo '<br />';
 				echo '</font></strong>';
 				echo '</div>';
 				echo $OUTPUT->continue_button($back_url);
