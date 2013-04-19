@@ -165,7 +165,7 @@ if ($do_show=='view') {
 	if ($submits) {
 		//
 		$table = new flexible_table('apply-view-list-'.$courseid);
-		$matchcount = apply_get_valid_submits_count($cm->instance);
+		$matchcount = apply_get_valid_submits_count($cm->instance, $USER->id);
 		//
 		require('entry_header.php');
 
