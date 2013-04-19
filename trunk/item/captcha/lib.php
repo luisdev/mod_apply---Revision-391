@@ -55,7 +55,8 @@ class apply_item_captcha extends apply_item_base {
         $this->item->apply_id = $apply->id;
         $this->item->template = 0;
         $this->item->name  = get_string('captcha', 'apply');
-        $this->item->label = get_string('captcha', 'apply');
+//      $this->item->label = get_string('captcha', 'apply');
+        $this->item->label = APPLY_SUBMIT_ONLY_TAG;
         $this->item->presentation = '';
         $this->item->typ = $this->type;
         $this->item->hasvalue = $this->get_hasvalue();
