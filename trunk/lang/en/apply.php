@@ -128,6 +128,22 @@ $string['import_templates'] = 'Import templates';
 $string['info'] = 'Information';
 $string['infotype'] = 'Information-Type';
 $string['item_label'] = 'Label';
+$string['item_label_help'] = 'Special Label<br />
+<ul>
+<li>submit_title
+<ul><li>テキストフィールド（Short text answer）にこのラベルが付いた場合，申請書のタイトルとして扱われる．</li></ul>
+</li>
+<li>submit_only
+<ul><li>申請時のみに表示される項目．利用許諾などに使用する．</li></ul>
+</li>
+<li>admin_reply
+<ul><li>申請時にユーザには表示されないが，申請後の画面には表示される．管理者は編集可能なので，管理者からのコメントなどに用いる．</li></ul>
+</li>
+<li>admin_only
+<ul><li>管理者だけが，表示・編集可能な項目．管理者のメモなどに使用する．</li></ul>
+</li>
+</ul>';
+
 $string['item_name'] = 'Question';
 $string['items_are_required'] = 'Answers are required to starred items.';
 $string['label'] = 'Label';
