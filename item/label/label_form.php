@@ -16,12 +16,14 @@
 
 require_once($CFG->dirroot.'/mod/apply/item/apply_item_form_class.php');
 
-class apply_label_form extends apply_item_form {
+class apply_label_form extends apply_item_form
+{
     protected $type = "label";
     private $area;
 
-    public function definition() {
-        global $CFG;
+    public function definition()
+	{
+        global $CFG, $OUTPUT;
 
         $item = $this->_customdata['item'];
         $common = $this->_customdata['common'];
@@ -40,12 +42,12 @@ class apply_label_form extends apply_item_form {
         $mform->addElement('header', 'general', get_string($this->type, 'apply'));
         $mform->addElement('editor', 'presentation_editor', '', null, $presentationoptions);
         $mform->setType('presentation_editor', PARAM_RAW);
-        $mform->addElement('text', 'label', get_string('item_label', 'apply'), array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE, 'maxlength'=>255));
+
+		$label_help = ' '.$OUTPUT->help_icon('item_label', 'apply');
+        $mform->addElement('text', 'label', get_string('item_label','apply').$label_help, array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
 
         parent::definition();
         $this->set_data($item);
-
     }
-
 }
 

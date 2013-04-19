@@ -16,10 +16,13 @@
 
 require_once($CFG->dirroot.'/mod/apply/item/apply_item_form_class.php');
 
-class apply_numeric_form extends apply_item_form {
+class apply_numeric_form extends apply_item_form
+{
     protected $type = "numeric";
 
-    public function definition() {
+    public function definition()
+	{
+		global $OUTPUT;
 
         $item = $this->_customdata['item'];
         $common = $this->_customdata['common'];
@@ -30,32 +33,18 @@ class apply_numeric_form extends apply_item_form {
 
         $mform->addElement('header', 'general', get_string($this->type, 'apply'));
         $mform->addElement('advcheckbox', 'required', get_string('required', 'apply'), '' , null , array(0, 1));
-
-        $mform->addElement('text',
-                            'name',
-                            get_string('item_name', 'apply'),
-                            array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE, 'maxlength'=>255));
-        $mform->addElement('text',
-                            'label',
-                            get_string('item_label', 'apply'),
-                            array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE, 'maxlength'=>255));
-
-        $mform->addElement('text',
-                            'rangefrom',
-                            get_string('numeric_range_from', 'apply'),
-                            array('size'=>10, 'maxlength'=>10));
-
-        $mform->addElement('text',
-                            'rangeto',
-                            get_string('numeric_range_to', 'apply'),
-                            array('size'=>10, 'maxlength'=>10));
+        $mform->addElement('text', 'name', get_string('item_name', 'apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE, 'maxlength'=>255));
+		$label_help = ' '.$OUTPUT->help_icon('item_label', 'apply');
+        $mform->addElement('text', 'label', get_string('item_label', 'apply').$label_help, array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE, 'maxlength'=>255));
+        $mform->addElement('text', 'rangefrom', get_string('numeric_range_from', 'apply'), array('size'=>10, 'maxlength'=>10));
+        $mform->addElement('text', 'rangeto', get_string('numeric_range_to', 'apply'), array('size'=>10, 'maxlength'=>10));
 
         parent::definition();
         $this->set_data($item);
-
     }
 
-    public function get_data() {
+    public function get_data()
+	{
         if (!$item = parent::get_data()) {
             return false;
         }
@@ -65,14 +54,16 @@ class apply_numeric_form extends apply_item_form {
         $num1 = str_replace($itemobj->sep_dec, APPLY_DECIMAL, $item->rangefrom);
         if (is_numeric($num1)) {
             $num1 = floatval($num1);
-        } else {
+        }
+		else {
             $num1 = '-';
         }
 
         $num2 = str_replace($itemobj->sep_dec, APPLY_DECIMAL, $item->rangeto);
         if (is_numeric($num2)) {
             $num2 = floatval($num2);
-        } else {
+        }
+		else {
             $num2 = '-';
         }
 
@@ -83,10 +74,10 @@ class apply_numeric_form extends apply_item_form {
 
         if ($num1 > $num2) {
             $item->presentation =  $num2 . '|'. $num1;
-        } else {
+        }
+		else {
             $item->presentation = $num1 . '|'. $num2;
         }
         return $item;
     }
-
 }

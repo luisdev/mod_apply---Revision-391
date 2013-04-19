@@ -130,17 +130,19 @@ $string['infotype'] = 'Information-Type';
 $string['item_label'] = 'Label';
 $string['item_label_help'] = 'Special Label<br />
 <ul>
-<li>submit_title
-<ul><li>テキストフィールド（Short text answer）にこのラベルが付いた場合，申請書のタイトルとして扱われる．</li></ul>
+<li><strong>submit_title</strong>
+<ul><li>When this label is attached to the textfield (Short text answer), it is treated as a title of an application.</li></ul>
 </li>
-<li>submit_only
-<ul><li>申請時のみに表示される項目．利用許諾などに使用する．</li></ul>
+<li><strong>submit_only</strong>
+<ul><li>This is an item displayed only at the time of an application. This is used for use consent etc.</li></ul>
 </li>
-<li>admin_reply
-<ul><li>申請時にユーザには表示されないが，申請後の画面には表示される．管理者は編集可能なので，管理者からのコメントなどに用いる．</li></ul>
+<li><strong>admin_reply</strong>
+<ul><li>Although not displayed on a user at the time of an application, it is displayed after an application. 
+Since the administrator can edit, This is uses for the comment from an administrator, etc. </li></ul>
 </li>
-<li>admin_only
-<ul><li>管理者だけが，表示・編集可能な項目．管理者のメモなどに使用する．</li></ul>
+<li><strong>admin_only</strong>
+<ul><li>This is an item which can be displayed to only an administrator and can be edited by only an administrator. 
+It is used for an administrator\'s memo etc.</li></ul>
 </li>
 </ul>';
 
@@ -230,9 +232,11 @@ $string['textfield_maxlength'] = 'Maximum characters accepted';
 $string['textfield_size'] = 'Textfield width';
 $string['there_are_no_settings_for_recaptcha'] = 'There are no settings for captcha';
 $string['time_close'] = 'Time to close';
-$string['time_close_help'] = 'You can specify times when the apply is accessible for people to answer the applications. If the checkbox is not ticked there is no limit defined.';
+$string['time_close_help'] = 'You can specify times when the apply is accessible for people to answer the applications. 
+If the checkbox is not ticked there is no limit defined.';
 $string['time_open'] = 'Time to open';
-$string['time_open_help'] = 'You can specify times when the apply is accessible for people to answer the applications. If the checkbox is not ticked there is no limit defined.';
+$string['time_open_help'] = 'You can specify times when the apply is accessible for people to answer the applications. 
+If the checkbox is not ticked there is no limit defined.';
 $string['title_ack']   = 'Recept.';
 $string['title_before'] = 'Before Submit';
 $string['title_check'] = 'Check';

@@ -81,8 +81,8 @@ $string['depending_help'] = '依存アイテムを使用して他のアイテム
 <br />
 <strong>以下，使用例です．</strong>
 <br />
- <ul>
- <li>最初に他のアイテムが値を依存することになるアイテムを作成してください．</li>
+<ul>
+<li>最初に他のアイテムが値を依存することになるアイテムを作成してください．</li>
 <li>次に改ページ (Page break) を追加してください．</li>
 <li>そして，最初に作成したアイテムの値に依存するアイテムを追加してください．アイテム作成フォーム内の「依存アイテム」リストから依存アイテム，そして「依存値」テキストボックスに必要な
 値を入力してください．</li>
@@ -97,7 +97,7 @@ $string['depending_help'] = '依存アイテムを使用して他のアイテム
 <li>Item Q: あなたはなぜ自動車を所有していないのですか?
 <br />
  (このアイテムはアイテム1の値=noに依存します)</li>
- <li>
+<li>
  ... 他のアイテム</li>
 </ol>';
 $string['dependitem'] = 'アイテムに依存する';
@@ -136,16 +136,16 @@ $string['infotype'] = '情報タイプ';
 $string['item_label'] = 'ラベル';
 $string['item_label_help'] = '特殊なラベル<br />
 <ul>
-<li>submit_title
+<li><strong>submit_title</strong>
 <ul><li>テキストフィールド（短文回答）にこのラベルが付いた場合，申請書のタイトルとして扱われる．</li></ul>
 </li>
-<li>submit_only
+<li><strong>submit_only</strong>
 <ul><li>申請時のみに表示される項目．利用許諾などに使用する．</li></ul>
 </li>
-<li>admin_reply
+<li><strong>admin_reply</strong>
 <ul><li>申請時にユーザには表示されないが，申請後の画面には表示される．管理者は編集可能なので，管理者からのコメントなどに用いる．</li></ul>
 </li>
-<li>admin_only
+<li><strong>admin_only</strong>
 <ul><li>管理者だけが，表示・編集可能な項目．管理者のメモなどに使用する．</li></ul>
 </li>
 </ul>';
