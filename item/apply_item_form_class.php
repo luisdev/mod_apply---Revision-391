@@ -16,10 +16,13 @@
 
 require_once($CFG->libdir.'/formslib.php');
 
-define('APPLY_ITEM_NAME_TEXTBOX_SIZE', 80);
+define('APPLY_ITEM_NAME_TEXTBOX_SIZE',  80);
 define('APPLY_ITEM_LABEL_TEXTBOX_SIZE', 20);
-abstract class apply_item_form extends moodleform {
-    public function definition() {
+
+abstract class apply_item_form extends moodleform
+{
+    public function definition()
+	{
         $item = $this->_customdata['item']; //the item object
 
         //common is an array like:
@@ -39,27 +42,18 @@ abstract class apply_item_form extends moodleform {
         $mform =& $this->_form;
 
         if ($common['items']) {
-            $mform->addElement('select',
-                               'dependitem',
-                               get_string('dependitem', 'apply').'&nbsp;',
-                               $common['items']
-                               );
+            $mform->addElement('select', 'dependitem', $dependitema_help.' '.get_string('dependitem', 'apply').'&nbsp;', $common['items']);
             $mform->addHelpButton('dependitem', 'depending', 'apply');
-            $mform->addElement('text',
-                               'dependvalue',
-                               get_string('dependvalue', 'apply'),
-                               array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE, 'maxlength'=>255));
-        } else {
+            $mform->addElement('text', 'dependvalue', get_string('dependvalue', 'apply'), array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
+        }
+		else {
             $mform->addElement('hidden', 'dependitem', 0);
             $mform->setType('dependitem', PARAM_INT);
             $mform->addElement('hidden', 'dependvalue', '');
             $mform->setType('dependitem', PARAM_ALPHA);
         }
 
-        $position_select = $mform->addElement('select',
-                                            'position',
-                                            get_string('position', 'apply').'&nbsp;',
-                                            $positionlist);
+        $position_select = $mform->addElement('select', 'position', get_string('position', 'apply').'&nbsp;', $positionlist);
         $position_select->setValue($position);
 
         $mform->addElement('hidden', 'cmid', $common['cmid']);
@@ -89,23 +83,17 @@ abstract class apply_item_form extends moodleform {
 
         $buttonarray = array();
         if (!empty($item->id)) {
-            $buttonarray[] = &$mform->createElement('submit',
-                                                    'update_item',
-                                                    get_string('update_item', 'apply'));
-
-            $buttonarray[] = &$mform->createElement('submit',
-                                                    'clone_item',
-                                                    get_string('save_as_new_item', 'apply'));
-        } else {
+            $buttonarray[] = &$mform->createElement('submit', 'update_item', get_string('update_item', 'apply'));
+            $buttonarray[] = &$mform->createElement('submit', 'clone_item', get_string('save_as_new_item', 'apply'));
+        }
+		else {
             $mform->addElement('hidden', 'clone_item', 0);
             $mform->setType('clone_item', PARAM_INT);
-            $buttonarray[] = &$mform->createElement('submit',
-                                                    'save_item',
-                                                    get_string('save_item', 'apply'));
+            $buttonarray[] = &$mform->createElement('submit', 'save_item', get_string('save_item', 'apply'));
         }
+		//
         $buttonarray[] = &$mform->createElement('cancel');
         $mform->addGroup($buttonarray, 'buttonar', '&nbsp;', array(' '), false);
-
     }
 }
 

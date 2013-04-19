@@ -16,10 +16,14 @@
 
 require_once($CFG->dirroot.'/mod/apply/item/apply_item_form_class.php');
 
-class apply_textfield_form extends apply_item_form {
+class apply_textfield_form extends apply_item_form
+{
     protected $type = "textfield";
 
-    public function definition() {
+    public function definition()
+	{
+		global $OUTPUT;
+
         $item = $this->_customdata['item'];
         $common = $this->_customdata['common'];
         $positionlist = $this->_customdata['positionlist'];
@@ -29,32 +33,20 @@ class apply_textfield_form extends apply_item_form {
 
         $mform->addElement('header', 'general', get_string($this->type, 'apply'));
         $mform->addElement('advcheckbox', 'required', get_string('required', 'apply'), '' , null , array(0, 1));
+        $mform->addElement('text', 'name', get_string('item_name', 'apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE, 'maxlength'=>255));
 
-        $mform->addElement('text',
-                            'name',
-                            get_string('item_name', 'apply'),
-                            array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE, 'maxlength'=>255));
-        $mform->addElement('text',
-                            'label',
-                            get_string('item_label', 'apply'),
-                            array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE, 'maxlength'=>255));
-
-        $mform->addElement('select',
-                            'itemsize',
-                            get_string('textfield_size', 'apply').'&nbsp;',
-                            array_slice(range(0, 255), 5, 255, true));
-
-        $mform->addElement('select',
-                            'itemmaxlength',
-                            get_string('textfield_maxlength', 'apply').'&nbsp;',
-                            array_slice(range(0, 255), 5, 255, true));
+        $label_help = $OUTPUT->help_icon('item_label','apply');
+        $mform->addElement('text', 'label', get_string('item_label', 'apply').$label_help, array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
+        $mform->addElement('select', 'itemsize', get_string('textfield_size', 'apply').'&nbsp;', array_slice(range(0, 255), 5, 255, true));
+        $mform->addElement('select', 'itemmaxlength', get_string('textfield_maxlength', 'apply').'&nbsp;', array_slice(range(0, 255), 5, 255, true));
 
         parent::definition();
         $this->set_data($item);
 
     }
 
-    public function get_data() {
+    public function get_data()
+	{
         if (!$item = parent::get_data()) {
             return false;
         }

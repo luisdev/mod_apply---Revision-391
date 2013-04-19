@@ -134,6 +134,22 @@ $string['import_templates'] = 'テンプレートをインポートする';
 $string['info'] = '情報';
 $string['infotype'] = '情報タイプ';
 $string['item_label'] = 'ラベル';
+$string['item_label_help'] = '特殊なラベル<br />
+<ul>
+<li>submit_title
+<ul><li>テキストフィールド（短文回答）にこのラベルが付いた場合，申請書のタイトルとして扱われる．</li></ul>
+</li>
+<li>submit_only
+<ul><li>申請時のみに表示される項目．利用許諾などに使用する．</li></ul>
+</li>
+<li>admin_reply
+<ul><li>申請時にユーザには表示されないが，申請後の画面には表示される．管理者は編集可能なので，管理者からのコメントなどに用いる．</li></ul>
+</li>
+<li>admin_only
+<ul><li>管理者だけが，表示・編集可能な項目．管理者のメモなどに使用する．</li></ul>
+</li>
+</ul>';
+
 $string['item_name'] = '申請書の項目数';
 $string['items_are_required'] = 'アスタリスクが付けられた項目は入力必須項目です．';
 $string['label'] = 'ラベル';

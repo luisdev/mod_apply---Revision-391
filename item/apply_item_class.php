@@ -14,7 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-abstract class apply_item_base {
+abstract class apply_item_base
+{
     protected $type;
 
     /**
@@ -67,9 +68,7 @@ abstract class apply_item_base {
      * @param integer $courseid
      * @return integer the new row_offset
      */
-    abstract public function excelprint_item(&$worksheet, $row_offset,
-                                      $xls_formats, $item,
-                                      $groupid, $courseid = false);
+    abstract public function excelprint_item(&$worksheet, $row_offset, $xls_formats, $item, $groupid, $courseid = false);
 
     /**
      * @param $item the db-object from apply_item
@@ -135,11 +134,12 @@ abstract class apply_item_base {
      * @return mixed
      */
     abstract public function clean_input_value($value);
-
 }
 
+
 //a dummy class to realize pagebreaks
-class apply_item_pagebreak extends apply_item_base {
+class apply_item_pagebreak extends apply_item_base
+{
     protected $type = "pagebreak";
 
     public function show_editform() {
@@ -164,9 +164,7 @@ class apply_item_pagebreak extends apply_item_base {
     }
     public function get_hasvalue() {
     }
-    public function excelprint_item(&$worksheet, $row_offset,
-                            $xls_formats, $item,
-                            $groupid, $courseid = false) {
+    public function excelprint_item(&$worksheet, $row_offset, $xls_formats, $item, $groupid, $courseid = false) {
     }
 
     public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false) {
