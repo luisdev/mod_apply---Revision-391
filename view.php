@@ -231,6 +231,13 @@ if ($do_show=='view_one_entry' and $submit_id) {
 }
 
 
+/////////////////////////////////////////
+echo '<div align="center"><br />';
+echo '<a href="'.get_string('wiki_url', 'apply').'" target="_blank"><i>mod_apply '.APPLY_VERSION.'</i></a>';
+echo '<br /><br />';
+echo '</div>';
+
+
 ///////////////////////////////////////////////////////////////////////////
 /// Finish the page
 echo $OUTPUT->footer();

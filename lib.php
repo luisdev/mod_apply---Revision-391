@@ -22,12 +22,14 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+//
+define('APPLY_VERSION',	 '1.0.0');
 
 
 require_once($CFG->libdir.'/eventslib.php');
 require_once($CFG->dirroot.'/calendar/lib.php');
-//
 
+//
 define('APPLY_SUBMIT_TITLE_TAG','submit_title');
 define('APPLY_SUBMIT_ONLY_TAG',	'submit_only');
 define('APPLY_ADMIN_REPLY_TAG',	'admin_reply');
