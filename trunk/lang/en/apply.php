@@ -128,7 +128,7 @@ $string['import_templates'] = 'Import templates';
 $string['info'] = 'Information';
 $string['infotype'] = 'Information-Type';
 $string['item_label'] = 'Label';
-$string['item_label_help'] = 'Special Label<br />
+$string['item_label_help'] = 'Special Labels<br />
 <ul>
 <li><strong>submit_title</strong>
 <ul><li>When this label is attached to the textfield (Short text answer), it is treated as a title of an application.</li></ul>
@@ -200,6 +200,7 @@ $string['related_items_deleted'] = 'All your user\'s responses for this question
 $string['required'] = 'Required';
 $string['resetting_data'] = 'Reset apply responses';
 $string['responsetime'] = 'Responsestime';
+$string['returnto_course'] = 'Return';
 $string['rollback_entry'] = 'Withdraw';
 $string['rollback_entry_button'] = ' Withdraw ';
 $string['save_as_new_item'] = 'Save as new question';
@@ -259,4 +260,5 @@ $string['username_manage_help'] = 'You can select displied name pattern in this 
 $string['using_templates'] = 'Use a template';
 $string['vertical'] = 'vertical';
 $string['view_entries'] = 'Show Entries';
+$string['wiki_url'] = 'http://www.nsl.tuis.ac.jp/xoops/modules/xpwiki/?mod_apply%20%28E%29';
 $string['yes_button'] = ' Yes ';
