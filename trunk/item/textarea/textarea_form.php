@@ -35,7 +35,7 @@ class apply_textarea_form extends apply_item_form
         $mform->addElement('advcheckbox', 'required', get_string('required', 'apply'), '' , null , array(0, 1));
         $mform->addElement('text', 'name', get_string('item_name','apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE, 'maxlength'=>255));
 
-		$label_help = $OUTPUT->help_icon('item_label','apply');
+		$label_help = ' '.$OUTPUT->help_icon('item_label','apply');
         $mform->addElement('text', 'label', get_string('item_label','apply').$label_help, array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
         $mform->addElement('select', 'itemwidth', get_string('textarea_width', 'apply').'&nbsp;', array_slice(range(0, 80), 5, 80, true));
         $mform->addElement('select', 'itemheight', get_string('textarea_height', 'apply').'&nbsp;', array_slice(range(0, 40), 5, 40, true));
