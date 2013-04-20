@@ -116,7 +116,7 @@ You can view it here:
 $string['emailteachermailhtml'] = '{$a->username} has submitted apply activity : <i>\'{$a->apply}\'</i><br /><br />
 You can view it <a href="{$a->url}">here</a>.';
 $string['enable_deletemode'] = 'Delete Mode';
-$string['enable_deletemode_help'] = 'Teacher can delete all applications.';
+$string['enable_deletemode_help'] = 'This enables a teacher to delete all applications.<br />Usually, please set to "No" for safety.'; 
 $string['entries_list_title'] = 'List of Entries';
 $string['entry_saved'] = 'Your applocation has been saved. Thank you.';
 $string['entry_saved_draft'] = 'Your applocation has been saved as <strong>Draft</strong>.';
