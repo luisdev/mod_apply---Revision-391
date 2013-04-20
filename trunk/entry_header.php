@@ -20,8 +20,15 @@ if ($req_own_data) {
 else {
 	$title_pic  = get_string('user_pic', 'apply');
 	$title_name = get_string($name_pattern);
-	$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execd', 'before', 'operation');
-	$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, $title_bfr, '-');
+
+	if ($apply->enable_deletemode) {
+		$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execd', 'before', 'operation', 'delete');
+		$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, $title_bfr, '-', '-');
+	}
+	else {
+		$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execd', 'before', 'operation');
+		$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, $title_bfr, '-');
+	}
 }
 
 //
@@ -40,6 +47,7 @@ else {
 	$table->sortable(true, 'lastname', SORT_ASC);
 	$table->no_sorting('before');
 	$table->no_sorting('operation');
+	if ($apply->enable_deletemode) $table->no_sorting('delete');
 }
 
 //

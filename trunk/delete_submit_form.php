@@ -45,8 +45,8 @@ class mod_apply_delete_submit_form extends moodleform
 		$mform->setType('do_show', PARAM_INT);
 		$mform->addElement('hidden', 'confirmdelete');
 		$mform->setType('confirmdelete', PARAM_INT);
-		$mform->addElement('hidden', 'return');
-		$mform->setType('return', PARAM_ALPHAEXT);
+		$mform->addElement('hidden', 'action');
+		$mform->setType('action', PARAM_ALPHAEXT);
 
 		//-------------------------------------------------------------------------------
 		// buttons

@@ -156,6 +156,17 @@ if ($student) {
 		$operate_params = array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'courseid'=>$courseid);
 		$operate_url = $CFG->wwwroot.'/mod/apply/operate_submit.php';
 		$data[] = apply_single_button($operate_url, $operate_params, get_string('operate_submit', 'apply'));
+
+		if ($apply->enable_deletemode) {
+			$form = '<form action=delete_submit.php method="POST">';
+			$form.= '<input type="hidden" name="action" value="delete_submit" />';
+			$form.= '<input type="hidden" name="id" value="'.$id.'" />';
+			$form.= '<input type="hidden" name="submit_id" value="'.$submit->id.'" />';
+			$form.= '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
+			$form.= '<input name="delete_submit" type="submit" value="'.get_string('delete').'" />';
+			$form.= '</form>';
+			$data[] = $form;
+		}
 	}
 }
 

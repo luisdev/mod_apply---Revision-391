@@ -115,7 +115,7 @@ if ((empty($cm->visible) and !$cap_view_hidden_activities)) {
 
 
 ///////////////////////////////////////////////////////////////////////////
-// Print the main part of the page
+// view_enties: Print the main part of the page
 
 if ($do_show=='view_entries') {
 	////////////////////////////////////////////////////////////
@@ -183,7 +183,7 @@ if ($do_show=='view_entries') {
 
 
 ///////////////////////////////////////////////////////////////////////////
-// Print the list of the given user
+// view_one_entry: Print the list of the given user
 
 if ($do_show=='view_one_entry' and $submit_id) {
 	$params = array('apply_id'=>$apply->id, 'user_id'=>$user_id, 'id'=>$submit_id);

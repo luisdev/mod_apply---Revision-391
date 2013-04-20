@@ -896,8 +896,8 @@ function apply_delete_submit($submit_id)
 
 	$DB->delete_records('apply_value', array('submit_id'=>$submit->id));
 
-	$ret = $DB->delete_record('apply_submit', array('id'=>$submit->id));
-	return ret;
+	$ret = $DB->delete_records('apply_submit', array('id'=>$submit->id));
+	return $ret;
 }
 
 
