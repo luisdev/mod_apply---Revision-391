@@ -38,7 +38,7 @@ $current_tab = 'templates';
 $this_action = 'delete_template';
 
 //
-if (($formdata = data_submitted()) and !confirm_sesskey()) {
+if (!confirm_sesskey()) {
     print_error('invalidsesskey');
 }
 

@@ -5,6 +5,7 @@ function set_item_focus(itemid) {
     }
 }
 
+/*
 function applyGo2delete(form) {
     form.action = M.cfg.wwwroot+'/mod/apply/delete_submit.php';
     form.submit();
@@ -32,3 +33,4 @@ M.mod_apply.init_sendmessage = function(Y) {
         });
     }, '#checknone');
 };
+*/
