@@ -35,12 +35,20 @@
 // before any action that may take longer time to finish.
 
 function xmldb_apply_upgrade($oldversion) {
-    global $CFG, $DB;
+	global $CFG, $DB;
 
-    $dbman = $DB->get_manager();
+	$dbman = $DB->get_manager();
 
+	// 2013042002
+	if ($oldversion < 2013042002) {
+		$table = new xmldb_table('apply');
+		//
+		$field = new xmldb_field('enable_deletemode', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'name_pattern');
+		if (!$dbman->field_exists($table, $field)) {
+			$dbman->add_field($table, $field);
+		}
+	}
 
-    return true;
+	return true;
 }
-
 
