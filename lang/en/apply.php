@@ -113,6 +113,8 @@ You can view it here:
 {$a->url}';
 $string['emailteachermailhtml'] = '{$a->username} has submitted apply activity : <i>\'{$a->apply}\'</i><br /><br />
 You can view it <a href="{$a->url}">here</a>.';
+$string['enable_deletemode'] = 'Delete Mode';
+$string['enable_deletemode_help'] = 'Teacher can delete all applications.';
 $string['entries_list_title'] = 'List of Entries';
 $string['entry_saved'] = 'Your applocation has been saved. Thank you.';
 $string['entry_saved_draft'] = 'Your applocation has been saved as <strong>Draft</strong>.';
@@ -169,6 +171,7 @@ $string['next_page_button'] = ' Next page ';
 $string['no_itemlabel'] = 'No label';
 $string['no_itemname'] = 'No itemname';
 $string['no_items_available_yet'] = 'No questions have been set up yet';
+$string['no_settings_captcha'] = 'Setting of CAPTCHA cannot be edited. ';
 $string['no_submit_data'] = 'Specified entry data does not exist';
 $string['no_templates_available_yet'] = 'No templates available yet';
 $string['no_title'] = 'No Title';
@@ -231,7 +234,6 @@ $string['textarea_width'] = 'Width';
 $string['textfield'] = 'Short text answer';
 $string['textfield_maxlength'] = 'Maximum characters accepted';
 $string['textfield_size'] = 'Textfield width';
-$string['there_are_no_settings_for_recaptcha'] = 'There are no settings for captcha';
 $string['time_close'] = 'Time to close';
 $string['time_close_help'] = 'You can specify times when the apply is accessible for people to answer the applications. 
 If the checkbox is not ticked there is no limit defined.';

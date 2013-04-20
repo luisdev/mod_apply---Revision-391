@@ -35,7 +35,7 @@ class apply_item_captcha extends apply_item_base {
 
         //ther are no settings for recaptcha
         if (isset($item->id) AND $item->id > 0) {
-            notice(get_string('there_are_no_settings_for_recaptcha', 'apply'), $editurl->out());
+            notice(get_string('no_settings_captcha', 'apply'), $editurl->out());
             exit;
         }
 

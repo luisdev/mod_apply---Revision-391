@@ -88,6 +88,11 @@ class mod_apply_mod_form extends moodleform_mod
 		$mform->setDefault('name_pattern', 'lastname');
 
 		//
+		$mform->addElement('selectyesno', 'enable_deletemode', get_string('enable_deletemode', 'apply')); 
+		$mform->addHelpButton('enable_deletemode', 'enable_deletemode', 'apply');
+		$mform->setDefault('enable_deletemode', 0);
+
+		//
 		//-------------------------------------------------------------------------------
 		// for Group
 		$this->standard_coursemodule_elements();
@@ -102,12 +107,15 @@ class mod_apply_mod_form extends moodleform_mod
 	{
 		if (empty($default_values['time_open'])) {
 			$default_values['open_enable'] = 0;
-		} else {
+		}
+		else {
 			$default_values['open_enable'] = 1;
 		}
+		//
 		if (empty($default_values['time_close'])) {
 			$default_values['close_enable'] = 0;
-		} else {
+		}
+		else {
 			$default_values['close_enable'] = 1;
 		}
 	}
