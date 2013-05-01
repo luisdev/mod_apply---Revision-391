@@ -47,6 +47,7 @@ $string['apply:view'] = '概要';
 $string['apply:view_entries'] = '証明書の表示';
 $string['apply:viewanalysepage'] = '回答送信後，分析ページを表示する';
 $string['apply:viewreports'] = 'レポートを表示する';
+$string['apply_is_closed'] = '申請期間は終了しました';
 $string['apply_is_disable']  = '貴方はこの申請を行う事はできません';
 $string['apply_options'] = '申請フォームオプション';
 $string['average'] = '平均';
