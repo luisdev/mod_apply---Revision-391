@@ -167,17 +167,17 @@ if (!$SESSION->apply->is_started) {
 if ($prev_values) {
 	//
 	if (!$SESSION->apply->is_started) {
-		//print_error('error', '', $CFG->wwwroot.'/course/view.php?id='.$id);
 		print_error('error', '', $CFG->wwwroot.'/mod/apply/view.php?id='.$id);
 	}
 
+//	if (apply_check_values($start_itempos, $last_itempos) or $save_draft or $go_next_page or $go_prev_page) {
 	if (apply_check_values($start_itempos, $last_itempos)) {
 		$user_id   = $USER->id;
 		$submit_id = apply_save_draft_values($apply->id, $submit_id, $user_id);	// save to draft
 
 		if ($submit_id) {
-			$log_url = 'submit.php?id='.$cm->id.'&apply_id='.$apply->id.'&submit_id='.$submit_id.'$submit_ver='.$submit_ver;
-			add_to_log($courseid, 'apply', 'submit', $log_url, 'draft');
+			//$log_url = 'submit.php?id='.$cm->id.'&apply_id='.$apply->id.'&submit_id='.$submit_id.'$submit_ver='.$submit_ver;
+			//add_to_log($courseid, 'apply', 'submit', $log_url, 'draft');
 			if ($go_next_page or $go_prev_page) $save_return = 'page';
 			else 								$prev_values = false;
 			if ($save_draft) $save_return = 'draft';
