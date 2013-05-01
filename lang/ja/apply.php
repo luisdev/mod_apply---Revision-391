@@ -155,7 +155,7 @@ $string['item_label_help'] = '特殊なラベル<br />
 </li>
 </ul>';
 
-$string['item_name'] = '申請書の項目数';
+$string['item_name'] = '申請書の項目名';
 $string['items_are_required'] = 'アスタリスクが付けられた項目は入力必須項目です．';
 $string['label'] = 'ラベル';
 $string['maximal'] = '最大';
