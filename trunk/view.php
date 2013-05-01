@@ -141,8 +141,8 @@ if ($apply_can_submit) {
 	$apply_is_not_open =  $apply->time_open>$checktime;
 	$apply_is_closed   = ($apply->time_close<$checktime and $apply->time_close>0);
 	if ($apply_is_not_open or $apply_is_closed) {
-		if ($apply_is_not_open) apply_print_messagebox('apply_is_not_open', $back_url->out());
-		else					apply_print_messagebox('apply_is_closed',   $back_url->out());
+		if ($apply_is_not_open) apply_print_messagebox('apply_is_not_open');
+		else					apply_print_messagebox('apply_is_closed');
 		$apply_can_submit = false;
 	}
 }

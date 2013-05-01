@@ -47,6 +47,7 @@ $string['apply:view'] = 'View a Apply';
 $string['apply:view_entries'] = 'List of Entries';
 $string['apply:viewanalysepage'] = 'View the analysis page after submit';
 $string['apply:viewreports'] = 'View reports';
+$string['apply_is_closed'] = 'Application period is closed';
 $string['apply_is_disable'] = 'You ca not use this Apply';
 $string['apply_options'] = 'Apply options';
 $string['average'] = 'Average';

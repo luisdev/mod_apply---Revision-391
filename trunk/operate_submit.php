@@ -150,7 +150,9 @@ if ($operate=='operate' and $sbmtted) {
 				$log_url  = 'operate_submit.php?id='.$cm->id.'&submit_id='.$submit_id.'&submit_ver='.$submit_ver;
 				$log_info = 'accept='.$accept.' exec='.$execd;
 				add_to_log($courseid, 'apply', 'operate_submit', $log_url, $log_info);
+				redirect($back_url, get_string('entry_saved_operation', 'apply'), 1);
 				//
+				/*
 				echo '<div align="center">';
 				echo '<strong><font color="green">';
 				echo get_string('entry_saved_operation', 'apply');
@@ -158,6 +160,7 @@ if ($operate=='operate' and $sbmtted) {
 				echo '</div>';
 				echo '<br />';
 				echo $OUTPUT->continue_button($back_url);
+				*/
 			}
 			else {
 				echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 3);
