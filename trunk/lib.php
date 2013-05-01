@@ -23,7 +23,7 @@
 defined('MOODLE_INTERNAL') || die;
 
 //
-define('APPLY_VERSION',	 '1.0.1');
+define('APPLY_VERSION',	 '1.0.2');
 
 
 require_once($CFG->libdir.'/eventslib.php');
