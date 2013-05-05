@@ -23,7 +23,7 @@
 defined('MOODLE_INTERNAL') || die;
 
 //
-define('APPLY_VERSION',	 '1.0.2');
+define('APPLY_VERSION',	 '1.0.3');
 
 
 require_once($CFG->libdir.'/eventslib.php');
@@ -1463,14 +1463,27 @@ function apply_get_user_link($user, $pattern='fullname')
 	if (!is_object($user)) $user = $DB->get_record('user', array('id'=>$user));
 	if (!$user) return '';
 
-	if	  	($pattern=='firstname') $user_name = $user->firstname;
-	else if ($pattern=='lastname')  $user_name = $user->lastname;
-	else							$user_name = fullname($user);
-	
+	$user_name = apply_get_user_name($user, $pattern);
 	$link = '<a href='.$CFG->wwwroot.'/user/view.php?id='.$user->id.'>'.$user_name.'</a>';
 	
 	return $link;	
 }
+
+
+
+function apply_get_user_name($user, $pattern='fullname')
+{
+	global $DB;
+
+	if (!is_object($user)) $user = $DB->get_record('user', array('id'=>$user));
+
+    if      ($pattern=='firstname') $user_name = $user->firstname;
+    else if ($pattern=='lastname')  $user_name = $user->lastname;
+    else                            $user_name = fullname($user);
+
+	return $user_name;
+}
+
 
 
 

@@ -11,10 +11,7 @@ if (!$req_own_data or $submit->user_id!=$USER->id) {
 
 $student = apply_get_user_info($submit->user_id);
 if ($student) {
-	if 		($name_pattern=='firstname') $user_name = $student->firstname;
-	else if ($name_pattern=='lastname')  $user_name = $student->lastname;
-	else								 $user_name = fullname($student); 
-	//
+	$user_name = apply_get_user_name($student, $name_pattern);
 	//
 	$user_url  = $CFG->wwwroot.'/user/view.php?id='.$student->id.'&amp;course='.$courseid;
 	$acked_url = $CFG->wwwroot.'/user/view.php?id='.$submit->acked_user.'&amp;course='.$courseid;

@@ -164,21 +164,26 @@ echo $OUTPUT->box_start('generalbox errorboxcontent boxaligncenter boxwidthnorma
 if ($action=='delete_submit' and $apply->enable_deletemode) {
 	// 任意の申請を削除
 	require_capability('mod/apply:deletesubmissions', $context);
+	$user_name = apply_get_user_name($submit->user_id, $apply->name_pattern);
 	echo $OUTPUT->heading(get_string('confirm_delete_submit', 'apply'));
+	echo $OUTPUT->heading($user_name.'&nbsp;:&nbsp;'.$submit->title);
 }
 //
 else {
 	if ($submit->version<=1 and $submit->acked!=APPLY_ACKED_ACCEPT) {
 		// 全体を削除可能
 		echo $OUTPUT->heading(get_string('confirm_delete_entry', 'apply'));
+		echo $OUTPUT->heading($submit->title);
 	}
 	else if ($submit->acked!=APPLY_ACKED_ACCEPT) {
 		// 最新の申請（未認証）のみ取消可能（ロールバック）
 		echo $OUTPUT->heading(get_string('confirm_rollback_entry', 'apply'));
+		echo $OUTPUT->heading($submit->title);
 	}
 	else {
 		// 申請の解除
 		echo $OUTPUT->heading(get_string('confirm_cancel_entry', 'apply'));
+		echo $OUTPUT->heading($submit->title);
 	}
 }
 

@@ -8,11 +8,9 @@ if ($submit->user_id!=$USER->id) {
 
 $student = $DB->get_record('user', array('id'=>$submit->user_id));
 
-if 		($name_pattern=='firstname') $user_name = $student->firstname;
-else if ($name_pattern=='lastname')  $user_name = $student->lastname;
-else								 $user_name = fullname($student); 
-
+$user_name = apply_get_user_name($student, $name_pattern);
 $title = $user_name.' ('.userdate($submit->time_modified, '%Y/%m/%d %H:%M').')';
+
 if 		($submit->class==APPLY_CLASS_DRAFT)  $title .= '&nbsp;<font color="#e22">'.get_string('class_draft', 'apply').'</font>';
 else if ($submit->class==APPLY_CLASS_CANCEL) $title .= '&nbsp;<font color="#e22">'.get_string('class_cancel','apply').'</font>';
 if ($submit->version!=$submit_ver) $title .= '&nbsp;<font color="#22e"> Ver.'.$submit_ver.'</font>';
