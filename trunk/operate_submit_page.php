@@ -14,10 +14,7 @@ if ($submit) {
 	$align   = right_to_left() ? 'right' : 'left';
 	$student = $DB->get_record('user', array('id'=>$submit->user_id));
 
-	if 		($name_pattern=='firstname') $user_name = $student->firstname;
-	else if ($name_pattern=='lastname')  $user_name = $student->lastname;
-	else								 $user_name = fullname($student); 
-
+	$user_name = apply_get_user_name($student, $name_pattern);
 	$title = $user_name.' ('.userdate($submit->time_modified, '%Y/%m/%d %H:%M').')';
 	if ($submit_ver==0) $title .= ' '.get_string('title_draft','apply');
 
