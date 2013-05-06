@@ -36,7 +36,14 @@ $user_id	= optional_param('user_id',   0, PARAM_INT);
 $submit_id  = optional_param('submit_id', 0, PARAM_INT);
 $submit_ver = optional_param('submit_ver', -1, PARAM_INT);
 $show_all   = optional_param('show_all',  0, PARAM_INT);
-$perpage	= optional_param('perpage',   APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);  // how many per page
+$perpage	= optional_param('perpage', APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);  // how many per page
+
+//
+$sifirst 	= optional_param('sifirst', '', PARAM_ALPHA);
+$silast  	= optional_param('silast',  '', PARAM_ALPHA);
+$ssort  	= optional_param('ssort',   '', PARAM_ALPHAEXT);
+$spage		= optional_param('spage', 0, PARAM_INT);
+
 
 $current_tab = $do_show;
 $this_action = 'view_entries';
@@ -123,6 +130,7 @@ if ($do_show=='view_entries') {
 	$table = new flexible_table('apply-show_entry-list-'.$courseid);
 	$matchcount = apply_get_valid_submits_count($cm->instance);
 	//
+	$page_params = '';
 	require('entry_header.php');
 	//
 	echo $OUTPUT->box_start('mdl-align');
@@ -136,6 +144,7 @@ if ($do_show=='view_entries') {
 
 	////////////////////////////////////////////////////////////
 	// Print Initials Bar
+	/*
 	if ($name_pattern=='firstname') {
 		apply_print_initials_bar($table, true, false);
 		if ($show_all) echo '<br />';
@@ -144,6 +153,7 @@ if ($do_show=='view_entries') {
 		apply_print_initials_bar($table, false, true);
 		if ($show_all) echo '<br />';
 	}
+	*/
 
 	////////////////////////////////////////////////////////////
 	// Submits Data

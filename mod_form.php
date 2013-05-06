@@ -85,7 +85,7 @@ class mod_apply_mod_form extends moodleform_mod
 		$choices['lastname']  = get_string('use_item', 'apply', get_string('lastname'));
 		$mform->addElement('select', 'name_pattern', get_string('username_manage', 'apply'), $choices); 
 		$mform->addHelpButton('name_pattern', 'username_manage', 'apply');
-		$mform->setDefault('name_pattern', 'lastname');
+		$mform->setDefault('name_pattern', 'fullname');
 
 		//
 		$mform->addElement('selectyesno', 'enable_deletemode', get_string('enable_deletemode', 'apply')); 

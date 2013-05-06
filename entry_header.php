@@ -26,7 +26,8 @@ else {
 		$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, $title_bfr, '-', '-');
 	}
 	else {
-		$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execd', 'before', 'operation');
+		//$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execd', 'before', 'operation');
+		$table_columns = array('userpic', 'fullname', 'title', 'time_modified', 'version', 'class', 'acked', 'execd', 'before', 'operation');
 		$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, $title_bfr, '-');
 	}
 }
@@ -38,13 +39,29 @@ $table->define_baseurl($base_url);
 
 if ($req_own_data) {
 	$table->sortable(true, 'time_modified', SORT_DESC);
+	$table->no_sorting('lastname');
+	$table->no_sorting('firstname');
 	$table->no_sorting('edit');
 	$table->no_sorting('discard');
 	$table->no_sorting('draft');
 	$table->no_sorting('before');
 }
 else {
-	$table->sortable(true, 'lastname', SORT_ASC);
+	$table->sortable(true, 'time_modified', SORT_DESC);
+	//
+	if ($name_pattern=='lastname') {
+		$table->sortable(true, 'lastname', SORT_ASC);
+		$table->no_sorting('firstname');
+	}
+	else if ($name_pattern=='firstname') {
+		$table->sortable(true, 'firstname', SORT_ASC);
+		$table->no_sorting('lastname');
+	}
+	else {
+		$table->sortable(true, 'firstname', SORT_ASC);
+		$table->sortable(true, 'lastname',  SORT_ASC);
+	}
+
 	$table->no_sorting('before');
 	$table->no_sorting('operation');
 	if ($apply->enable_deletemode) $table->no_sorting('delete');
@@ -70,19 +87,15 @@ list($where, $params) = $table->get_sql_where();
 if ($where) $where .= ' AND ';
 
 //
-if ($name_pattern=='firstname') {
-	$sifirst = optional_param('sifirst', '', PARAM_ALPHA);
-	if ($sifirst) {
-		$where .= "firstname LIKE :sifirst ESCAPE '\\\\' AND ";
-		$params['sifirst'] =  $sifirst.'%';
-	}
+$sifirst = optional_param('sifirst', '', PARAM_ALPHA);
+if ($sifirst) {
+	$where .= "firstname LIKE :sifirst ESCAPE '\\\\' AND ";
+	$params['sifirst'] =  $sifirst.'%';
 }
-if ($name_pattern=='lastname') {
-	$silast  = optional_param('silast',  '', PARAM_ALPHA);
-	if ($silast) {
-		$where .= "lastname LIKE :silast ESCAPE '\\\\' AND ";
-		$params['silast'] =  $silast.'%';
-	}
+$silast = optional_param('silast',  '', PARAM_ALPHA);
+if ($silast) {
+	$where .= "lastname LIKE :silast ESCAPE '\\\\' AND ";
+	$params['silast'] =  $silast.'%';
 }
 
 //
