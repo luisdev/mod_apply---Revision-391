@@ -39,10 +39,10 @@ $show_all   = optional_param('show_all',  0, PARAM_INT);
 $perpage	= optional_param('perpage', APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);  // how many per page
 
 //
-$sifirst 	= optional_param('sifirst', '', PARAM_ALPHA);
-$silast  	= optional_param('silast',  '', PARAM_ALPHA);
-$ssort  	= optional_param('ssort',   '', PARAM_ALPHAEXT);
-$spage		= optional_param('spage', 0, PARAM_INT);
+//$sifirst 	= optional_param('sifirst', '', PARAM_ALPHA);
+//$silast  	= optional_param('silast',  '', PARAM_ALPHA);
+//$ssort  	= optional_param('ssort',   '', PARAM_ALPHAEXT);
+//$spage	= optional_param('spage', 0, PARAM_INT);
 
 
 $current_tab = $do_show;
