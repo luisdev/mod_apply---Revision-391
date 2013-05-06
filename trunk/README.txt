@@ -4,7 +4,7 @@
 //                                        mailto:iseki@solar-system.tuis.ac.jp
 //                                        http://www.nsl.tuis.ac.jp
 //
-//    This module is modified from Feedback module (2012112900) by Andreas Grabs.
+//    This module is modified from Feedback module (2012112900) by Mr. Andreas Grabs.
 
 
 1. OverView
