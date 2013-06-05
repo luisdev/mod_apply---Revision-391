@@ -113,11 +113,13 @@ if ((empty($cm->visible) and !$cap_view_hidden_activities)) {
 
 echo $OUTPUT->heading(format_text($apply->name));
 //
-echo $OUTPUT->heading(get_string('description', 'apply'), 4);
-echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
-echo format_module_intro('apply', $apply, $cm->id);
-require('period_info.php');
-echo $OUTPUT->box_end();
+if ($do_show!='view_one_entry' or !$submit_id) {
+	echo $OUTPUT->heading(get_string('description', 'apply'), 4);
+	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
+	echo format_module_intro('apply', $apply, $cm->id);
+	require('period_info.php');
+	echo $OUTPUT->box_end();
+}
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -127,23 +129,27 @@ if (!$apply_submit_cap) {
 	exit;
 }
 
-$apply_can_submit = true;
-if (!$apply->multiple_submit) {
-	if (apply_get_valid_submits_count($apply->id, $USER->id)>0) {
-		$apply_can_submit = false;
-		apply_print_messagebox('apply_is_already_submitted', $back_url->out());
+$apply_can_submit = false;
+//
+if ($do_show!='view_one_entry' or !$submit_id) {
+	$apply_can_submit = true;
+	if (!$apply->multiple_submit) {
+		if (apply_get_valid_submits_count($apply->id, $USER->id)>0) {
+			$apply_can_submit = false;
+			apply_print_messagebox('apply_is_already_submitted', $back_url->out());
+		}
 	}
-}
 
-// Date
-if ($apply_can_submit) {
-	$checktime = time();
-	$apply_is_not_open =  $apply->time_open>$checktime;
-	$apply_is_closed   = ($apply->time_close<$checktime and $apply->time_close>0);
-	if ($apply_is_not_open or $apply_is_closed) {
-		if ($apply_is_not_open) apply_print_messagebox('apply_is_not_open');
-		else					apply_print_messagebox('apply_is_closed');
-		$apply_can_submit = false;
+	// Date
+	if ($apply_can_submit) {
+		$checktime = time();
+		$apply_is_not_open =  $apply->time_open>$checktime;
+		$apply_is_closed   = ($apply->time_close<$checktime and $apply->time_close>0);
+		if ($apply_is_not_open or $apply_is_closed) {
+			if ($apply_is_not_open) apply_print_messagebox('apply_is_not_open');
+			else					apply_print_messagebox('apply_is_closed');
+			$apply_can_submit = false;
+		}
 	}
 }
 
