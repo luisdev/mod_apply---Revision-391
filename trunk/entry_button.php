@@ -48,6 +48,23 @@ if ($req_own_data and $submit->class!=APPLY_CLASS_CANCEL) {
 
 else {
 	echo '<div align="center">';
-	echo $back_button;
+	//
+	if (!$req_own_data and $submit->version==$submit_ver) {
+        $operate_params = array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'courseid'=>$courseid);
+		$operate_label  = get_string('operate_submit', 'apply');
+        $operate_url = new moodle_url($CFG->wwwroot.'/mod/apply/operate_submit.php', $operate_params);
+		//
+		echo '<table border="0">';
+		echo '<tr>';
+		echo '<td>'.$back_button.'</td>';
+		echo '<td>&nbsp;&nbsp;&nbsp;</td>';
+		echo '<td>'.$OUTPUT->single_button($operate_url,  $operate_label). '</td>';
+		echo '</tr>';
+		echo '</table>';
+	}
+	else {
+		echo $back_button;
+	}
+	//
 	echo '</div>';
 }
