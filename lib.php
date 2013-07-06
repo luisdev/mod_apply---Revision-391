@@ -33,7 +33,7 @@ define('APPLY_ADMIN_REPLY_TAG',	'admin_reply');
 define('APPLY_ADMIN_ONLY_TAG',	'admin_only');
 
 define('APPLY_CLASS_DRAFT',  0);
-define('APPLY_CLASS_NEW',	1);
+define('APPLY_CLASS_NEW',	 1);
 define('APPLY_CLASS_UPDATE', 2);
 define('APPLY_CLASS_CANCEL', 3);
 
@@ -66,7 +66,7 @@ function apply_supports($feature)
 		case FEATURE_COMPLETION_HAS_RULES:	  return false;
 		case FEATURE_GRADE_HAS_GRADE:		  return false;
 		case FEATURE_GRADE_OUTCOMES:		  return false;
-		case FEATURE_BACKUP_MOODLE2:		  return true;
+		case FEATURE_BACKUP_MOODLE2:		  return false;	// Backup at Settings (Admin block)
 		case FEATURE_SHOW_DESCRIPTION:		  return true;
 
 		default: return null;
@@ -158,7 +158,7 @@ function apply_delete_instance($apply_id)
 
 function apply_user_complete($course, $user, $mod, $apply)
 {
-	return true;
+	return false;
 }
 
 
@@ -773,7 +773,7 @@ function apply_get_valid_submits($apply_id, $user_id=0)
 {
 	global $DB;
 
-	$select = 'version>0 AND class!=2 AND apply_id=? ';
+	$select = 'version>0 AND class!=0 AND apply_id=? '; 	// NOT APPLY_CLASS_DRAFT
 	$params = array($apply_id);
 
 	if ($user_id) {
@@ -1772,19 +1772,19 @@ function apply_set_events($apply)
 	}
 
 	// the open-event
-	if ($apply->time_open > 0) {
+	if ($apply->time_open>0) {
 		$event = new stdClass();
-		$event->name		 = get_string('start', 'apply').' '.$apply->name;
-		$event->description  = format_module_intro('apply', $apply, $apply->coursemodule);
-		$event->courseid	 = $apply->course;
-		$event->groupid	  = 0;
-		$event->userid	   = 0;
-		$event->modulename   = 'apply';
-		$event->instance	 = $apply->id;
+		$event->name		= get_string('start', 'apply').' '.$apply->name;
+		$event->description = format_module_intro('apply', $apply, $apply->coursemodule);
+		$event->courseid	= $apply->course;
+		$event->groupid	  	= 0;
+		$event->userid		= 0;
+		$event->modulename  = 'apply';
+		$event->instance	= $apply->id;
 		$event->eventtype	= 'open';
 		$event->timestart	= $apply->time_open;
-		$event->visible	  = instance_is_visible('apply', $apply);
-		if ($apply->time_close > 0) {
+		$event->visible		= instance_is_visible('apply', $apply);
+		if ($apply->time_close>0) {
 			$event->timeduration = ($apply->time_close - $apply->time_open);
 		} else {
 			$event->timeduration = 0;
@@ -1794,18 +1794,18 @@ function apply_set_events($apply)
 	}
 
 	// the close-event
-	if ($apply->time_close > 0) {
+	if ($apply->time_close>0) {
 		$event = new stdClass();
-		$event->name		 = get_string('stop', 'apply').' '.$apply->name;
-		$event->description  = format_module_intro('apply', $apply, $apply->coursemodule);
-		$event->courseid	 = $apply->course;
-		$event->groupid	  = 0;
-		$event->userid	   = 0;
-		$event->modulename   = 'apply';
-		$event->instance	 = $apply->id;
+		$event->name		= get_string('stop', 'apply').' '.$apply->name;
+		$event->description = format_module_intro('apply', $apply, $apply->coursemodule);
+		$event->courseid	= $apply->course;
+		$event->groupid		= 0;
+		$event->userid		= 0;
+		$event->modulename  = 'apply';
+		$event->instance	= $apply->id;
 		$event->eventtype	= 'close';
 		$event->timestart	= $apply->time_close;
-		$event->visible	  = instance_is_visible('apply', $apply);
+		$event->visible		= instance_is_visible('apply', $apply);
 		$event->timeduration = 0;
 
 		calendar_event::create($event);
