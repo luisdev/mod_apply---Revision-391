@@ -103,7 +103,7 @@ $strapply  = get_string('modulename', 'apply');
 $url_params  = array('id'=>$cm->id, 'courseid'=>$courseid);
 $this_url = new moodle_url('/mod/apply/operate_submit.php', $url_params);
 
-$PAGE->navbar->add(get_string('apply:operate_submit', 'apply'));
+$PAGE->navbar->add(get_string('apply:operatesubmit', 'apply'));
 $PAGE->set_url($this_url);
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));

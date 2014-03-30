@@ -165,7 +165,7 @@ if ($do_show=='templates') {
 	$PAGE->navbar->add(get_string('apply:edit_templates', 'apply'));
 }
 else {
-	$PAGE->navbar->add(get_string('apply:edit_items', 'apply'));
+	$PAGE->navbar->add(get_string('apply:edititems', 'apply'));
 }
 
 $PAGE->set_url($this_url);

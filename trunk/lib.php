@@ -1512,7 +1512,6 @@ function apply_get_submitted_users($apply_id, $where='', array $params=null, $so
 	$sql = 'SELECT '.$ufields.', s.id as submit_id FROM {user} u, {apply_submit} s '.
 				'WHERE '.$where.' u.id=s.user_id AND s.apply_id=:apply_id AND s.version>0 '.$sortsql;
 
-print $sql;
 	if ($start_page===false or $page_count===false) {
 		$start_page = false;
 		$page_count = false;
@@ -1549,10 +1548,14 @@ function apply_send_email($cm, $apply, $course, $user_id)
 {
 	global $CFG, $DB;
 
+	require_once('jbxl/jbxl_moodle_tools.php');
+
 	if ($apply->email_notification==0) return;
+	$ccontext = context_course::instance($course->id);
 
 	$user = $DB->get_record('user', array('id'=>$user_id));
-	$teachers = apply_get_receivemail_users($cm->id);
+	//$teachers = apply_get_receivemail_users($cm->id);
+	$teachers = apply_get_receivemail_users($ccontext);
 
 	if ($teachers) {
 		$strapplys = get_string('modulenameplural', 'apply');
@@ -1561,38 +1564,49 @@ function apply_send_email($cm, $apply, $course, $user_id)
 		$printusername = fullname($user);
 
 		foreach ($teachers as $teacher) {
-			$info = new stdClass();
-			$info->username = $printusername;
-			$info->apply = format_string($apply->name, true);
-			$info->url= $CFG->wwwroot.'/mod/apply/view_entries.php?id='.$cm->id.'&user_id='.$user_id.'&do_show=view_entries';
+			if (jbxl_is_teacher($teacher->id, $ccontext, false)) {
+				$info = new stdClass();
+				$info->username = $printusername;
+				$info->apply = format_string($apply->name, true);
+				$info->url= $CFG->wwwroot.'/mod/apply/view_entries.php?id='.$cm->id.'&user_id='.$user_id.'&do_show=view_entries';
 
-			$postsubject = $submitted.': '.$info->username.' -> '.$apply->name;
-			$posttext = apply_send_email_text($info, $course);
+				$postsubject = $submitted.': '.$info->username.' -> '.$apply->name;
+				$posttext = apply_send_email_text($info, $course);
 
-			if ($teacher->mailformat==1) {
-				$posthtml = apply_send_email_html($info, $course, $cm);
+				if ($teacher->mailformat==1) {
+					$posthtml = apply_send_email_html($info, $course, $cm);
+				}
+				else {
+					$posthtml = '';
+				}
+
+				$eventdata = new stdClass();
+				$eventdata->name			  = 'submission';
+				$eventdata->component		  = 'mod_apply';
+				$eventdata->userfrom		  = $user;
+				$eventdata->userto			  = $teacher;
+				$eventdata->subject			  = $postsubject;
+				$eventdata->fullmessage		  = $posttext;
+				$eventdata->fullmessageformat = FORMAT_PLAIN;
+				$eventdata->fullmessagehtml	  = $posthtml;
+				$eventdata->smallmessage	  = '';
+				message_send($eventdata);
 			}
-			else {
-				$posthtml = '';
-			}
-
-			$eventdata = new stdClass();
-			$eventdata->name			  = 'submission';
-			$eventdata->component		  = 'mod_apply';
-			$eventdata->userfrom		  = $user;
-			$eventdata->userto			  = $teacher;
-			$eventdata->subject			  = $postsubject;
-			$eventdata->fullmessage		  = $posttext;
-			$eventdata->fullmessageformat = FORMAT_PLAIN;
-			$eventdata->fullmessagehtml	  = $posthtml;
-			$eventdata->smallmessage	  = '';
-			message_send($eventdata);
 		}
 	}
 }
 
 
 
+function apply_get_receivemail_users($context)
+{
+	$ret = get_users_by_capability($context, 'mod/apply:receivemail', '', 'lastname', '', '', false, '', false);
+	return $ret;
+}
+
+
+
+/*
 function apply_get_receivemail_users($cmid)
 {
 	$context = context_module::instance($cmid);
@@ -1602,6 +1616,7 @@ function apply_get_receivemail_users($cmid)
 
 	return $ret;
 }
+*/
 
 
 
