@@ -58,7 +58,8 @@ if (!$courseid) $courseid = $course->id;
 
 $req_own_data = true;
 $name_pattern = $apply->name_pattern;
-$context = context_module::instance($cm->id);
+$mcontext = context_module::instance($cm->id);
+$ccontext = context_course::instance($courseid);
 
 
 ////////////////////////////////////////////////////////
@@ -66,7 +67,7 @@ $context = context_module::instance($cm->id);
 require_login($course, true, $cm);
 //
 $apply_submit_cap = false;
-if (has_capability('mod/apply:submit', $context)) {
+if (has_capability('mod/apply:submit', $ccontext)) {
 	$apply_submit_cap = true;
 }
 
@@ -99,7 +100,7 @@ echo $OUTPUT->header();
 require('tabs.php');
 
 //
-$cap_view_hidden_activities = has_capability('moodle/course:viewhiddenactivities', $context);
+$cap_view_hidden_activities = has_capability('moodle/course:viewhiddenactivities', $mcontext);
 if ((empty($cm->visible) and !$cap_view_hidden_activities)) {
 	notice(get_string('activityiscurrentlyhidden'));
 }
@@ -136,7 +137,8 @@ if ($do_show!='view_one_entry' or !$submit_id) {
 	if (!$apply->multiple_submit) {
 		if (apply_get_valid_submits_count($apply->id, $USER->id)>0) {
 			$apply_can_submit = false;
-			apply_print_messagebox('apply_is_already_submitted', $back_url->out());
+			//apply_print_messagebox('apply_is_already_submitted', $back_url->out());
+			apply_print_messagebox('apply_is_already_submitted');
 		}
 	}
 

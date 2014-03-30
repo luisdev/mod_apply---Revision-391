@@ -103,7 +103,7 @@ add_to_log($course->id, 'apply', 'view_entries', end($log_url), 'apply_id='.$app
 
 ////////////////////////////////////////////////////////
 /// Print the page header
-$PAGE->navbar->add(get_string('apply:view_entries', 'apply'));
+$PAGE->navbar->add(get_string('apply:viewentries', 'apply'));
 $PAGE->set_url($this_url);
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));
