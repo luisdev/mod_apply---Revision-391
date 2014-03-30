@@ -31,5 +31,5 @@ $module->component = 'mod_apply';   // Full name of the plugin (used for diagnos
 $module->cron      = 0;
 $module->maturity  = MATURITY_STABLE;
 
-$module->version   = 2014021900;    // The current module version (Date: YYYYMMDDXX)
+$module->version   = 2014031900;    // The current module version (Date: YYYYMMDDXX)
 $module->release   = '1.0.7';		// update messages
