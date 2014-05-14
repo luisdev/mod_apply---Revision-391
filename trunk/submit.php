@@ -26,6 +26,8 @@
 require_once('../../config.php');
 require_once('lib.php');
 
+require_once('jbxl/jbxl_moodle_tools.php');
+
 apply_init_session();
 
 
@@ -105,8 +107,10 @@ $context = context_module::instance($cm->id);
 require_login($course, true, $cm);
 //
 if (!has_capability('mod/apply:submit', $context)) {
-	apply_print_error_messagebox('apply_is_disable', $id);
-	exit;
+	if (!jbxl_is_teacher($USER->id, $context, true)) {
+		apply_print_error_messagebox('apply_is_disable', $id);
+		exit;
+	}
 }
 
 
