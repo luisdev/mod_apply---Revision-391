@@ -1,6 +1,7 @@
 <?php
 //
 // by Fumi.Iseki 2012/04/12
+//               2014/05/14
 //
 
 //
@@ -10,7 +11,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$jbxl_moodle_tools_ver = 2013092100;
+$jbxl_moodle_tools_ver = 2014051400;
 
 
 //
@@ -42,6 +43,7 @@ define('JBXL_MOODLE_TOOLS_VER', $jbxl_moodle_tools_ver);
 // function  jbxl_get_course_students($cntxt, $sort='')
 // function  jbxl_get_course_tachers($cntxt, $sort='')
 // function  jbxl_get_course_assistants($cntxt, $sort='')
+// function  jbxl_get_moodle_version()
 //
 // function  jbxl_get_user_first_grouping($courseid, $userid)
 //
@@ -232,6 +234,28 @@ function jbxl_get_course_assistants($cntxt, $sort='')
 	$users = $DB->get_records_sql($sql, array($cntxt->id));
 
 	return $users;
+}
+
+
+
+
+function  jbxl_get_moodle_version()
+{
+	// see http://docs.moodle.org/dev/Releases
+
+	global $CFG;
+
+	if 		($CFG->version>=2014051200) return 2.7;
+	else if ($CFG->version>=2013111800) return 2.6;
+	else if ($CFG->version>=2013051400) return 2.5;
+	else if ($CFG->version>=2012120300) return 2.4;
+	else if ($CFG->version>=2012062500) return 2.3;
+	else if ($CFG->version>=2011120500) return 2.2;
+	else if ($CFG->version>=2011070100) return 2.1;
+	else if ($CFG->version>=2010112400) return 2.0;
+	else if ($CFG->version>=2007101509) return 1.9;
+
+	return 1.8;
 }
 
 
