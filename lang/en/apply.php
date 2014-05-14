@@ -181,6 +181,7 @@ $string['no_settings_captcha'] = 'Setting of CAPTCHA cannot be edited. ';
 $string['no_submit_data'] = 'Specified entry data does not exist';
 $string['no_templates_available_yet'] = 'No templates available yet';
 $string['no_title'] = 'No Title';
+$string['not_selected'] = 'not Selected';
 $string['not_exist'] = 'not Exist';
 $string['numeric'] = 'Numeric answer';
 $string['numeric_range_from'] = 'Range from';
