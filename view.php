@@ -26,6 +26,8 @@ require_once('../../config.php');
 require_once('lib.php');
 require_once($CFG->libdir.'/tablelib.php');
 
+require_once('jbxl/jbxl_moodle_tools.php');
+
 apply_init_session();
 $SESSION->apply->is_started = false;
 
@@ -70,6 +72,7 @@ $apply_submit_cap = false;
 if (has_capability('mod/apply:submit', $ccontext)) {
 	$apply_submit_cap = true;
 }
+else if (jbxl_is_teacher($user_id, $ccontext, true)) $apply_submit_cap = true;
 
 
 ///////////////////////////////////////////////////////////////////////////
