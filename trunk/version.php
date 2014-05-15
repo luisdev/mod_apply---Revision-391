@@ -26,10 +26,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$module->requires  = 2012112900;    // Moodle 2.4
+$module->requires  = 2012120300;    // Moodle 2.4
 $module->component = 'mod_apply';   // Full name of the plugin (used for diagnostics)
 $module->cron      = 0;
 $module->maturity  = MATURITY_STABLE;
 
-$module->version   = 2014051401;    // The current module version (Date: YYYYMMDDXX)
+$module->version   = 2014051500;    // The current module version (Date: YYYYMMDDXX)
 $module->release   = '1.0.7';		// update messages
