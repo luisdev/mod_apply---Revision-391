@@ -26,7 +26,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->requires  = 2012120300;    // Moodle 2.4
+$plugin->requires  = 2013051400;    // Moodle 2.5
 $plugin->component = 'mod_apply';   // Full name of the plugin (used for diagnostics)
 $plugin->cron      = 0;
 $plugin->maturity  = MATURITY_STABLE;
