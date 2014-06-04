@@ -26,6 +26,16 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+if (empty($module)) $module = new stdClass();
+$module->requires  = 2013051400;    // Moodle 2.5
+$module->component = 'mod_apply';   // Full name of the plugin (used for diagnostics)
+$module->cron      = 0;
+$module->maturity  = MATURITY_STABLE;
+
+$module->version   = 2014051601;    // The current module version (Date: YYYYMMDDXX)
+$module->release   = '1.0.7';		// update messages
+
+
 $plugin->requires  = 2013051400;    // Moodle 2.5
 $plugin->component = 'mod_apply';   // Full name of the plugin (used for diagnostics)
 $plugin->cron      = 0;
