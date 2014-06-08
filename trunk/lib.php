@@ -1450,40 +1450,6 @@ function apply_copy_values($submit_id, $fm_ver, $to_ver)
 // Users
 //
 
-//
-// $user is user object or user id
-//
-function apply_get_user_link($user, $pattern='fullname')
-{
-	global $DB, $CFG;
-
-	if (!is_object($user)) $user = $DB->get_record('user', array('id'=>$user));
-	if (!$user) return '';
-
-	$user_name = apply_get_user_name($user, $pattern);
-	$link = '<a href='.$CFG->wwwroot.'/user/view.php?id='.$user->id.'>'.$user_name.'</a>';
-	
-	return $link;	
-}
-
-
-
-function apply_get_user_name($user, $pattern='fullname')
-{
-	global $DB;
-
-	if (!is_object($user)) $user = $DB->get_record('user', array('id'=>$user));
-
-    if      ($pattern=='firstname') $user_name = $user->firstname;
-    else if ($pattern=='lastname')  $user_name = $user->lastname;
-    else                            $user_name = fullname($user);
-
-	return $user_name;
-}
-
-
-
-
 function apply_get_user_info($user_id)
 {
 	global $DB;
