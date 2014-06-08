@@ -8,7 +8,7 @@ if ($submit->user_id!=$USER->id) {
 
 $student = $DB->get_record('user', array('id'=>$submit->user_id));
 
-$user_name = apply_get_user_name($student, $name_pattern);
+$user_name = jbxl_get_user_name($student, $name_pattern);
 $title = $user_name.' ('.userdate($submit->time_modified, '%Y/%m/%d %H:%M').')';
 
 if 		($submit->class==APPLY_CLASS_DRAFT)  $title .= '&nbsp;<font color="#e22">'.get_string('class_draft', 'apply').'</font>';

@@ -15,12 +15,12 @@ if ($submit) {
 		if ($submit->class!=APPLY_CLASS_DRAFT) {
 			if ($submit->acked==APPLY_ACKED_ACCEPT) {
 				$acked_str  = get_string('acked_accept', 'apply');
-				$acked_link = apply_get_user_link($submit->acked_user, $name_pattern);
+				$acked_link = jbxl_get_user_link($submit->acked_user, $name_pattern);
 				$acked_time = userdate($submit->acked_time);
 			}
 			else if ($submit->acked==APPLY_ACKED_REJECT) {
 				$acked_str  = get_string('acked_reject', 'apply');
-				$acked_link = apply_get_user_link($submit->acked_user, $name_pattern);
+				$acked_link = jbxl_get_user_link($submit->acked_user, $name_pattern);
 				$acked_time = userdate($submit->acked_time);
 
 			}
@@ -33,7 +33,7 @@ if ($submit) {
 		if ($submit->class!=APPLY_CLASS_DRAFT) {
 			if ($submit->execd==APPLY_EXECD_DONE) {
 				$execd_str  = get_string('execd_done', 'apply');
-				$execd_link = apply_get_user_link($submit->execd_user, $name_pattern);
+				$execd_link = jbxl_get_user_link($submit->execd_user, $name_pattern);
 				$execd_time = userdate($submit->execd_time);
 			}
 			else {

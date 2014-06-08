@@ -14,7 +14,7 @@ if ($submit) {
 	$align   = right_to_left() ? 'right' : 'left';
 	$student = $DB->get_record('user', array('id'=>$submit->user_id));
 
-	$user_name = apply_get_user_name($student, $name_pattern);
+	$user_name = jbxl_get_user_name($student, $name_pattern);
 	$title = $user_name.' ('.userdate($submit->time_modified, '%Y/%m/%d %H:%M').')';
 	if ($submit_ver==0) $title .= ' '.get_string('title_draft','apply');
 

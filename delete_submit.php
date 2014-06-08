@@ -164,7 +164,7 @@ echo $OUTPUT->box_start('generalbox errorboxcontent boxaligncenter boxwidthnorma
 if ($action=='delete_submit' and $apply->enable_deletemode) {
 	// 任意の申請を削除
 	require_capability('mod/apply:deletesubmissions', $context);
-	$user_name = apply_get_user_name($submit->user_id, $apply->name_pattern);
+	$user_name = jbxl_get_user_name($submit->user_id, $apply->name_pattern);
 	echo $OUTPUT->heading(get_string('confirm_delete_submit', 'apply'));
 	echo $OUTPUT->heading($user_name.'&nbsp;:&nbsp;'.$submit->title);
 }
