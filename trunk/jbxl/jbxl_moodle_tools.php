@@ -1,8 +1,8 @@
 <?php
 //
 // by Fumi.Iseki 2012/04/12
-//               2014/05/14
-//               2014/06/08
+//			   2014/05/14
+//			   2014/06/09
 //
 
 //
@@ -12,7 +12,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$jbxl_moodle_tools_ver = 2014060800;
+$jbxl_moodle_tools_ver = 2014060900;
 
 
 //
@@ -51,6 +51,10 @@ define('JBXL_MOODLE_TOOLS_VER', $jbxl_moodle_tools_ver);
 // function  jbxl_db_exist_table($table, $lower_case=true)
 //
 // function  jbxl_download_data($format, $headers, $datas, $filename='')
+//
+// function  jbxl_get_user_link($user, $pattern='fullname')
+// function  jbxl_get_user_name($user, $pattern='fullname')
+// function  jbxl_get_fullnamehead($name_pattern, $firstname, $lastname, $deli='')
 //
 
 *******************************************************************************/
@@ -314,6 +318,9 @@ function jbxl_db_exist_table($table, $lower_case=true)
 
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+// download
 //
 // $datas: 2次元のデータ配列
 //
@@ -389,6 +396,69 @@ function  jbxl_download_data($format, $datas, $filename='')
 		
 	return;
 }	
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+// Name
+//
+
+function  jbxl_get_user_link($user, $pattern='fullname')
+{
+	global $DB, $CFG;
+	if (!is_object($user)) $user = $DB->get_record('user', array('id'=>$user));
+	if (!$user) return '';
+
+	$user_name = jbxl_get_user_name($user, $pattern);
+	$link = '<a href='.$CFG->wwwroot.'/user/view.php?id='.$user->id.'>'.$user_name.'</a>';
+
+	return $link;
+}
+
+
+
+
+function  jbxl_get_user_name($user, $pattern='fullname')
+{
+	global $DB;
+
+	if (!is_object($user)) $user = $DB->get_record('user', array('id'=>$user));
+
+	if		($pattern=='firstname') $user_name = $user->firstname;
+	else if ($pattern=='lastname')  $user_name = $user->lastname;
+	else							$user_name = fullname($user);
+
+	return $user_name;
+}
+
+
+
+function  jbxl_get_fullnamehead($name_pattern, $firstname, $lastname, $deli='')
+{
+	global $CFG;
+
+	if ($name_pattern=='fullname') {
+		if ($CFG->fullnamedisplay=='lastname firstname') { // for better view (dlnsk)
+			if ($deli=='') $fullnamehead = "$lastname $firstname";
+			else		   $fullnamehead = "$lastname ".$deli." $firstname";
+		}
+		else {
+			if ($deli=='') $fullnamehead = "$firstname $lastname";
+			else		   $fullnamehead = "$firstname ".$deli." $lastname";
+		}
+	}
+	else if ($name_pattern=='lastname') {
+		$fullnamehead = "$lastname";
+	}
+	else {
+		$fullnamehead = "$firstname";
+	}
+
+	return $fullnamehead;
+}
 
 
 
