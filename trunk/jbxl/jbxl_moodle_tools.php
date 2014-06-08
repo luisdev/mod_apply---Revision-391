@@ -2,6 +2,7 @@
 //
 // by Fumi.Iseki 2012/04/12
 //               2014/05/14
+//               2014/06/08
 //
 
 //
@@ -11,7 +12,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$jbxl_moodle_tools_ver = 2014051400;
+$jbxl_moodle_tools_ver = 2014060800;
 
 
 //
@@ -48,6 +49,8 @@ define('JBXL_MOODLE_TOOLS_VER', $jbxl_moodle_tools_ver);
 // function  jbxl_get_user_first_grouping($courseid, $userid)
 //
 // function  jbxl_db_exist_table($table, $lower_case=true)
+//
+// function  jbxl_download_data($format, $headers, $datas, $filename='')
 //
 
 *******************************************************************************/
@@ -310,7 +313,91 @@ function jbxl_db_exist_table($table, $lower_case=true)
 
 
 
+
+//
+// $headers: １次元のヘッダ情報を格納した配列
+// $datas: 2次元のデータ配列
+//
+function  jbxl_download_data($format, $headers, $datas, $filename='')
+{
+	global $CFG;
+
+	$excellib_version = 0;
+	if (file_exists ($CFG->dirroot.'/lib/excellib.class.php')) {
+		$excellib_version = 2;
+		$tocode = 'utf-8';
+		require_once($CFG->dirroot.'/lib/excellib.class.php');
+	}
+	else {
+		$excellib_version = 1;
+		$tocode = 'sjis-win';
+		require_once($CFG->dirroot.'/lib/excel/Worksheet.php');
+		require_once($CFG->dirroot.'/lib/excel/Workbook.php');
+	}
+
+	//
+	if (empty($filename)) $filename = 'jbxl_download_'.date('YmdHis');
+	if ($format==='xls') {
+		header("Content-type: application/vnd.ms-excel");
+		header("Content-Disposition: attachment; filename=\"$filename.xls\"");
+	
+		/// Creating a workbook
+		if ($excellib_version==2) {
+			$workbook = new MoodleExcelWorkbook('-', 'Excel5');
+			$workbook->send($filename);
+		}	
+		else {
+			$workbook = new Workbook('-');
+		}
+		$myxls = $workbook->add_worksheet('data');
+		
+		//define column heading
+		$i = 0;
+		$j = 0;
+		if (!empty($headers)) {
+			foreach ($headers as $header) {
+				$myxls->write_string(0, $j++, mb_convert_encoding($header,  $tocode, 'auto'));
+			}
+			$i++;
+		}
+		
+		/// Print all the lines of data.			
+		foreach ($datas as $data) {
+			$j = 0;
+			foreach ($data as $val) {
+				$myxls->write_string($i, $j++, mb_convert_encoding($val,  $tocode, 'auto'));
+			}
+			$i++;
+		}
+		$workbook->close();	
+	}
+
+	//
+	else if ($format==='txt') {
+		header("Content-Type: application/download\n"); 
+		header("Content-Disposition: attachment; filename=\"$filename.txt\"");
+
+		//define column heading
+		if (!empty($headers)) {
+			foreach ($headers as $header) {
+				echo mb_convert_encoding($header, $tocode, $auto)."\t";
+			}
+			echo "\r\n";
+		}
+		
+		/// Print all the lines of data.			
+		foreach ($datas as $data) {
+			foreach ($data as $val) {
+				echo mb_convert_encoding($val, $tocode, $auto)."\t";
+			}
+			echo "\r\n";
+		}
+	}	
+		
+	exit();
+}	
+
+
+
+
 }		// !defined('JBXL_MOODLE_TOOLS_VER')
-
-
-
