@@ -406,14 +406,15 @@ function  jbxl_download_data($format, $datas, $filename='')
 // Name
 //
 
-function  jbxl_get_user_link($user, $pattern='fullname')
+function  jbxl_get_user_link($user, $pattern='fullname', $target='')
 {
 	global $DB, $CFG;
 	if (!is_object($user)) $user = $DB->get_record('user', array('id'=>$user));
 	if (!$user) return '';
 
+	if (!empty($target)) $target = 'target="'.$target.'"';
 	$user_name = jbxl_get_user_name($user, $pattern);
-	$link = '<a href='.$CFG->wwwroot.'/user/view.php?id='.$user->id.'>'.$user_name.'</a>';
+	$link = '<a href='.$CFG->wwwroot.'/user/view.php?id='.$user->id.' '.$target.' >'.$user_name.'</a>';
 
 	return $link;
 }
@@ -426,6 +427,7 @@ function  jbxl_get_user_name($user, $pattern='fullname')
 	global $DB;
 
 	if (!is_object($user)) $user = $DB->get_record('user', array('id'=>$user));
+	if (!is_object($user)) return ' - ';
 
 	if		($pattern=='firstname') $user_name = $user->firstname;
 	else if ($pattern=='lastname')  $user_name = $user->lastname;
