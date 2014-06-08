@@ -315,29 +315,33 @@ function jbxl_db_exist_table($table, $lower_case=true)
 
 
 //
-// $headers: １次元のヘッダ情報を格納した配列
 // $datas: 2次元のデータ配列
 //
-function  jbxl_download_data($format, $headers, $datas, $filename='')
+function  jbxl_download_data($format, $datas, $filename='')
 {
 	global $CFG;
 
-	$excellib_version = 0;
-	if (file_exists ($CFG->dirroot.'/lib/excellib.class.php')) {
-		$excellib_version = 2;
-		$tocode = 'utf-8';
-		require_once($CFG->dirroot.'/lib/excellib.class.php');
-	}
-	else {
-		$excellib_version = 1;
-		$tocode = 'sjis-win';
-		require_once($CFG->dirroot.'/lib/excel/Worksheet.php');
-		require_once($CFG->dirroot.'/lib/excel/Workbook.php');
+	if (empty($datas->data)) return;
+	if (empty($filename)) {
+		$filename = 'jbxl_download_'.date('YmdHis');
 	}
 
 	//
-	if (empty($filename)) $filename = 'jbxl_download_'.date('YmdHis');
 	if ($format==='xls') {
+		$excellib_version = 0;
+		if (file_exists ($CFG->dirroot.'/lib/excellib.class.php')) {
+			$excellib_version = 2;
+			$tocode = 'utf-8';
+			require_once($CFG->dirroot.'/lib/excellib.class.php');
+		}
+		else {
+			$excellib_version = 1;
+			$tocode = 'sjis-win';
+			require_once($CFG->dirroot.'/lib/excel/Worksheet.php');
+			require_once($CFG->dirroot.'/lib/excel/Workbook.php');
+		}
+
+		//
 		header("Content-type: application/vnd.ms-excel");
 		header("Content-Disposition: attachment; filename=\"$filename.xls\"");
 	
@@ -351,21 +355,17 @@ function  jbxl_download_data($format, $headers, $datas, $filename='')
 		}
 		$myxls = $workbook->add_worksheet('data');
 		
-		//define column heading
+		//
 		$i = 0;
-		$j = 0;
-		if (!empty($headers)) {
-			foreach ($headers as $header) {
-				$myxls->write_string(0, $j++, mb_convert_encoding($header,  $tocode, 'auto'));
-			}
-			$i++;
-		}
-		
-		/// Print all the lines of data.			
-		foreach ($datas as $data) {
+		foreach ($datas->data as $line=>$data) {
 			$j = 0;
-			foreach ($data as $val) {
-				$myxls->write_string($i, $j++, mb_convert_encoding($val,  $tocode, 'auto'));
+			foreach ($data as $colm=>$val) {
+				if ($datas->attr[$line][$colm]==='number') {
+					$myxls->write_number($i, $j++, $val);
+				}
+				else {
+					$myxls->write_string($i, $j++, mb_convert_encoding($val,  $tocode, 'auto'));
+				}
 			}
 			$i++;
 		}
@@ -374,27 +374,20 @@ function  jbxl_download_data($format, $headers, $datas, $filename='')
 
 	//
 	else if ($format==='txt') {
+		$tocode = 'utf-8';
+		//
 		header("Content-Type: application/download\n"); 
 		header("Content-Disposition: attachment; filename=\"$filename.txt\"");
 
-		//define column heading
-		if (!empty($headers)) {
-			foreach ($headers as $header) {
-				echo mb_convert_encoding($header, $tocode, $auto)."\t";
-			}
-			echo "\r\n";
-		}
-		
-		/// Print all the lines of data.			
-		foreach ($datas as $data) {
+		foreach ($datas->data as $data) {
 			foreach ($data as $val) {
-				echo mb_convert_encoding($val, $tocode, $auto)."\t";
+				echo mb_convert_encoding($val, $tocode, 'auto')."\t";
 			}
 			echo "\r\n";
 		}
 	}	
 		
-	exit();
+	return;
 }	
 
 
