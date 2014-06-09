@@ -2,6 +2,7 @@
 
 // need $req_own_data, $submit, $data, $name_pattern, $courseid, ...
 
+require_once('jbxl/jbxl_moodle_tools.php');
 
 //
 if (!$req_own_data or $submit->user_id!=$USER->id) {
