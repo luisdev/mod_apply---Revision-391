@@ -426,12 +426,14 @@ function  jbxl_get_user_name($user, $pattern='fullname')
 {
 	global $DB;
 
+	$user_name = '';
+	
 	if (!is_object($user)) $user = $DB->get_record('user', array('id'=>$user));
-	if (!is_object($user)) return ' - ';
-
-	if		($pattern=='firstname') $user_name = $user->firstname;
-	else if ($pattern=='lastname')  $user_name = $user->lastname;
-	else							$user_name = fullname($user);
+	if ($user) {
+		if		($pattern=='firstname') $user_name = $user->firstname;
+		else if ($pattern=='lastname')  $user_name = $user->lastname;
+		else							$user_name = fullname($user);
+	}
 
 	return $user_name;
 }
