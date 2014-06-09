@@ -1,5 +1,7 @@
 <?php
 
+require_once('jbxl/jbxl_moodle_tools.php');
+
 if ($submit) {
 //	echo $OUTPUT->box_start('boxaligncenter boxwidthwide');
 

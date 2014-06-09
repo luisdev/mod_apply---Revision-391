@@ -25,7 +25,7 @@
 require_once('../../config.php');
 require_once('lib.php');
 require_once('delete_submit_form.php');
-
+require_once('jbxl/jbxl_moodle_tools.php');
 
 $id 		= required_param('id', PARAM_INT);
 $submit_id 	= required_param('submit_id', PARAM_INT);
