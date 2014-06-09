@@ -32,5 +32,5 @@ $plugin->cron      = 0;
 $plugin->maturity  = MATURITY_STABLE;
 
 $plugin->version   = 2014060903;    // The current module version (Date: YYYYMMDDXX)
-$plugin->release   = '1.0.8';		// update messages
+$plugin->release   = '1.0.9';		// update messages
 
