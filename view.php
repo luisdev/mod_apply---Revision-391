@@ -25,6 +25,7 @@
 require_once('../../config.php');
 require_once('lib.php');
 require_once($CFG->libdir.'/tablelib.php');
+require_once('jbxl/jbxl_moodle_tools.php');
 
 apply_init_session();
 $SESSION->apply->is_started = false;
