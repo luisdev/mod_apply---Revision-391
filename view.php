@@ -241,11 +241,11 @@ if ($do_show=='view_one_entry' and $submit_id) {
 
 
 /////////////////////////////////////////
-if (empty($module)) $module = new stdClass();
+if (empty($plugin)) $plugin = new stdClass();
 include('version.php');
 //
 echo '<div align="center"><br />';
-echo '<a href="'.get_string('wiki_url', 'apply').'" target="_blank"><i>mod_apply '.$module->release.'</i></a>';
+echo '<a href="'.get_string('wiki_url', 'apply').'" target="_blank"><i>mod_apply '.$plugin->release.'</i></a>';
 echo '<br /><br />';
 echo '</div>';
 
