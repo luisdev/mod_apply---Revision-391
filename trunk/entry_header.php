@@ -72,17 +72,21 @@ else {
 $table->set_attribute('cellspacing', '0');
 $table->set_attribute('id', 'show_entrytable');
 $table->set_attribute('class', 'generaltable generalbox');
+/*
 $table->set_control_variables(array(
 			TABLE_VAR_SORT  => 'ssort',
 			TABLE_VAR_IFIRST=> 'sifirst',
 			TABLE_VAR_ILAST => 'silast',
 			TABLE_VAR_PAGE	=> 'spage'
 			));
+*/
 $table->setup();
 
 //
-$sort = $table->get_sql_sort();
-if (!$sort) $sort = '';
+if (!$sort) {
+	$sort = $table->get_sql_sort();
+	if (!$sort) $sort = '';
+}
 
 list($where, $params) = $table->get_sql_where();
 if ($where) $where .= ' AND ';
