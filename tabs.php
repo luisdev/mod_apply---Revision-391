@@ -51,7 +51,7 @@ $row[] 	 = new tabobject('view', $viewurl->out(), get_string('overview', 'apply'
 
 // View all Report
 if (has_capability('mod/apply:viewreports', $context)) {
-	$url_params = array('id'=>$used_id, 'do_show'=>'view_entries', 'ssort'=>'time_modified');
+	$url_params = array('id'=>$used_id, 'do_show'=>'view_entries', 'sort'=>'time_modified', 'order'=>'DESC');
 	$reporturl  = new moodle_url('/mod/apply/view_entries.php', $url_params);
 	$row[] 		= new tabobject('view_entries', $reporturl->out(), get_string('view_entries', 'apply'));
 }
