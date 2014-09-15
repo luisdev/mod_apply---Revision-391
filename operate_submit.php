@@ -62,7 +62,7 @@ if (!$courseid) $courseid = $course->id;
 
 
 ////////////////////////////////////////////////////////
-$back_params = array('id'=>$cm->id, 'courseid'=>$courseid, 'do_show'=>'view_entries');
+$back_params = array('id'=>$cm->id, 'courseid'=>$courseid, 'do_show'=>'view_entries', 'sort'=>'time_modified', 'order'=>'DESC');
 $back_url = new moodle_url($CFG->wwwroot.'/mod/apply/view_entries.php', $back_params);
 if (isset($formdata->back_to_entries)) {
 	redirect($back_url->out());
