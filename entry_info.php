@@ -46,9 +46,9 @@ if ($submit) {
 	
 
 	echo '<br />';
-	echo '<table border="1">';
+	echo '<table border="1" class="entry_info>';
 	echo '<tr><td>';
-	echo '<table border="0" class="entry_info">';
+	echo '<table border="0">';
 	echo '<tr>';
 	echo '<td>&nbsp;'.get_string('title_ack', 'apply').':&nbsp;</td>';
 	echo '<td>&nbsp;'.$acked_str. '&nbsp;</td>';
@@ -64,7 +64,6 @@ if ($submit) {
 	echo '</table>';
 	echo '</td><tr>';
 	echo '</table>';
-	echo '<br />';
 
 	//
 //	echo $OUTPUT->box_end();

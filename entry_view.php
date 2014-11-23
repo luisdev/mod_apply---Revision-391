@@ -29,6 +29,7 @@ if ($this_action!='preview') {
 echo '<div align="center">';
 echo $OUTPUT->heading(format_text($title), 4);
 echo '</div>';
+echo '<br />';
 
 //
 echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide entry_view');
