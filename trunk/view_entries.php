@@ -205,7 +205,7 @@ if ($do_show=='view_one_entry' and $submit_id) {
 
 	if ($submit) {
 		echo '<div align="center">';
-		echo $OUTPUT->heading(format_text($apply->name), 4);
+		echo $OUTPUT->heading(format_text($apply->name), 3);
 		echo '</div>';
 		$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
 		if (is_array($items)) {
@@ -215,7 +215,7 @@ if ($do_show=='view_one_entry' and $submit_id) {
 	}
 	else {
 		echo '<div align="center">';
-		echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 4);
+		echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 3);
 		echo $OUTPUT->single_button($back_url->out(), get_string('back_button', 'apply'));
 		echo '</div>';
 	}

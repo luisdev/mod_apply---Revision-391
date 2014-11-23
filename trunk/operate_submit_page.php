@@ -21,8 +21,9 @@ if ($submit) {
 
 
 	echo '<div align="center">';
-	echo $OUTPUT->heading($title, 4);
+	echo $OUTPUT->heading($title, 3);
 	echo '</div>';
+	echo '<br />';
 
 	//
 	if ($err_message!='') {
@@ -137,7 +138,7 @@ else {
 	$back_button = $OUTPUT->single_button($back_url, get_string('back_button', 'apply'));
 	//
 	echo '<div align="center">';
-	echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 4);
+	echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 3);
 	echo $back_button;
 	echo '</div>';
 }

@@ -125,7 +125,6 @@ if ($do_show!='view_one_entry' or !$submit_id) {
 	echo $OUTPUT->box_end();
 }
 echo '</div>';
-echo '<br />';
 
 
 ///////////////////////////////////////////////////////////////////////////

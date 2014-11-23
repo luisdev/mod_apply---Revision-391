@@ -169,6 +169,7 @@ if ($action=='delete_submit' and $apply->enable_deletemode) {
 	require_capability('mod/apply:deletesubmissions', $context);
 	$user_name = jbxl_get_user_name($submit->user_id, $apply->name_pattern);
 	echo $OUTPUT->heading(get_string('confirm_delete_submit', 'apply'), 4);
+	echo '<br />';
 	echo $OUTPUT->heading($user_name.'&nbsp;:&nbsp;'.$submit->title, 4);
 }
 //
@@ -176,16 +177,19 @@ else {
 	if ($submit->version<=1 and $submit->acked!=APPLY_ACKED_ACCEPT) {
 		// 全体を削除可能
 		echo $OUTPUT->heading(get_string('confirm_delete_entry', 'apply'), 4);
+		echo '<br />';
 		echo $OUTPUT->heading($submit->title, 4);
 	}
 	else if ($submit->acked!=APPLY_ACKED_ACCEPT) {
 		// 最新の申請（未認証）のみ取消可能（ロールバック）
 		echo $OUTPUT->heading(get_string('confirm_rollback_entry', 'apply'), 4);
+		echo '<br />';
 		echo $OUTPUT->heading($submit->title, 4);
 	}
 	else {
 		// 申請の解除
 		echo $OUTPUT->heading(get_string('confirm_cancel_entry', 'apply'), 4);
+		echo '<br />';
 		echo $OUTPUT->heading($submit->title, 4);
 	}
 }
