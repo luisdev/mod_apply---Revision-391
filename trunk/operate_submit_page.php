@@ -20,7 +20,7 @@ if ($submit) {
 	if ($submit_ver==0) $title .= ' '.get_string('title_draft','apply');
 
 
-	echo $OUTPUT->heading($title, 3);
+	echo $OUTPUT->heading($title, 4);
 
 	//
 	if ($err_message!='') {
