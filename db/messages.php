@@ -23,8 +23,11 @@ $messageproviders = array (
 /// Submitting a apply
     'submission' => array (
     ),
+
 /// Message to nonrespondents
     'message' => array (
-    )
+    ),
 
+    'processed' => array (
+    )
 );
