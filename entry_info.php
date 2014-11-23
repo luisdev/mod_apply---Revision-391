@@ -5,12 +5,12 @@ require_once('jbxl/jbxl_moodle_tools.php');
 if ($submit) {
 //	echo $OUTPUT->box_start('boxaligncenter boxwidthwide');
 
-	$acked_str  = '-';
-	$acked_link = '-';
-	$acked_time = '-';
-	$execd_str  = '-';	
-	$execd_link = '-';
-	$execd_time = '-';
+	$acked_str  = '&nbsp;-&nbsp;';
+	$acked_link = '&nbsp;-&nbsp;';
+	$acked_time = '&nbsp;-&nbsp;';
+	$execd_str  = '&nbsp;-&nbsp;';	
+	$execd_link = '&nbsp;-&nbsp;';
+	$execd_time = '&nbsp;-&nbsp;';
 
 	//
 	if ($submit->version==$submit_ver) {
@@ -46,20 +46,25 @@ if ($submit) {
 	
 
 	echo '<br />';
-	echo '<table border="1" class="entry_info">';
+	echo '<table border="1">';
+	echo '<tr><td>';
+	echo '<table border="0" class="entry_info">';
 	echo '<tr>';
-	echo '<td>'.get_string('title_ack', 'apply').': </td>';
-	echo '<td>'.$acked_str.'</td>';
-	echo '<td>'.$acked_link.'</td>';
-	echo '<td>'.$acked_time.'</td>';
+	echo '<td>&nbsp;'.get_string('title_ack', 'apply').':&nbsp;</td>';
+	echo '<td>&nbsp;'.$acked_str. '&nbsp;</td>';
+	echo '<td>&nbsp;'.$acked_link.'&nbsp;</td>';
+	echo '<td>&nbsp;'.$acked_time.'&nbsp;</td>';
 	echo '</tr>';
 	echo '<tr>';
-	echo '<td>'.get_string('title_exec', 'apply').': </strong></td>';
-	echo '<td>'.$execd_str.'</td>';
-	echo '<td>'.$execd_link.'</td>';
-	echo '<td>'.$execd_time.'</td>';
+	echo '<td>&nbsp;'.get_string('title_exec', 'apply').':&nbsp;</td>';
+	echo '<td>&nbsp;'.$execd_str. '&nbsp;</td>';
+	echo '<td>&nbsp;'.$execd_link.'&nbsp;</td>';
+	echo '<td>&nbsp;'.$execd_time.'&nbsp;</td>';
 	echo '</tr>';
 	echo '</table>';
+	echo '</td><tr>';
+	echo '</table>';
+	echo '<br />';
 
 	//
 //	echo $OUTPUT->box_end();

@@ -1524,8 +1524,8 @@ function apply_send_email($cm, $apply, $course, $user_id)
 	$teachers = apply_get_receivemail_users($ccontext);
 
 	if ($teachers) {
-		$strapplys = get_string('modulenameplural', 'apply');
-		$strapply  = get_string('modulename', 'apply');
+		//$strapplys = get_string('modulenameplural', 'apply');
+		//$strapply  = get_string('modulename', 'apply');
 		$submitted = get_string('submitted',  'apply');
 		$printusername = fullname($user);
 
@@ -1564,12 +1564,12 @@ function apply_send_email($cm, $apply, $course, $user_id)
 
 
 
+// メール受信可能な管理者
 function apply_get_receivemail_users($context)
 {
 	$ret = get_users_by_capability($context, 'mod/apply:receivemail', '', 'lastname', '', '', false, '', false);
 	return $ret;
 }
-
 
 
 /*
@@ -1586,14 +1586,61 @@ function apply_get_receivemail_users($cmid)
 
 
 
-function apply_send_email_text($info, $course) 
+function apply_send_email_user($cm, $apply, $course, $user_id)
+{
+	global $CFG, $DB;
+
+//	require_once('jbxl/jbxl_moodle_tools.php');
+
+	if ($apply->email_notification_user==0) return;
+//	$ccontext = context_course::instance($course->id);
+
+	$user = $DB->get_record('user', array('id'=>$user_id));
+
+//	$strapplys = get_string('modulenameplural', 'apply');
+//	$strapply  = get_string('modulename', 'apply');
+//	$submitted = get_string('submitted',  'apply');
+
+	$info = new stdClass();
+	$info->username = fullname($user);
+	$info->apply = format_string($apply->name, true);
+	$info->url= $CFG->wwwroot.'/mod/apply/view_entries.php?id='.$cm->id.'&user_id='.$user_id.'&do_show=view_entries';
+
+	$postsubject = get_string('submitted','apply').': '.$info->username.' -> '.$apply->name;
+	$posttext = apply_send_email_text($info, $course, true);
+
+	if ($user->mailformat==1) {
+		$posthtml = apply_send_email_html($info, $course, $cm, true);
+	}
+	else {
+		$posthtml = '';
+	}
+
+	$eventdata = new stdClass();
+	$eventdata->name			  = 'processed';
+	$eventdata->component		  = 'mod_apply';
+	$eventdata->userfrom		  = 0;
+	$eventdata->userto			  = $user;
+	$eventdata->subject			  = $postsubject;
+	$eventdata->fullmessage		  = $posttext;
+	$eventdata->fullmessageformat = FORMAT_PLAIN;
+	$eventdata->fullmessagehtml	  = $posthtml;
+	$eventdata->smallmessage	  = '';
+	message_send($eventdata);
+}
+
+
+
+
+function apply_send_email_text($info, $course, $isuser=false) 
 {
 	$coursecontext = context_course::instance($course->id);
 	$courseshortname = format_string($course->shortname, true, array('context'=>$coursecontext));
 
 	$posttext  = $courseshortname.' -> '.get_string('modulenameplural', 'apply').' -> '.$info->apply."\n";
 	$posttext .= '---------------------------------------------------------------------'."\n";
-	$posttext .= get_string('emailteachermail', 'apply', $info)."\n";
+	if ($isuser) $posttext .= get_string('emailusermail', 'apply', $info)."\n";
+	else         $posttext .= get_string('emailteachermail', 'apply', $info)."\n";
 	$posttext .= '---------------------------------------------------------------------'."\n";
 
 	return $posttext;
@@ -1601,7 +1648,7 @@ function apply_send_email_text($info, $course)
 
 
 
-function apply_send_email_html($info, $course, $cm)
+function apply_send_email_html($info, $course, $cm, $isuser=false)
 {
 	global $CFG;
 
@@ -1616,7 +1663,8 @@ function apply_send_email_html($info, $course, $cm)
 				'<a href="'.$apply_all_url.'">'.get_string('modulenameplural', 'apply').'</a> ->'.
 				'<a href="'.$apply_url.'">'.$info->apply.'</a></font></p>';
 	$posthtml.= '<hr /><font face="sans-serif">';
-	$posthtml.= '<p>'.get_string('emailteachermailhtml', 'apply', $info).'</p>';
+	if ($isuser) $posthtml.= '<p>'.get_string('emailusermailhtml', 'apply', $info).'</p>';
+	else         $posthtml.= '<p>'.get_string('emailteachermailhtml', 'apply', $info).'</p>';
 	$posthtml.= '</font><hr />';
 
 	return $posthtml;

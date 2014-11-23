@@ -19,12 +19,12 @@ span.apply_info {
 }
 
 table.entry_info {
-	line-height: 50%;
+	line-height: 100%;
 	font-weight:bold;
 }
 
 table.operation_submit {
-	line-height: 50%;
+	line-height: 150%;
 	font-weight:bold;
 }
 

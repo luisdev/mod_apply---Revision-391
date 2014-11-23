@@ -34,7 +34,8 @@
 // Please do not forget to use upgrade_set_timeout()
 // before any action that may take longer time to finish.
 
-function xmldb_apply_upgrade($oldversion) {
+function xmldb_apply_upgrade($oldversion)
+{
 	global $CFG, $DB;
 
 	$dbman = $DB->get_manager();
@@ -44,6 +45,16 @@ function xmldb_apply_upgrade($oldversion) {
 		$table = new xmldb_table('apply');
 		//
 		$field = new xmldb_field('enable_deletemode', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'name_pattern');
+		if (!$dbman->field_exists($table, $field)) {
+			$dbman->add_field($table, $field);
+		}
+	}
+
+	// 2014112300 
+	if ($oldversion < 2014112300) {
+		$table = new xmldb_table('apply');
+		//
+		$field = new xmldb_field('email_notification_user', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'email_notification');
 		if (!$dbman->field_exists($table, $field)) {
 			$dbman->add_field($table, $field);
 		}

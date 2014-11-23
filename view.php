@@ -38,6 +38,7 @@ $submit_id  = optional_param('submit_id', 0, PARAM_INT);
 $submit_ver = optional_param('submit_ver', -1, PARAM_INT);
 $show_all   = optional_param('show_all',  0, PARAM_INT);
 $perpage	= optional_param('perpage', APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);
+$sort       = optional_param('sort',  '', PARAM_ALPHAEXT);
 $user_id 	= $USER->id;
 
 $current_tab = 'view';
