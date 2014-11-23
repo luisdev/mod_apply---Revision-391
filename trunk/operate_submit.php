@@ -31,7 +31,7 @@ apply_init_session();
 ////////////////////////////////////////////////////////
 //get the params
 $id			= required_param('id', PARAM_INT);
-$user_id	= optional_param('user_id',   0, PARAM_INT);
+//$user_id	= optional_param('user_id',   0, PARAM_INT);
 $submit_id  = optional_param('submit_id', 0, PARAM_INT);
 $submit_ver = optional_param('submit_ver', -1, PARAM_INT);
 $sendemail  = optional_param('send_email', 0, PARAM_INT);
@@ -149,7 +149,7 @@ if ($operate=='operate' and $sbmtted) {
 			$ret = apply_operate_submit($submit->id, $submit->version, $accept, $execd);
 			if ($ret) {
 				if ($sendemail) {
-					apply_send_email_user($cm, $apply, $course, $user_id);
+					apply_send_email_user($cm, $apply, $course, $submit);
 				}
 				$log_url  = 'operate_submit.php?id='.$cm->id.'&submit_id='.$submit_id.'&submit_ver='.$submit_ver;
 				$log_info = 'accept='.$accept.' exec='.$execd;

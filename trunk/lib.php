@@ -1520,13 +1520,10 @@ function apply_send_email($cm, $apply, $course, $user_id)
 	$ccontext = context_course::instance($course->id);
 
 	$user = $DB->get_record('user', array('id'=>$user_id));
-	//$teachers = apply_get_receivemail_users($cm->id);
 	$teachers = apply_get_receivemail_users($ccontext);
 
 	if ($teachers) {
-		//$strapplys = get_string('modulenameplural', 'apply');
-		//$strapply  = get_string('modulename', 'apply');
-		$submitted = get_string('submitted',  'apply');
+		$submitted = get_string('submitted', 'apply');
 		$printusername = fullname($user);
 
 		foreach ($teachers as $teacher) {
@@ -1556,6 +1553,8 @@ function apply_send_email($cm, $apply, $course, $user_id)
 				$eventdata->fullmessageformat = FORMAT_PLAIN;
 				$eventdata->fullmessagehtml	  = $posthtml;
 				$eventdata->smallmessage	  = '';
+				$eventdata->notification      = 1;
+				//
 				message_send($eventdata);
 			}
 		}
@@ -1586,26 +1585,23 @@ function apply_get_receivemail_users($cmid)
 
 
 
-function apply_send_email_user($cm, $apply, $course, $tuser, $fuser=null)
+function apply_send_email_user($cm, $apply, $course, $submit, $fuser=null)
 {
 	global $CFG, $DB, $USER;
 
-//	require_once('jbxl/jbxl_moodle_tools.php');
+	require_once('jbxl/jbxl_moodle_tools.php');
 
 	if ($apply->email_notification_user==0) return;
-//	$ccontext = context_course::instance($course->id);
 
+	$user_id = $submit->user_id;
 	$user = $DB->get_record('user', array('id'=>$user_id));
 	if ($fuser==null) $fuser = $USER;
-
-//	$strapplys = get_string('modulenameplural', 'apply');
-//	$strapply  = get_string('modulename', 'apply');
-//	$submitted = get_string('submitted',  'apply');
 
 	$info = new stdClass();
 	$info->username = fullname($user);
 	$info->apply = format_string($apply->name, true);
-	$info->url= $CFG->wwwroot.'/mod/apply/view_entries.php?id='.$cm->id.'&user_id='.$user_id.'&do_show=view_entries';
+	$urlparam = '&courseid='.$course->id.'&user_id='.$user_id.'&submit_id='.$submit->id.'&submit_ver='.$submit->version;
+	$info->url= $CFG->wwwroot.'/mod/apply/view.php?id='.$cm->id.$urlparam.'&do_show=view_one_entry';
 
 	$postsubject = get_string('submitted','apply').': '.$info->username.' -> '.$apply->name;
 	$posttext = apply_send_email_text($info, $course, true);
@@ -1620,13 +1616,15 @@ function apply_send_email_user($cm, $apply, $course, $tuser, $fuser=null)
 	$eventdata = new stdClass();
 	$eventdata->name			  = 'processed';
 	$eventdata->component		  = 'mod_apply';
-	$eventdata->userfrom		  = 0;
+	$eventdata->userfrom		  = $fuser;
 	$eventdata->userto			  = $user;
 	$eventdata->subject			  = $postsubject;
 	$eventdata->fullmessage		  = $posttext;
 	$eventdata->fullmessageformat = FORMAT_PLAIN;
 	$eventdata->fullmessagehtml	  = $posthtml;
 	$eventdata->smallmessage	  = '';
+	$eventdata->notification      = 1;
+	//
 	message_send($eventdata);
 }
 

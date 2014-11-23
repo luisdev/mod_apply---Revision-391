@@ -155,6 +155,5 @@ $capabilities = array(
             'editingteacher' => CAP_ALLOW
         )
     ),
-
 );
 
