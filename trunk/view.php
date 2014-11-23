@@ -114,7 +114,8 @@ if ((empty($cm->visible) and !$cap_view_hidden_activities)) {
 ///////////////////////////////////////////////////////////////////////////
 // Print the main part of the page
 
-echo $OUTPUT->heading(format_text($apply->name));
+echo '<div align="center">';
+echo $OUTPUT->heading(format_text($apply->name), 3);
 //
 if ($do_show!='view_one_entry' or !$submit_id) {
 	echo $OUTPUT->heading(get_string('description', 'apply'), 4);
@@ -123,6 +124,8 @@ if ($do_show!='view_one_entry' or !$submit_id) {
 	require('period_info.php');
 	echo $OUTPUT->box_end();
 }
+echo '</div>';
+echo '<br />';
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -165,6 +168,7 @@ if ($apply_can_submit) {
 	$submit_url  = new moodle_url('/mod/apply/submit.php', $url_params);
 	$submit_link = '<div align="center">'.$OUTPUT->single_button($submit_url->out(), get_string('submit_form_button', 'apply')).'</div>';
 	apply_print_messagebox('submit_new_apply', $submit_link, 'green');
+	echo '<br />';
 }
 
 
@@ -180,7 +184,9 @@ if ($do_show=='view') {
 		require('entry_header.php');
 
 		echo '<br />';
-		echo $OUTPUT->heading(get_string('entries_list_title', 'apply'), 2);
+		echo '<div align="center">';
+		echo $OUTPUT->heading(get_string('entries_list_title', 'apply'), 4);
+		echo '</div>';
 
 		///////////////////////////////////////////////////////////////////////
 		//
@@ -233,8 +239,8 @@ if ($do_show=='view_one_entry' and $submit_id) {
 		}
 	}
 	else {
-		echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 3);
 		echo '<div align="center">';
+		echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 4);
 		echo $OUTPUT->single_button($back_url->out(), get_string('back_button', 'apply'));
 	   	echo '</div>';
 	}

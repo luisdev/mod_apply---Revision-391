@@ -126,9 +126,10 @@ $string['emailteachermail'] = '{$a->username} が申請フォーム「 {$a->appl
 {$a->url}';
 $string['emailteachermailhtml'] = '{$a->username} が申請フォーム「 {$a->apply} 」を投稿しました．<br /><br />
 <a href="{$a->url}">このページ</a>で詳細を閲覧できます．';
-
-$string['email_notification_user'] = 'ユーザに通知メールを送信する';
-$string['email_notification_user_help'] = '有効にした場合，申請の処理に関して申請者宛にメール通知されます';
+//
+$string['email_entry'] = 'メール通知を行う';
+$string['email_notification_user'] = 'ユーザに通知メールを送信できるようにする';
+$string['email_notification_user_help'] = '有効にした場合，申請の処理に関して申請者宛にメール通知が可能になります';
 $string['emailusermail'] = '管理者が申請「 {$a->apply} 」を処理しました．
 
 下記ページにて内容を閲覧できます:

@@ -34,6 +34,7 @@ $id			= required_param('id', PARAM_INT);
 $user_id	= optional_param('user_id',   0, PARAM_INT);
 $submit_id  = optional_param('submit_id', 0, PARAM_INT);
 $submit_ver = optional_param('submit_ver', -1, PARAM_INT);
+$sendemail  = optional_param('send_email', 0, PARAM_INT);
 $courseid   = optional_param('courseid',  0, PARAM_INT);
 $operate	= optional_param('operate',  'show_page', PARAM_ALPHAEXT);
 
@@ -147,6 +148,9 @@ if ($operate=='operate' and $sbmtted) {
 		if ($operate=='operate') {
 			$ret = apply_operate_submit($submit->id, $submit->version, $accept, $execd);
 			if ($ret) {
+				if ($sendemail) {
+					apply_send_email_user($cm, $apply, $course, $user_id);
+				}
 				$log_url  = 'operate_submit.php?id='.$cm->id.'&submit_id='.$submit_id.'&submit_ver='.$submit_ver;
 				$log_info = 'accept='.$accept.' exec='.$execd;
 				add_to_log($courseid, 'apply', 'operate_submit', $log_url, $log_info);
@@ -163,8 +167,8 @@ if ($operate=='operate' and $sbmtted) {
 				*/
 			}
 			else {
-				echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 3);
 				echo '<div align="center">';
+				echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 4);
 				echo $OUTPUT->single_button($back_url, get_string('back_button', 'apply'));
 				echo '</div>';
 			}
@@ -173,8 +177,8 @@ if ($operate=='operate' and $sbmtted) {
 
 	// Error
 	else {
-		echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 3);
 		echo '<div align="center">';
+		echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 4);
 		echo $OUTPUT->single_button($back_url, get_string('back_button', 'apply'));
 		echo '</div>';
 	}
@@ -190,7 +194,9 @@ if ($operate=='show_page' and $submit_id) {
 	$params = array('id'=>$submit_id);
 	$submit = $DB->get_record('apply_submit', $params); 
 
-	echo $OUTPUT->heading(format_text($apply->name));
+	echo '<div align="center">';
+	echo $OUTPUT->heading(format_text($apply->name), 3);
+	echo '</div>';
 
 	$items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
 	if (is_array($items)) {

@@ -150,14 +150,17 @@ else {
 }
 
 
-$PAGE->set_heading(format_string($course->fullname));
+$PAGE->set_heading(format_string($course->fullname), 3);
 $PAGE->set_title(format_string($apply->name));
 echo $OUTPUT->header();
 
 
 ///////////////////////////////////////////////////////////////////////////
 ///Print the main part of the page
-echo $OUTPUT->heading(format_text($apply->name));
+echo '<div align="center">';
+echo $OUTPUT->heading(format_text($apply->name), 3);
+echo '</div>';
+echo '<br />';
 echo $OUTPUT->box_start('generalbox errorboxcontent boxaligncenter boxwidthnormal');
 
 //
@@ -165,25 +168,25 @@ if ($action=='delete_submit' and $apply->enable_deletemode) {
 	// 任意の申請を削除
 	require_capability('mod/apply:deletesubmissions', $context);
 	$user_name = jbxl_get_user_name($submit->user_id, $apply->name_pattern);
-	echo $OUTPUT->heading(get_string('confirm_delete_submit', 'apply'));
-	echo $OUTPUT->heading($user_name.'&nbsp;:&nbsp;'.$submit->title);
+	echo $OUTPUT->heading(get_string('confirm_delete_submit', 'apply'), 4);
+	echo $OUTPUT->heading($user_name.'&nbsp;:&nbsp;'.$submit->title, 4);
 }
 //
 else {
 	if ($submit->version<=1 and $submit->acked!=APPLY_ACKED_ACCEPT) {
 		// 全体を削除可能
-		echo $OUTPUT->heading(get_string('confirm_delete_entry', 'apply'));
-		echo $OUTPUT->heading($submit->title);
+		echo $OUTPUT->heading(get_string('confirm_delete_entry', 'apply'), 4);
+		echo $OUTPUT->heading($submit->title, 4);
 	}
 	else if ($submit->acked!=APPLY_ACKED_ACCEPT) {
 		// 最新の申請（未認証）のみ取消可能（ロールバック）
-		echo $OUTPUT->heading(get_string('confirm_rollback_entry', 'apply'));
-		echo $OUTPUT->heading($submit->title);
+		echo $OUTPUT->heading(get_string('confirm_rollback_entry', 'apply'), 4);
+		echo $OUTPUT->heading($submit->title, 4);
 	}
 	else {
 		// 申請の解除
-		echo $OUTPUT->heading(get_string('confirm_cancel_entry', 'apply'));
-		echo $OUTPUT->heading($submit->title);
+		echo $OUTPUT->heading(get_string('confirm_cancel_entry', 'apply'), 4);
+		echo $OUTPUT->heading($submit->title, 4);
 	}
 }
 

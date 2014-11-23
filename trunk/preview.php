@@ -89,7 +89,10 @@ $PAGE->set_title(format_string($apply->name));
 $PAGE->set_heading(format_string($course->fullname));
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading(format_text($apply->name));
+
+echo '<div align="center">';
+echo $OUTPUT->heading(format_text($apply->name), 3);
+echo '</div>';
 echo '<br />';
 
 //$submit = $DB->get_record('apply_submit', array('id'=>$submit_id, 'version'=>$submit_ver, 'user_id'=>$user_id));
@@ -106,8 +109,8 @@ if ($submit) {
 	}
 }
 else {
-	echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 3);
 	echo '<div align="center">';
+	echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 4);
 	echo $OUTPUT->single_button($back_url->out(), get_string('back_button', 'apply'));
 	echo '</div>';
 }

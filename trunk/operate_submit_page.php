@@ -20,7 +20,9 @@ if ($submit) {
 	if ($submit_ver==0) $title .= ' '.get_string('title_draft','apply');
 
 
+	echo '<div align="center">';
 	echo $OUTPUT->heading($title, 4);
+	echo '</div>';
 
 	//
 	if ($err_message!='') {
@@ -65,6 +67,15 @@ if ($submit) {
 	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 	echo '<table border="0" class="operation_submit">';
 
+	if ($apply->email_notification_user) {
+		$email_str = get_string('email_entry', 'apply');
+		echo '<tr>';
+		echo '<td><input type="checkbox" name="send_email" value="1" /><strong> '.$email_str.'</strong></td>';
+		echo '<td>&nbsp;&nbsp;&nbsp;</td>';
+		echo '<td>&nbsp;&nbsp;&nbsp;</td>';
+		echo '</tr>';
+	}
+
 	$accept = '';
 	$reject = '';
 	if 		($submit->acked==APPLY_ACKED_ACCEPT) $accept = 'checked';
@@ -87,6 +98,7 @@ if ($submit) {
 	echo '<td>&nbsp;&nbsp;&nbsp;</td>';
 	echo '<td>&nbsp;&nbsp;&nbsp;</td>';
 	echo '</tr>';
+
 	echo '</table>';
 	echo $OUTPUT->box_end();
 
@@ -103,6 +115,7 @@ if ($submit) {
     echo '<input type="hidden" name="submit_ver" value="'.$submit->version.'" />';
 
 	//
+	echo '<br />';
 	echo '<div align="center">';
 	echo '<table border="0">';
 	echo '<tr>';
@@ -123,8 +136,8 @@ if ($submit) {
 else {
 	$back_button = $OUTPUT->single_button($back_url, get_string('back_button', 'apply'));
 	//
-	echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 3);
 	echo '<div align="center">';
+	echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 4);
 	echo $back_button;
 	echo '</div>';
 }
