@@ -116,7 +116,8 @@ $string['edit_entry']   = '編集';
 $string['edit_entry_button'] = ' 編集 ';
 $string['edit_item']  = '申請書を編集する';
 $string['edit_items'] = '項目の編集';
-$string['email_notification'] = '通知メールを送信する';
+
+$string['email_notification'] = '管理者に通知メールを送信する';
 $string['email_notification_help'] = '有効にした場合，申請フォームの送信に関して管理者宛にメール通知されます';
 $string['emailteachermail'] = '{$a->username} が申請フォーム「 {$a->apply} 」を投稿しました．
 
@@ -125,6 +126,17 @@ $string['emailteachermail'] = '{$a->username} が申請フォーム「 {$a->appl
 {$a->url}';
 $string['emailteachermailhtml'] = '{$a->username} が申請フォーム「 {$a->apply} 」を投稿しました．<br /><br />
 <a href="{$a->url}">このページ</a>で詳細を閲覧できます．';
+
+$string['email_notification_user'] = 'ユーザに通知メールを送信する';
+$string['email_notification_user_help'] = '有効にした場合，申請の処理に関して申請者宛にメール通知されます';
+$string['emailusermail'] = '管理者が申請「 {$a->apply} 」を処理しました．
+
+下記ページにて内容を閲覧できます:
+
+{$a->url}';
+$string['emailusermailhtml'] = '管理者が申請「 {$a->apply} 」を処理しました．<br /><br />
+<a href="{$a->url}">このページ</a>で詳細を閲覧できます．';
+
 $string['enable_deletemode'] = '削除モード';
 $string['enable_deletemode_help'] = '承認者が申請書を削除できるようにします．<br />通常は安全のため，必ず "No" に設定しておいてください．';
 $string['entries_list_title'] = '申請書類一覧';

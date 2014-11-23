@@ -110,7 +110,8 @@ $string['edit_entry'] = 'Edit';
 $string['edit_entry_button'] = ' Edit ';
 $string['edit_item'] = 'Edit question';
 $string['edit_items'] = 'Edit Items';
-$string['email_notification'] = 'Send e-mail notifications';
+
+$string['email_notification'] = 'Send e-mail notifications to admin';
 $string['email_notification_help'] = 'If enabled, administrators receive email notification of apply submissions.';
 $string['emailteachermail'] = '{$a->username} has submitted apply activity : \'{$a->apply}\'
 
@@ -119,6 +120,17 @@ You can view it here:
 {$a->url}';
 $string['emailteachermailhtml'] = '{$a->username} has submitted apply activity : <i>\'{$a->apply}\'</i><br /><br />
 You can view it <a href="{$a->url}">here</a>.';
+//
+$string['email_notification_user'] = 'Send e-mail notifications to user';
+$string['email_notification_user_help'] = 'If enabled, users receive email notification of apply processes.';
+$string['emailusermail'] = 'The administrator has processed your application : \'{$a->apply}\'
+
+You can view it here:
+
+{$a->url}';
+$string['emailusermailhtml'] = 'The administrator has processed your application : <i>\'{$a->apply}\'</i><br /><br />
+You can view it <a href="{$a->url}">here</a>.';
+
 $string['enable_deletemode'] = 'Delete Mode';
 $string['enable_deletemode_help'] = 'This enables a teacher to delete all applications.<br />Usually, please set to "No" for safety.'; 
 $string['entries_list_title'] = 'List of Entries';
