@@ -1586,9 +1586,9 @@ function apply_get_receivemail_users($cmid)
 
 
 
-function apply_send_email_user($cm, $apply, $course, $user_id)
+function apply_send_email_user($cm, $apply, $course, $tuser, $fuser=null)
 {
-	global $CFG, $DB;
+	global $CFG, $DB, $USER;
 
 //	require_once('jbxl/jbxl_moodle_tools.php');
 
@@ -1596,6 +1596,7 @@ function apply_send_email_user($cm, $apply, $course, $user_id)
 //	$ccontext = context_course::instance($course->id);
 
 	$user = $DB->get_record('user', array('id'=>$user_id));
+	if ($fuser==null) $fuser = $USER;
 
 //	$strapplys = get_string('modulenameplural', 'apply');
 //	$strapply  = get_string('modulename', 'apply');
@@ -1705,9 +1706,9 @@ function apply_print_messagebox($str, $append=null, $color='steel blue')
 	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 
 	if ($str!='' and $str!=null) {
-		echo '<h2><font color="'.$color.'"><div align="center">';
+		echo '<h3><font color="'.$color.'"><div align="center">';
 		echo get_string($str, 'apply');
-		echo '</div></font></h2>';
+		echo '</div></font></h3>';
 	}
 
 	if ($append!=null) echo $append;

@@ -121,8 +121,10 @@ echo $OUTPUT->header();
 require('tabs.php');
 
 /// Print the main part of the page
-echo $OUTPUT->heading(format_text($apply->name));
+echo '<div align="center">';
+echo $OUTPUT->heading(format_text($apply->name), 3);
 if (isset($error)) echo $error;
+echo '</div>';
 
 $itemobj->show_editform();
 

@@ -245,12 +245,12 @@ if ($do_show=='edit') {
 
 		$helpbutton = $OUTPUT->help_icon('preview', 'apply');
 
-		echo $OUTPUT->heading($helpbutton . get_string('preview', 'apply'));
+		echo $OUTPUT->heading($helpbutton . get_string('preview', 'apply'), 4);
 		if (isset($SESSION->apply->moving) AND $SESSION->apply->moving->shouldmoving == 1) {
 			$anker = '<a href="edit.php?id='.$id.'">';
 			$anker .= get_string('cancel_moving', 'apply');
 			$anker .= '</a>';
-			echo $OUTPUT->heading($anker);
+			echo $OUTPUT->heading($anker, 4);
 		}
 
 		//check, if there exists required-elements

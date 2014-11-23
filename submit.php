@@ -260,7 +260,9 @@ $max_item_count = $DB->count_records('apply_item', array('apply_id'=>$apply->id)
 // Print the main part of the page
 //
 $SESSION->apply->is_started = false;
-echo $OUTPUT->heading(format_text($apply->name));
+echo '<div align="center">';
+echo $OUTPUT->heading(format_text($apply->name), 3);
+echo '</div>';
 
 //
 if (isset($save_return) and $save_return=='saved') {

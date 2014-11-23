@@ -77,11 +77,12 @@ echo $OUTPUT->header();
 ///////////////////////////////////////////////////////////////////////////
 /// Print the main part of the page
 
-echo $OUTPUT->heading(format_text($apply->name));
+echo '<div align="center">';
+echo $OUTPUT->heading(format_text($apply->name), 3);
 echo $OUTPUT->box_start('generalbox errorboxcontent boxaligncenter boxwidthnormal');
-echo $OUTPUT->heading(get_string('confirm_delete_item', 'apply'));
-
+echo $OUTPUT->heading(get_string('confirm_delete_item', 'apply'), 4);
 print_string('related_items_deleted', 'apply');
+echo '</div>';
 
 $mform->display();
 echo $OUTPUT->box_end();

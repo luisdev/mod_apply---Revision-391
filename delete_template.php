@@ -134,11 +134,13 @@ require('tabs.php');
 /// Print the main part of the page
 $strdeleteapply = get_string('delete_template', 'apply');
 //
-echo $OUTPUT->heading($strdeleteapply);
+echo '<div align="center">';
+echo $OUTPUT->heading($strdeleteapply, 3);
+echo '</div>';
 
 if ($should_delete==1) {
     echo $OUTPUT->box_start('generalbox errorboxcontent boxaligncenter boxwidthnormal');
-    echo $OUTPUT->heading(get_string('confirm_delete_template', 'apply'));
+    echo $OUTPUT->heading(get_string('confirm_delete_template', 'apply'), 4);
     $mform->display();
     echo $OUTPUT->box_end();
 } 
@@ -150,7 +152,7 @@ else {
         echo $OUTPUT->box(get_string('no_templates_available_yet', 'apply'), 'generalbox boxaligncenter boxwidthwide');
     }
 	else {
-        echo $OUTPUT->heading(get_string('course'), 3);
+        echo $OUTPUT->heading(get_string('course'), 4);
         echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthnormal');
         $tablecolumns = array('template', 'action');
         $tableheaders = array(get_string('templates', 'apply'), '');
@@ -186,7 +188,7 @@ else {
             echo $OUTPUT->box(get_string('no_templates_available_yet', 'apply'), 'generalbox boxaligncenter');
         }
 		else {
-            echo $OUTPUT->heading(get_string('public', 'apply'), 3);
+            echo $OUTPUT->heading(get_string('public', 'apply'), 4);
             echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthnormal');
             $tablecolumns = array('template', 'action');
             $tableheaders = array(get_string('templates', 'apply'), '');

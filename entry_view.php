@@ -26,7 +26,9 @@ if ($this_action!='preview') {
 	$title .= '&nbsp;&nbsp;<a href="'.$preview_url->out().'">'.$preview_img.'</a>';
 }
 
-echo $OUTPUT->heading(format_text($title), 3);
+echo '<div align="center">';
+echo $OUTPUT->heading(format_text($title), 4);
+echo '</div>';
 
 //
 echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide entry_view');
