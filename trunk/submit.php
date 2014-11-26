@@ -133,7 +133,7 @@ if ((empty($cm->visible) and !has_capability('moodle/course:viewhiddenactivities
 	notice(get_string('activityiscurrentlyhidden'));
 }
 
-if (!$apply->multiple_submit) {
+if (!$apply->multiple_submit and $submit_id==0) {
 	if (apply_get_valid_submits_count($apply->id, $USER->id)>0) {
 		apply_print_error_messagebox('apply_is_already_submitted', $id);
 		exit;
