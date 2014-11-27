@@ -1,8 +1,9 @@
 <?php
 //
 // by Fumi.Iseki 2012/04/12
-//			   2014/05/14
-//			   2014/06/09
+//               2014/05/14
+//               2014/06/09
+//               2014/11/27
 //
 
 //
@@ -12,7 +13,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$jbxl_moodle_tools_ver = 2014060900;
+//$jbxl_moodle_tools_ver = 2014060900;
+$jbxl_moodle_tools_ver = 2014112700;
 
 
 //
@@ -77,7 +79,7 @@ function  jbxl_is_teacher($uid, $cntxt, $inc_admin=true)
 	global $DB;
 
 	if (!$cntxt) return false;
-	if (!is_object($cntxt)) $cntxt = get_context_instance(CONTEXT_COURSE, $cntxt);
+	if (!is_object($cntxt)) $cntxt = jbxl_get_course_context($cntxt);
 
 	$ret = false;
 	$roles = $DB->get_records('role', array('archetype'=>'editingteacher'), 'id', 'id'); 
@@ -101,7 +103,7 @@ function  jbxl_is_assistant($uid, $cntxt)
 	global $DB;
 
 	if (!$cntxt) return false;
-	if (!is_object($cntxt)) $cntxt = get_context_instance(CONTEXT_COURSE, $cntxt);
+	if (!is_object($cntxt)) $cntxt = jbxl_get_course_context($cntxt);
 
 	$roles = $DB->get_records('role', array('archetype'=>'teacher'), 'id', 'id'); 
 	foreach($roles as $role) {
@@ -118,7 +120,7 @@ function  jbxl_is_student($uid, $cntxt)
 	global $DB;
 
 	if (!$cntxt) return false;
-	if (!is_object($cntxt)) $cntxt = get_context_instance(CONTEXT_COURSE, $cntxt);
+	if (!is_object($cntxt)) $cntxt = jbxl_get_course_context($cntxt);
 
 	$roles = $DB->get_records('role', array('archetype'=>'student'), 'id', 'id'); 
 	foreach($roles as $role) {
@@ -135,7 +137,7 @@ function  jbxl_has_role($uid, $cntxt, $rolename)
 	global $DB;
 
 	if (!$cntxt) return false;
-	if (!is_object($cntxt)) $cntxt = get_context_instance(CONTEXT_COURSE, $cntxt);
+	if (!is_object($cntxt)) $cntxt = jbxl_get_course_context($cntxt);
 
 	$roles = $DB->get_records('role', array('archetype'=>$rolename), 'id', 'id'); 
 	foreach($roles as $role) {
@@ -156,7 +158,7 @@ function jbxl_get_course_users($cntxt, $sort='')
 	if ($sort) $sort = ' ORDER BY u.'.$sort;
 	$sql = 'SELECT u.* FROM {role_assignments} r, {user} u WHERE r.contextid = ? AND r.userid = u.id '.$sort;
 	//
-	if (!is_object($cntxt)) $cntxt = get_context_instance(CONTEXT_COURSE, $cntxt);
+	if (!is_object($cntxt)) $cntxt = jbxl_get_course_context($cntxt);
 	$users = $DB->get_records_sql($sql, array($cntxt->id));
 
 	return $users;
@@ -183,7 +185,7 @@ function jbxl_get_course_students($cntxt, $sort='')
 	$sql = 'SELECT u.* FROM {role_assignments} r, {user} u '.
 					 ' WHERE r.contextid = ? AND ('.$roleid.') AND r.userid = u.id '.$sort;
 	//
-	if (!is_object($cntxt)) $cntxt = get_context_instance(CONTEXT_COURSE, $cntxt);
+	if (!is_object($cntxt)) $cntxt = jbxl_get_course_context($cntxt);
 	$users = $DB->get_records_sql($sql, array($cntxt->id));
 
 	return $users;
@@ -210,7 +212,7 @@ function jbxl_get_course_tachers($cntxt, $sort='')
 	$sql = 'SELECT u.* FROM {role_assignments} r, {user} u '. 
 					 ' WHERE r.contextid = ? AND ('.$roleid.') AND r.userid = u.id '.$sort;
 	//
-	if (!is_object($cntxt)) $cntxt = get_context_instance(CONTEXT_COURSE, $cntxt);
+	if (!is_object($cntxt)) $cntxt = jbxl_get_course_context($cntxt);
 	$users = $DB->get_records_sql($sql, array($cntxt->id));
 
 	return $users;
@@ -237,34 +239,11 @@ function jbxl_get_course_assistants($cntxt, $sort='')
 	$sql = 'SELECT u.* FROM {role_assignments} r, {user} u '.
 					 ' WHERE r.contextid = ? AND ('.$roleid.') AND r.userid = u.id '.$sort;
 	//
-	if (!is_object($cntxt)) $cntxt = get_context_instance(CONTEXT_COURSE, $cntxt);
+	if (!is_object($cntxt)) $cntxt = jbxl_get_course_context($cntxt);
 	$users = $DB->get_records_sql($sql, array($cntxt->id));
 
 	return $users;
 }
-
-
-
-
-function  jbxl_get_moodle_version()
-{
-	// see http://docs.moodle.org/dev/Releases
-
-	global $CFG;
-
-	if 		($CFG->version>=2014051200) return 2.7;
-	else if ($CFG->version>=2013111800) return 2.6;
-	else if ($CFG->version>=2013051400) return 2.5;
-	else if ($CFG->version>=2012120300) return 2.4;
-	else if ($CFG->version>=2012062500) return 2.3;
-	else if ($CFG->version>=2011120500) return 2.2;
-	else if ($CFG->version>=2011070100) return 2.1;
-	else if ($CFG->version>=2010112400) return 2.0;
-	else if ($CFG->version>=2007101509) return 1.9;
-
-	return 1.8;
-}
-
 
 
 
@@ -463,6 +442,66 @@ function  jbxl_get_fullnamehead($name_pattern, $firstname, $lastname, $deli='')
 
 	return $fullnamehead;
 }
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////
+//
+// for deprecated functions
+//
+
+function  jbxl_get_moodle_version()
+{
+	// see http://docs.moodle.org/dev/Releases
+
+	global $CFG;
+
+	if 		($CFG->version>=2014051200) return 2.7;
+	else if ($CFG->version>=2013111800) return 2.6;
+	else if ($CFG->version>=2013051400) return 2.5;
+	else if ($CFG->version>=2012120300) return 2.4;
+	else if ($CFG->version>=2012062500) return 2.3;
+	else if ($CFG->version>=2011120500) return 2.2;
+	else if ($CFG->version>=2011070100) return 2.1;
+	else if ($CFG->version>=2010112400) return 2.0;
+	else if ($CFG->version>=2007101509) return 1.9;
+
+	return 1.8;
+}
+
+
+
+
+function  jbxl_get_course_context($courseid)
+{
+	$ver = jbxl_get_moodle_version();
+
+	$context = null;
+
+	if (floatval($ver)<2.5) {
+		$context = get_context_instance(CONTEXT_COURSE, $courseid);
+	}
+	else {
+		$context = context_course::instance($courseid);
+	}
+
+	return $context;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
