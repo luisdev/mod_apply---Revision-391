@@ -2044,3 +2044,74 @@ function apply_get_template_list($course, $onlyownorpublic='')
 }
 
 
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+function apply_get_event($cm, $action, $params='', $info='')
+{
+	global $CFG;
+	require_once($CFG->dirroot.'/mod/apply/jbxl/jbxl_tools.php');
+	require_once($CFG->dirroot.'/mod/apply/jbxl/jbxl_moodle_tools.php');
+
+	$ver = jbxl_get_moodle_version();
+
+	$event = null;
+	if (!is_array($params)) $params = array();
+
+	if (floatval($ver)>=2.7) {
+		$params = array(
+			'context' => context_module::instance($cm->id),
+			'other' => array('params' => $params, 'info'=> $info),
+		);
+		//
+		if ($action=='view') {
+			$event = \mod_apply\event\view_log::create($params);
+		}
+		else if ($action=='op_submit') {
+			$event = \mod_apply\event\operate_submit::create($params);
+		}
+		else if ($action=='user_submit') {
+			$event = \mod_apply\event\user_submit::create($params);
+		}
+		else if ($action=='delete') {
+			$event = \mod_apply\event\delete_submit::create($params);
+		}
+	}
+
+	// for Legacy add_to_log()	  
+	else {
+		if ($action=='view') {
+			$file = 'view.php';
+		}
+		else if ($action=='op_submit') {
+			$file = 'operate_submit.php';
+		}
+		else if ($action=='user_submit') {
+			$file = 'submit.php';
+		}
+		else if ($action=='delete') {
+			$file = 'delete_submit.php';
+		}
+		else {
+			$file = 'view.php';
+		}
+		$param_str = jbxl_get_url_params_str($params);
+		//
+		$event = new stdClass();
+		$event->courseid= $cm->course;
+		$event->name	= 'apply';
+		$event->action  = $action;
+		$event->url	 	= $file.$param_str;
+		$event->info	= $info;
+	}
+   
+	return $event;
+}
+
+
+

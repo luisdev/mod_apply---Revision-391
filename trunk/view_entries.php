@@ -101,8 +101,8 @@ $back_url = new moodle_url($base_url);
 $this_url->params(array('do_show'=>$do_show, 'show_all'=>$show_all, 'submit_id'=>$submit_id, 'submit_ver'=>$submit_ver));
 $back_url->params(array('do_show'=>'view_entries'));
 
-$log_url = explode('/', $this_url);
-add_to_log($course->id, 'apply', 'view_entries', end($log_url), 'apply_id='.$apply->id);
+//$log_url = explode('/', $this_url);
+//add_to_log($course->id, 'apply', 'view_entries', end($log_url), 'apply_id='.$apply->id);
 
 
 ////////////////////////////////////////////////////////

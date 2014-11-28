@@ -41,6 +41,13 @@ $perpage	= optional_param('perpage', APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);
 $sort       = optional_param('sort',  '', PARAM_ALPHAEXT);
 $user_id 	= $USER->id;
 
+$urlparams['id']       = $id;
+$urlparams['do_show']  = $do_show;
+$urlparams['courseid'] = $courseid;
+$urlparams['show_all'] = $show_all;
+$urlparams['perpage']  = $perpage;
+$urlparams['sort']     = $sort;
+
 $current_tab = 'view';
 $this_action = 'view';
 
@@ -87,8 +94,10 @@ $back_url = new moodle_url($base_url);
 $this_url->params(array('do_show'=>$do_show, 'show_all'=>$show_all, 'submit_id'=>$submit_id, 'submit_ver'=>$submit_ver));
 $back_url->params(array('do_show'=>'view'));
 
-$log_url = explode('/', $this_url);
-add_to_log($course->id, 'apply', 'view', end($log_url), 'apply_id='.$apply->id);
+//$log_url = explode('/', $this_url);
+//add_to_log($course->id, 'apply', 'view', end($log_url), 'apply_id='.$apply->id);
+$event = apply_get_event($cm, 'view', $urlparams);
+jbxl_add_to_log($event);
 
 
 ///////////////////////////////////////////////////////////////////////////

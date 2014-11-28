@@ -36,8 +36,6 @@ $context = context_course::instance($course->id);
 require_login($course);
 $PAGE->set_pagelayout('incourse');
 
-add_to_log($course->id, 'apply', 'view all', $url->out(false), $course->id);
-
 
 /// Print the page header
 $strapplys = get_string('modulenameplural', 'apply');

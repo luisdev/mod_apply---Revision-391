@@ -38,6 +38,10 @@ $sendemail  = optional_param('send_email', 0, PARAM_INT);
 $courseid   = optional_param('courseid',  0, PARAM_INT);
 $operate	= optional_param('operate',  'show_page', PARAM_ALPHAEXT);
 
+$urlparams['id']       = $id;
+$urlparams['courseid'] = $courseid;
+$urlparams['opetate']  = $operate;
+
 $current_tab = '';
 
 
@@ -151,9 +155,9 @@ if ($operate=='operate' and $sbmtted) {
 				if ($sendemail) {
 					apply_send_email_user($cm, $apply, $course, $submit);
 				}
-				$log_url  = 'operate_submit.php?id='.$cm->id.'&submit_id='.$submit_id.'&submit_ver='.$submit_ver;
 				$log_info = 'accept='.$accept.' exec='.$execd;
-				add_to_log($courseid, 'apply', 'operate_submit', $log_url, $log_info);
+				$event = apply_get_event($cm, 'op_submit', $urlparams, $log_info);
+				jbxl_add_to_log($event);
 				redirect($back_url, get_string('entry_saved_operation', 'apply'), 1);
 				//
 				/*

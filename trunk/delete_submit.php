@@ -33,6 +33,11 @@ $submit_ver = optional_param('submit_ver', -1, PARAM_INT);
 $courseid 	= optional_param('courseid', false, PARAM_INT);
 $action 	= optional_param('action', '', PARAM_ALPHAEXT);
 
+$urlparams['id']       = $id;
+$urlparams['courseid'] = $courseid;
+$urlparams['action']   = $action;
+
+
 if (!confirm_sesskey()) {
 	print_error('invalidsesskey');
 }
@@ -93,8 +98,8 @@ if (isset($formdata->confirmdelete) and $formdata->confirmdelete==1) {
 			// 任意の申請を削除
 			require_capability('mod/apply:deletesubmissions', $context);
         	apply_delete_submit($submit_id);
-			$log_url = 'delete_submit.php?id='.$cm->id.'&submit_id='.$submit_id.'&action='.$action;
-	  	    add_to_log($courseid, 'apply', 'delete_submit', $log_url, 'delete_submit');
+			$event = apply_get_event($cm, 'delete', $urlparams, 'delete_submit');
+			jbxl_add_to_log($event);
         	redirect('view_entries.php?id='.$id.'&do_show=view_entries');
 		}
 		//
@@ -103,17 +108,20 @@ if (isset($formdata->confirmdelete) and $formdata->confirmdelete==1) {
 			if ($submit->version<=1 and $submit->acked!=APPLY_ACKED_ACCEPT) {
 				// 全体を削除可能
         		apply_delete_submit_safe($submit_id);
-	  	      	add_to_log($courseid, 'apply', 'delete_submit', $log_url, 'delete');
+				$event = apply_get_event($cm, 'delete', $urlparams, 'delete all');
+				jbxl_add_to_log($event);
 			}
 			else if ($submit->acked!=APPLY_ACKED_ACCEPT) {
 				// 最新の申請（未認証）のみ取消可能（ロールバック）
         		apply_rollback_submit($submit_id);
-        		add_to_log($courseid, 'apply', 'delete_submit', $log_url, 'rollback');
+				$event = apply_get_event($cm, 'delete', $urlparams, 'rollback');
+				jbxl_add_to_log($event);
 			}
 			else {
 				// 申請の解除
         		apply_cancel_submit($submit_id);
-       		 	add_to_log($courseid, 'apply', 'delete_submit', $log_url, 'cancel');
+				$event = apply_get_event($cm, 'delete', $urlparams, 'cancel');
+				jbxl_add_to_log($event);
 			}
 			//
         	redirect('view.php?id='.$id.'&do_show=view');
