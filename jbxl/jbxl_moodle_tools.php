@@ -3,7 +3,7 @@
 // by Fumi.Iseki 2012/04/12
 //               2014/05/14
 //               2014/06/09
-//               2014/11/27
+//               2014/11/28
 //
 
 //
@@ -14,7 +14,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 //$jbxl_moodle_tools_ver = 2014060900;
-$jbxl_moodle_tools_ver = 2014112700;
+$jbxl_moodle_tools_ver = 2014112800;
 
 
 //
@@ -473,18 +473,17 @@ function  jbxl_get_moodle_version()
 
 
 
-
 function  jbxl_get_course_context($courseid)
 {
 	$ver = jbxl_get_moodle_version();
 
 	$context = null;
 
-	if (floatval($ver)<2.5) {
-		$context = get_context_instance(CONTEXT_COURSE, $courseid);
+	if (floatval($ver)>=2.5) {
+		$context = context_course::instance($courseid);
 	}
 	else {
-		$context = context_course::instance($courseid);
+		$context = get_context_instance(CONTEXT_COURSE, $courseid);
 	}
 
 	return $context;
@@ -492,14 +491,19 @@ function  jbxl_get_course_context($courseid)
 
 
 
+function  jbxl_add_to_log($event)
+{
+	if ($event==null) return;
 
+	$ver = jbxl_get_moodle_version();
 
-
-
-
-
-
-
+	if (floatval($ver)>=2.7) {
+		$event->trigger();
+	}
+	else {
+		add_to_log($event->courseid, $event->name, $event->action, $event->params, $event->info);
+	}
+}
 
 
 
