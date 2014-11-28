@@ -83,9 +83,6 @@ if ($delete_templ) {
     $delete_url->param('delete_templ', $delete_templ);
 }
 
-//$log_url = explode('/', $delete_url);
-//add_to_log($course->id, 'apply', 'delete_template', end($log_url), 'apply_id='.$apply->id);
-
 
 ////////////////////////////////////////////////////////
 // Form Data

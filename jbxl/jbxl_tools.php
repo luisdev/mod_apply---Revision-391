@@ -4,9 +4,10 @@
 //                2012/04/12
 //                2013/04/20
 //                2013/09/21
+//                2014/11/28
 //
 
-$jbxl_tools_ver = 2013092100;
+$jbxl_tools_ver = 2014112800;
 
 
 //
@@ -31,6 +32,8 @@ define('JBXL_TOOLS_VER', $jbxl_tools_ver);
 // function  jbxl_randstr($len=8, $lowcase=false)
 //
 // function  jbxl_get_ipresolv_url($ip)
+//
+// function  jbxl_get_url_params_str($params, $amp=false)
 //
 *****************************************************************************************/
 
@@ -194,6 +197,26 @@ function  jbxl_get_ipresolv_url($ip, $region='APNIC')
 }
 
 
+
+//
+// amp: トップが & であるか？
+function  jbxl_get_url_params_str($params, $amp=false)
+{
+	$ret = '';
+	if (!is_array($params)) return $ret;
+	
+	$no = 0;
+	foreach($params as $key => $param) {
+		if ($no==0 and !$amp) {
+			$ret .= '?'.$key.'='.$param;
+		}
+		else {
+			$ret .= '&amp;'.$key.'='.$param;
+		}
+		$no++;
+	}
+	return $ret;
+}
 
 
 

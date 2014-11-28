@@ -39,6 +39,9 @@ $last_page 	  	= optional_param('last_page', false, PARAM_INT);
 $start_itempos	= optional_param('start_itempos', 0, PARAM_INT);
 $last_itempos  	= optional_param('last_itempos',  0, PARAM_INT);
 
+$urlparams['id']       = $id;
+$urlparams['courseid'] = $courseid;
+
 $highlightrequired = false;
 
 
@@ -176,8 +179,8 @@ if ($prev_values) {
 		$submit_id = apply_save_draft_values($apply->id, $submit_id, $user_id);	// save to draft
 
 		if ($submit_id) {
-			//$log_url = 'submit.php?id='.$cm->id.'&apply_id='.$apply->id.'&submit_id='.$submit_id.'$submit_ver='.$submit_ver;
-			//add_to_log($courseid, 'apply', 'submit', $log_url, 'draft');
+			//$event = apply_get_event($cm, 'user_submit', $urlparams, 'draft');
+			//jbxl_add_to_log($event);
 			if ($go_next_page or $go_prev_page) $save_return = 'page';
 			else 								$prev_values = false;
 			if ($save_draft) $save_return = 'draft';
@@ -205,8 +208,10 @@ if ($save_values and !$save_draft and !$prev_values) {
 
 	if ($submit_id) {
 		$save_return = 'saved';
-		$log_url = 'submit.php?id='.$cm->id.'&apply_id='.$apply->id.'&submit_id='.$submit_id.'$submit_ver='.$submit_ver;
-		add_to_log($courseid, 'apply', 'submit', $log_url, 'submit');
+		//$log_url = 'submit.php?id='.$cm->id.'&apply_id='.$apply->id.'&submit_id='.$submit_id.'$submit_ver='.$submit_ver;
+		//add_to_log($courseid, 'apply', 'submit', $log_url, 'submit');
+		$event = apply_get_event($cm, 'user_submit', $urlparams, 'submit');
+		jbxl_add_to_log($event);
 		//
 		if ($apply->email_notification) {
 			apply_send_email($cm, $apply, $course, $user_id);

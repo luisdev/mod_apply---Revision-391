@@ -501,7 +501,9 @@ function  jbxl_add_to_log($event)
 		$event->trigger();
 	}
 	else {
-		add_to_log($event->courseid, $event->name, $event->action, $event->params, $event->info);
+		if ($event->url==null)   $event->url  = '/';
+		if ($event->info==null)  $event->info = ' ';
+		add_to_log($event->courseid, $event->name, $event->action, $event->url, $event->info);
 	}
 }
 
