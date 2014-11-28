@@ -46,7 +46,6 @@ define('JBXL_MOODLE_TOOLS_VER', $jbxl_moodle_tools_ver);
 // function  jbxl_get_course_students($cntxt, $sort='')
 // function  jbxl_get_course_tachers($cntxt, $sort='')
 // function  jbxl_get_course_assistants($cntxt, $sort='')
-// function  jbxl_get_moodle_version()
 //
 // function  jbxl_get_user_first_grouping($courseid, $userid)
 //
@@ -57,6 +56,11 @@ define('JBXL_MOODLE_TOOLS_VER', $jbxl_moodle_tools_ver);
 // function  jbxl_get_user_link($user, $pattern='fullname')
 // function  jbxl_get_user_name($user, $pattern='fullname')
 // function  jbxl_get_fullnamehead($name_pattern, $firstname, $lastname, $deli='')
+//
+// for deprecated functions
+// function  jbxl_get_moodle_version()
+// function  jbxl_get_course_context($courseid)
+// function  jbxl_add_to_log($event)
 //
 
 *******************************************************************************/
