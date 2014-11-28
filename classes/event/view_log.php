@@ -21,7 +21,7 @@ class view_log extends \core\event\base
 		if (!is_array($params)) $params = array();
 
 		$params = array_merge(array('course' => $this->courseid), $params);
-		return new \moodle_url('/mod/homeroom/view.php', $params);
+		return new \moodle_url('/mod/apply/view.php', $params);
 	}
 
 
