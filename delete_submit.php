@@ -108,7 +108,7 @@ if (isset($formdata->confirmdelete) and $formdata->confirmdelete==1) {
 			if ($submit->version<=1 and $submit->acked!=APPLY_ACKED_ACCEPT) {
 				// 全体を削除可能
         		apply_delete_submit_safe($submit_id);
-				$event = apply_get_event($cm, 'delete', $urlparams, 'delete all');
+				$event = apply_get_event($cm, 'delete', $urlparams, 'delete');
 				jbxl_add_to_log($event);
 			}
 			else if ($submit->acked!=APPLY_ACKED_ACCEPT) {
