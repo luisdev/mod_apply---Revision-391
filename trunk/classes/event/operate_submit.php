@@ -21,7 +21,7 @@ class operate_submit extends \core\event\base
 		if (!is_array($params)) $params = array();
 
 		$params = array_merge(array('course' => $this->courseid), $params);
-		return new \moodle_url('/mod/homeroom/operate_submit.php', $params);
+		return new \moodle_url('/mod/apply/operate_submit.php', $params);
 	}
 
 
