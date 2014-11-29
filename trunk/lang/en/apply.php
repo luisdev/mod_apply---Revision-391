@@ -111,27 +111,22 @@ $string['edit_entry_button'] = ' Edit ';
 $string['edit_item'] = 'Edit question';
 $string['edit_items'] = 'Edit Items';
 
+$string['email_entry'] = 'send email to applicant';
 $string['email_notification'] = 'Send email notifications to admin';
 $string['email_notification_help'] = 'If enabled, administrators receive email notification of apply submissions.';
-$string['emailteachermail'] = '{$a->username} has submitted apply activity : \'{$a->apply}\'
-
-You can view it here:
-
-{$a->url}';
-$string['emailteachermailhtml'] = '{$a->username} has submitted apply activity : <i>\'{$a->apply}\'</i><br /><br />
-You can view it <a href="{$a->url}">here</a>.';
-//
-$string['email_entry'] = 'send email to applicant';
 $string['email_notification_user'] = 'send email notifications to applicants';
 $string['email_notification_user_help'] = 'If enabled, administrator can send email of apply processes to applicants.';
-$string['emailusermail'] = 'The administrator has processed your application : \'{$a->apply}\'
+$string['email_confirm_text'] = ' : \'{$a->apply}\'
 
 You can view it here:
-
 {$a->url}';
-$string['emailusermailhtml'] = 'The administrator has processed your application : <i>\'{$a->apply}\'</i><br /><br />
-You can view it <a href="{$a->url}">here</a>.';
-
+$string['email_confirm_html'] = ' : <i>\'{$a->apply}\'</i><br /><br /> You can view it <a href="{$a->url}">here</a>.';
+$string['email_teacher'] = '{$a->username} has submitted apply activity';
+$string['email_user_done']   = 'Your application is processing has been completed';
+$string['email_user_accept'] = 'Your application was accepted';
+$string['email_user_reject'] = 'Your application was rejected';
+$string['email_user_other']  = 'The administrator has processed your application';
+//
 $string['enable_deletemode'] = 'Delete Mode';
 $string['enable_deletemode_help'] = 'This enables a teacher to delete all applications.<br />Usually, please set to "No" for safety.'; 
 $string['entries_list_title'] = 'List of Entries';

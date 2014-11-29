@@ -153,22 +153,12 @@ if ($operate=='operate' and $sbmtted) {
 			$ret = apply_operate_submit($submit->id, $submit->version, $accept, $execd);
 			if ($ret) {
 				if ($sendemail) {
-					apply_send_email_user($cm, $apply, $course, $submit);
+					apply_send_email_user($cm, $apply, $course, $submit, $accept, $execd);
 				}
 				$log_info = 'accept='.$accept.' exec='.$execd;
 				$event = apply_get_event($cm, 'op_submit', $urlparams, $log_info);
 				jbxl_add_to_log($event);
 				redirect($back_url, get_string('entry_saved_operation', 'apply'), 1);
-				//
-				/*
-				echo '<div align="center">';
-				echo '<strong><font color="green">';
-				echo get_string('entry_saved_operation', 'apply');
-				echo '</font></strong>';
-				echo '</div>';
-				echo '<br />';
-				echo $OUTPUT->continue_button($back_url);
-				*/
 			}
 			else {
 				echo '<div align="center">';
