@@ -1510,6 +1510,15 @@ function apply_get_submitted_users_count($cm)
 // E-Mail
 //
 
+// メール受信可能な管理者
+function apply_get_receivemail_users($context)
+{
+	$ret = get_users_by_capability($context, 'mod/apply:receivemail', '', 'lastname', '', '', false, '', false);
+	return $ret;
+}
+
+
+// send to teacher
 function apply_send_email($cm, $apply, $course, $user_id)
 {
 	global $CFG, $DB;
@@ -1534,13 +1543,11 @@ function apply_send_email($cm, $apply, $course, $user_id)
 				$info->url= $CFG->wwwroot.'/mod/apply/view_entries.php?id='.$cm->id.'&user_id='.$user_id.'&do_show=view_entries';
 
 				$postsubject = $submitted.': '.$info->username.' -> '.$apply->name;
-				$posttext = apply_send_email_text($info, $course);
 
+				$posthtml = '';
+				$posttext = apply_send_email_text($info, $course);
 				if ($teacher->mailformat==1) {
 					$posthtml = apply_send_email_html($info, $course, $cm);
-				}
-				else {
-					$posthtml = '';
 				}
 
 				$eventdata = new stdClass();
@@ -1550,8 +1557,8 @@ function apply_send_email($cm, $apply, $course, $user_id)
 				$eventdata->userto			  = $teacher;
 				$eventdata->subject			  = $postsubject;
 				$eventdata->fullmessage		  = $posttext;
-				$eventdata->fullmessageformat = FORMAT_PLAIN;
 				$eventdata->fullmessagehtml	  = $posthtml;
+				$eventdata->fullmessageformat = FORMAT_PLAIN;
 				$eventdata->smallmessage	  = '';
 				$eventdata->notification      = 1;
 				//
@@ -1563,12 +1570,42 @@ function apply_send_email($cm, $apply, $course, $user_id)
 
 
 
-// メール受信可能な管理者
-function apply_get_receivemail_users($context)
+function apply_send_email_text($info, $course) 
 {
-	$ret = get_users_by_capability($context, 'mod/apply:receivemail', '', 'lastname', '', '', false, '', false);
-	return $ret;
+	$coursecontext = context_course::instance($course->id);
+	$courseshortname = format_string($course->shortname, true, array('context'=>$coursecontext));
+
+	$posttext  = $courseshortname.' -> '.get_string('modulenameplural', 'apply').' -> '.$info->apply;
+	$posttext .= "\n---------------------------------------------------------------------\n";
+	$posttext .= get_string('email_teacher','apply',$info).get_string('email_confirm_text','apply',$info);
+	$posttext .= "\n---------------------------------------------------------------------\n";
+
+	return $posttext;
 }
+
+
+
+function apply_send_email_html($info, $course, $cm, $isuser=false)
+{
+	global $CFG;
+
+	$coursecontext = context_course::instance($course->id);
+	$courseshortname = format_string($course->shortname, true, array('context'=>$coursecontext));
+	$course_url = $CFG->wwwroot.'/course/view.php?id='.$course->id;
+	$apply_all_url = $CFG->wwwroot.'/mod/apply/index.php?id='.$course->id;
+	$apply_url = $CFG->wwwroot.'/mod/apply/view.php?id='.$cm->id;
+
+	$posthtml = '<p><font face="sans-serif">'.
+				'<a href="'.$course_url.'">'.$courseshortname.'</a>&nbsp;->&nbsp;'.
+				'<a href="'.$apply_all_url.'">'.get_string('modulenameplural', 'apply').'</a>&nbsp;->&nbsp;'.
+				'<a href="'.$apply_url.'">'.$info->apply.'</a></font></p>';
+	$posthtml.= '<hr /><font face="sans-serif"><p>';
+	$posthtml.= get_string('email_teacher','apply',$info).get_string('email_confirm_html','apply',$info);
+	$posthtml.= '</p></font><hr />';
+
+	return $posthtml;
+}
+
 
 
 /*
@@ -1584,8 +1621,13 @@ function apply_get_receivemail_users($cmid)
 */
 
 
+/*
+ send to user
 
-function apply_send_email_user($cm, $apply, $course, $submit, $fuser=null)
+ $accept: 'accept' or 'reject' or ''
+ $execd : 'done' or ''
+*/
+function apply_send_email_user($cm, $apply, $course, $submit, $accept, $execd, $fuser=null)
 {
 	global $CFG, $DB, $USER;
 
@@ -1604,13 +1646,11 @@ function apply_send_email_user($cm, $apply, $course, $submit, $fuser=null)
 	$info->url= $CFG->wwwroot.'/mod/apply/view.php?id='.$cm->id.$urlparam.'&do_show=view_one_entry';
 
 	$postsubject = get_string('submitted','apply').': '.$info->username.' -> '.$apply->name;
-	$posttext = apply_send_email_text($info, $course, true);
-
+	//
+	$posttext = apply_send_email_text_user($info, $course, $accept, $execd);
+	$posthtml = '';
 	if ($user->mailformat==1) {
-		$posthtml = apply_send_email_html($info, $course, $cm, true);
-	}
-	else {
-		$posthtml = '';
+		$posthtml = apply_send_email_html_user($info, $course, $cm, $accept, $execd);
 	}
 
 	$eventdata = new stdClass();
@@ -1620,8 +1660,8 @@ function apply_send_email_user($cm, $apply, $course, $submit, $fuser=null)
 	$eventdata->userto			  = $user;
 	$eventdata->subject			  = $postsubject;
 	$eventdata->fullmessage		  = $posttext;
-	$eventdata->fullmessageformat = FORMAT_PLAIN;
 	$eventdata->fullmessagehtml	  = $posthtml;
+	$eventdata->fullmessageformat = FORMAT_PLAIN;
 	$eventdata->smallmessage	  = '';
 	$eventdata->notification      = 1;
 	//
@@ -1630,16 +1670,20 @@ function apply_send_email_user($cm, $apply, $course, $submit, $fuser=null)
 
 
 
-
-function apply_send_email_text($info, $course, $isuser=false) 
+function apply_send_email_text_user($info, $course, $accept, $execd) 
 {
 	$coursecontext = context_course::instance($course->id);
 	$courseshortname = format_string($course->shortname, true, array('context'=>$coursecontext));
 
 	$posttext  = $courseshortname.' -> '.get_string('modulenameplural', 'apply').' -> '.$info->apply."\n";
 	$posttext .= '---------------------------------------------------------------------'."\n";
-	if ($isuser) $posttext .= get_string('emailusermail', 'apply', $info)."\n";
-	else         $posttext .= get_string('emailteachermail', 'apply', $info)."\n";
+
+	if      ($execd=='done')    $posttext .= get_string('email_user_done',   'apply', $info);
+	else if ($accept=='accept') $posttext .= get_string('email_user_accept', 'apply', $info);
+	else if ($accept=='reject') $posttext .= get_string('email_user_reject', 'apply', $info);
+	else                        $posttext .= get_string('email_user_other',  'apply', $info);
+	$posttext .= get_string('email_confirm_text', 'apply', $info)."\n";
+
 	$posttext .= '---------------------------------------------------------------------'."\n";
 
 	return $posttext;
@@ -1647,7 +1691,7 @@ function apply_send_email_text($info, $course, $isuser=false)
 
 
 
-function apply_send_email_html($info, $course, $cm, $isuser=false)
+function apply_send_email_html_user($info, $course, $cm, $accept, $execd)
 {
 	global $CFG;
 
@@ -1658,13 +1702,18 @@ function apply_send_email_html($info, $course, $cm, $isuser=false)
 	$apply_url = $CFG->wwwroot.'/mod/apply/view.php?id='.$cm->id;
 
 	$posthtml = '<p><font face="sans-serif">'.
-				'<a href="'.$course_url.'">'.$courseshortname.'</a> ->'.
-				'<a href="'.$apply_all_url.'">'.get_string('modulenameplural', 'apply').'</a> ->'.
+				'<a href="'.$course_url.'">'.$courseshortname.'</a>&nbsp;->&nbsp;'.
+				'<a href="'.$apply_all_url.'">'.get_string('modulenameplural', 'apply').'</a>&nbsp;->&nbsp;'.
 				'<a href="'.$apply_url.'">'.$info->apply.'</a></font></p>';
-	$posthtml.= '<hr /><font face="sans-serif">';
-	if ($isuser) $posthtml.= '<p>'.get_string('emailusermailhtml', 'apply', $info).'</p>';
-	else         $posthtml.= '<p>'.get_string('emailteachermailhtml', 'apply', $info).'</p>';
-	$posthtml.= '</font><hr />';
+	$posthtml.= '<hr /><font face="sans-serif"><p>';
+
+	if      ($execd=='done')    $posthtml.= get_string('email_user_done',   'apply', $info);
+	else if ($accept=='accept') $posthtml.= get_string('email_user_accept', 'apply', $info);
+	else if ($accept=='reject') $posthtml.= get_string('email_user_reject', 'apply', $info);
+	else                        $posthtml.= get_string('email_user_other',  'apply', $info);
+	$posthtml.= get_string('email_confirm_html', 'apply', $info);
+
+	$posthtml.= '</p></font><hr />';
 
 	return $posthtml;
 }

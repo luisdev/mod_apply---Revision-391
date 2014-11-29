@@ -274,7 +274,7 @@ if (isset($save_return) and $save_return=='saved') {
 	echo '<div align="center">';
 	echo '<strong><font color="green">';
 	echo get_string('entry_saved', 'apply');
-	echo '</font></strong>';
+	echo '<br /></font></strong>';
 	echo '</strong>';
 	echo '<br />';
 	echo $OUTPUT->continue_button($back_url);
@@ -285,7 +285,7 @@ else if (isset($save_return) and $save_return=='draft') {
 	echo '<div align="center">';
 	echo '<strong><font color="green">';
 	echo get_string('entry_saved_draft', 'apply');
-	echo '</font></strong>';
+	echo '<br /></font></strong>';
 	echo '</strong>';
 	echo '<br />';
 	echo $OUTPUT->continue_button($back_url);
