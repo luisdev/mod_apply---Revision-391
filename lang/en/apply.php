@@ -111,7 +111,7 @@ $string['edit_entry_button'] = ' Edit ';
 $string['edit_item'] = 'Edit question';
 $string['edit_items'] = 'Edit Items';
 
-$string['email_entry'] = 'send email to applicant';
+$string['email_entry'] = 'Send email to applicant';
 $string['email_notification'] = 'Send email notifications to admin';
 $string['email_notification_help'] = 'If enabled, administrators receive email notification of apply submissions.';
 $string['email_notification_user'] = 'send email notifications to applicants';
@@ -272,7 +272,7 @@ $string['use_item'] = 'use {$a}';
 $string['use_one_line_for_each_value'] = '<br />Use one line for each answer!';
 $string['use_this_template'] = 'Use this template';
 $string['user_pic']  	 = 'Picture';
-$string['username_manage'] = 'Management of Username';
+$string['username_manage'] = 'Manage of Username';
 $string['username_manage_help'] = 'You can select displied name pattern in this module.';
 $string['using_templates'] = 'Use a template';
 $string['vertical'] = 'vertical';
