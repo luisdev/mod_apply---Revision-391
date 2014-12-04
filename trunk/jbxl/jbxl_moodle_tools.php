@@ -14,7 +14,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 //$jbxl_moodle_tools_ver = 2014060900;
-$jbxl_moodle_tools_ver = 2014112800;
+//$jbxl_moodle_tools_ver = 2014112800;
+$jbxl_moodle_tools_ver = 2014120400;
 
 
 //
@@ -51,7 +52,8 @@ define('JBXL_MOODLE_TOOLS_VER', $jbxl_moodle_tools_ver);
 //
 // function  jbxl_db_exist_table($table, $lower_case=true)
 //
-// function  jbxl_download_data($format, $headers, $datas, $filename='')
+// function  jbxl_download_data($format, $datas, $filename='')
+// function  jbxl_save_csv_file($datas, $filename, $tocode='sjis-win')
 //
 // function  jbxl_get_user_link($user, $pattern='fullname')
 // function  jbxl_get_user_name($user, $pattern='fullname')
@@ -321,7 +323,7 @@ function  jbxl_download_data($format, $datas, $filename='')
 		$excellib_version = 0;
 		if (file_exists ($CFG->dirroot.'/lib/excellib.class.php')) {
 			$excellib_version = 2;
-			$tocode = 'utf-8';
+			$tocode = 'UTF-8';
 			require_once($CFG->dirroot.'/lib/excellib.class.php');
 		}
 		else {
@@ -364,7 +366,7 @@ function  jbxl_download_data($format, $datas, $filename='')
 
 	//
 	else if ($format==='txt') {
-		$tocode = 'utf-8';
+		$tocode = 'UTF-8';
 		//
 		header("Content-Type: application/download\n"); 
 		header("Content-Disposition: attachment; filename=\"$filename.txt\"");
@@ -380,6 +382,39 @@ function  jbxl_download_data($format, $datas, $filename='')
 	return;
 }	
 
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// 
+// save CSV file
+//
+// $datas: 2次元のデータ配列
+//
+function  jbxl_save_csv_file($datas, $filename, $tocode='UTF-8')
+{
+	if (empty($datas->data)) return;
+	if (empty($filename)) return;
+	//$tocode = 'sjis-win';
+
+	$filedata = '';
+	if ($tocode=='UTF-8') {
+		$filedata = pack('ccc', 0xEF, 0xBB, 0xBF);	// BOM
+	}
+	//
+	foreach ($datas->data as $data) {
+		$i = 0;
+		foreach ($data as $val) {
+			if ($i!=0) $filedata .= ', ';
+			$filedata .= mb_convert_encoding($val, $tocode, 'auto');
+			$i++;
+		}
+		$filedata .= "\r\n";
+	}
+
+	file_put_contents($filename, $filedata);
+		
+	return;
+}	
 
 
 
@@ -485,7 +520,7 @@ function  jbxl_get_course_context($courseid)
 	$context = null;
 
 	if (floatval($ver)>=2.5) {
-		$context = context_course::instance($courseid);
+		$context = context_course::instance($courseid, IGNORE_MISSING);
 	}
 	else {
 		$context = get_context_instance(CONTEXT_COURSE, $courseid);
