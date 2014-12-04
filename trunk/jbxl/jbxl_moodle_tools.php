@@ -4,11 +4,12 @@
 //               2014/05/14
 //               2014/06/09
 //               2014/11/28
+//               2014/12/04
 //
 
 //
 // About Capabilities
-//	please see http://docs.moodle.org/dev/Roles#Capability-locality_changes_in_v1.9
+//    please see http://docs.moodle.org/dev/Roles#Capability-locality_changes_in_v1.9
 //
 
 defined('MOODLE_INTERNAL') || die();
@@ -22,7 +23,8 @@ $jbxl_moodle_tools_ver = 2014120400;
 if (defined('JBXL_MOODLE_TOOLS_VER') or defined('_JBXL_MOODLE_TOOLS')) {
 	if (defined('JBXL_MOODLE_TOOLS_VER')) {
 		if (JBXL_MOODLE_TOOLS_VER < $jbxl_moodle_tools_ver) {
-			print_error('JBXL_MOODLE_TOOLS: old version is used. '.JBXL_MOODLE_TOOLS_VER.' < '.$jbxl_moodle_tools_ver);
+			//print_error('JBXL_MOODLE_TOOLS: old version is used. '.JBXL_MOODLE_TOOLS_VER.' < '.$jbxl_moodle_tools_ver);
+			debugging('JBXL_MOODLE_TOOLS: old version is used. '.JBXL_MOODLE_TOOLS_VER.' < '.$jbxl_moodle_tools_ver, DEBUG_DEVELOPER);
 		}
 	}
 }
