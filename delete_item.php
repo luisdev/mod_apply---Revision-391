@@ -23,8 +23,8 @@
  */
 
 require_once('../../config.php');
-require_once('lib.php');
-require_once('delete_item_form.php');
+require_once(dirname(__FILE__).'/locallib.php');
+require_once(dirname(__FILE__).'/delete_item_form.php');
 
 $id 		= required_param('id', PARAM_INT);
 $deleteitem = required_param('deleteitem', PARAM_INT);

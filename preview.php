@@ -23,7 +23,7 @@
  */
 
 require_once('../../config.php');
-require_once('lib.php');
+require_once(dirname(__FILE__).'/locallib.php');
 
 $id 		 = required_param('id', PARAM_INT);
 $courseid	 = optional_param('courseid', false, PARAM_INT);

@@ -23,8 +23,8 @@
  */
 
 require_once('../../config.php');
-require_once('lib.php');
-require_once('delete_template_form.php');
+require_once(dirname(__FILE__).'/locallib.php');
+require_once(dirname(__FILE__).'/delete_template_form.php');
 require_once($CFG->libdir.'/tablelib.php');
 
 

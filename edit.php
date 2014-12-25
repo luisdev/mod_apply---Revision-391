@@ -23,8 +23,8 @@
  */
 
 require_once('../../config.php');
-require_once('lib.php');
-require_once('edit_form.php');
+require_once(dirname(__FILE__).'/locallib.php');
+require_once(dirname(__FILE__).'/edit_form.php');
 
 apply_init_session();
 

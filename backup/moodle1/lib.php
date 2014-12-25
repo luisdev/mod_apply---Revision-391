@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Feedback module conversion handler
+ * Apply module conversion handler
  */
 class moodle1_mod_apply_handler extends moodle1_mod_handler {
 
@@ -43,7 +43,7 @@ class moodle1_mod_apply_handler extends moodle1_mod_handler {
      * For each path returned, the corresponding conversion method must be
      * defined.
      *
-     * Note that the path /MOODLE_BACKUP/COURSE/MODULES/MOD/FEEDBACK does not
+     * Note that the path /MOODLE_BACKUP/COURSE/MODULES/MOD/APPLY does not
      * actually exist in the file. The last element with the module name was
      * appended by the moodle1_converter class.
      *
@@ -52,7 +52,7 @@ class moodle1_mod_apply_handler extends moodle1_mod_handler {
     public function get_paths() {
         return array(
             new convert_path(
-                'apply', '/MOODLE_BACKUP/COURSE/MODULES/MOD/FEEDBACK',
+                'apply', '/MOODLE_BACKUP/COURSE/MODULES/MOD/APPLY',
                 array(
                     'renamefields' => array(
                         'summary' => 'intro',
@@ -68,7 +68,7 @@ class moodle1_mod_apply_handler extends moodle1_mod_handler {
                 )
             ),
             new convert_path(
-                'apply_item', '/MOODLE_BACKUP/COURSE/MODULES/MOD/FEEDBACK/ITEMS/ITEM',
+                'apply_item', '/MOODLE_BACKUP/COURSE/MODULES/MOD/APPLY/ITEMS/ITEM',
                 array (
                     'newfields' => array(
                         'label' => '',
@@ -82,7 +82,7 @@ class moodle1_mod_apply_handler extends moodle1_mod_handler {
     }
 
     /**
-     * This is executed every time we have one /MOODLE_BACKUP/COURSE/MODULES/MOD/FEEDBACK
+     * This is executed every time we have one /MOODLE_BACKUP/COURSE/MODULES/MOD/APPLY
      * data available
      */
     public function process_apply($data) {
@@ -118,7 +118,7 @@ class moodle1_mod_apply_handler extends moodle1_mod_handler {
     }
 
     /**
-     * This is executed every time we have one /MOODLE_BACKUP/COURSE/MODULES/MOD/FEEDBACK/ITEMS/ITEM
+     * This is executed every time we have one /MOODLE_BACKUP/COURSE/MODULES/MOD/APPLY/ITEMS/ITEM
      * data available
      */
     public function process_apply_item($data) {
