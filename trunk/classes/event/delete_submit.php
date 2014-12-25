@@ -6,7 +6,7 @@ namespace mod_apply\event;
 defined('MOODLE_INTERNAL') || die();
 
 
-class delete_sumbit extends \core\event\base
+class delete_submit extends \core\event\base
 {
 	public static function get_name()		// イベント名
 	{

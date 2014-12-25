@@ -23,9 +23,9 @@
  */
 
 require_once('../../config.php');
-require_once('lib.php');
-require_once('delete_submit_form.php');
-require_once('jbxl/jbxl_moodle_tools.php');
+require_once(dirname(__FILE__).'/delete_submit_form.php');
+require_once(dirname(__FILE__).'/jbxl/jbxl_moodle_tools.php');
+require_once(dirname(__FILE__).'/locallib.php');
 
 $id 		= required_param('id', PARAM_INT);
 $submit_id 	= required_param('submit_id', PARAM_INT);
