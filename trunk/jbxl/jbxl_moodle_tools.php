@@ -277,15 +277,17 @@ function jbxl_get_user_first_grouping($courseid, $userid)
 
 
 //
-// Moodle DB (MySQL)
+// Moodle DB
 //
 
-function jbxl_db_exist_table($table, $lower_case=true)
+function jbxl_db_exist_table($table, $lower_case=false)
 {
 	global $DB;
 
 	$ret = false;
 
+/*
+	// MySQL
 	$results = $DB->get_records_sql('SHOW TABLES');
 	if (is_array($results)) {
 		$db_tbls = array_keys($results);
@@ -297,8 +299,13 @@ function jbxl_db_exist_table($table, $lower_case=true)
 			}
 		}
 	}
+*/
 
-	return $ret;
+	if ($lower_case) $table = strtolower($table);
+	$results = $DB->get_records_sql('SELECT * FROM '.$table);
+
+	if (is_array($results)) return true;
+	return false;
 }			
 
 
