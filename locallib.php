@@ -895,7 +895,7 @@ function apply_send_email($cm, $apply, $course, $user_id)
 {
 	global $CFG, $DB;
 
-	require_once('jbxl/jbxl_moodle_tools.php');
+	require_once(dirname(__FILE__).'/jbxl/jbxl_moodle_tools.php');
 
 	if ($apply->email_notification==0) return;
 	$ccontext = context_course::instance($course->id);
@@ -1000,7 +1000,7 @@ function apply_send_email_user($cm, $apply, $course, $submit, $accept, $execd, $
 {
 	global $CFG, $DB, $USER;
 
-	require_once('jbxl/jbxl_moodle_tools.php');
+	require_once(dirname(__FILE__).'/jbxl/jbxl_moodle_tools.php');
 
 	if ($apply->email_notification_user==0) return;
 
@@ -1046,13 +1046,14 @@ function apply_send_email_text_user($info, $course, $accept, $execd)
 	$posttext  = $courseshortname.' -> '.get_string('modulenameplural', 'apply').' -> '.$info->apply."\n";
 	$posttext .= '---------------------------------------------------------------------'."\n";
 
-	if      ($execd=='done')    $posttext .= get_string('email_user_done',   'apply', $info);
+	if      ($accept=='reject') $posttext .= get_string('email_user_reject', 'apply', $info);
+	else if ($execd=='done')    $posttext .= get_string('email_user_done',   'apply', $info);
 	else if ($accept=='accept') $posttext .= get_string('email_user_accept', 'apply', $info);
-	else if ($accept=='reject') $posttext .= get_string('email_user_reject', 'apply', $info);
 	else                        $posttext .= get_string('email_user_other',  'apply', $info);
 	$posttext .= get_string('email_confirm_text', 'apply', $info)."\n";
 
 	$posttext .= '---------------------------------------------------------------------'."\n";
+	$posttext .= get_string('email_noreply','apply')."\n";
 
 	return $posttext;
 }
@@ -1068,19 +1069,20 @@ function apply_send_email_html_user($info, $course, $cm, $accept, $execd)
 	$apply_all_url = $CFG->wwwroot.'/mod/apply/index.php?id='.$course->id;
 	$apply_url = $CFG->wwwroot.'/mod/apply/view.php?id='.$cm->id;
 
-	$posthtml = '<p><font face="sans-serif">'.
-				'<a href="'.$course_url.'">'.$courseshortname.'</a>&nbsp;->&nbsp;'.
-				'<a href="'.$apply_all_url.'">'.get_string('modulenameplural', 'apply').'</a>&nbsp;->&nbsp;'.
-				'<a href="'.$apply_url.'">'.$info->apply.'</a></font></p>';
-	$posthtml.= '<hr /><font face="sans-serif"><p>';
+	$posthtml  = '<p><font face="sans-serif">'.
+				 '<a href="'.$course_url.'">'.$courseshortname.'</a>&nbsp;->&nbsp;'.
+				 '<a href="'.$apply_all_url.'">'.get_string('modulenameplural', 'apply').'</a>&nbsp;->&nbsp;'.
+				 '<a href="'.$apply_url.'">'.$info->apply.'</a></font></p>';
+	$posthtml .= '<hr /><font face="sans-serif"><p>';
 
-	if      ($execd=='done')    $posthtml.= get_string('email_user_done',   'apply', $info);
-	else if ($accept=='accept') $posthtml.= get_string('email_user_accept', 'apply', $info);
-	else if ($accept=='reject') $posthtml.= get_string('email_user_reject', 'apply', $info);
-	else                        $posthtml.= get_string('email_user_other',  'apply', $info);
-	$posthtml.= get_string('email_confirm_html', 'apply', $info);
+	if      ($accept=='reject') $posthtml .= get_string('email_user_reject', 'apply', $info);
+	else if ($execd=='done')    $posthtml .= get_string('email_user_done',   'apply', $info);
+	else if ($accept=='accept') $posthtml .= get_string('email_user_accept', 'apply', $info);
+	else                        $posthtml .= get_string('email_user_other',  'apply', $info);
+	$posthtml .= get_string('email_confirm_html', 'apply', $info);
 
-	$posthtml.= '</p></font><hr />';
+	$posthtml .= '</p></font><hr />';
+	$posthtml .= get_string('email_noreply','apply').'<br />';
 
 	return $posthtml;
 }
@@ -1228,7 +1230,7 @@ function apply_save_as_template($apply, $name, $ispublic=0)
 	}
 
 	if ($ispublic) {
-		$s_context = get_system_context();
+		$s_context = context_system::instance();
 	}
 	else {
 		$s_context = context_course::instance($newtempl->course);
@@ -1302,7 +1304,7 @@ function apply_items_from_template($apply, $template_id, $deleteold=false)
 	}
 
 	if ($template->ispublic) {
-		$s_context = get_system_context();
+		$s_context = context_system::instance();
 	}
 	else {
 		$s_context = context_course::instance($apply->course);

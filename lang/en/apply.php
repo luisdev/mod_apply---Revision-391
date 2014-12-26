@@ -126,6 +126,7 @@ $string['email_user_done']   = 'Your application is processing has been complete
 $string['email_user_accept'] = 'Your application was accepted';
 $string['email_user_reject'] = 'Your application was rejected';
 $string['email_user_other']  = 'The administrator has processed your application';
+$string['email_noreply'] = 'This email is automatically. Please do not reply to this email.';
 //
 $string['enable_deletemode'] = 'Delete Mode';
 $string['enable_deletemode_help'] = 'This enables a teacher to delete all applications.<br />Usually, please set to "No" for safety.'; 

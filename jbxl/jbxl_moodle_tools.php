@@ -5,6 +5,7 @@
 //               2014/06/09
 //               2014/11/28
 //               2014/12/04
+//               2014/12/26
 //
 
 //
@@ -14,16 +15,13 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-//$jbxl_moodle_tools_ver = 2014060900;
-//$jbxl_moodle_tools_ver = 2014112800;
-$jbxl_moodle_tools_ver = 2014120400;
+$jbxl_moodle_tools_ver = 2014122600;
 
 
 //
 if (defined('JBXL_MOODLE_TOOLS_VER') or defined('_JBXL_MOODLE_TOOLS')) {
 	if (defined('JBXL_MOODLE_TOOLS_VER')) {
 		if (JBXL_MOODLE_TOOLS_VER < $jbxl_moodle_tools_ver) {
-			//print_error('JBXL_MOODLE_TOOLS: old version is used. '.JBXL_MOODLE_TOOLS_VER.' < '.$jbxl_moodle_tools_ver);
 			debugging('JBXL_MOODLE_TOOLS: old version is used. '.JBXL_MOODLE_TOOLS_VER.' < '.$jbxl_moodle_tools_ver, DEBUG_DEVELOPER);
 		}
 	}
@@ -65,6 +63,7 @@ define('JBXL_MOODLE_TOOLS_VER', $jbxl_moodle_tools_ver);
 // function  jbxl_get_moodle_version()
 // function  jbxl_get_course_context($courseid)
 // function  jbxl_add_to_log($event)
+// function  jbxl_can_use_html_editor()
 //
 
 *******************************************************************************/
@@ -493,10 +492,9 @@ function  jbxl_get_fullnamehead($name_pattern, $firstname, $lastname, $deli='')
 // for deprecated functions
 //
 
+// see http://docs.moodle.org/dev/Releases
 function  jbxl_get_moodle_version()
 {
-	// see http://docs.moodle.org/dev/Releases
-
 	global $CFG;
 
 	if 		($CFG->version>=2014111000) return 2.8;
@@ -514,13 +512,11 @@ function  jbxl_get_moodle_version()
 }
 
 
-
 function  jbxl_get_course_context($courseid)
 {
-	$ver = jbxl_get_moodle_version();
-
 	$context = null;
 
+	$ver = jbxl_get_moodle_version();
 	if (floatval($ver)>=2.5) {
 		$context = context_course::instance($courseid, IGNORE_MISSING);
 	}
@@ -532,13 +528,11 @@ function  jbxl_get_course_context($courseid)
 }
 
 
-
 function  jbxl_add_to_log($event)
 {
 	if ($event==null) return;
 
 	$ver = jbxl_get_moodle_version();
-
 	if (floatval($ver)>=2.7) {
 		$event->trigger();
 	}
@@ -550,8 +544,29 @@ function  jbxl_add_to_log($event)
 }
 
 
+function  jbxl_can_use_html_editor()
+{
+	$ver = jbxl_get_moodle_version();
+	if (floatval($ver)>=2.6) {
+		return true;
+	}
+	return can_use_html_editor();
+}
 
 
+function  jbxl_get_system_context()
+{
+	$cntxt = null;
+	$ver = jbxl_get_moodle_version();
+
+	if (floatval($ver)>=2.6) {
+		$cntxt = context_system::instance();
+	}
+	else {
+		$cntxt = get_system_context();
+	}
+	return $cntxt;
+}
 
 
 }		// !defined('JBXL_MOODLE_TOOLS_VER')

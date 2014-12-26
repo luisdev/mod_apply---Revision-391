@@ -359,7 +359,7 @@ function apply_delete_item($item_id, $renumber=true, $template=false)
 
 	if ($template) {
 		if ($template->ispublic) {
-			$context = get_system_context();
+			$context = context_system::instance();
 		} 
 		else {
 			$context = context_course::instance($template->course);

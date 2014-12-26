@@ -178,7 +178,7 @@ class apply_edit_create_template_form extends moodleform
         $elementgroup[] = $mform->createElement('static', 'templatenamelabel', get_string('name', 'apply'));
         $elementgroup[] = $mform->createElement('text', 'templatename', get_string('name', 'apply'), array('size'=>'40', 'maxlength'=>'200'));
 
-        if (has_capability('mod/apply:createpublictemplate', get_system_context())) {
+        if (has_capability('mod/apply:createpublictemplate', context_system::instance())) {
             $elementgroup[] = $mform->createElement('checkbox', 'ispublic', get_string('public', 'apply'), get_string('public', 'apply'));
         }
 

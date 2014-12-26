@@ -24,6 +24,7 @@
 
 require_once('../../config.php');
 require_once(dirname(__FILE__).'/locallib.php');
+require_once(dirname(__FILE__).'/jbxl/jbxl_moodle_tools.php');
 
 apply_init_session();
 
@@ -43,7 +44,7 @@ if ($id !==false) $url->param('id', $id);
 $PAGE->set_url($url);
 
 // set up some general variables
-$usehtmleditor = can_use_html_editor();
+$usehtmleditor = jbxl_can_use_html_editor();
 
 
 if (($formdata = data_submitted()) and !confirm_sesskey()) {

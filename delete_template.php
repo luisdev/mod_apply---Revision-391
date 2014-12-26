@@ -101,7 +101,7 @@ if (isset($formdata->confirm_delete) and $formdata->confirm_delete==1) {
         print_error('error');
     }
     if ($template->ispublic) {
-        $systemcontext = get_system_context();
+        $systemcontext = context_system::instance();
         require_capability('mod/apply:createpublictemplate', $systemcontext);
         require_capability('mod/apply:deletetemplate', $systemcontext);
     }
@@ -177,7 +177,7 @@ else {
         echo $OUTPUT->box_end();
     }
     //now we get the public templates if it is permitted
-    $systemcontext = get_system_context();
+    $systemcontext = context_system::instance();
     if (has_capability('mod/apply:createpublictemplate', $systemcontext) AND
         has_capability('mod/apply:deletetemplate', $systemcontext)) {
         $templates = apply_get_template_list($course, 'public');

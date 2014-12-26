@@ -115,7 +115,7 @@ if (isset($create_template_formdata->savetemplate) && $create_template_formdata-
 	//
 	else {
 		//if the apply is located on the frontpage then templates can be public
-		if (has_capability('mod/apply:createpublictemplate', get_system_context())) {
+		if (has_capability('mod/apply:createpublictemplate', context_system::instance())) {
 			$create_template_formdata->ispublic = isset($create_template_formdata->ispublic) ? 1 : 0;
 		}
 		else {
