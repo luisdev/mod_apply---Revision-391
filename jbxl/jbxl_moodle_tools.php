@@ -539,6 +539,7 @@ function  jbxl_add_to_log($event)
 	else {
 		if ($event->url==null)   $event->url  = '/';
 		if ($event->info==null)  $event->info = ' ';
+		if(!empty($event->url) && strlen($event->url)>100) $event->url = substr($event->url, 0, 97).'...';
 		add_to_log($event->courseid, $event->name, $event->action, $event->url, $event->info);
 	}
 }
