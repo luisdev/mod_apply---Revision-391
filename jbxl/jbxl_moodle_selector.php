@@ -13,7 +13,7 @@ $jbxl_moodle_selector_ver = 2013092100;
 //
 if (defined('JBXL_MOODLE_SELECTOR_VER')) {
     if (JBXL_MOODLE_SELECTOR_VER < $jbxl_moodle_selector_ver) {
-        print_error('JBXL_MOODLE_SELECTOR: old version is used. '.JBXL_MOODLE_SELECTOR_VER.' < '.$jbxl_moodle_selector_ver);
+		debugging('JBXL_MOODLE_SELECTOR: old version is used. '.JBXL_MOODLE_SELECTOR_VER.' < '.$jbxl_moodle_selector_ver, DEBUG_DEVELOPER);
     }
 }
 else {
