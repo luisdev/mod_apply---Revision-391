@@ -132,6 +132,7 @@ $string['email_user_done']   = '貴方の申請 「{$a->apply}」 の処理が�
 $string['email_user_accept'] = '貴方の申請 「{$a->apply}」 が受理されました．';
 $string['email_user_reject'] = '貴方の申請 「{$a->apply}」 は不受理となりました．';
 $string['email_user_other']  = '管理者が申請 「{$a->apply}」 を処理しました．';
+$string['email_noreply'] = 'このメールは自動送信メールです．このメールには返信しないでください．';
 //
 $string['enable_deletemode'] = '削除モード';
 $string['enable_deletemode_help'] = '承認者が申請書を削除できるようにします．<br />通常は安全のため，必ず "No" に設定しておいてください．';

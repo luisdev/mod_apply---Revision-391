@@ -45,12 +45,13 @@ abstract class apply_item_form extends moodleform
             $mform->addElement('select', 'dependitem', get_string('dependitem', 'apply').'&nbsp;', $common['items']);
             $mform->addHelpButton('dependitem', 'depending', 'apply');
             $mform->addElement('text', 'dependvalue', get_string('dependvalue', 'apply'), array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
+            $mform->setType('dependvalue', PARAM_ALPHA);
         }
 		else {
             $mform->addElement('hidden', 'dependitem', 0);
             $mform->setType('dependitem', PARAM_INT);
             $mform->addElement('hidden', 'dependvalue', '');
-            $mform->setType('dependitem', PARAM_ALPHA);
+            $mform->setType('dependvalue', PARAM_ALPHA);
         }
 
         $position_select = $mform->addElement('select', 'position', get_string('position', 'apply').'&nbsp;', $positionlist);
