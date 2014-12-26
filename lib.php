@@ -65,7 +65,7 @@ function apply_add_instance($apply)
 	$apply->id = $apply_id;
 
 	// Calendar
-	apply_set_events($apply);
+	apply_set_calendar_events($apply);
 
 	if (!isset($apply->coursemodule)) {
 		$cm = get_coursemodule_from_id('apply', $apply->id);
@@ -92,7 +92,7 @@ function apply_update_instance($apply)
 		$apply->time_close = 0;
 	}
 
-	apply_set_events($apply);
+	apply_set_calendar_events($apply);
 
 	$DB->update_record('apply', $apply);
 
@@ -573,10 +573,10 @@ function apply_print_item_show_value($item, $value=false)
 
 ///////////////////////////////////////////////////////////////////////////////////
 //
-// Events
+// Calendar Events
 //
 
-function apply_set_events($apply)
+function apply_set_calendar_events($apply)
 {
 	global $DB;
 
