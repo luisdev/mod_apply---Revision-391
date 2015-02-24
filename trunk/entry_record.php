@@ -138,14 +138,19 @@ if ($student) {
 			}
 
 			//
-			if ($submit->class==APPLY_CLASS_CANCEL) {
+			if ($submit->class==APPLY_CLASS_CANCEL or $apply_is_closed) {
 				// 解除を申請している場合は，内容を編集・更新できない
 				$data[] = '-';
 			}
 			else {
 				$data[] = apply_single_button($CFG->wwwroot.'/mod/apply/'.$change_action, $change_params, $change_label);
 			}
-			$data[] = apply_single_button($CFG->wwwroot.'/mod/apply/'.$discard_action, $discard_params, $discard_label);
+			if ($apply_is_closed) {
+				$data[] = '-';
+			}
+			else {
+				$data[] = apply_single_button($CFG->wwwroot.'/mod/apply/'.$discard_action, $discard_params, $discard_label);
+			}
 		}
 	}
 
