@@ -41,7 +41,7 @@ if ($student) {
 	else if ($submit->class==APPLY_CLASS_NEW)    $class = get_string('class_newpost', 'apply');
 	else if ($submit->class==APPLY_CLASS_UPDATE) $class = get_string('class_update',  'apply');
 	else if ($submit->class==APPLY_CLASS_CANCEL) $class = get_string('class_cancel',  'apply');
-	if ($submit->class==APPLY_CLASS_DRAFT)  $class = '<strong>'.$class.'</strong>';
+	if ($submit->class==APPLY_CLASS_DRAFT || $submit->class==APPLY_CLASS_CANCEL)  $class = '<strong>'.$class.'</strong>';
 	$data[] = $class;
 
 	//
