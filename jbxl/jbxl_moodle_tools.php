@@ -6,6 +6,7 @@
 //               2014/11/28
 //               2014/12/04
 //               2014/12/26
+//               2015/11/26
 //
 
 //
@@ -15,7 +16,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$jbxl_moodle_tools_ver = 2014122600;
+$jbxl_moodle_tools_ver = 2015112600;
 
 
 //
@@ -504,7 +505,9 @@ function  jbxl_get_moodle_version()
 {
 	global $CFG;
 
-	if 		($CFG->version>=2014111000) return 2.8;
+	if 		($CFG->version>=2015111600) return 3.0;
+	else if ($CFG->version>=2015051100) return 2.9;
+	else if ($CFG->version>=2014111000) return 2.8;
 	else if ($CFG->version>=2014051200) return 2.7;
 	else if ($CFG->version>=2013111800) return 2.6;
 	else if ($CFG->version>=2013051400) return 2.5;
