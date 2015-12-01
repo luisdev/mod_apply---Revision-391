@@ -60,7 +60,7 @@ else {
 	}
 	else {
 		$table->sortable(true, 'firstname', SORT_ASC);
-		$table->sortable(true, 'lastname', SORT_ASC);
+		$table->sortable(true, 'lastname',  SORT_ASC);
 	}
 
 	$table->no_sorting('before');

@@ -45,12 +45,17 @@ $perpage	= optional_param('perpage', APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);  // h
 //$spage	= optional_param('spage', 0, PARAM_INT);
 
 $sort  		= optional_param('sort',  '', PARAM_ALPHAEXT);
-$order 		= optional_param('order', '', PARAM_ALPHAEXT);
+$order 		= optional_param('order', 'DESC', PARAM_ALPHAEXT);
 if ($sort and $order) $sort = $sort.' '.$order;
-
 
 $current_tab = $do_show;
 $this_action = 'view_entries';
+
+$norder = $order;
+if ($sort) {
+	if ($order=='DESC') $norder = 'ASC';
+	else $norder = 'DESC';
+}
 
 
 ////////////////////////////////////////////////////////
@@ -193,7 +198,6 @@ if ($do_show=='view_entries') {
 	echo $OUTPUT->box_end();
 	echo $OUTPUT->box_end();
 }
-
 
 
 ///////////////////////////////////////////////////////////////////////////
