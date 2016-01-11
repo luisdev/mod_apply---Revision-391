@@ -125,6 +125,10 @@ div.apply_item_captcha_img_right {
 	margin: 5px;
 }
 
+label {
+	display: inherit;
+}
+
 
 /* */
 hr.apply_pagebreak {
