@@ -45,7 +45,8 @@ class mod_apply_mod_form extends moodleform_mod
 		$mform->addElement('text', 'name', get_string('name', 'apply'), array('size'=>'64'));
 		$mform->setType('name', PARAM_TEXT);
 		$mform->addRule('name', null, 'required', null, 'client');
-		$this->add_intro_editor(true, get_string('description', 'apply'));
+//		$this->add_intro_editor(true, get_string('description', 'apply'));
+		$this->standard_intro_elements(get_string('description', 'apply'));
 
 		//-------------------------------------------------------------------------------
 		$mform->addElement('header', 'timinghdr', get_string('timing', 'form'));

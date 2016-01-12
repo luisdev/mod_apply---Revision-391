@@ -35,6 +35,7 @@ $plugin->maturity  = MATURITY_STABLE;
 //$plugin->version   = 2014112300;    // The current module version (Date: YYYYMMDDXX)
 //$plugin->version   = 2014112308;    // The current module version (Date: YYYYMMDDXX)
 //$plugin->version   = 2014112801;    // The current module version (Date: YYYYMMDDXX)
-$plugin->version   = 2015112600;    // The current module version (Date: YYYYMMDDXX)
-$plugin->release   = '1.1.2';		// update messages
+//$plugin->version   = 2015112600;    // The current module version (Date: YYYYMMDDXX)
+$plugin->version   = 2016011200;    // The current module version (Date: YYYYMMDDXX)
+$plugin->release   = '1.1.3';		// update messages
 
