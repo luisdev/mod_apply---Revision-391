@@ -64,6 +64,7 @@ if ($submit) {
 	echo '</table>';
 	echo '</td><tr>';
 	echo '</table>';
+	echo '<br />';
 
 	//
 //	echo $OUTPUT->box_end();
