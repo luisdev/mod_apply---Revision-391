@@ -22,6 +22,10 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['messageprovider:submission'] = 'Operation of Entry';
+$string['messageprovider:message']    = 'Message';
+$string['messageprovider:processed']  = 'Operation was Processed';
+
 $string['accept_entry'] = 'accept';
 $string['acked_accept']  = 'Accept';
 $string['acked_notyet']  = 'Not Yet';

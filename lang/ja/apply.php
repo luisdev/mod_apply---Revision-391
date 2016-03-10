@@ -22,6 +22,10 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['messageprovider:submission'] = '申請書の提出';
+$string['messageprovider:message']    = 'メッセージ';
+$string['messageprovider:processed']  = '処理完了';
+
 $string['accept_entry'] = '受理';
 $string['acked_accept']  = '受理';
 $string['acked_notyet']  = '未処理';
@@ -43,7 +47,7 @@ $string['apply:mapcourse'] = 'コースをグローバル申請フォームに�
 $string['apply:operatesubmit'] = '認証操作';
 $string['apply:preview'] = 'プレビュー';
 $string['apply:receivemail'] = 'メール通知を受信する';
-$string['apply:submit'] = '申請の提出';
+$string['apply:submit'] = '申請書の提出';
 $string['apply:view'] = '概要';
 $string['apply:viewentries'] = '申請書の表示';
 $string['apply:viewanalysepage'] = '回答送信後，分析ページを表示する';
