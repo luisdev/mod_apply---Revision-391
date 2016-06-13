@@ -5,16 +5,16 @@
 //                2013/04/20
 //                2013/09/21
 //                2014/11/28
+//                2016/05/26
 //
 
-$jbxl_tools_ver = 2014112800;
+$jbxl_tools_ver = 2016052600;
 
 
 //
 if (!defined('JBXL_TOOLS_VER') and !defined('_JBXL_TOOLS')) {
 
 define('JBXL_TOOLS_VER', $jbxl_tools_ver);
-
 
 
 
@@ -27,6 +27,7 @@ define('JBXL_TOOLS_VER', $jbxl_tools_ver);
 // function  jbxl_get_ipresolv_url($ip)
 //
 // function  jbxl_get_url_params_str($params, $amp=false)
+// function  jbxl_make_url($serverURI, $portNum=80)
 //
 *****************************************************************************************/
 
@@ -107,8 +108,6 @@ function  jbxl_to_subnetformats($strips)
 }
 
 
-
-
 //
 // $ip が $ipaddr_subnetsの中に含まれるか検査する．
 // $ipaddr_subnets は jbxl_to_subnetformats()が出力したものを使用すること．
@@ -148,9 +147,7 @@ function  jbxl_match_ipaddr($ip, array $ipaddr_subnets)
 
 
 
-
 $JBXLBaseChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
 
 
 function  jbxl_randstr($len=8, $lowcase=false)
@@ -166,8 +163,6 @@ function  jbxl_randstr($len=8, $lowcase=false)
 	}
     return $return;
 }
-
-
 
 
 function  jbxl_get_ipresolv_url($ip, $region='APNIC')
@@ -188,7 +183,6 @@ function  jbxl_get_ipresolv_url($ip, $region='APNIC')
 
 	return $url;
 }
-
 
 
 //
@@ -212,6 +206,38 @@ function  jbxl_get_url_params_str($params, $amp=false)
 }
 
 
+//
+// http(s)://ABC.EFG:#/ の形を生成する
+//
+function  jbxl_make_url($serverURI, $portNum=80)
+{
+	$url  = '';
+	$host = '';
+	$port = '';
+
+	if ($serverURI!=null) {
+		$uri = preg_split("/[:\/]/", $serverURI);
+		//
+		if (array_key_exists(3, $uri)) {	// with http:// or https://
+			$host = $uri[3];
+			if (array_key_exists(4, $uri)) $port = $uri[4];
+			else						   $port = $portnum;
+			$url = $uri[0].'://'.$host.':'.$port.'/';
+		}
+		else {								// with no http:// and https://
+			$host = $uri[0];
+			if (array_key_exists(1, $uri)) $port = $uri[1];
+			else						   $port = $portnum;
+			$url = 'http://'.$host.':'.$port.'/';
+		}
+	}
+
+	$server['url']  = $url;
+	$server['host'] = $host;
+	$server['port'] = $port;
+	
+	return $server;
+}
+
 
 } 		// !defined('JBXL_TOOLS_VER')
-?>

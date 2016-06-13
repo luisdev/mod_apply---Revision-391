@@ -48,7 +48,7 @@ define('JBXL_MOODLE_TOOLS_VER', $jbxl_moodle_tools_ver);
 
 // function  jbxl_get_course_users($context, $sort='')
 // function  jbxl_get_course_students($context, $sort='')
-// function  jbxl_get_course_tachers($context, $sort='')
+// function  jbxl_get_course_teachers($context, $sort='')
 // function  jbxl_get_course_assistants($context, $sort='')
 
 // function  jbxl_get_user_first_grouping($courseid, $userid)
@@ -235,7 +235,7 @@ function jbxl_get_course_students($context, $sort='')
 }
 
 
-function jbxl_get_course_tachers($context, $sort='')
+function jbxl_get_course_teachers($context, $sort='')
 {
 	global $DB;
 
