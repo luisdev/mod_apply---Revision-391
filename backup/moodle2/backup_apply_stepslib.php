@@ -57,7 +57,7 @@ class backup_apply_activity_structure_step extends backup_activity_structure_ste
 		//
         $items   = new backup_nested_element('items');
         $submits = new backup_nested_element('submits');
-        $values  = new backup_nested_element('value');
+        $values  = new backup_nested_element('values');
 
         //
         // Build the tree
