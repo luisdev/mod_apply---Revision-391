@@ -40,7 +40,7 @@ class restore_apply_activity_structure_step extends restore_activity_structure_s
 
 		if ($userinfo) {
         	$paths[] = new restore_path_element('apply_submit', '/activity/apply/submits/submit');
-        	$paths[] = new restore_path_element('apply_value', '/activity/apply/submits/submit/values/value');
+        	$paths[] = new restore_path_element('apply_value',  '/activity/apply/submits/submit/values/value');
 		}
 
         // Return the paths wrapped into standard activity structure
@@ -87,13 +87,19 @@ class restore_apply_activity_structure_step extends restore_activity_structure_s
         $data = (object)$data;
         $oldid = $data->id;
 
-        $data->apply_id    = $this->get_new_parentid('apply');
+        $data->apply_id = $this->get_new_parentid('apply');
 
-        $data->user_id 	   = $this->get_mappingid('user', $data->user_id);
-        $data->acked_user  = $this->get_mappingid('user', $data->acked_user);
-        $data->execd_user  = $this->get_mappingid('user', $data->execd_user);
-        $data->oacked_user = $this->get_mappingid('user', $data->oacked_user);
-        $data->oexecd_user = $this->get_mappingid('user', $data->oexecd_user);
+        $user_id 	 = $this->get_mappingid('user', $data->user_id);
+        $acked_user  = $this->get_mappingid('user', $data->acked_user);
+        $execd_user  = $this->get_mappingid('user', $data->execd_user);
+        $oacked_user = $this->get_mappingid('user', $data->oacked_user);
+        $oexecd_user = $this->get_mappingid('user', $data->oexecd_user);
+
+		if ($user_id    !=0) $data->user_id     = $user_id;		// ==0 is means that the user is not member of course
+		if ($acked_user !=0) $data->acked_user  = $acked_user;
+        if ($execd_user !=0) $data->execd_user  = $execd_user;
+        if ($oacked_user!=0) $data->oacked_user = $oacked_user;
+        if ($oexecd_user!=0) $data->oexecd_user = $oexecd_user;
 
 		$data->acked_time  	 = $this->apply_date_offset($data->acked_time);
 		$data->execd_time  	 = $this->apply_date_offset($data->execd_time);
