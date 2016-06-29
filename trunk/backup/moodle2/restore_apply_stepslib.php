@@ -33,7 +33,15 @@ class restore_apply_activity_structure_step extends restore_activity_structure_s
     protected function define_structure()
 	{
         $paths = array();
+		$userinfo = $this->get_setting_value('userinfo'
+
         $paths[] = new restore_path_element('apply', '/activity/apply');
+        $paths[] = new restore_path_element('apply_item', '/activity/apply/items/item');
+
+		if ($userinfo) {
+        	$paths[] = new restore_path_element('apply_submit', '/activity/apply/submits/submit');
+        	$paths[] = new restore_path_element('apply_value', '/activity/apply/submits/submit/values/value');
+		}
 
         // Return the paths wrapped into standard activity structure
         return $this->prepare_activity_structure($paths);

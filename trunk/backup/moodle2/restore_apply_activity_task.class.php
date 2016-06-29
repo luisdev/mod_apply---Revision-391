@@ -59,6 +59,8 @@ class restore_apply_activity_task extends restore_activity_task
         $contents = array();
 
         $contents[] = new restore_decode_content('apply', array('intro'), 'apply');
+        $contents[] = new restore_decode_content('apply_item', array('presentation'), 'apply_item');
+        $contents[] = new restore_decode_content('apply_value', array('value'), 'apply_value');
         return $contents;
     }
 
@@ -81,7 +83,10 @@ class restore_apply_activity_task extends restore_activity_task
 	{
         $rules = array();
 
-        $rules[] = new restore_log_rule('apply', 'view', 'view.php?id={course_module}', '{apply}');
+        $rules[] = new restore_log_rule('apply', 'view',   'view.php?id={course_module}', '{apply}');
+        $rules[] = new restore_log_rule('apply', 'submit', 'submit.php?id={course_module}', '{apply}');
+        $rules[] = new restore_log_rule('apply', 'delete', 'delete_submit.php?id={course_module}', '{apply}');
+        $rules[] = new restore_log_rule('apply', 'edit',    'edit.php?id={course_module}', '{apply}');
 
         return $rules;
     }
