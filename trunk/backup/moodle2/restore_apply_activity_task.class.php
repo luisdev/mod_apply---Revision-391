@@ -86,7 +86,8 @@ class restore_apply_activity_task extends restore_activity_task
         $rules[] = new restore_log_rule('apply', 'view',   'view.php?id={course_module}', '{apply}');
         $rules[] = new restore_log_rule('apply', 'submit', 'submit.php?id={course_module}', '{apply}');
         $rules[] = new restore_log_rule('apply', 'delete', 'delete_submit.php?id={course_module}', '{apply}');
-        $rules[] = new restore_log_rule('apply', 'edit',    'edit.php?id={course_module}', '{apply}');
+        $rules[] = new restore_log_rule('apply', 'edit',   'edit.php?id={course_module}', '{apply}');
+        $rules[] = new restore_log_rule('apply', 'view_entries', 'view_entries.php?id={course_module}&user_id={user}', '{apply}');
 
         return $rules;
     }

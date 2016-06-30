@@ -1130,9 +1130,10 @@ function apply_print_messagebox($str, $append=null, $color='steel blue')
 }
 
 
-function apply_single_button($url, array $params, $label, $method='POST')
+function apply_single_button($url, array $params, $label, $method='POST', $target='')
 {
-	$form = '<form action="'.$url.'" method="'.$method.'">';
+	if ($target!='') $target = 'target="'.$target.'"';
+	$form = '<form action="'.$url.'" method="'.$method.'" '.$target.'>';
 
 	foreach($params as $key => $param) {
 		$form.= '<input type="hidden" name="'.$key.'" value="'.$param.'" />';
