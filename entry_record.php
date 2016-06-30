@@ -30,7 +30,7 @@ if ($student) {
 	if ($title=='') $title = get_string('no_title', 'apply');
 	$entry_params = array('user_id'=>$student->id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'do_show'=>'view_one_entry');
 	$entry_url = new moodle_url($this_url, $entry_params);
-	$data[] = '<strong><a href="'.$entry_url->out().'">'.$title.'</a></strong>';
+	$data[] = '<strong><a href="'.$entry_url->out().'" target="_blank">'.$title.'</a></strong>';
 	//
 	$data[] = userdate($submit->time_modified, '%Y/%m/%d %H:%M');
 	//
@@ -49,7 +49,7 @@ if ($student) {
 		if ($submit->version>0 and apply_exist_draft_values($submit->id)) {
 			$draft_params = array('user_id'=>$student->id, 'submit_id'=>$submit->id, 'submit_ver'=>0, 'do_show'=>'view_one_entry');
 			$draft_url = new moodle_url($this_url, $draft_params);
-			$data[] = '<strong><a href="'.$draft_url->out().'">'.get_string('exist', 'apply').'</a></strong>';
+			$data[] = '<strong><a href="'.$draft_url->out().'" target="_blank">'.get_string('exist', 'apply').'</a></strong>';
 		}
 		else {
 			$data[] = '-';
@@ -62,7 +62,7 @@ if ($student) {
 	else if ($submit->acked==APPLY_ACKED_ACCEPT) $acked = get_string('acked_accept',  'apply');
 	else if ($submit->acked==APPLY_ACKED_REJECT) $acked = get_string('acked_reject',  'apply');
 	if ($submit->acked!=APPLY_ACKED_NOTYET) {
-		$acked = '<strong><a href="'.$acked_url.'">'.$acked.'</a></strong>';
+		$acked = '<strong><a href="'.$acked_url.'" target="_blank">'.$acked.'</a></strong>';
 	}
 	$data[] = $acked;
 
@@ -71,7 +71,7 @@ if ($student) {
 	else if ($submit->execd==APPLY_EXECD_DONE)   $execd = get_string('execd_done',   'apply');
 	else 				 				  		 $execd = get_string('execd_notyet', 'apply');
 	if ($submit->execd!=APPLY_EXECD_NOTYET) {
-		$execd = '<strong><a href="'.$execd_url.'">'.$execd.'</a></strong>';
+		$execd = '<strong><a href="'.$execd_url.'" target="_blank">'.$execd.'</a></strong>';
 	}
 	$data[] = $execd;
 
@@ -79,7 +79,7 @@ if ($student) {
 	//
 	if ($submit->version>1) {
 		$prev_ver = $submit->version - 1;
-		$form = '<form action="'.$base_url->out().'" method="POST">';
+		$form = '<form action="'.$base_url->out().'" method="POST" target="_blank">';
 		$form.= '<select name="submit_ver">';
 		for ($i=1; $i<$prev_ver; $i++) {
 			$form.= '<option value="'.$i.'">'.$i.'</option>';
@@ -158,10 +158,10 @@ if ($student) {
 	else {
 		$operate_params = array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'courseid'=>$courseid);
 		$operate_url = $CFG->wwwroot.'/mod/apply/operate_submit.php';
-		$data[] = apply_single_button($operate_url, $operate_params, get_string('operate_submit', 'apply'));
+		$data[] = apply_single_button($operate_url, $operate_params, get_string('operate_submit', 'apply'), 'POST', '_blank');
 
 		if ($apply->enable_deletemode) {
-			$form = '<form action=delete_submit.php method="POST">';
+			$form = '<form action=delete_submit.php method="POST" target="_blank">';
 			$form.= '<input type="hidden" name="action" value="delete_submit" />';
 			$form.= '<input type="hidden" name="id" value="'.$id.'" />';
 			$form.= '<input type="hidden" name="submit_id" value="'.$submit->id.'" />';
