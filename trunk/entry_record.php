@@ -98,7 +98,6 @@ if ($student) {
 	}
 	$data[] = $form;
 
-
 	//
 	if ($req_own_data) {
 		if ($submit->class==APPLY_CLASS_CANCEL and $submit->acked==APPLY_ACKED_ACCEPT) {
