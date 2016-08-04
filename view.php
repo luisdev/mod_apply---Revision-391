@@ -156,15 +156,13 @@ if ($do_show!='view_one_entry' or !$submit_id) {
 	}
 
 	// Date
-	if ($apply_can_submit) {
-		$checktime = time();
-		$apply_is_not_open =  $apply->time_open>$checktime;
-		$apply_is_closed   = ($apply->time_close<$checktime and $apply->time_close>0);
-		if ($apply_is_not_open or $apply_is_closed) {
-			if ($apply_is_not_open) apply_print_messagebox('apply_is_not_open');
-			else					apply_print_messagebox('apply_is_closed');
-			$apply_can_submit = false;
-		}
+	$checktime = time();
+	$apply_is_not_open =  $apply->time_open>$checktime;
+	$apply_is_closed   = ($apply->time_close<$checktime and $apply->time_close>0);
+	if ($apply_is_not_open or $apply_is_closed) {
+		if ($apply_is_not_open) apply_print_messagebox('apply_is_not_open');
+		else					apply_print_messagebox('apply_is_closed');
+		$apply_can_submit = false;
 	}
 }
 
