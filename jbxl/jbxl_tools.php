@@ -27,7 +27,7 @@ define('JBXL_TOOLS_VER', $jbxl_tools_ver);
 // function  jbxl_get_ipresolv_url($ip)
 //
 // function  jbxl_get_url_params_str($params, $amp=false)
-// function  jbxl_make_url($serverURI, $portNum=80)
+// function  jbxl_make_url($serverURI, $portnum=80)
 //
 *****************************************************************************************/
 
@@ -209,7 +209,7 @@ function  jbxl_get_url_params_str($params, $amp=false)
 //
 // http(s)://ABC.EFG:#/ の形を生成する
 //
-function  jbxl_make_url($serverURI, $portNum=80)
+function  jbxl_make_url($serverURI, $portnum=80)
 {
 	$url  = '';
 	$host = '';

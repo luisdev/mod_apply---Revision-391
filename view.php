@@ -125,15 +125,15 @@ if ((empty($cm->visible) and !$cap_view_hidden_activities)) {
 
 echo '<div align="center">';
 echo $OUTPUT->heading(format_text($apply->name), 3);
+echo '</div>';
 //
 if ($do_show!='view_one_entry' or !$submit_id) {
-	echo $OUTPUT->heading(get_string('description', 'apply'), 4);
 	echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
+	//echo $OUTPUT->heading(get_string('description', 'apply'), 4);
 	echo format_module_intro('apply', $apply, $cm->id);
 	require('period_info.php');
 	echo $OUTPUT->box_end();
 }
-echo '</div>';
 
 
 ///////////////////////////////////////////////////////////////////////////
