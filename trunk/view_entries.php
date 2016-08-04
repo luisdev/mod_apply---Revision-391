@@ -92,6 +92,9 @@ if ($formdata) {
 
 require_capability('mod/apply:viewreports', $context);
 
+$checktime = time();
+$apply_is_closed = ($apply->time_close<$checktime and $apply->time_close>0);
+
 
 ///////////////////////////////////////////////////////////////////////////
 // URL
