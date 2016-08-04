@@ -14,22 +14,23 @@ $title_bfr  = get_string('title_before', 'apply');
 //
 if ($req_own_data) {
 	$title_draft   = get_string('title_draft', 'apply');
-	$table_columns = array('title', 'time_modified', 'version', 'class', 'draft', 'acked', 'execd', 'before', 'edit', 'discard');
-	$table_headers = array($title_ttl, $title_date, $title_ver, $title_clss, $title_draft, $title_ack, $title_exec, $title_bfr, '-', '-');
+	$table_columns = array('title',    'time_modified', 'version', 'class',      'draft',      'acked',    'execd',    'before',    'edit', 'discard');
+	$table_headers = array($title_ttl, $title_date,     $title_ver, $title_clss, $title_draft, $title_ack, $title_exec, $title_bfr, '-',    '-');
+	//$table_size    = array(10,         10,              10,         10,          10,           10,         10,          10,         10,     10);
 }
 else {
 	$title_pic  = get_string('user_pic', 'apply');
 	$title_name = get_string($name_pattern);
 
 	if ($apply->enable_deletemode) {
-	//	$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execd', 'before', 'operation', 'delete');
-		$table_columns = array('userpic', 'fullname', 'title', 'time_modified', 'version', 'class', 'acked', 'execd', 'before', 'operation', 'delete');
-		$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, $title_bfr, '-', '-');
+		$table_columns = array('userpic', 'fullname',   'title',    'time_modified', 'version', 'class',     'acked',     'execd',    'before',    'operation', 'delete');
+		$table_headers = array($title_pic, $title_name, $title_ttl, $title_date,     $title_ver, $title_clss, $title_ack, $title_exec, $title_bfr, '-',         '-');
+	    //$table_size    = array(10,         10,          10,         10,              10,         10,          10,         10,          10,          10,          10);
 	}
 	else {
-	//	$table_columns = array('userpic', $name_pattern, 'title', 'time_modified', 'version', 'class', 'acked', 'execd', 'before', 'operation');
-		$table_columns = array('userpic', 'fullname', 'title', 'time_modified', 'version', 'class', 'acked', 'execd', 'before', 'operation');
-		$table_headers = array($title_pic, $title_name, $title_ttl, $title_date, $title_ver, $title_clss, $title_ack, $title_exec, $title_bfr, '-');
+		$table_columns = array('userpic', 'fullname',   'title',    'time_modified', 'version', 'class',      'acked',    'execd',     'before',   'operation');
+		$table_headers = array($title_pic, $title_name, $title_ttl, $title_date,     $title_ver, $title_clss, $title_ack, $title_exec, $title_bfr, '-');
+	    //$table_size    = array(10,         10,          10,         10,              10,         10,          10,         10,          10,         10);
 	}
 }
 
@@ -37,6 +38,7 @@ else {
 $table->define_columns($table_columns);
 $table->define_headers($table_headers);
 $table->define_baseurl($base_url);
+//$table->size = $table_size; // ?
 
 if ($req_own_data) {
 	$table->sortable(true, 'time_modified', SORT_DESC);
