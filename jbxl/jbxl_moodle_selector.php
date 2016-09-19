@@ -63,6 +63,13 @@ abstract class  jbxl_id_selector_base
 	}
 
 
+	public function jbxl_id_selector_base($html, $url, $ltitle, $rtitle) 
+    {
+        self::__construct($html, $url, $ltitle, $rtitle);
+    }
+
+
+
 	public function  execute()
 	{
 		$this->ids = $this->get_all_ids();
