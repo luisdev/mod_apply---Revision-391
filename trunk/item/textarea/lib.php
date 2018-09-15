@@ -17,7 +17,11 @@
 defined('MOODLE_INTERNAL') OR die('not allowed');
 require_once($CFG->dirroot.'/mod/apply/item/apply_item_class.php');
 
-class apply_item_textarea extends apply_item_base {
+define('APPLY_TEXTAREA_SEP', '|');
+
+
+class apply_item_textarea extends apply_item_base
+{
     protected $type = "textarea";
     private $commonparams;
     private $item_form;
@@ -47,7 +51,7 @@ class apply_item_textarea extends apply_item_base {
 
         $item->presentation = empty($item->presentation) ? '' : $item->presentation;
 
-        $width_and_height = explode('|', $item->presentation);
+        $width_and_height = explode(APPLY_TEXTAREA_SEP, $item->presentation);
 
         if (isset($width_and_height[0]) AND $width_and_height[0] >= 5) {
             $itemwidth = $width_and_height[0];
@@ -197,13 +201,13 @@ class apply_item_textarea extends apply_item_base {
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item) {
+    public function print_item_preview($item, $table_num) {
         global $OUTPUT, $DB;
 
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
-        $presentation = explode ("|", $item->presentation);
+        $presentation = explode(APPLY_TEXTAREA_SEP, $item->presentation);
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
         //print the question and label
         echo '<div class="apply_item_label_'.$align.'">';
@@ -227,6 +231,8 @@ class apply_item_textarea extends apply_item_base {
         echo '</textarea>';
         echo '</span>';
         echo '</div>';
+
+        return $table_num;
     }
 
     /**     
@@ -243,7 +249,7 @@ class apply_item_textarea extends apply_item_base {
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
-        $presentation = explode ("|", $item->presentation);
+        $presentation = explode(APPLY_TEXTAREA_SEP, $item->presentation);
         if ($highlightrequire AND $item->required AND strval($value) == '') {
             $highlight = ' missingrequire';
         } else {
@@ -281,7 +287,7 @@ class apply_item_textarea extends apply_item_base {
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
-        $presentation = explode ("|", $item->presentation);
+        $presentation = explode(APPLY_TEXTAREA_SEP, $item->presentation);
         $requiredmark = ($item->required == 1) ? $str_required_mark : '';
 
         //print the question and label
@@ -323,7 +329,7 @@ class apply_item_textarea extends apply_item_base {
     }
 
     public function get_presentation($data) {
-        return $data->itemwidth.'|'.$data->itemheight;
+        return $data->itemwidth.APPLY_TEXTAREA_SEP.$data->itemheight;
     }
 
     public function get_hasvalue() {

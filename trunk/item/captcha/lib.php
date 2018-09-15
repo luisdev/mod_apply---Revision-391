@@ -120,7 +120,7 @@ class apply_item_captcha extends apply_item_base {
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item) {
+    public function print_item_preview($item, $table_num) {
         global $DB;
 
         $align = right_to_left() ? 'right' : 'left';
@@ -142,7 +142,8 @@ class apply_item_captcha extends apply_item_base {
         echo '('.$item->label.') ';
         echo format_text($item->name.$requiredmark, true, false, false);
         echo '</div>';
-
+        
+        return $table_num;
     }
 
     /**

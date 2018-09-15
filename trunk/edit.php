@@ -235,7 +235,7 @@ if ($do_show=='templates') {
 ///print the Item-Edit-section
 
 if ($do_show=='edit') {
-
+    $table_num = 0;
 	$add_item_form->display();
 
 	if (is_array($applyitems)) {
@@ -393,7 +393,7 @@ if ($do_show=='edit') {
 			echo '</span>';
 			echo $OUTPUT->box_end();
 			if ($applyitem->typ != 'pagebreak') {
-				apply_print_item_preview($applyitem);
+				$table_num = apply_print_item_preview($applyitem, $table_num);
 			}
 			else {
 				echo $OUTPUT->box_start('apply_pagebreak');

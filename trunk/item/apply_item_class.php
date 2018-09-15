@@ -104,7 +104,7 @@ abstract class apply_item_base
      * @param object $item
      * @return void
      */
-    abstract public function print_item_preview($item);
+    abstract public function print_item_preview($item, $table_num);
 
     /**
      * print the item at the submit-page of apply
@@ -173,7 +173,7 @@ class apply_item_pagebreak extends apply_item_base
     }
     public function get_analysed($item, $groupid = false, $courseid = false) {
     }
-    public function print_item_preview($item) {
+    public function print_item_preview($item, $table_num) {
     }
     public function print_item_submit($item, $value = '', $highlightrequire = false) {
     }

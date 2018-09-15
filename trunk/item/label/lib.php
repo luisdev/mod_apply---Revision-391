@@ -178,7 +178,8 @@ class apply_item_label extends apply_item_base {
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item)
+
+    public function print_item_preview($item, $table_num)
 	{
         global $OUTPUT, $DB;
 
@@ -196,6 +197,8 @@ class apply_item_label extends apply_item_base {
 		echo '</div>';
 
         $this->print_item($item);
+
+        return $table_num;
     }
 
     /**

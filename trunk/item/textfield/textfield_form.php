@@ -51,7 +51,7 @@ class apply_textfield_form extends apply_item_form
             return false;
         }
 
-        $item->presentation = $item->itemsize . '|'. $item->itemmaxlength;
+        $item->presentation = $item->itemsize.APPLY_TEXTFIELD_SEP.$item->itemmaxlength;
         return $item;
     }
 }

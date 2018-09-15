@@ -17,6 +17,9 @@
 defined('MOODLE_INTERNAL') OR die('not allowed');
 require_once($CFG->dirroot.'/mod/apply/item/apply_item_class.php');
 
+define('APPLY_NUMERIC_SEP', '|');
+
+
 class apply_item_numeric extends apply_item_base {
     protected $type = "numeric";
     public $sep_dec, $sep_thous;
@@ -56,7 +59,7 @@ class apply_item_numeric extends apply_item_base {
 
         $item->presentation = empty($item->presentation) ? '' : $item->presentation;
 
-        $range_from_to = explode('|', $item->presentation);
+        $range_from_to = explode(APPLY_NUMERIC_SEP, $item->presentation);
         if (isset($range_from_to[0]) AND is_numeric($range_from_to[0])) {
             $range_from = str_replace(APPLY_DECIMAL,
                                 $this->sep_dec,
@@ -227,14 +230,14 @@ class apply_item_numeric extends apply_item_base {
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item) {
+    public function print_item_preview($item, $table_num) {
         global $OUTPUT, $DB;
 
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
         //get the range
-        $range_from_to = explode('|', $item->presentation);
+        $range_from_to = explode(APPLY_NUMERIC_SEP, $item->presentation);
 
         //get the min-value
         if (isset($range_from_to[0]) AND is_numeric($range_from_to[0])) {
@@ -294,6 +297,8 @@ class apply_item_numeric extends apply_item_base {
 
         echo '</span>';
         echo '</div>';
+
+        return $table_num;
     }
 
     /**
@@ -311,7 +316,7 @@ class apply_item_numeric extends apply_item_base {
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
         //get the range
-        $range_from_to = explode('|', $item->presentation);
+        $range_from_to = explode(APPLY_NUMERIC_SEP, $item->presentation);
 
         //get the min-value
         if (isset($range_from_to[0]) AND is_numeric($range_from_to[0])) {
@@ -384,7 +389,7 @@ class apply_item_numeric extends apply_item_base {
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
         //get the range
-        $range_from_to = explode('|', $item->presentation);
+        $range_from_to = explode(APPLY_NUMERIC_SEP, $item->presentation);
         //get the min-value
         if (isset($range_from_to[0]) AND is_numeric($range_from_to[0])) {
             $range_from = floatval($range_from_to[0]);
@@ -444,7 +449,7 @@ class apply_item_numeric extends apply_item_base {
             return false;
         }
 
-        $range_from_to = explode('|', $item->presentation);
+        $range_from_to = explode(APPLY_NUMERIC_SEP, $item->presentation);
         if (isset($range_from_to[0]) AND is_numeric($range_from_to[0])) {
             $range_from = floatval($range_from_to[0]);
         } else {
@@ -517,13 +522,13 @@ class apply_item_numeric extends apply_item_base {
         }
 
         if ($num1 === '-' OR $num2 === '-') {
-            return $num1 . '|'. $num2;
+            return $num1.APPLY_NUMERIC_SEP.$num2;
         }
 
         if ($num1 > $num2) {
-            return $num2 . '|'. $num1;
+            return $num2.APPLY_NUMERIC_SEP.$num1;
         } else {
-            return $num1 . '|'. $num2;
+            return $num1.APPLY_NUMERIC_SEP.$num2;
         }
     }
 
