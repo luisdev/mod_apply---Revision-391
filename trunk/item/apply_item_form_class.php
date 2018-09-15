@@ -16,7 +16,7 @@
 
 require_once($CFG->libdir.'/formslib.php');
 
-define('APPLY_ITEM_NAME_TEXTBOX_SIZE',  80);
+define('APPLY_ITEM_NAME_TEXTBOX_SIZE',  40);
 define('APPLY_ITEM_LABEL_TEXTBOX_SIZE', 20);
 
 abstract class apply_item_form extends moodleform
