@@ -17,9 +17,9 @@
 defined('MOODLE_INTERNAL') OR die('not allowed');
 require_once($CFG->dirroot.'/mod/apply/item/apply_item_class.php');
 
-class apply_item_table_start extends apply_item_base
+class apply_item_tablestart extends apply_item_base
 {
-    protected $type = "table_start";
+    protected $type = "tablestart";
     private $commonparams;
     private $item_form;
     private $item;
@@ -31,7 +31,7 @@ class apply_item_table_start extends apply_item_base
     public function build_editform($item, $apply, $cm)
     {
         global $DB, $CFG;
-        require_once('table_start_form.php');
+        require_once('tablestart_form.php');
 
         //get the lastposition number of the apply_items
         $position = $item->position;
@@ -66,7 +66,7 @@ class apply_item_table_start extends apply_item_base
                             'positionlist' => $positionlist,
                             'position' => $position);
 
-        $this->item_form = new apply_table_start_form('edit_item.php', $customdata);
+        $this->item_form = new apply_tablestart_form('edit_item.php', $customdata);
     }
 
     //this function only can used after the call of build_editform()
@@ -211,7 +211,7 @@ class apply_item_table_start extends apply_item_base
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
-        echo '<span class="apply_item_table_start">';
+        echo '<span class="apply_item_tablestart">';
 echo "sssss";
         echo '</span>';
         echo '</div>';
@@ -247,7 +247,7 @@ echo "sssss";
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.$highlight.'">';
-        echo '<span class="apply_item_table_start">';
+        echo '<span class="apply_item_tablestart">';
         echo $value;
         echo '</span>';
         echo '</div>';
