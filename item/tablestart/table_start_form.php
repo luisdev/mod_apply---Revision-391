@@ -29,30 +29,36 @@ class apply_table_start_form extends apply_item_form
         $positionlist = $this->_customdata['positionlist'];
         $position = $this->_customdata['position'];
 
+        $border_style = array("none", "hidden", "solid", "double", "dashed", "dotted", "groove", "ridge", "inset", "outset");
+
         $mform =& $this->_form;
 
         $mform->addElement('header', 'general', get_string($this->type, 'apply'));
-        $mform->addElement('advcheckbox', 'required', get_string('required', 'apply'), '' , null , array(0, 1));
-        $mform->addElement('text', 'name', get_string('item_name', 'apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE, 'maxlength'=>255));
+        $mform->addElement('text', 'name', get_string('item_name','apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE, 'maxlength'=>255));
 
-        $label_help = ' '.$OUTPUT->help_icon('item_label','apply');
-        $mform->addElement('text', 'label', get_string('item_label', 'apply').$label_help, array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
-        $mform->addElement('select', 'itemsize', get_string('table_start_size', 'apply').'&nbsp;', array_slice(range(0, 255), 5, 255, true));
-        $mform->addElement('select', 'itemmaxlength', get_string('table_start_maxlength', 'apply').'&nbsp;', array_slice(range(0, 255), 5, 255, true));
+        //$label_help = ' '.$OUTPUT->help_icon('item_label','apply');
+        $mform->addElement('text', 'label', get_string('item_label','apply'), array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
+        //$mform->addElement('select', 'itemwidth', get_string('table_start_width', 'apply').'&nbsp;', array_slice(range(0, 80), 5, 80, true));
+        $mform->addElement('select', 'columns', get_string('table_columns', 'apply').'&nbsp;', range(1, 20));
+        $mform->addElement('select', 'border',  get_string('table_border',  'apply').'&nbsp;', range(0, 10));
+        $mform->addElement('select', 'boder_style', get_string('table_border_style', 'apply').'&nbsp;', $border_style);
+        //$mform->addElement('select', 'itemheight', get_string('table_start_height', 'apply').'&nbsp;', array_slice(range(0, 40), 5, 40, true));
+        $mform->addElement('textarea', 'th_elements', get_string('table_th_elements', 'apply').'&nbsp;', 'wrap="virtual" rows="3" cols="20"');
 
         parent::definition();
         $this->set_data($item);
-
     }
 
+/*
     public function get_data()
-	{
+    {
         if (!$item = parent::get_data()) {
             return false;
         }
 
-        $item->presentation = $item->itemsize . '|'. $item->itemmaxlength;
+        $item->presentation = $item->itemwidth . '|'. $item->itemheight;
         return $item;
     }
+*/
 }
 
