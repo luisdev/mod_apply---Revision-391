@@ -23,7 +23,9 @@ define('APPLY_MULTICHOICE_ADJUST_SEP', '<<<<<');
 define('APPLY_MULTICHOICE_IGNOREEMPTY', 'i');
 define('APPLY_MULTICHOICE_HIDENOSELECT', 'h');
 
-class apply_item_multichoice extends apply_item_base {
+
+class apply_item_multichoice extends apply_item_base
+{
     protected $type = "multichoice";
     private $commonparams;
     private $item_form;
@@ -128,7 +130,7 @@ class apply_item_multichoice extends apply_item_base {
 
         //get the possible answers
         $answers = null;
-        $answers = explode (APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
+        $answers = explode(APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
         if (!is_array($answers)) {
             return null;
         }
@@ -188,10 +190,10 @@ class apply_item_multichoice extends apply_item_base {
             return $printval;
         }
 
-        $presentation = explode (APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
+        $presentation = explode(APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
 
         if ($info->subtype == 'c') {
-            $vallist = array_values(explode (APPLY_MULTICHOICE_LINE_SEP, $value->value));
+            $vallist = array_values(explode(APPLY_MULTICHOICE_LINE_SEP, $value->value));
             $sizeofvallist = count($vallist);
             $sizeofpresentation = count($presentation);
             for ($i = 0; $i < $sizeofvallist; $i++) {
@@ -302,12 +304,12 @@ class apply_item_multichoice extends apply_item_base {
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item) {
+    public function print_item_preview($item, $table_num) {
         global $OUTPUT, $DB;
         $info = $this->get_info($item);
         $align = right_to_left() ? 'right' : 'left';
 
-        $presentation = explode (APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
+        $presentation = explode(APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
         //test if required and no value is set so we have to mark this item
@@ -372,6 +374,8 @@ class apply_item_multichoice extends apply_item_base {
         }
         echo '</ul>';
         echo '</div>';
+
+        return $table_num;
     }
 
     /**
@@ -391,7 +395,7 @@ class apply_item_multichoice extends apply_item_base {
         if ($value == null) {
             $value = array();
         }
-        $presentation = explode (APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
+        $presentation = explode(APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
         //test if required and no value is set so we have to mark this item
@@ -420,7 +424,7 @@ class apply_item_multichoice extends apply_item_base {
 
         //print the question and label
         echo '<div class="apply_item_label_'.$align.$highlight.'">';
-            echo format_text($item->name.$requiredmark, true, false, false);
+        echo format_text($item->name.$requiredmark, true, false, false);
         echo '</div>';
 
         //print the presentation
@@ -492,7 +496,7 @@ class apply_item_multichoice extends apply_item_base {
             $value = array();
         }
 
-        $presentation = explode (APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
+        $presentation = explode(APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
 
         //test if required and no value is set so we have to mark this item
         //we have to differ check and the other subtypes
@@ -579,7 +583,7 @@ class apply_item_multichoice extends apply_item_base {
         }
 
         $info = $this->get_info($item);
-        $presentation = explode (APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
+        $presentation = explode(APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
         $index = 1;
         foreach ($presentation as $pres) {
             foreach ($dbvalues as $dbval) {

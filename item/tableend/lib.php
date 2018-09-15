@@ -186,12 +186,13 @@ class apply_item_tableend extends apply_item_base {
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item) {
+    public function print_item_preview($item, $table_num) {
+/*
         global $OUTPUT, $DB;
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
-        $presentation = explode ("|", $item->presentation);
+        $presentation = explode("|", $item->presentation);
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
         //print the question and label
         echo '<div class="apply_item_label_'.$align.'">';
@@ -216,6 +217,13 @@ class apply_item_tableend extends apply_item_base {
                     'value="" />';
         echo '</span>';
         echo '</div>';
+*/
+        if ($table_num>0) {
+            echo '</table>';
+            $table_num--;
+        }
+
+        return $table_num;
     }
 
     /**     
@@ -232,7 +240,7 @@ class apply_item_tableend extends apply_item_base {
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
-        $presentation = explode ("|", $item->presentation);
+        $presentation = explode("|", $item->presentation);
         if ($highlightrequire AND $item->required AND strval($value) == '') {
             $highlight = ' missingrequire';
         } else {
@@ -271,7 +279,7 @@ class apply_item_tableend extends apply_item_base {
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
-        $presentation = explode ("|", $item->presentation);
+        $presentation = explode("|", $item->presentation);
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
 
         //print the question and label

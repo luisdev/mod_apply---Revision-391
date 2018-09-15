@@ -132,7 +132,7 @@ class apply_item_multichoicerated extends apply_item_base {
         //die moeglichen Antworten extrahieren
         $info = $this->get_info($item);
         $lines = null;
-        $lines = explode (APPLY_MULTICHOICERATED_LINE_SEP, $info->presentation);
+        $lines = explode(APPLY_MULTICHOICERATED_LINE_SEP, $info->presentation);
         if (!is_array($lines)) {
             return null;
         }
@@ -178,7 +178,7 @@ class apply_item_multichoicerated extends apply_item_base {
 
         $info = $this->get_info($item);
 
-        $presentation = explode (APPLY_MULTICHOICERATED_LINE_SEP, $info->presentation);
+        $presentation = explode(APPLY_MULTICHOICERATED_LINE_SEP, $info->presentation);
         $index = 1;
         foreach ($presentation as $pres) {
             if ($value->value == $index) {
@@ -290,14 +290,14 @@ class apply_item_multichoicerated extends apply_item_base {
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item) {
+    public function print_item_preview($item, $table_num) {
         global $OUTPUT, $DB;
 
         $align = right_to_left() ? 'right' : 'left';
         $info = $this->get_info($item);
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
-        $lines = explode (APPLY_MULTICHOICERATED_LINE_SEP, $info->presentation);
+        $lines = explode(APPLY_MULTICHOICERATED_LINE_SEP, $info->presentation);
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
         //print the question and label
         echo '<div class="apply_item_label_'.$align.'">';
@@ -323,6 +323,8 @@ class apply_item_multichoicerated extends apply_item_base {
                 break;
         }
         echo '</div>';
+
+        return $table_num;
     }
 
     /**
@@ -340,7 +342,7 @@ class apply_item_multichoicerated extends apply_item_base {
         $info = $this->get_info($item);
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
-        $lines = explode (APPLY_MULTICHOICERATED_LINE_SEP, $info->presentation);
+        $lines = explode(APPLY_MULTICHOICERATED_LINE_SEP, $info->presentation);
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
         if ($highlightrequire AND $item->required AND intval($value) <= 0) {
             $highlight = ' missingrequire';
@@ -379,7 +381,7 @@ class apply_item_multichoicerated extends apply_item_base {
         $align = right_to_left() ? 'right' : 'left';
         $info = $this->get_info($item);
 
-        $lines = explode (APPLY_MULTICHOICERATED_LINE_SEP, $info->presentation);
+        $lines = explode(APPLY_MULTICHOICERATED_LINE_SEP, $info->presentation);
         $requiredmark = ($item->required == 1)?'<span class="apply_required_mark">*</span>':'';
 
         //print the question and label
@@ -431,7 +433,7 @@ class apply_item_multichoicerated extends apply_item_base {
         }
 
         $info = $this->get_info($item);
-        $presentation = explode (APPLY_MULTICHOICERATED_LINE_SEP, $info->presentation);
+        $presentation = explode(APPLY_MULTICHOICERATED_LINE_SEP, $info->presentation);
         $index = 1;
         foreach ($presentation as $pres) {
             $presvalues = explode(APPLY_MULTICHOICERATED_VALUE_SEP, $pres);

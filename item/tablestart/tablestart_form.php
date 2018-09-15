@@ -23,42 +23,37 @@ class apply_tablestart_form extends apply_item_form
     public function definition()
 	{
 		global $OUTPUT;
+        global $Border_Styles;
 
         $item = $this->_customdata['item'];
         $common = $this->_customdata['common'];
         $positionlist = $this->_customdata['positionlist'];
         $position = $this->_customdata['position'];
 
-        $border_style = array("none", "hidden", "solid", "double", "dashed", "dotted", "groove", "ridge", "inset", "outset");
-
         $mform =& $this->_form;
 
         $mform->addElement('header', 'general', get_string($this->type, 'apply'));
-        $mform->addElement('text', 'name', get_string('item_name','apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE, 'maxlength'=>255));
-
-        //$label_help = ' '.$OUTPUT->help_icon('item_label','apply');
+        $mform->addElement('text', 'name',  get_string('item_name', 'apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE, 'maxlength'=>255));
         $mform->addElement('text', 'label', get_string('item_label','apply'), array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
-        //$mform->addElement('select', 'itemwidth', get_string('tablestart_width', 'apply').'&nbsp;', array_slice(range(0, 80), 5, 80, true));
+
         $mform->addElement('select', 'columns', get_string('table_columns', 'apply').'&nbsp;', range(1, 20));
         $mform->addElement('select', 'border',  get_string('table_border',  'apply').'&nbsp;', range(0, 10));
-        $mform->addElement('select', 'boder_style', get_string('table_border_style', 'apply').'&nbsp;', $border_style);
-        //$mform->addElement('select', 'itemheight', get_string('tablestart_height', 'apply').'&nbsp;', array_slice(range(0, 40), 5, 40, true));
+        $mform->addElement('select', 'border_style',  get_string('table_border_style', 'apply').'&nbsp;', $Border_Styles);
         $mform->addElement('textarea', 'th_elements', get_string('table_th_elements', 'apply').'&nbsp;', 'wrap="virtual" rows="3" cols="20"');
 
         parent::definition();
         $this->set_data($item);
     }
 
-/*
     public function get_data()
     {
         if (!$item = parent::get_data()) {
             return false;
         }
 
-        $item->presentation = $item->itemwidth . '|'. $item->itemheight;
+        // その他の値を格納する変数
+        $item->presentation = $item->columns.APPLY_TABLESTART_SEP.$item->border.APPLY_TABLESTART_SEP.$item->border_style.APPLY_TABLESTART_SEP.$item->th_elements;
         return $item;
     }
-*/
 }
 

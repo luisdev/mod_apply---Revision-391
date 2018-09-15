@@ -68,15 +68,15 @@ class apply_numeric_form extends apply_item_form
         }
 
         if ($num1 === '-' OR $num2 === '-') {
-            $item->presentation = $num1 . '|'. $num2;
+            $item->presentation = $num1.APPLY_NUMERIC_SEP.$num2;
             return $item;
         }
 
         if ($num1 > $num2) {
-            $item->presentation =  $num2 . '|'. $num1;
+            $item->presentation = $num2.APPLY_NUMERIC_SEP.$num1;
         }
 		else {
-            $item->presentation = $num1 . '|'. $num2;
+            $item->presentation = $num1.APPLY_NUMERIC_SEP.$num2;
         }
         return $item;
     }

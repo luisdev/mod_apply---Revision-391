@@ -17,12 +17,19 @@
 defined('MOODLE_INTERNAL') OR die('not allowed');
 require_once($CFG->dirroot.'/mod/apply/item/apply_item_class.php');
 
+define('APPLY_TABLESTART_SEP', '>>>>>');
+
+global $Border_Styles;
+$Border_Styles = array('none', 'hidden', 'solid', 'double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset');
+
+//
 class apply_item_tablestart extends apply_item_base
 {
     protected $type = "tablestart";
     private $commonparams;
     private $item_form;
     private $item;
+
 
     public function init() {
 
@@ -186,20 +193,23 @@ class apply_item_tablestart extends apply_item_base
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item)
+    public function print_item_preview($item, $table_num)
     {
         global $OUTPUT, $DB;
+        global $Border_Styles;
 
         $align = right_to_left() ? 'right' : 'left';
-        $str_required_mark = '<span class="apply_required_mark">*</span>';
 
-        //$presentation = explode ("|", $item->presentation);
-        $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
+        $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
+        $columns = $presentation[0] + 1;
+        $border  = $presentation[1];
+        $border_style = $presentation[2];
+        $th_elements = explode("\n", $presentation[3]);
 
         //print the question and label
         echo '<div class="apply_item_label_'.$align.'">';
         echo '('.$item->label.') ';
-        echo format_text($item->name.$requiredmark, true, false, false);
+        //echo format_text($item->name.$requiredmark, true, false, false);
         if ($item->dependitem) {
             if ($dependitem = $DB->get_record('apply_item', array('id'=>$item->dependitem))) {
                 echo ' <span class="apply_depend">';
@@ -210,12 +220,40 @@ class apply_item_tablestart extends apply_item_base
         echo '</div>';
 
         //print the presentation
+/*
         echo '<div class="apply_item_presentation_'.$align.'">';
         echo '<span class="apply_item_tablestart">';
-echo "sssss";
+        echo 'Table Start';
         echo '</span>';
         echo '</div>';
-        echo '<table>';
+*/
+
+        $style = '';
+        if ($border>=0) $style = 'border-width:'.$border.'px;';
+        if ($border_style>=0) $style .= 'border-style:'.$Border_Styles[$border_style].';';
+        if ($style!='') $style = 'style="'.$style.'"';
+
+        echo "\n";
+        //echo '<table '.$style.' rules="all" ><tr>';
+        echo '<table '.$style.'><tr>';
+
+        for ($col=0; $col<$columns; $col++) {
+            echo '<th '.$style.'>';
+            if (array_key_exists($col, $th_elements)) echo $th_elements[$col];
+            else echo ' ';
+            echo '</th>';
+        }
+        echo '</tr>';
+        echo '<tr>';
+echo '<td '.$style.'>sssssssssssss</td>';
+echo '<td>2222222222222</td>';
+echo '<td>3333333333333</td>';
+
+        echo '</tr>';
+        echo '</table>';
+
+        $table_num++;
+        return $table_num;
     }
 
     /**     
@@ -232,7 +270,7 @@ echo "sssss";
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
-        $presentation = explode ("|", $item->presentation);
+        $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
         if ($highlightrequire AND $item->required AND strval($value) == '') {
             $highlight = ' missingrequire';
         } else {
@@ -266,7 +304,7 @@ echo "sssss";
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
-        //$presentation = explode ("|", $item->presentation);
+        $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
         $requiredmark = ($item->required == 1) ? $str_required_mark : '';
 
         //print the question and label
@@ -308,7 +346,8 @@ echo "sssss";
     }
 
     public function get_presentation($data) {
-        return $data->itemwidth.'|'.$data->itemheight;
+        $presen = $data->columns.APPLY_TABLESTART_SEP.$data->border.APPLY_TABLESTART_SEP.$data->border_style.APPLY_TABLESTART_SEP.$data->th_elements;
+        return $presen;
     }
 
     public function get_hasvalue() {

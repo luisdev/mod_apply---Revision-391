@@ -543,12 +543,14 @@ function apply_move_item($moveitem, $pos)
 }
 
 
-function apply_print_item_preview($item)
+function apply_print_item_preview($item, $table_num)
 {
 	if ($item->typ=='pagebreak') return;
 
 	$itemobj = apply_get_item_class($item->typ);
-	$itemobj->print_item_preview($item);
+	$table_num = $itemobj->print_item_preview($item, $table_num);
+
+    return $table_num;
 }
 
 
