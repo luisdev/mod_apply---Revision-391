@@ -402,6 +402,7 @@ if ($do_show=='edit') {
 			}
 			echo $OUTPUT->box_end();
 			echo $OUTPUT->box_end();
+
 			if (isset($SESSION->apply->moving) AND $SESSION->apply->moving->shouldmoving == 1) {
 				$moveposition++;
 				$movehereurl->param('movehere', $moveposition);

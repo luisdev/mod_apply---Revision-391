@@ -199,17 +199,10 @@ class apply_item_tablestart extends apply_item_base
         global $Border_Styles;
 
         $align = right_to_left() ? 'right' : 'left';
-
-        $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
-        $columns = $presentation[0] + 1;
-        $border  = $presentation[1];
-        $border_style = $presentation[2];
-        $th_elements = explode("\n", $presentation[3]);
-
-        //print the question and label
         echo '<div class="apply_item_label_'.$align.'">';
         echo '('.$item->label.') ';
-        //echo format_text($item->name.$requiredmark, true, false, false);
+        echo format_text($item->name, true, false, false);
+
         if ($item->dependitem) {
             if ($dependitem = $DB->get_record('apply_item', array('id'=>$item->dependitem))) {
                 echo ' <span class="apply_depend">';
@@ -219,14 +212,12 @@ class apply_item_tablestart extends apply_item_base
         }
         echo '</div>';
 
-        //print the presentation
-/*
-        echo '<div class="apply_item_presentation_'.$align.'">';
-        echo '<span class="apply_item_tablestart">';
-        echo 'Table Start';
-        echo '</span>';
-        echo '</div>';
-*/
+        //
+        $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
+        $columns = $presentation[0] + 1;
+        $border  = $presentation[1];
+        $border_style = $presentation[2];
+        $th_elements = explode("\n", $presentation[3]);
 
         $style = '';
         if ($border>=0) $style = 'border-width:'.$border.'px;';
@@ -268,7 +259,7 @@ echo '<td>3333333333333</td>';
     public function print_item_submit($item, $value = '', $highlightrequire = false) {
         global $OUTPUT;
         $align = right_to_left() ? 'right' : 'left';
-        $str_required_mark = '<span class="apply_required_mark">*</span>';
+        //$str_required_mark = '<span class="apply_required_mark">*</span>';
 
         $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
         if ($highlightrequire AND $item->required AND strval($value) == '') {
@@ -276,11 +267,12 @@ echo '<td>3333333333333</td>';
         } else {
             $highlight = '';
         }
-        $requiredmark = ($item->required == 1) ? $str_required_mark :'';
+        //$requiredmark = ($item->required == 1) ? $str_required_mark :'';
 
         //print the question and label
         echo '<div class="apply_item_label_'.$align.$highlight.'">';
-        echo format_text($item->name . $requiredmark, true, false, false);
+        //echo format_text($item->name . $requiredmark, true, false, false);
+        echo format_text($item->name, true, false, false);
         echo '</div>';
 
         //print the presentation
@@ -302,15 +294,16 @@ echo '<td>3333333333333</td>';
     public function print_item_show_value($item, $value = '') {
         global $OUTPUT;
         $align = right_to_left() ? 'right' : 'left';
-        $str_required_mark = '<span class="apply_required_mark">*</span>';
+        //$str_required_mark = '<span class="apply_required_mark">*</span>';
 
         $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
-        $requiredmark = ($item->required == 1) ? $str_required_mark : '';
+        //$requiredmark = ($item->required == 1) ? $str_required_mark : '';
 
         //print the question and label
         echo '<div class="apply_item_label_'.$align.'">';
         //    echo '('.$item->label.') ';
-        echo format_text($item->name . $requiredmark, true, false, false);
+        //echo format_text($item->name . $requiredmark, true, false, false);
+        echo format_text($item->name, true, false, false);
         echo '</div>';
 
         //print the presentation
@@ -320,14 +313,6 @@ echo '<td>3333333333333</td>';
     }
 
     public function check_value($value, $item) {
-        //if the item is not required, so the check is true if no value is given
-        if ((!isset($value) OR $value == '') AND $item->required != 1) {
-            return true;
-        }
-        if ($value == "") {
-            return false;
-        }
-        return true;
     }
 
     public function create_value($data) {
@@ -351,11 +336,11 @@ echo '<td>3333333333333</td>';
     }
 
     public function get_hasvalue() {
-        return 1;
+        return 0;
     }
 
     public function can_switch_require() {
-        return true;
+        return false;
     }
 
     public function value_type() {
