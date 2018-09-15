@@ -16,9 +16,9 @@
 
 require_once($CFG->dirroot.'/mod/apply/item/apply_item_form_class.php');
 
-class apply_table_start_form extends apply_item_form
+class apply_tablestart_form extends apply_item_form
 {
-    protected $type = "table_start";
+    protected $type = "tablestart";
 
     public function definition()
 	{
@@ -38,11 +38,11 @@ class apply_table_start_form extends apply_item_form
 
         //$label_help = ' '.$OUTPUT->help_icon('item_label','apply');
         $mform->addElement('text', 'label', get_string('item_label','apply'), array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
-        //$mform->addElement('select', 'itemwidth', get_string('table_start_width', 'apply').'&nbsp;', array_slice(range(0, 80), 5, 80, true));
+        //$mform->addElement('select', 'itemwidth', get_string('tablestart_width', 'apply').'&nbsp;', array_slice(range(0, 80), 5, 80, true));
         $mform->addElement('select', 'columns', get_string('table_columns', 'apply').'&nbsp;', range(1, 20));
         $mform->addElement('select', 'border',  get_string('table_border',  'apply').'&nbsp;', range(0, 10));
         $mform->addElement('select', 'boder_style', get_string('table_border_style', 'apply').'&nbsp;', $border_style);
-        //$mform->addElement('select', 'itemheight', get_string('table_start_height', 'apply').'&nbsp;', array_slice(range(0, 40), 5, 40, true));
+        //$mform->addElement('select', 'itemheight', get_string('tablestart_height', 'apply').'&nbsp;', array_slice(range(0, 40), 5, 40, true));
         $mform->addElement('textarea', 'th_elements', get_string('table_th_elements', 'apply').'&nbsp;', 'wrap="virtual" rows="3" cols="20"');
 
         parent::definition();

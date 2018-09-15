@@ -16,9 +16,9 @@
 
 require_once($CFG->dirroot.'/mod/apply/item/apply_item_form_class.php');
 
-class apply_table_end_form extends apply_item_form
+class apply_tableend_form extends apply_item_form
 {
-    protected $type = "table_end";
+    protected $type = "tableend";
 
     public function definition()
 	{
@@ -37,8 +37,8 @@ class apply_table_end_form extends apply_item_form
 
         $label_help = ' '.$OUTPUT->help_icon('item_label','apply');
         $mform->addElement('text', 'label', get_string('item_label', 'apply').$label_help, array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
-        $mform->addElement('select', 'itemsize', get_string('table_end_size', 'apply').'&nbsp;', array_slice(range(0, 255), 5, 255, true));
-        $mform->addElement('select', 'itemmaxlength', get_string('table_end_maxlength', 'apply').'&nbsp;', array_slice(range(0, 255), 5, 255, true));
+        $mform->addElement('select', 'itemsize', get_string('tableend_size', 'apply').'&nbsp;', array_slice(range(0, 255), 5, 255, true));
+        $mform->addElement('select', 'itemmaxlength', get_string('tableend_maxlength', 'apply').'&nbsp;', array_slice(range(0, 255), 5, 255, true));
 
         parent::definition();
         $this->set_data($item);
