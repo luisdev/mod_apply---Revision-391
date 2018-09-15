@@ -17,8 +17,8 @@
 defined('MOODLE_INTERNAL') OR die('not allowed');
 require_once($CFG->dirroot.'/mod/apply/item/apply_item_class.php');
 
-class apply_item_table extends apply_item_base {
-    protected $type = "table";
+class apply_item_table_start extends apply_item_base {
+    protected $type = "table_start";
     private $commonparams;
     private $item_form;
     private $item;
@@ -29,7 +29,7 @@ class apply_item_table extends apply_item_base {
 
     public function build_editform($item, $apply, $cm) {
         global $DB, $CFG;
-        require_once('table_form.php');
+        require_once('table_start_form.php');
 
         //get the lastposition number of the apply_items
         $position = $item->position;
@@ -74,7 +74,7 @@ class apply_item_table extends apply_item_base {
                             'positionlist' => $positionlist,
                             'position' => $position);
 
-        $this->item_form = new apply_table_form('edit_item.php', $customdata);
+        $this->item_form = new apply_table_start_form('edit_item.php', $customdata);
     }
 
     //this function only can used after the call of build_editform()
@@ -208,7 +208,7 @@ class apply_item_table extends apply_item_base {
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
-        echo '<span class="apply_item_table">';
+        echo '<span class="apply_item_table_start">';
         echo '<input type="text" '.
                     'name="'.$item->typ.'_'.$item->id.'" '.
                     'size="'.$presentation[0].'" '.
@@ -247,7 +247,7 @@ class apply_item_table extends apply_item_base {
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.$highlight.'">';
-        echo '<span class="apply_item_table">';
+        echo '<span class="apply_item_table_start">';
         echo '<input type="text" '.
                     'name="'.$item->typ.'_'.$item->id.'" '.
                     'size="'.$presentation[0].'" '.
