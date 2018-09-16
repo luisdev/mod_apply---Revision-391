@@ -194,6 +194,7 @@ class apply_item_textarea extends apply_item_base
         return $row_offset;
     }
 
+
     /**     
      * print the item at the edit-page of apply
      *
@@ -201,59 +202,49 @@ class apply_item_textarea extends apply_item_base
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item) {
+    public function print_item_preview($item)
+    {
         global $OUTPUT, $DB;
-        global $Table_in, $Table_params;
+        global $Table_in;
 
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
         $presentation = explode(APPLY_TEXTAREA_SEP, $item->presentation);
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
+
         //print the question and label
-        echo '<div class="apply_item_label_'.$align.'">';
-        echo '('.$item->label.') ';
-        echo format_text($item->name.$requiredmark, true, false, false);
+        $output  = '<div class="apply_item_label_'.$align.'">';
+        $output .= '('.$item->label.') ';
+        $output .= format_text($item->name.$requiredmark, true, false, false);
         if ($item->dependitem) {
             if ($dependitem = $DB->get_record('apply_item', array('id'=>$item->dependitem))) {
-                echo ' <span class="apply_depend">';
-                echo '('.$dependitem->label.'-&gt;'.$item->dependvalue.')';
-                echo '</span>';
+                $output .= ' <span class="apply_depend">';
+                $output .= '('.$dependitem->label.'-&gt;'.$item->dependvalue.')';
+                $output .= '</span>';
             }
         }
-        echo '</div>';
+        echo $output;
 
-        // 
-        $style = '';
-        $columns = 1;
-        $pos = 0;
-        if ($Table_in) {
-            $style   = $Table_params->style;
-            $columns = $Table_params->columns;
-            $pos     = $Table_params->position % $columns;
-            $Table_params->position = $pos + 1;
-        }
+        apply_open_table_item_tag();
+        if ($Table_in) echo $output;
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
         echo '<span class="apply_item_textarea">';
 
-        if ($Table_in) {
-            if ($pos==0) echo '<tr>';
-            echo '<td '.$style.'>';
-        }
+        //apply_open_table_item_tag();
         echo '<textarea name="'.$item->typ.'_'.$item->id.'" '.
                        'cols="'.$presentation[0].'" '.
                        'rows="'.$presentation[1].'">';
         echo '</textarea>';
+        //apply_close_table_item_tag();
 
-        if ($Table_in) {
-            echo '</td>';
-            if ($pos==$columns-1) echo '</tr>';
-        }
         echo '</span>';
         echo '</div>';
+        apply_close_table_item_tag();
     }
+
 
     /**     
      * print the item at the complete-page of apply
@@ -264,8 +255,10 @@ class apply_item_textarea extends apply_item_base
      * @param bool $highlightrequire
      * @return void
      */
-    public function print_item_submit($item, $value = '', $highlightrequire = false) {
+    public function print_item_submit($item, $value = '', $highlightrequire = false)
+    {
         global $OUTPUT;
+
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
@@ -277,9 +270,11 @@ class apply_item_textarea extends apply_item_base
         }
         $requiredmark = ($item->required == 1) ? $str_required_mark :'';
 
+        apply_open_table_item_tag();
+
         //print the question and label
         echo '<div class="apply_item_label_'.$align.$highlight.'">';
-            echo format_text($item->name . $requiredmark, true, false, false);
+        echo format_text($item->name . $requiredmark, true, false, false);
         echo '</div>';
 
         //print the presentation
@@ -292,7 +287,10 @@ class apply_item_textarea extends apply_item_base
         echo '</textarea>';
         echo '</span>';
         echo '</div>';
+
+        apply_close_table_item_tag();
     }
+
 
     /**     
      * print the item at the complete-page of apply

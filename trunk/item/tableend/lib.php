@@ -17,17 +17,21 @@
 defined('MOODLE_INTERNAL') OR die('not allowed');
 require_once($CFG->dirroot.'/mod/apply/item/apply_item_class.php');
 
-class apply_item_tableend extends apply_item_base {
+//
+class apply_item_tableend extends apply_item_base
+{
     protected $type = "tableend";
     private $commonparams;
     private $item_form;
     private $item;
 
+
     public function init() {
 
     }
 
-    public function build_editform($item, $apply, $cm) {
+    public function build_editform($item, $apply, $cm)
+    {
         global $DB, $CFG;
         require_once('tableend_form.php');
 
@@ -35,38 +39,26 @@ class apply_item_tableend extends apply_item_base {
         $position = $item->position;
         $lastposition = $DB->count_records('apply_item', array('apply_id'=>$apply->id));
         if ($position == -1) {
-            $i_formselect_last = $lastposition + 1;
+            $i_formselect_last  = $lastposition + 1;
             $i_formselect_value = $lastposition + 1;
             $item->position = $lastposition + 1;
         } else {
-            $i_formselect_last = $lastposition;
+            $i_formselect_last  = $lastposition;
             $i_formselect_value = $item->position;
         }
         //the elements for position dropdownlist
         $positionlist = array_slice(range(0, $i_formselect_last), 1, $i_formselect_last, true);
 
-        $item->presentation = empty($item->presentation) ? '' : $item->presentation;
-
-        $size_and_length = explode('|', $item->presentation);
-
-        if (isset($size_and_length[0]) AND $size_and_length[0] >= 5) {
-            $itemsize = $size_and_length[0];
-        } else {
-            $itemsize = 30;
-        }
-
-        $itemlength = isset($size_and_length[1]) ? $size_and_length[1] : 30;
-
-        $item->itemsize = $itemsize;
-        $item->itemmaxlength = $itemlength;
+        if (!property_exists($item, 'label')) $item->label = '';
+        if ($item->label=='') $item->label = 'table_end';
 
         //all items for dependitem
         $applyitems = apply_get_depend_candidates_for_item($apply, $item);
-        $commonparams = array('cmid' => $cm->id,
-                             'id' => isset($item->id) ? $item->id : null,
-                             'typ' => $item->typ,
-                             'items' => $applyitems,
-                             'apply_id' => $apply->id);
+        $commonparams = array('cmid'=>$cm->id,
+                             'id'=>isset($item->id) ? $item->id : null,
+                             'typ'=>$item->typ,
+                             'items'=>$applyitems,
+                             'apply_id'=>$apply->id);
 
         //build the form
         $customdata = array('item' => $item,
@@ -93,7 +85,8 @@ class apply_item_tableend extends apply_item_base {
         return false;
     }
 
-    public function save_item() {
+    public function save_item()
+    {
         global $DB;
 
         if (!$item = $this->item_form->get_data()) {
@@ -105,8 +98,10 @@ class apply_item_tableend extends apply_item_base {
             $item->position++;
         }
 
+        $item->presentation = '';
+
         $item->hasvalue = $this->get_hasvalue();
-        if (!$item->id) {
+        if (!$item->id) { 
             $item->id = $DB->insert_record('apply_item', $item);
         } else {
             $DB->update_record('apply_item', $item);
@@ -121,7 +116,7 @@ class apply_item_tableend extends apply_item_base {
         global $DB;
 
         $analysed_val = new stdClass();
-        $analysed_val->data = null;
+        $analysed_val->data = array();
         $analysed_val->name = $item->name;
 
         $values = apply_get_group_values($item, $groupid, $courseid);
@@ -140,6 +135,7 @@ class apply_item_tableend extends apply_item_base {
         if (!isset($value->value)) {
             return '';
         }
+
         return $value->value;
     }
 
@@ -150,9 +146,14 @@ class apply_item_tableend extends apply_item_base {
             echo $itemnr.'&nbsp;('.$item->label.') '.$item->name;
             echo '</th></tr>';
             foreach ($values as $value) {
-                echo '<tr><td colspan="2" valign="top" align="left">';
-                echo '-&nbsp;&nbsp;'.str_replace("\n", '<br />', $value->value);
-                echo '</td></tr>';
+                echo '<tr>';
+                echo '<td valign="top" align="left">';
+                echo '-&nbsp;&nbsp;';
+                echo '</td>';
+                echo '<td align="left" valign="top">';
+                echo str_replace("\n", '<br />', $value->value);
+                echo '</td>';
+                echo '</tr>';
             }
         }
     }
@@ -167,7 +168,9 @@ class apply_item_tableend extends apply_item_base {
         $worksheet->write_string($row_offset, 1, $item->name, $xls_formats->head2);
         $data = $analysed_item->data;
         if (is_array($data)) {
-            $worksheet->write_string($row_offset, 2, $data[0], $xls_formats->value_bold);
+            if (isset($data[0])) {
+                $worksheet->write_string($row_offset, 2, $data[0], $xls_formats->value_bold);
+            }
             $row_offset++;
             $sizeofdata = count($data);
             for ($i = 1; $i < $sizeofdata; $i++) {
@@ -179,6 +182,7 @@ class apply_item_tableend extends apply_item_base {
         return $row_offset;
     }
 
+
     /**     
      * print the item at the edit-page of apply
      *
@@ -186,18 +190,19 @@ class apply_item_tableend extends apply_item_base {
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item) {
-/*
+    public function print_item_preview($item)
+    {
         global $OUTPUT, $DB;
-        $align = right_to_left() ? 'right' : 'left';
-        $str_required_mark = '<span class="apply_required_mark">*</span>';
+        global $Table_in;
 
-        $presentation = explode("|", $item->presentation);
-        $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
-        //print the question and label
+        $align = right_to_left() ? 'right' : 'left';
         echo '<div class="apply_item_label_'.$align.'">';
         echo '('.$item->label.') ';
-        echo format_text($item->name.$requiredmark, true, false, false);
+        echo format_text($item->name, true, false, false);
+        //
+        //Warnning!! No table is nested. This close is ignored.
+        if (!$Table_in) echo '&nbsp;&nbsp;<span style="color:#c00000">['.get_string('no_table','apply').']</span>';
+
         if ($item->dependitem) {
             if ($dependitem = $DB->get_record('apply_item', array('id'=>$item->dependitem))) {
                 echo ' <span class="apply_depend">';
@@ -206,23 +211,10 @@ class apply_item_tableend extends apply_item_base {
             }
         }
         echo '</div>';
-
-        //print the presentation
-        echo '<div class="apply_item_presentation_'.$align.'">';
-        echo '<span class="apply_item_tableend">';
-        echo '<input type="text" '.
-                    'name="'.$item->typ.'_'.$item->id.'" '.
-                    'size="'.$presentation[0].'" '.
-                    'maxlength="'.$presentation[1].'" '.
-                    'value="" />';
-        echo '</span>';
-        echo '</div>';
-        if ($table_num>0) {
-            echo '</table>';
-            $table_num--;
-        }
-*/
+        //
+        apply_close_table_tag();
     }
+
 
     /**     
      * print the item at the complete-page of apply
@@ -233,35 +225,11 @@ class apply_item_tableend extends apply_item_base {
      * @param bool $highlightrequire
      * @return void
      */
-    public function print_item_submit($item, $value = '', $highlightrequire = false) {
-        global $OUTPUT;
-        $align = right_to_left() ? 'right' : 'left';
-        $str_required_mark = '<span class="apply_required_mark">*</span>';
-
-        $presentation = explode("|", $item->presentation);
-        if ($highlightrequire AND $item->required AND strval($value) == '') {
-            $highlight = ' missingrequire';
-        } else {
-            $highlight = '';
-        }
-        $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
-
-        //print the question and label
-        echo '<div class="apply_item_label_'.$align.$highlight.'">';
-        echo format_text($item->name.$requiredmark, true, false, false);
-        echo '</div>';
-
-        //print the presentation
-        echo '<div class="apply_item_presentation_'.$align.$highlight.'">';
-        echo '<span class="apply_item_tableend">';
-        echo '<input type="text" '.
-                    'name="'.$item->typ.'_'.$item->id.'" '.
-                    'size="'.$presentation[0].'" '.
-                    'maxlength="'.$presentation[1].'" '.
-                    'value="'.$value.'" />';
-        echo '</span>';
-        echo '</div>';
+    public function print_item_submit($item, $value = '', $highlightrequire = false)
+    {
+        apply_close_table_tag();
     }
+
 
     /**     
      * print the item at the complete-page of apply
@@ -271,34 +239,28 @@ class apply_item_tableend extends apply_item_base {
      * @param string $value
      * @return void
      */
-    public function print_item_show_value($item, $value = '')
-	{
+    public function print_item_show_value($item, $value = '') {
         global $OUTPUT;
         $align = right_to_left() ? 'right' : 'left';
-        $str_required_mark = '<span class="apply_required_mark">*</span>';
+        //$str_required_mark = '<span class="apply_required_mark">*</span>';
 
-        $presentation = explode("|", $item->presentation);
-        $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
+        $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
+        //$requiredmark = ($item->required == 1) ? $str_required_mark : '';
 
         //print the question and label
         echo '<div class="apply_item_label_'.$align.'">';
         //    echo '('.$item->label.') ';
-            echo format_text($item->name . $requiredmark, true, false, false);
+        //echo format_text($item->name . $requiredmark, true, false, false);
+        echo format_text($item->name, true, false, false);
         echo '</div>';
+
+        //print the presentation
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
-        echo $value ? $value : '&nbsp;';
+        echo $value ? str_replace("\n", '<br />', $value) : '&nbsp;';
         echo $OUTPUT->box_end();
     }
 
     public function check_value($value, $item) {
-        //if the item is not required, so the check is true if no value is given
-        if ((!isset($value) OR $value == '') AND $item->required != 1) {
-            return true;
-        }
-        if ($value == "") {
-            return false;
-        }
-        return true;
     }
 
     public function create_value($data) {
@@ -317,15 +279,14 @@ class apply_item_tableend extends apply_item_base {
     }
 
     public function get_presentation($data) {
-        return $data->itemsize . '|'. $data->itemmaxlength;
     }
 
     public function get_hasvalue() {
-        return 1;
+        return 0;
     }
 
     public function can_switch_require() {
-        return true;
+        return false;
     }
 
     public function value_type() {

@@ -68,6 +68,7 @@ class apply_item_tablestart extends apply_item_base
         if ($border_style=='') $border_style = 'none';
         if ($th_strings=='') $th_strings = '';
 
+        if (!property_exists($item, 'label')) $item->label = '';
         if ($item->label=='') $item->label = 'table_start';
         $item->columns = $columns;
         $item->border = $border;
@@ -213,14 +214,14 @@ class apply_item_tablestart extends apply_item_base
     public function print_item_preview($item)
     {
         global $OUTPUT, $DB;
-        global $Table_in, $Table_params;
+        global $Table_in;
 
         $align = right_to_left() ? 'right' : 'left';
         echo '<div class="apply_item_label_'.$align.'">';
         echo '('.$item->label.') ';
         echo format_text($item->name, true, false, false);
         //
-        //Warnning!! Tanle is nested. This table is ignored.
+        //Warnning!! Table is nested. This table is ignored.
         if ($Table_in) echo '&nbsp;&nbsp;<span style="color:#c00000">['.get_string('nested_table','apply').']</span>';
 
         if ($item->dependitem) {
@@ -232,40 +233,7 @@ class apply_item_tablestart extends apply_item_base
         }
         echo '</div>';
         //
-        if ($Table_in) return;
-
-        //
-        $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
-        $columns = $presentation[0];
-        $border  = $presentation[1];
-        $border_style= $presentation[2];
-        $th_strings  = $presentation[3];
-        $th_elements = explode("\n", $th_strings);
-        $table_border = $border + 1;
-
-        $style = '';
-        if ($border>=0) $style = 'border-width:'.$border.'px;';
-        if ($border_style!='') $style .= 'border-style:'.$border_style.';';
-        if ($style!='') $style = 'style="'.$style.'"';
-
-        $Table_in = true;
-        $Table_params->position = 0;
-        $Table_params->columns = $columns;
-        $Table_params->style = $style;
-
-        echo "\n";
-        echo '<table style="border:'.$table_border.'px;border-style:solid"><tr>';
-
-        // th
-        if ($th_strings!='') {
-            for ($col=0; $col<$columns; $col++) {
-                echo '<th '.$style.'>';
-                if (array_key_exists($col, $th_elements)) echo $th_elements[$col];
-                else echo ' ';
-                echo '</th>';
-            }
-            echo '</tr>';
-         }
+        apply_open_table_tag($item);
     }
 
 
@@ -281,9 +249,8 @@ class apply_item_tablestart extends apply_item_base
     public function print_item_submit($item, $value = '', $highlightrequire = false)
     {
         global $OUTPUT;
-        global $Table_in, $Table_params;
+        global $Table_in;
 
-print_r($item);
         if ($Table_in) return;
 
         $align = right_to_left() ? 'right' : 'left';
@@ -298,42 +265,12 @@ print_r($item);
         echo format_text($item->name, true, false, false);
         echo '</div>';
 
-        $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
-        $columns = $presentation[0];
-        $border  = $presentation[1];
-        $border_style= $presentation[2];
-        $th_strings  = $presentation[3];
-        $th_elements = explode("\n", $th_strings);
-        $table_border = $border + 1;
-
-        $style = '';
-        if ($border>=0) $style = 'border-width:'.$border.'px;';
-        if ($border_style!='') $style .= 'border-style:'.$border_style.';';
-        if ($style!='') $style = 'style="'.$style.'"';
-
-        $Table_in = true;
-        $Table_params->position = 0;
-        $Table_params->columns = $columns;
-        $Table_params->style = $style;
-
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.$highlight.'">';
         echo $value;
         echo '</div>';
 
-        echo "\n";
-        echo '<table style="border:'.$table_border.'px;border-style:solid"><tr>';
-
-        // th
-        if ($th_strings!='') {
-            for ($col=0; $col<$columns; $col++) {
-                echo '<th '.$style.'>';
-                if (array_key_exists($col, $th_elements)) echo $th_elements[$col];
-                else echo ' ';
-                echo '</th>';
-            }
-            echo '</tr>';
-         }
+        apply_open_table_tag($item);
     }
 
 
