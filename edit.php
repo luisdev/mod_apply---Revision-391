@@ -63,9 +63,6 @@ $context = context_module::instance($cm->id);
 require_login($course, true, $cm);
 require_capability('mod/apply:edititems', $context);
 
-//
-global $Table_in;
-
 //move up/down items
 if ($moveupitem) {
 	$item = $DB->get_record('apply_item', array('id'=>$moveupitem));
@@ -418,12 +415,8 @@ if ($do_show=='edit') {
 			}
 			echo '<div class="clearer">&nbsp;</div>';
 		}
-
         // close Table
-        if ($Table_in) {
-            echo '</table>';
-            $Table_in = false;
-        }
+        apply_close_table_tag();
 
 		echo $OUTPUT->box_end();
 	}

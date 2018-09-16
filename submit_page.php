@@ -1,7 +1,5 @@
 <?php
 
-global $Table_in;
-
 //print the items
 echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 {
@@ -79,10 +77,7 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 		}
 
         // close Table
-        if ($Table_in) {
-            echo '</table>';
-            $Table_in = false;
-        }
+        apply_close_table_tag();
 	}
 	echo $OUTPUT->box_end();
 

@@ -635,3 +635,93 @@ function apply_set_calendar_events($apply)
 	}
 }
 
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+//
+// Table function
+//
+
+function apply_open_table_tag($item)
+{
+    global $Table_in, $Table_params;
+  
+    if ($Table_in) return;
+
+    $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
+    $columns = $presentation[0];
+    $border  = $presentation[1];
+    $border_style= $presentation[2];
+    $th_strings  = $presentation[3];
+    $th_elements = explode("\n", $th_strings);
+    $table_border = $border + 1;
+
+    $style = '';
+    if ($border>=0) $style = 'border-width:'.$border.'px;';
+    if ($border_style!='') $style .= 'border-style:'.$border_style.';';
+    if ($style!='') $style = 'style="'.$style.'"';
+
+    $Table_in = true;
+    $Table_params->position = 0;
+    $Table_params->columns = $columns;
+    $Table_params->style = $style;
+
+    echo "\n";
+    echo '<table style="border:'.$table_border.'px;border-style:solid"><tr>';
+
+    // th
+    if ($th_strings!='') {
+        for ($col=0; $col<$columns; $col++) {
+            echo '<th '.$style.'>';
+            if (array_key_exists($col, $th_elements)) echo $th_elements[$col];
+            else echo ' ';
+            echo '</th>';
+        }
+        echo '</tr>';
+    }
+}
+
+
+function apply_close_table_tag()
+{
+    global $Table_in, $Table_params;
+
+    if (!$Table_in) return;
+
+    if ($Table_params->position!=0) {
+        for ($col=$Table_params->position; $col<$Table_params->columns; $col++) echo '<td '.$Table_params->style.'> </td>';
+        echo '</tr>';
+    }
+
+    echo '</table>';
+    $Table_in = false;
+}
+
+
+function apply_open_table_item_tag($header='')
+{
+    global $Table_in, $Table_params;
+
+    if (!$Table_in) return;
+
+    if ($Table_params->position==0) echo '<tr>';
+    echo '<td '.$Table_params->style.'>';
+    if ($header!='') echo $header;
+}
+
+
+function apply_close_table_item_tag()
+{
+    global $Table_in, $Table_params;
+
+    if (!$Table_in) return;
+
+    $Table_params->position++;
+    $Table_params->position %= $Table_params->columns;
+
+    echo '</td>';
+    if ($Table_params->position==0) echo '</tr>';
+}
+
+
