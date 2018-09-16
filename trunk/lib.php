@@ -26,6 +26,11 @@ defined('MOODLE_INTERNAL') || die;
 require_once($CFG->libdir.'/eventslib.php');
 require_once($CFG->dirroot.'/calendar/lib.php');
 
+// for Table
+global $Table_in, $Table_params;
+
+$Table_in = false;
+$Table_params = new stdClass();
 
 
 function apply_supports($feature)
@@ -543,14 +548,12 @@ function apply_move_item($moveitem, $pos)
 }
 
 
-function apply_print_item_preview($item, $table_num)
+function apply_print_item_preview($item)
 {
 	if ($item->typ=='pagebreak') return;
 
 	$itemobj = apply_get_item_class($item->typ);
-	$table_num = $itemobj->print_item_preview($item, $table_num);
-
-    return $table_num;
+	$itemobj->print_item_preview($item);
 }
 
 

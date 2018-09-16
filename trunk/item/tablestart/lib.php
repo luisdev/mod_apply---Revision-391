@@ -19,9 +19,6 @@ require_once($CFG->dirroot.'/mod/apply/item/apply_item_class.php');
 
 define('APPLY_TABLESTART_SEP', '>>>>>');
 
-global $Border_Styles;
-$Border_Styles = array('none', 'hidden', 'solid', 'double', 'dashed', 'dotted', 'groove', 'ridge', 'inset', 'outset');
-
 //
 class apply_item_tablestart extends apply_item_base
 {
@@ -44,20 +41,38 @@ class apply_item_tablestart extends apply_item_base
         $position = $item->position;
         $lastposition = $DB->count_records('apply_item', array('apply_id'=>$apply->id));
         if ($position == -1) {
-            $i_formselect_last = $lastposition + 1;
+            $i_formselect_last  = $lastposition + 1;
             $i_formselect_value = $lastposition + 1;
             $item->position = $lastposition + 1;
         } else {
-            $i_formselect_last = $lastposition;
+            $i_formselect_last  = $lastposition;
             $i_formselect_value = $item->position;
         }
         //the elements for position dropdownlist
         $positionlist = array_slice(range(0, $i_formselect_last), 1, $i_formselect_last, true);
 
-        //
-        //$item->culumns = empty($item->culumns) ? '' : $item->culumns;
-        //if ($item->culumns=='') $item->culumns = 3;
-        //else if ($item->culumns < 1) $item->culumns = 1;
+        $columns = '';
+        $border = '';
+        $border_style = '';
+        $th_strings = '';
+
+        $item->presentation = empty($item->presentation) ? '' : $item->presentation;
+        $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
+        $columns = $presentation[0];
+        if (array_key_exists(1, $presentation)) $border = $presentation[1];
+        if (array_key_exists(2, $presentation)) $border_style = $presentation[2];
+        if (array_key_exists(3, $presentation)) $th_strings = $presentation[3];
+
+        if ($columns==0 OR $columns=='') $columns = 3;
+        if ($border=='') $border = 0;
+        if ($border_style=='') $border_style = 'none';
+        if ($th_strings=='') $th_strings = '';
+
+        if ($item->label=='') $item->label = 'table_start';
+        $item->columns = $columns;
+        $item->border = $border;
+        $item->border_style = $border_style;
+        $item->th_strings = $th_strings;
 
         //all items for dependitem
         $applyitems = apply_get_depend_candidates_for_item($apply, $item);
@@ -92,7 +107,8 @@ class apply_item_tablestart extends apply_item_base
         return false;
     }
 
-    public function save_item() {
+    public function save_item()
+    {
         global $DB;
 
         if (!$item = $this->item_form->get_data()) {
@@ -186,6 +202,7 @@ class apply_item_tablestart extends apply_item_base
         return $row_offset;
     }
 
+
     /**     
      * print the item at the edit-page of apply
      *
@@ -193,15 +210,18 @@ class apply_item_tablestart extends apply_item_base
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item, $table_num)
+    public function print_item_preview($item)
     {
         global $OUTPUT, $DB;
-        global $Border_Styles;
+        global $Table_in, $Table_params;
 
         $align = right_to_left() ? 'right' : 'left';
         echo '<div class="apply_item_label_'.$align.'">';
         echo '('.$item->label.') ';
         echo format_text($item->name, true, false, false);
+        //
+        //Warnning!! Tanle is nested. This table is ignored.
+        if ($Table_in) echo '&nbsp;&nbsp;<span style="color:#c00000">['.get_string('nested_table','apply').']</span>';
 
         if ($item->dependitem) {
             if ($dependitem = $DB->get_record('apply_item', array('id'=>$item->dependitem))) {
@@ -211,41 +231,43 @@ class apply_item_tablestart extends apply_item_base
             }
         }
         echo '</div>';
+        //
+        if ($Table_in) return;
 
         //
         $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
-        $columns = $presentation[0] + 1;
+        $columns = $presentation[0];
         $border  = $presentation[1];
-        $border_style = $presentation[2];
-        $th_elements = explode("\n", $presentation[3]);
+        $border_style= $presentation[2];
+        $th_strings  = $presentation[3];
+        $th_elements = explode("\n", $th_strings);
+        $table_border = $border + 1;
 
         $style = '';
         if ($border>=0) $style = 'border-width:'.$border.'px;';
-        if ($border_style>=0) $style .= 'border-style:'.$Border_Styles[$border_style].';';
+        if ($border_style!='') $style .= 'border-style:'.$border_style.';';
         if ($style!='') $style = 'style="'.$style.'"';
 
+        $Table_in = true;
+        $Table_params->position = 0;
+        $Table_params->columns = $columns;
+        $Table_params->style = $style;
+
         echo "\n";
-        //echo '<table '.$style.' rules="all" ><tr>';
-        echo '<table '.$style.'><tr>';
+        echo '<table style="border:'.$table_border.'px;border-style:solid"><tr>';
 
-        for ($col=0; $col<$columns; $col++) {
-            echo '<th '.$style.'>';
-            if (array_key_exists($col, $th_elements)) echo $th_elements[$col];
-            else echo ' ';
-            echo '</th>';
-        }
-        echo '</tr>';
-        echo '<tr>';
-echo '<td '.$style.'>sssssssssssss</td>';
-echo '<td>2222222222222</td>';
-echo '<td>3333333333333</td>';
-
-        echo '</tr>';
-        echo '</table>';
-
-        $table_num++;
-        return $table_num;
+        // th
+        if ($th_strings!='') {
+            for ($col=0; $col<$columns; $col++) {
+                echo '<th '.$style.'>';
+                if (array_key_exists($col, $th_elements)) echo $th_elements[$col];
+                else echo ' ';
+                echo '</th>';
+            }
+            echo '</tr>';
+         }
     }
+
 
     /**     
      * print the item at the complete-page of apply
@@ -256,32 +278,64 @@ echo '<td>3333333333333</td>';
      * @param bool $highlightrequire
      * @return void
      */
-    public function print_item_submit($item, $value = '', $highlightrequire = false) {
+    public function print_item_submit($item, $value = '', $highlightrequire = false)
+    {
         global $OUTPUT;
-        $align = right_to_left() ? 'right' : 'left';
-        //$str_required_mark = '<span class="apply_required_mark">*</span>';
+        global $Table_in, $Table_params;
 
-        $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
-        if ($highlightrequire AND $item->required AND strval($value) == '') {
+print_r($item);
+        if ($Table_in) return;
+
+        $align = right_to_left() ? 'right' : 'left';
+
+        if ($highlightrequire AND strval($value) == '') {
             $highlight = ' missingrequire';
         } else {
             $highlight = '';
         }
-        //$requiredmark = ($item->required == 1) ? $str_required_mark :'';
-
         //print the question and label
         echo '<div class="apply_item_label_'.$align.$highlight.'">';
-        //echo format_text($item->name . $requiredmark, true, false, false);
         echo format_text($item->name, true, false, false);
         echo '</div>';
 
+        $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
+        $columns = $presentation[0];
+        $border  = $presentation[1];
+        $border_style= $presentation[2];
+        $th_strings  = $presentation[3];
+        $th_elements = explode("\n", $th_strings);
+        $table_border = $border + 1;
+
+        $style = '';
+        if ($border>=0) $style = 'border-width:'.$border.'px;';
+        if ($border_style!='') $style .= 'border-style:'.$border_style.';';
+        if ($style!='') $style = 'style="'.$style.'"';
+
+        $Table_in = true;
+        $Table_params->position = 0;
+        $Table_params->columns = $columns;
+        $Table_params->style = $style;
+
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.$highlight.'">';
-        echo '<span class="apply_item_tablestart">';
         echo $value;
-        echo '</span>';
         echo '</div>';
+
+        echo "\n";
+        echo '<table style="border:'.$table_border.'px;border-style:solid"><tr>';
+
+        // th
+        if ($th_strings!='') {
+            for ($col=0; $col<$columns; $col++) {
+                echo '<th '.$style.'>';
+                if (array_key_exists($col, $th_elements)) echo $th_elements[$col];
+                else echo ' ';
+                echo '</th>';
+            }
+            echo '</tr>';
+         }
     }
+
 
     /**     
      * print the item at the complete-page of apply
@@ -331,7 +385,7 @@ echo '<td>3333333333333</td>';
     }
 
     public function get_presentation($data) {
-        $presen = $data->columns.APPLY_TABLESTART_SEP.$data->border.APPLY_TABLESTART_SEP.$data->border_style.APPLY_TABLESTART_SEP.$data->th_elements;
+        $presen = $data->columns.APPLY_TABLESTART_SEP.$data->border.APPLY_TABLESTART_SEP.$data->border_style.APPLY_TABLESTART_SEP.$data->th_strings;
         return $presen;
     }
 

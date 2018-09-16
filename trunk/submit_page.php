@@ -1,5 +1,7 @@
 <?php
 
+global $Table_in;
+
 //print the items
 echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 {
@@ -75,6 +77,12 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 				break;
 			}
 		}
+
+        // close Table
+        if ($Table_in) {
+            echo '</table>';
+            $Table_in = false;
+        }
 	}
 	echo $OUTPUT->box_end();
 

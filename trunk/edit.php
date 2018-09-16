@@ -63,6 +63,8 @@ $context = context_module::instance($cm->id);
 require_login($course, true, $cm);
 require_capability('mod/apply:edititems', $context);
 
+//
+global $Table_in;
 
 //move up/down items
 if ($moveupitem) {
@@ -235,7 +237,6 @@ if ($do_show=='templates') {
 ///print the Item-Edit-section
 
 if ($do_show=='edit') {
-    $table_num = 0;
 	$add_item_form->display();
 
 	if (is_array($applyitems)) {
@@ -393,7 +394,7 @@ if ($do_show=='edit') {
 			echo '</span>';
 			echo $OUTPUT->box_end();
 			if ($applyitem->typ != 'pagebreak') {
-				$table_num = apply_print_item_preview($applyitem, $table_num);
+				apply_print_item_preview($applyitem);
 			}
 			else {
 				echo $OUTPUT->box_start('apply_pagebreak');
@@ -417,6 +418,13 @@ if ($do_show=='edit') {
 			}
 			echo '<div class="clearer">&nbsp;</div>';
 		}
+
+        // close Table
+        if ($Table_in) {
+            echo '</table>';
+            $Table_in = false;
+        }
+
 		echo $OUTPUT->box_end();
 	}
 	else {

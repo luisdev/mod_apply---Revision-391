@@ -56,13 +56,13 @@ class apply_item_textarea extends apply_item_base
         if (isset($width_and_height[0]) AND $width_and_height[0] >= 5) {
             $itemwidth = $width_and_height[0];
         } else {
-            $itemwidth = 30;
+            $itemwidth = 30;  // default
         }
 
         if (isset($width_and_height[1])) {
             $itemheight = $width_and_height[1];
         } else {
-            $itemheight = 5;
+            $itemheight = 5;  // default
         }
         $item->itemwidth = $itemwidth;
         $item->itemheight = $itemheight;
@@ -201,8 +201,9 @@ class apply_item_textarea extends apply_item_base
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item, $table_num) {
+    public function print_item_preview($item) {
         global $OUTPUT, $DB;
+        global $Table_in, $Table_params;
 
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
@@ -222,17 +223,36 @@ class apply_item_textarea extends apply_item_base
         }
         echo '</div>';
 
+        // 
+        $style = '';
+        $columns = 1;
+        $pos = 0;
+        if ($Table_in) {
+            $style   = $Table_params->style;
+            $columns = $Table_params->columns;
+            $pos     = $Table_params->position % $columns;
+            $Table_params->position = $pos + 1;
+        }
+
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
         echo '<span class="apply_item_textarea">';
+
+        if ($Table_in) {
+            if ($pos==0) echo '<tr>';
+            echo '<td '.$style.'>';
+        }
         echo '<textarea name="'.$item->typ.'_'.$item->id.'" '.
                        'cols="'.$presentation[0].'" '.
                        'rows="'.$presentation[1].'">';
         echo '</textarea>';
+
+        if ($Table_in) {
+            echo '</td>';
+            if ($pos==$columns-1) echo '</tr>';
+        }
         echo '</span>';
         echo '</div>';
-
-        return $table_num;
     }
 
     /**     

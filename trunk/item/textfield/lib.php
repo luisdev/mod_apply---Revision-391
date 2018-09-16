@@ -189,7 +189,7 @@ class apply_item_textfield extends apply_item_base {
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item, $table_num) {
+    public function print_item_preview($item) {
         global $OUTPUT, $DB;
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
@@ -219,8 +219,6 @@ class apply_item_textfield extends apply_item_base {
                     'value="" />';
         echo '</span>';
         echo '</div>';
-
-        return $table_num;
     }
 
     /**     

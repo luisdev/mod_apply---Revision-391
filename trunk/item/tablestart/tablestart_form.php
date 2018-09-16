@@ -23,7 +23,9 @@ class apply_tablestart_form extends apply_item_form
     public function definition()
 	{
 		global $OUTPUT;
-        global $Border_Styles;
+
+        $border_styles = array('none'=>'none', 'hidden'=>'hidden', 'solid'=>'solid', 'double'=>'double', 'dashed'=>'dashed', 
+                               'dotted'=>'dotted', 'groove'=>'groove', 'ridge'=>'ridge', 'inset'=>'inset', 'outset'=>'outset');
 
         $item = $this->_customdata['item'];
         $common = $this->_customdata['common'];
@@ -36,10 +38,10 @@ class apply_tablestart_form extends apply_item_form
         $mform->addElement('text', 'name',  get_string('item_name', 'apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE, 'maxlength'=>255));
         $mform->addElement('text', 'label', get_string('item_label','apply'), array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
 
-        $mform->addElement('select', 'columns', get_string('table_columns', 'apply').'&nbsp;', range(1, 20));
+        $mform->addElement('select', 'columns', get_string('table_columns', 'apply').'&nbsp;', array_slice(range(0, 20), 1, 20, true));
         $mform->addElement('select', 'border',  get_string('table_border',  'apply').'&nbsp;', range(0, 10));
-        $mform->addElement('select', 'border_style',  get_string('table_border_style', 'apply').'&nbsp;', $Border_Styles);
-        $mform->addElement('textarea', 'th_elements', get_string('table_th_elements', 'apply').'&nbsp;', 'wrap="virtual" rows="3" cols="20"');
+        $mform->addElement('select', 'border_style',  get_string('table_border_style', 'apply').'&nbsp;', $border_styles);
+        $mform->addElement('textarea', 'th_strings', get_string('table_th_strings', 'apply').'&nbsp;', 'wrap="virtual" rows="3" cols="20"');
 
         parent::definition();
         $this->set_data($item);
@@ -52,7 +54,7 @@ class apply_tablestart_form extends apply_item_form
         }
 
         // その他の値を格納する変数
-        $item->presentation = $item->columns.APPLY_TABLESTART_SEP.$item->border.APPLY_TABLESTART_SEP.$item->border_style.APPLY_TABLESTART_SEP.$item->th_elements;
+        $item->presentation = $item->columns.APPLY_TABLESTART_SEP.$item->border.APPLY_TABLESTART_SEP.$item->border_style.APPLY_TABLESTART_SEP.$item->th_strings;
         return $item;
     }
 }
