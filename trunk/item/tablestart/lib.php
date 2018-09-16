@@ -282,18 +282,14 @@ class apply_item_tablestart extends apply_item_base
      * @param string $value
      * @return void
      */
-    public function print_item_show_value($item, $value = '') {
+    public function print_item_show_value($item, $value = '') 
+    {
         global $OUTPUT;
-        $align = right_to_left() ? 'right' : 'left';
-        //$str_required_mark = '<span class="apply_required_mark">*</span>';
 
-        $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
-        //$requiredmark = ($item->required == 1) ? $str_required_mark : '';
+        $align = right_to_left() ? 'right' : 'left';
 
         //print the question and label
         echo '<div class="apply_item_label_'.$align.'">';
-        //    echo '('.$item->label.') ';
-        //echo format_text($item->name . $requiredmark, true, false, false);
         echo format_text($item->name, true, false, false);
         echo '</div>';
 
@@ -301,7 +297,10 @@ class apply_item_tablestart extends apply_item_base
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
         echo $value ? str_replace("\n", '<br />', $value) : '&nbsp;';
         echo $OUTPUT->box_end();
+
+        apply_open_table_tag($item);
     }
+
 
     public function check_value($value, $item) {
     }

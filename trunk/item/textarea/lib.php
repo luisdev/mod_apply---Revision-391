@@ -205,7 +205,6 @@ class apply_item_textarea extends apply_item_base
     public function print_item_preview($item)
     {
         global $OUTPUT, $DB;
-        global $Table_in;
 
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
@@ -226,22 +225,18 @@ class apply_item_textarea extends apply_item_base
         }
         echo $output;
 
-        apply_open_table_item_tag();
-        if ($Table_in) echo $output;
+        apply_open_table_item_tag($output);
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
         echo '<span class="apply_item_textarea">';
-
-        //apply_open_table_item_tag();
         echo '<textarea name="'.$item->typ.'_'.$item->id.'" '.
                        'cols="'.$presentation[0].'" '.
                        'rows="'.$presentation[1].'">';
         echo '</textarea>';
-        //apply_close_table_item_tag();
-
         echo '</span>';
         echo '</div>';
+        //
         apply_close_table_item_tag();
     }
 
@@ -300,25 +295,31 @@ class apply_item_textarea extends apply_item_base
      * @param string $value
      * @return void
      */
-    public function print_item_show_value($item, $value = '') {
+    public function print_item_show_value($item, $value = '')
+    {
         global $OUTPUT;
+
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
         $presentation = explode(APPLY_TEXTAREA_SEP, $item->presentation);
         $requiredmark = ($item->required == 1) ? $str_required_mark : '';
 
+        apply_open_table_item_tag();
+
         //print the question and label
         echo '<div class="apply_item_label_'.$align.'">';
-        //    echo '('.$item->label.') ';
-            echo format_text($item->name . $requiredmark, true, false, false);
+        echo format_text($item->name . $requiredmark, true, false, false);
         echo '</div>';
 
         //print the presentation
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
         echo $value ? str_replace("\n", '<br />', $value) : '&nbsp;';
         echo $OUTPUT->box_end();
+
+        apply_close_table_item_tag();
     }
+
 
     public function check_value($value, $item) {
         //if the item is not required, so the check is true if no value is given
