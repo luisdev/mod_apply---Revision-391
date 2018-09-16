@@ -186,7 +186,7 @@ class apply_item_tableend extends apply_item_base {
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item, $table_num) {
+    public function print_item_preview($item) {
 /*
         global $OUTPUT, $DB;
         $align = right_to_left() ? 'right' : 'left';
@@ -217,13 +217,11 @@ class apply_item_tableend extends apply_item_base {
                     'value="" />';
         echo '</span>';
         echo '</div>';
-*/
         if ($table_num>0) {
             echo '</table>';
             $table_num--;
         }
-
-        return $table_num;
+*/
     }
 
     /**     

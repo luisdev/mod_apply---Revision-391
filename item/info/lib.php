@@ -189,7 +189,7 @@ class apply_item_info extends apply_item_base {
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item, $table_num) {
+    public function print_item_preview($item) {
         global $USER, $DB, $OUTPUT;
 
         $align = right_to_left() ? 'right' : 'left';
@@ -255,8 +255,6 @@ class apply_item_info extends apply_item_base {
         echo '<input type="hidden" name="'.$item->typ.'_'.$item->id.'" value="'.$itemvalue.'" />';
         echo '<span class="apply_item_info">'.$itemshowvalue.'</span>';
         echo '</div>';
-
-        return $table_num;
     }
 
     /**
