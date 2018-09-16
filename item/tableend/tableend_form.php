@@ -32,27 +32,11 @@ class apply_tableend_form extends apply_item_form
         $mform =& $this->_form;
 
         $mform->addElement('header', 'general', get_string($this->type, 'apply'));
-        $mform->addElement('advcheckbox', 'required', get_string('required', 'apply'), '' , null , array(0, 1));
-        $mform->addElement('text', 'name', get_string('item_name', 'apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE, 'maxlength'=>255));
-
-        $label_help = ' '.$OUTPUT->help_icon('item_label','apply');
-        $mform->addElement('text', 'label', get_string('item_label', 'apply').$label_help, array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
-        $mform->addElement('select', 'itemsize', get_string('tableend_size', 'apply').'&nbsp;', array_slice(range(0, 255), 5, 255, true));
-        $mform->addElement('select', 'itemmaxlength', get_string('tableend_maxlength', 'apply').'&nbsp;', array_slice(range(0, 255), 5, 255, true));
+        $mform->addElement('text', 'name',  get_string('item_name', 'apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE, 'maxlength'=>255));
+        $mform->addElement('text', 'label', get_string('item_label','apply'), array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
 
         parent::definition();
         $this->set_data($item);
-
-    }
-
-    public function get_data()
-	{
-        if (!$item = parent::get_data()) {
-            return false;
-        }
-
-        $item->presentation = $item->itemsize . '|'. $item->itemmaxlength;
-        return $item;
     }
 }
 
