@@ -2,13 +2,13 @@
 
 // needs $req_own_data, $table, $courseid, $show_all, ....
 
-$title_ttl  = get_string('title_title',     'apply');
+$title_ttl  = get_string('title_title',  'apply');
 $title_date = get_string('date');
 $title_ver  = get_string('title_version','apply');
 $title_clss = get_string('title_class',  'apply');
-$title_ack  = get_string('title_ack',     'apply');
+$title_ack  = get_string('title_ack',    'apply');
 $title_exec = get_string('title_exec',   'apply');
-$title_chk  = get_string('title_check',     'apply');
+$title_chk  = get_string('title_check',  'apply');
 $title_bfr  = get_string('title_before', 'apply');
 
 //
@@ -95,7 +95,7 @@ else {
 //
 $table->set_attribute('cellspacing', '0');
 $table->set_attribute('id', 'show_entrytable');
-$table->set_attribute('class', 'generaltable generalbox');
+$table->set_attribute('class', 'generaltable generalbox boxaligncenter');
 /*
 $table->set_control_variables(array(
             TABLE_VAR_SORT  => 'ssort',
@@ -128,7 +128,7 @@ if ($silast) {
 }
 
 //
-$table->initialbars(true);
+//$table->initialbars(true);  // フィルター用イニシャルのテーブル
 
 if ($show_all) {
     $start_page = false;
