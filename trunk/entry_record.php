@@ -111,31 +111,31 @@ if ($student) {
         else {
             if ($submit->acked==APPLY_ACKED_ACCEPT) {
                 // Update
-                $change_label    = get_string('update_entry_button', 'apply');
+                $change_label   = get_string('update_entry_button', 'apply');
                 $change_params  = array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'courseid'=>$courseid, 'go_page'=>0);
                 $change_action  = 'submit.php';
                 // Cancel
-                $discard_label    = get_string('cancel_entry_button', 'apply');
-                $discard_params    = array('id'=>$id, 'submit_id'=>$submit->id);
-                $discard_action    = 'delete_submit.php';
+                $discard_label  = get_string('cancel_entry_button', 'apply');
+                $discard_params = array('id'=>$id, 'submit_id'=>$submit->id);
+                $discard_action = 'delete_submit.php';
             }
             else {
                 // Edit
-                $change_label    = get_string('edit_entry_button', 'apply');
-                $change_params  = array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'courseid'=>$courseid, 'go_page'=>0);
-                $change_action  = 'submit.php';
+                $change_label  = get_string('edit_entry_button', 'apply');
+                $change_params = array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'courseid'=>$courseid, 'go_page'=>0);
+                $change_action = 'submit.php';
                 
                 if ($submit->version<=1) {
                     // Delete
-                    $discard_label    = get_string('delete_entry_button', 'apply');
-                    $discard_params    = array('id'=>$id, 'submit_id'=>$submit->id);
-                    $discard_action    = 'delete_submit.php';
+                    $discard_label  = get_string('delete_entry_button', 'apply');
+                    $discard_params = array('id'=>$id, 'submit_id'=>$submit->id);
+                    $discard_action = 'delete_submit.php';
                 }
                 else {
                     // Rollback
-                    $discard_label    = get_string('rollback_entry_button', 'apply');
-                    $discard_params    = array('id'=>$id, 'submit_id'=>$submit->id);
-                    $discard_action    = 'delete_submit.php';
+                    $discard_label  = get_string('rollback_entry_button', 'apply');
+                    $discard_params = array('id'=>$id, 'submit_id'=>$submit->id);
+                    $discard_action = 'delete_submit.php';
                 }
             }
 
