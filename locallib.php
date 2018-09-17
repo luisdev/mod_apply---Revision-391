@@ -5,12 +5,12 @@ defined('MOODLE_INTERNAL') || die;
 
 //
 define('APPLY_SUBMIT_TITLE_TAG','submit_title');
-define('APPLY_SUBMIT_ONLY_TAG',    'submit_only');
-define('APPLY_ADMIN_REPLY_TAG',    'admin_reply');
-define('APPLY_ADMIN_ONLY_TAG',    'admin_only');
+define('APPLY_SUBMIT_ONLY_TAG', 'submit_only');
+define('APPLY_ADMIN_REPLY_TAG', 'admin_reply');
+define('APPLY_ADMIN_ONLY_TAG',  'admin_only');
 
 define('APPLY_CLASS_DRAFT',  0);
-define('APPLY_CLASS_NEW',     1);
+define('APPLY_CLASS_NEW',    1);
 define('APPLY_CLASS_UPDATE', 2);
 define('APPLY_CLASS_CANCEL', 3);
 
@@ -22,12 +22,12 @@ define('APPLY_EXECD_NOTYET', 0);
 define('APPLY_EXECD_DONE',   1);
 
 
-define('APPLY_DECIMAL',             '.');
+define('APPLY_DECIMAL',          '.');
 define('APPLY_THOUSAND',         ',');
-define('APPLY_RESETFORM_RESET',     'apply_reset_data_');
-define('APPLY_RESETFORM_DROP',     'apply_drop_apply_');
-define('APPLY_MAX_PIX_LENGTH',      400);
-define('APPLY_DEFAULT_PAGE_COUNT', 20);
+define('APPLY_RESETFORM_RESET',  'apply_reset_data_');
+define('APPLY_RESETFORM_DROP',   'apply_drop_apply_');
+define('APPLY_MAX_PIX_LENGTH',    400);
+define('APPLY_DEFAULT_PAGE_COUNT',20);
 
 
 //
@@ -74,7 +74,7 @@ function apply_create_pagebreak($apply_id)
     $item->name     = '';
     $item->presentation = '';
     $item->hasvalue = 0;
-    $item->typ         = 'pagebreak';
+    $item->typ      = 'pagebreak';
     $item->required = 0;
     $item->position = $lastposition + 1;
 
@@ -223,25 +223,25 @@ function apply_create_submit($apply_id, $user_id=0)
     if (!$user_id) $user_id = $USER->id;
 
     $submit = new stdClass();
-    $submit->apply_id        = $apply_id;
+    $submit->apply_id       = $apply_id;
     $submit->user_id        = $user_id;
     $submit->version        = 0;
-    $submit->title            = '';
-    $submit->class            = APPLY_CLASS_DRAFT;
-    $submit->acked            = APPLY_ACKED_NOTYET;
-    $submit->acked_user        = 0;
-    $submit->acked_time        = 0;
-    $submit->execd            = APPLY_EXECD_NOTYET;
-    $submit->execd_user        = 0;
-    $submit->execd_time        = 0;
+    $submit->title          = '';
+    $submit->class          = APPLY_CLASS_DRAFT;
+    $submit->acked          = APPLY_ACKED_NOTYET;
+    $submit->acked_user     = 0;
+    $submit->acked_time     = 0;
+    $submit->execd          = APPLY_EXECD_NOTYET;
+    $submit->execd_user     = 0;
+    $submit->execd_time     = 0;
     $submit->time_modified  = time();
 
-    $submit->otitle            = '';
-    $submit->oclass            = 0;
-    $submit->oacked            = 0;
+    $submit->otitle         = '';
+    $submit->oclass         = 0;
+    $submit->oacked         = 0;
     $submit->oacked_user    = 0;
     $submit->oacked_time    = 0;
-    $submit->oexecd            = 0;
+    $submit->oexecd         = 0;
     $submit->oexecd_user    = 0;
     $submit->oexecd_time    = 0;
 
@@ -337,21 +337,21 @@ function apply_rollback_submit($submit_id)
     $submit->version--;
 
     //
-    $submit->title          = $submit->otitle;
-    $submit->class          = $submit->oclass;
-    $submit->acked          = $submit->oacked;
+    $submit->title       = $submit->otitle;
+    $submit->class       = $submit->oclass;
+    $submit->acked       = $submit->oacked;
     $submit->acked_user  = $submit->oacked_user;
     $submit->acked_time  = $submit->oacked_time;
-    $submit->execd          = $submit->oexecd;
+    $submit->execd       = $submit->oexecd;
     $submit->execd_user  = $submit->oexecd_user;
     $submit->execd_time  = $submit->oexecd_user;
 
-    $submit->otitle         = '';
-    $submit->oclass         = 0;
-    $submit->oacked         = 0;
+    $submit->otitle      = '';
+    $submit->oclass      = 0;
+    $submit->oacked      = 0;
     $submit->oacked_user = 0;
     $submit->oacked_time = 0;
-    $submit->oexecd         = 0;
+    $submit->oexecd      = 0;
     $submit->oexecd_user = 0;
     $submit->oexecd_user = 0;
     $submit->time_modified = time();
@@ -377,20 +377,20 @@ function apply_cancel_submit($submit_id)
     // Backup
     $submit->otitle      = $submit->title;
     $submit->oclass      = $submit->class;
-    $submit->oacked         = $submit->acked;
+    $submit->oacked      = $submit->acked;
     $submit->oacked_user = $submit->acked_user;
     $submit->oacked_time = $submit->acked_time;
-    $submit->oexecd         = $submit->execd;
+    $submit->oexecd      = $submit->execd;
     $submit->oexecd_user = $submit->execd_user;
     $submit->oexecd_time = $submit->execd_time;
 
     //
     $submit->version++;
-    $submit->class          = APPLY_CLASS_CANCEL;
-    $submit->acked          = APPLY_ACKED_NOTYET;
-    $submit->acked_user     = 0;
-    $submit->acked_time     = 0;
-    $submit->execd           = APPLY_EXECD_NOTYET;
+    $submit->class       = APPLY_CLASS_CANCEL;
+    $submit->acked       = APPLY_ACKED_NOTYET;
+    $submit->acked_user  = 0;
+    $submit->acked_time  = 0;
+    $submit->execd       = APPLY_EXECD_NOTYET;
     $submit->execd_user  = 0;
     $submit->execd_time  = 0;
     $submit->time_modified = time();
@@ -419,10 +419,10 @@ function apply_exec_submit($submit_id)
     //
     $submit->otitle      = $submit->title;
     $submit->oclass      = $submit->class;
-    $submit->oacked         = $submit->acked;
+    $submit->oacked      = $submit->acked;
     $submit->oacked_user = $submit->acked_user;
     $submit->oacked_time = $submit->acked_time;
-    $submit->oexecd         = $submit->execd;
+    $submit->oexecd      = $submit->execd;
     $submit->oexecd_user = $submit->execd_user;
     $submit->oexecd_time = $submit->execd_time;
 
@@ -430,11 +430,11 @@ function apply_exec_submit($submit_id)
     if      ($submit->version==1) $submit->class = APPLY_CLASS_NEW;
     else if ($submit->version >1) $submit->class = APPLY_CLASS_UPDATE;
     //
-    $submit->title          = $title;
-    $submit->acked          = APPLY_ACKED_NOTYET;
-    $submit->acked_user     = 0;
-    $submit->acked_time     = 0;
-    $submit->execd           = APPLY_EXECD_NOTYET;
+    $submit->title       = $title;
+    $submit->acked       = APPLY_ACKED_NOTYET;
+    $submit->acked_user  = 0;
+    $submit->acked_time  = 0;
+    $submit->execd       = APPLY_EXECD_NOTYET;
     $submit->execd_user  = 0;
     $submit->execd_time  = 0;
     $submit->time_modified = time();
@@ -616,9 +616,9 @@ function apply_update_draft_values($submit)
         //
         $newvalue = new stdClass();
         $newvalue->submit_id = $submit->id;
-        $newvalue->item_id      = $item->id;
-        $newvalue->version      = 0;
-        $newvalue->value      = $itemobj->create_value($itemvalue);
+        $newvalue->item_id   = $item->id;
+        $newvalue->version   = 0;
+        $newvalue->value     = $itemobj->create_value($itemvalue);
         $newvalue->time_modified = $time_modified;
 
         $exist = false;
@@ -693,9 +693,9 @@ function apply_update_admin_values($submit)
             //
             $newvalue = new stdClass();
             $newvalue->submit_id = $submit->id;
-            $newvalue->item_id      = $item->id;
-            $newvalue->version      = $submit->version;
-            $newvalue->value      = $itemobj->create_value($itemvalue);
+            $newvalue->item_id   = $item->id;
+            $newvalue->version   = $submit->version;
+            $newvalue->value     = $itemobj->create_value($itemvalue);
             $newvalue->time_modified = $time_modified;
 
             $exist = false;
@@ -924,12 +924,12 @@ function apply_send_email($cm, $apply, $course, $user_id)
 
                 $eventdata = new stdClass();
                 $eventdata->name              = 'submission';
-                $eventdata->component          = 'mod_apply';
+                $eventdata->component         = 'mod_apply';
                 $eventdata->userfrom          = $user;
-                $eventdata->userto              = $teacher;
-                $eventdata->subject              = $postsubject;
-                $eventdata->fullmessage          = $posttext;
-                $eventdata->fullmessagehtml      = $posthtml;
+                $eventdata->userto            = $teacher;
+                $eventdata->subject           = $postsubject;
+                $eventdata->fullmessage       = $posttext;
+                $eventdata->fullmessagehtml   = $posthtml;
                 $eventdata->fullmessageformat = FORMAT_PLAIN;
                 $eventdata->smallmessage      = '';
                 $eventdata->notification      = 1;
@@ -1024,12 +1024,12 @@ function apply_send_email_user($cm, $apply, $course, $submit, $accept, $execd, $
 
     $eventdata = new stdClass();
     $eventdata->name              = 'processed';
-    $eventdata->component          = 'mod_apply';
+    $eventdata->component         = 'mod_apply';
     $eventdata->userfrom          = $fuser;
-    $eventdata->userto              = $user;
-    $eventdata->subject              = $postsubject;
-    $eventdata->fullmessage          = $posttext;
-    $eventdata->fullmessagehtml      = $posthtml;
+    $eventdata->userto            = $user;
+    $eventdata->subject           = $postsubject;
+    $eventdata->fullmessage       = $posttext;
+    $eventdata->fullmessagehtml   = $posthtml;
     $eventdata->fullmessageformat = FORMAT_PLAIN;
     $eventdata->smallmessage      = '';
     $eventdata->notification      = 1;
@@ -1453,7 +1453,7 @@ function apply_get_event($cm, $action, $params='', $info='')
         $event->courseid= $cm->course;
         $event->name    = 'apply';
         $event->action  = $action;
-        $event->url         = $file.$param_str;
+        $event->url     = $file.$param_str;
         $event->info    = $info;
     }
    

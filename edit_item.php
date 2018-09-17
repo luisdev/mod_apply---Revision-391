@@ -28,9 +28,9 @@ require_once(dirname(__FILE__).'/jbxl/jbxl_moodle_tools.php');
 
 apply_init_session();
 
-$cmid 	  = required_param('cmid', PARAM_INT);
-$typ 	  = optional_param('typ', false, PARAM_ALPHAEXT);
-$id 	  = optional_param('id',  false, PARAM_INT);
+$cmid     = required_param('cmid', PARAM_INT);
+$typ      = optional_param('typ', false, PARAM_ALPHAEXT);
+$id       = optional_param('id',  false, PARAM_INT);
 $action   = optional_param('action', false, PARAM_ALPHAEXT);
 $courseid = optional_param('courseid', false, PARAM_INT);
 
