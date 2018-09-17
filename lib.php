@@ -737,10 +737,12 @@ function apply_close_table_item_tag()
 }
 
 
-function apply_print_line_space()
+function apply_print_line_space($size='')
 {
     global $Table_in;
 
-    if (!$Table_in) echo '<div style="padding-bottom:15px"></div>';
+    $size = intval($size);
+    if ($size<=0) $size = '15';
+    if (!$Table_in) echo '<div style="padding-bottom:'.$size.'px"></div>';
 }
 

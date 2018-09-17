@@ -40,6 +40,7 @@ foreach ($items as $item) {
 
 	if ($item->typ!='pagebreak' and $item->label!=APPLY_SUBMIT_ONLY_TAG and $item->label!=APPLY_ADMIN_ONLY_TAG) {
 		echo $OUTPUT->box_start('apply_print_item');
+        apply_print_line_space();
 		if (isset($value->value)) {
 			apply_print_item_show_value($item, $value->value);
 		}
@@ -51,6 +52,7 @@ foreach ($items as $item) {
 	//
 	else if ($item->label==APPLY_ADMIN_ONLY_TAG and has_capability('mod/apply:viewreports', $context)) {
 		echo $OUTPUT->box_start('apply_print_item');
+        apply_print_line_space();
 		if (isset($value->value)) {
 			apply_print_item_show_value($item, $value->value);
 		}
