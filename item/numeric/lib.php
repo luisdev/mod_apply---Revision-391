@@ -223,6 +223,7 @@ class apply_item_numeric extends apply_item_base {
         return $row_offset;
     }
 
+
     /**
      * print the item at the edit-page of apply
      *
@@ -230,7 +231,8 @@ class apply_item_numeric extends apply_item_base {
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item) {
+    public function print_item_preview($item)
+    {
         global $OUTPUT, $DB;
 
         $align = right_to_left() ? 'right' : 'left';
@@ -255,36 +257,42 @@ class apply_item_numeric extends apply_item_base {
 
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
         //print the question and label
-        echo '<div class="apply_item_label_'.$align.'">';
-        echo '('.$item->label.') ';
-        echo format_text($item->name . $requiredmark, true, false, false);
+
+        $output  = '';
+        $output .= '<div class="apply_item_label_'.$align.'">';
+        $output .= '('.$item->label.') ';
+        $output .= format_text($item->name . $requiredmark, true, false, false);
         if ($item->dependitem) {
             $params = array('id'=>$item->dependitem);
             if ($dependitem = $DB->get_record('apply_item', $params)) {
-                echo ' <span class="apply_depend">';
-                echo '('.$dependitem->label.'-&gt;'.$item->dependvalue.')';
-                echo '</span>';
+                $output .= ' <span class="apply_depend">';
+                $output .= '('.$dependitem->label.'-&gt;'.$item->dependvalue.')';
+                $output .= '</span>';
             }
         }
-        echo '<span class="apply_item_numinfo">';
+
+        $output .= '<span class="apply_item_numinfo">';
         switch(true) {
             case ($range_from === '-' AND is_numeric($range_to)):
-                echo ' ('.get_string('maximal', 'apply').
-                        ': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
+                $output .= ' ('.get_string('maximal', 'apply').
+                              ': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
                 break;
             case (is_numeric($range_from) AND $range_to === '-'):
-                echo ' ('.get_string('minimal', 'apply').
-                        ': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).')';
+                $output .= ' ('.get_string('minimal', 'apply').
+                              ': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).')';
                 break;
             case ($range_from === '-' AND $range_to === '-'):
                 break;
             default:
-                echo ' ('.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).
-                        ' - '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
+                $output .= ' ('.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).
+                              ' - '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
                 break;
         }
-        echo '</span>';
-        echo '</div>';
+        $output .= '</span>';
+        $output .= '</div>';
+        echo $output;
+
+        apply__table_item_tag($output);
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
@@ -297,7 +305,10 @@ class apply_item_numeric extends apply_item_base {
 
         echo '</span>';
         echo '</div>';
+
+        apply_close_table_item_tag();
     }
+
 
     /**
      * print the item at the complete-page of apply
@@ -308,7 +319,8 @@ class apply_item_numeric extends apply_item_base {
      * @param bool $highlightrequire
      * @return void
      */
-    public function print_item_submit($item, $value = '', $highlightrequire = false) {
+    public function print_item_submit($item, $value = '', $highlightrequire = false)
+    {
         global $OUTPUT;
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
@@ -336,6 +348,8 @@ class apply_item_numeric extends apply_item_base {
             $highlight = '';
         }
         $requiredmark = ($item->required == 1) ? $str_required_mark : '';
+
+        apply_open_table_item_tag();
 
         //print the question and label
         echo '<div class="apply_item_label_'.$align.$highlight.'">';
@@ -371,7 +385,10 @@ class apply_item_numeric extends apply_item_base {
 
         echo '</span>';
         echo '</div>';
+
+        apply_close_table_item_tag();
     }
+
 
     /**
      * print the item at the complete-page of apply
@@ -381,7 +398,8 @@ class apply_item_numeric extends apply_item_base {
      * @param string $value
      * @return void
      */
-    public function print_item_show_value($item, $value = '') {
+    public function print_item_show_value($item, $value = '')
+    {
         global $OUTPUT;
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
@@ -401,6 +419,8 @@ class apply_item_numeric extends apply_item_base {
             $range_to = 0;
         }
         $requiredmark = ($item->required == 1) ? $str_required_mark : '';
+
+        apply_open_table_item_tag();
 
         //print the question and label
         echo '<div class="apply_item_label_'.$align.'">';
@@ -435,7 +455,10 @@ class apply_item_numeric extends apply_item_base {
         echo $str_num_value;
         echo $OUTPUT->box_end();
         echo '</div>';
+
+        apply_close_table_item_tag();
     }
+
 
     public function check_value($value, $item) {
         $value = str_replace($this->sep_dec, APPLY_DECIMAL, $value);

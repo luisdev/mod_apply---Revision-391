@@ -27,11 +27,13 @@ class apply_item_textarea extends apply_item_base
     private $item_form;
     private $item;
 
-    public function init() {
 
+    public function init() {
     }
 
-    public function build_editform($item, $apply, $cm) {
+
+    public function build_editform($item, $apply, $cm)
+    {
         global $DB, $CFG;
         require_once('textarea_form.php');
 
@@ -84,23 +86,31 @@ class apply_item_textarea extends apply_item_base
         $this->item_form = new apply_textarea_form('edit_item.php', $customdata);
     }
 
+
     //this function only can used after the call of build_editform()
-    public function show_editform() {
+    public function show_editform()
+    {
         $this->item_form->display();
     }
 
-    public function is_cancelled() {
+
+    public function is_cancelled()
+    {
         return $this->item_form->is_cancelled();
     }
 
-    public function get_data() {
+
+    public function get_data()
+    {
         if ($this->item = $this->item_form->get_data()) {
             return true;
         }
         return false;
     }
 
-    public function save_item() {
+
+    public function save_item() 
+    {
         global $DB;
 
         if (!$item = $this->item_form->get_data()) {
@@ -124,7 +134,8 @@ class apply_item_textarea extends apply_item_base
 
 
     //liefert eine Struktur ->name, ->data = array(mit Antworten)
-    public function get_analysed($item, $groupid = false, $courseid = false) {
+    public function get_analysed($item, $groupid = false, $courseid = false)
+    {
         global $DB;
 
         $analysed_val = new stdClass();
@@ -142,8 +153,9 @@ class apply_item_textarea extends apply_item_base
         return $analysed_val;
     }
 
-    public function get_printval($item, $value) {
 
+    public function get_printval($item, $value)
+    {
         if (!isset($value->value)) {
             return '';
         }
@@ -151,7 +163,9 @@ class apply_item_textarea extends apply_item_base
         return $value->value;
     }
 
-    public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false) {
+
+    public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false)
+    {
         $values = apply_get_group_values($item, $groupid, $courseid);
         if ($values) {
             echo '<tr><th colspan="2" align="left">';
@@ -170,10 +184,11 @@ class apply_item_textarea extends apply_item_base
         }
     }
 
+
     public function excelprint_item(&$worksheet, $row_offset,
                              $xls_formats, $item,
-                             $groupid, $courseid = false) {
-
+                             $groupid, $courseid = false)
+    {
         $analysed_item = $this->get_analysed($item, $groupid, $courseid);
 
         $worksheet->write_string($row_offset, 0, $item->label, $xls_formats->head2);
@@ -223,6 +238,7 @@ class apply_item_textarea extends apply_item_base
                 $output .= '</span>';
             }
         }
+        $output .= '</div>';
         echo $output;
 
         apply_open_table_item_tag($output);
@@ -321,7 +337,8 @@ class apply_item_textarea extends apply_item_base
     }
 
 
-    public function check_value($value, $item) {
+    public function check_value($value, $item)
+    {
         //if the item is not required, so the check is true if no value is given
         if ((!isset($value) OR $value == '') AND $item->required != 1) {
             return true;
@@ -332,38 +349,52 @@ class apply_item_textarea extends apply_item_base
         return true;
     }
 
-    public function create_value($data) {
+
+    public function create_value($data)
+    {
         $data = s($data);
         return $data;
     }
 
+
     //compares the dbvalue with the dependvalue
     //dbvalue is the value put in by the user
     //dependvalue is the value that is compared
-    public function compare_value($item, $dbvalue, $dependvalue) {
+    public function compare_value($item, $dbvalue, $dependvalue)
+    {
         if ($dbvalue == $dependvalue) {
             return true;
         }
         return false;
     }
 
-    public function get_presentation($data) {
+
+    public function get_presentation($data)
+    {
         return $data->itemwidth.APPLY_TEXTAREA_SEP.$data->itemheight;
     }
 
-    public function get_hasvalue() {
+
+    public function get_hasvalue()
+    {
         return 1;
     }
 
-    public function can_switch_require() {
+
+    public function can_switch_require()
+    {
         return true;
     }
 
-    public function value_type() {
+
+    public function value_type()
+    {
         return PARAM_RAW;
     }
 
-    public function clean_input_value($value) {
+
+    public function clean_input_value($value)
+    {
         return s($value);
     }
 }

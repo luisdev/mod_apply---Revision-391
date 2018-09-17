@@ -189,7 +189,8 @@ class apply_item_info extends apply_item_base {
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item) {
+    public function print_item_preview($item)
+    {
         global $USER, $DB, $OUTPUT;
 
         $align = right_to_left() ? 'right' : 'left';
@@ -239,23 +240,31 @@ class apply_item_info extends apply_item_base {
         }
 
         //print the question and label
-        echo '<div class="apply_item_label_'.$align.'">';
-        echo '('.$item->label.') ';
-        echo format_text($item->name.$requiredmark, true, false, false);
+        $output  = '';
+        $output .= '<div class="apply_item_label_'.$align.'">';
+        $output .= '('.$item->label.') ';
+        $output .= format_text($item->name.$requiredmark, true, false, false);
         if ($item->dependitem) {
             if ($dependitem = $DB->get_record('apply_item', array('id'=>$item->dependitem))) {
-                echo ' <span class="apply_depend">';
-                echo '('.$dependitem->label.'-&gt;'.$item->dependvalue.')';
-                echo '</span>';
+                $output .= ' <span class="apply_depend">';
+                $output .= '('.$dependitem->label.'-&gt;'.$item->dependvalue.')';
+                $output .= '</span>';
             }
         }
-        echo '</div>';
+        $output .= '</div>';
+        echo $output;
+
+        apply_open_table_item_tag($output);
+
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
         echo '<input type="hidden" name="'.$item->typ.'_'.$item->id.'" value="'.$itemvalue.'" />';
         echo '<span class="apply_item_info">'.$itemshowvalue.'</span>';
         echo '</div>';
+
+        apply_close_table_item_tag();
     }
+
 
     /**
      * print the item at the complete-page of apply
@@ -266,8 +275,10 @@ class apply_item_info extends apply_item_base {
      * @param bool $highlightrequire
      * @return void
      */
-    public function print_item_submit($item, $value = '', $highlightrequire = false) {
+    public function print_item_submit($item, $value = '', $highlightrequire = false)
+    {
         global $USER, $DB, $OUTPUT;
+
         $align = right_to_left() ? 'right' : 'left';
 
         $presentation = $item->presentation;
@@ -320,9 +331,11 @@ class apply_item_info extends apply_item_base {
                 break;
         }
 
+        apply_open_table_item_tag();
+
         //print the question and label
         echo '<div class="apply_item_label_'.$align.$highlight.'">';
-            echo format_text($item->name.$requiredmark, true, false, false);
+        echo format_text($item->name.$requiredmark, true, false, false);
         echo '</div>';
 
         //print the presentation
@@ -330,7 +343,10 @@ class apply_item_info extends apply_item_base {
         echo '<input type="hidden" name="'.$item->typ.'_'.$item->id.'" value="'.$itemvalue.'" />';
         echo '<span class="apply_item_info">'.$itemshowvalue.'</span>';
         echo '</div>';
+
+        apply_close_table_item_tag();
     }
+
 
     /**
      * print the item at the complete-page of apply
@@ -340,7 +356,8 @@ class apply_item_info extends apply_item_base {
      * @param string $value
      * @return void
      */
-    public function print_item_show_value($item, $value = '') {
+    public function print_item_show_value($item, $value = '')
+    {
         global $USER, $DB, $OUTPUT;
         $align = right_to_left() ? 'right' : 'left';
 
@@ -351,17 +368,22 @@ class apply_item_info extends apply_item_base {
             $value = $value ? userdate($value) : '&nbsp;';
         }
 
+        apply_open_table_item_tag();
+
         //print the question and label
         echo '<div class="apply_item_label_'.$align.'">';
-        //    echo '('.$item->label.') ';
-            echo format_text($item->name . $requiredmark, true, false, false);
+        //echo '('.$item->label.') ';
+        echo format_text($item->name . $requiredmark, true, false, false);
         echo '</div>';
 
         //print the presentation
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
         echo $value;
         echo $OUTPUT->box_end();
+
+        apply_close_table_item_tag();
     }
+
 
     public function check_value($value, $item) {
         return true;
