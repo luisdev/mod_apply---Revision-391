@@ -668,7 +668,7 @@ function apply_open_table_tag($item)
     $Table_params->style = $style;
 
     echo "\n";
-    echo '<table style="border:'.$table_border.'px;border-style:solid"><tr>';
+    echo '<table style="border:'.$table_border.'px;border-style:solid;"><tr>';
 
     // th
     if ($th_strings!='') {

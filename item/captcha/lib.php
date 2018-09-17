@@ -17,18 +17,22 @@
 defined('MOODLE_INTERNAL') OR die('not allowed');
 require_once($CFG->dirroot.'/mod/apply/item/apply_item_class.php');
 
-class apply_item_captcha extends apply_item_base {
+class apply_item_captcha extends apply_item_base
+{
     protected $type = "captcha";
     private $commonparams;
     private $item_form = false;
     private $item = false;
     private $apply = false;
 
-    public function init() {
 
+    public function init()
+    {
     }
 
-    public function build_editform($item, $apply, $cm) {
+
+    public function build_editform($item, $apply, $cm)
+    {
         global $DB;
 
         $editurl = new moodle_url('/mod/apply/edit.php', array('id'=>$cm->id));
@@ -67,18 +71,26 @@ class apply_item_captcha extends apply_item_base {
         $this->item->options = '';
     }
 
-    public function show_editform() {
+
+    public function show_editform()
+    {
     }
 
-    public function is_cancelled() {
+
+    public function is_cancelled()
+    {
         return false;
     }
 
-    public function get_data() {
+
+    public function get_data()
+    {
         return true;
     }
 
-    public function save_item() {
+
+    public function save_item()
+    {
         global $DB;
 
         if (!$this->item) {
@@ -94,24 +106,33 @@ class apply_item_captcha extends apply_item_base {
         return $DB->get_record('apply_item', array('id'=>$this->item->id));
     }
 
+
     //liefert eine Struktur ->name, ->data = array(mit Antworten)
-    public function get_analysed($item, $groupid = false, $courseid = false) {
+    public function get_analysed($item, $groupid = false, $courseid = false)
+    {
         return null;
     }
 
-    public function get_printval($item, $value) {
+
+    public function get_printval($item, $value)
+    {
         return '';
     }
 
-    public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false) {
+
+    public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false)
+    {
         return $itemnr;
     }
 
+
     public function excelprint_item(&$worksheet, $row_offset,
                              $xls_formats, $item,
-                             $groupid, $courseid = false) {
+                             $groupid, $courseid = false)
+    {
         return $row_offset;
     }
+
 
     /**
      * print the item at the edit-page of apply
@@ -120,11 +141,11 @@ class apply_item_captcha extends apply_item_base {
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item) {
+    public function print_item_preview($item)
+    {
         global $DB;
 
         $align = right_to_left() ? 'right' : 'left';
-
         $cmid = 0;
         $apply_id = $item->apply_id;
         if ($apply_id>0) {
@@ -134,15 +155,20 @@ class apply_item_captcha extends apply_item_base {
                 $cmid = $cm->id;
             }
         }
-
         $requiredmark = '<span class="apply_required_mark">*</span>';
 
         //print the question and label
-        echo '<div class="apply_item_label_'.$align.'">';
-        echo '('.$item->label.') ';
-        echo format_text($item->name.$requiredmark, true, false, false);
-        echo '</div>';
+        $output  = '';
+        $output .= '<div class="apply_item_label_'.$align.'">';
+        $output .= '('.$item->label.') ';
+        $output .= format_text($item->name.$requiredmark, true, false, false);
+        $output .= '</div>';
+        echo $output;
+
+        apply_open_table_item_tag($output);
+        apply_close_table_item_tag();
     }
+
 
     /**
      * print the item at the complete-page of apply
@@ -153,12 +179,21 @@ class apply_item_captcha extends apply_item_base {
      * @param bool $highlightrequire
      * @return void
      */
-    public function print_item_submit($item, $value = '', $highlightrequire = false) {
+    public function print_item_submit($item, $value = '', $highlightrequire = false)
+    {
         global $SESSION, $CFG, $DB, $USER;
+        global $Table_in;
+
         require_once($CFG->libdir.'/recaptchalib.php');
 
         $align = right_to_left() ? 'right' : 'left';
+        if ($highlightrequire AND !$this->check_value($value, $item)) {
+            $highlight = 'missingrequire';
+        } else {
+            $highlight = '';
+        }
 
+/*
         $cmid = 0;
         $apply_id = $item->apply_id;
         if ($apply_id>0) {
@@ -168,33 +203,22 @@ class apply_item_captcha extends apply_item_base {
                 $cmid = $cm->id;
             }
         }
+*/
 
-        //check if an false value even the value is not required
-        if ($highlightrequire AND !$this->check_value($value, $item)) {
-            $falsevalue = true;
-        } else {
-            $falsevalue = false;
-        }
-
-        if ($falsevalue) {
-            $highlight = 'missingrequire';
-        } else {
-            $highlight = '';
-        }
-        $requiredmark = '<span class="apply_required_mark">*</span>';
-
-        if (isset($SESSION->apply->captchacheck) AND
-                $SESSION->apply->captchacheck == $USER->sesskey AND
-                $value == $USER->sesskey) {
-
-            //print the question and label
-            echo '<div class="apply_item_label_'.$align.'">';
-            echo '('.$item->label.') ';
-            echo format_text($item->name.$requiredmark, true, false, false);
-            $inputname = 'name="'.$item->typ.'_'.$item->id.'"';
-            echo '<input type="hidden" value="'.$USER->sesskey.'" '.$inputname.' />';
-            echo '</div>';
-            return;
+        if (!$Table_in) {
+            $requiredmark = '<span class="apply_required_mark">*</span>';
+            if (isset($SESSION->apply->captchacheck) AND
+                    $SESSION->apply->captchacheck == $USER->sesskey AND
+                    $value == $USER->sesskey) {
+                //print the question and label
+                echo '<div class="apply_item_label_'.$align.'">';
+                echo '('.$item->label.') ';
+                echo format_text($item->name.$requiredmark, true, false, false);
+                $inputname = 'name="'.$item->typ.'_'.$item->id.'"';
+                echo '<input type="hidden" value="'.$USER->sesskey.'" '.$inputname.' />';
+                echo '</div>';
+                return;
+            }
         }
 
         $strincorrectpleasetryagain = get_string('incorrectpleasetryagain', 'auth');
@@ -207,9 +231,7 @@ class apply_item_captcha extends apply_item_base {
         $recaptureoptions = Array('theme'=>'custom', 'custom_theme_widget'=>'recaptcha_widget');
         $html = html_writer::script(js_writer::set_variable('RecaptchaOptions', $recaptureoptions));
         $html .= '
-
         <div  class="'.$highlight.'" id="recaptcha_widget" style="display:none">
-
         <div id="recaptcha_image"></div>
         <div class="recaptcha_only_if_incorrect_sol" style="color:red">'.
         $strincorrectpleasetryagain.
@@ -231,12 +253,16 @@ class apply_item_captcha extends apply_item_base {
         <a href="javascript:Recaptcha.switch_type(\'image\')">' . $strgetanimagecaptcha . '</a>
         </div>
         </div>';
+
         //we have to rename the challengefield
         if (!empty($CFG->recaptchaprivatekey) AND !empty($CFG->recaptchapublickey)) {
+            apply_open_table_item_tag();
             $captchahtml = recaptcha_get_html($CFG->recaptchapublickey, null);
             echo $html.$captchahtml;
+            apply_close_table_item_tag();
         }
     }
+
 
     /**
      * print the item at the complete-page of apply
@@ -246,11 +272,13 @@ class apply_item_captcha extends apply_item_base {
      * @param string $value
      * @return void
      */
-    public function print_item_show_value($item, $value = '') {
+    public function print_item_show_value($item, $value = '')
+    {
         global $DB;
+        global $Table_in;
 
         $align = right_to_left() ? 'right' : 'left';
-
+/*
         $cmid = 0;
         $apply_id = $item->apply_id;
         if ($apply_id>0) {
@@ -259,18 +287,23 @@ class apply_item_captcha extends apply_item_base {
                 $cmid = $cm->id;
             }
         }
+*/
 
-        $requiredmark = '<span class="apply_required_mark">*</span>';
+        if (!$Table_in) {
+            $requiredmark = '<span class="apply_required_mark">*</span>';
+            //print the question and label
+            echo '<div class="apply_item_label_'.$align.'">';
+            echo format_text($item->name.$requiredmark, true, false, false);
+            echo '</div>';
+        }
 
-        //print the question and label
-        echo '<div class="apply_item_label_'.$align.'">';
-        //echo '('.$item->label.') ';
-        echo format_text($item->name.$requiredmark, true, false, false);
-        echo '</div>';
+        apply_open_table_item_tag($output);
+        apply_close_table_item_tag();
     }
 
 
-    public function check_value($value, $item) {
+    public function check_value($value, $item)
+    {
         global $SESSION, $CFG, $USER;
         require_once($CFG->libdir.'/recaptchalib.php');
 
@@ -294,26 +327,34 @@ class apply_item_captcha extends apply_item_base {
         return false;
     }
 
-    public function create_value($data) {
+
+    public function create_value($data)
+    { 
         global $USER;
         return $USER->sesskey;
     }
 
+
     //compares the dbvalue with the dependvalue
     //dbvalue is value stored in the db
     //dependvalue is the value to check
-    public function compare_value($item, $dbvalue, $dependvalue) {
+    public function compare_value($item, $dbvalue, $dependvalue)
+    {
         if ($dbvalue == $dependvalue) {
             return true;
         }
         return false;
     }
 
-    public function get_presentation($data) {
+
+    public function get_presentation($data)
+    {
         return '';
     }
 
-    public function get_hasvalue() {
+
+    public function get_hasvalue()
+    {
         global $CFG;
 
         //is recaptcha configured in moodle?
@@ -323,15 +364,21 @@ class apply_item_captcha extends apply_item_base {
         return 1;
     }
 
-    public function can_switch_require() {
+
+    public function can_switch_require()
+    {
         return false;
     }
 
-    public function value_type() {
+
+    public function value_type()
+    {
         return PARAM_RAW;
     }
 
-    public function clean_input_value($value) {
+
+    public function clean_input_value($value)
+    {
         return clean_param($value, $this->value_type());
     }
 }

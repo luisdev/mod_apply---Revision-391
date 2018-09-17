@@ -28,7 +28,8 @@ class apply_item_tablestart extends apply_item_base
     private $item;
 
 
-    public function init() {
+    public function init()
+    {
     }
 
 
@@ -141,7 +142,7 @@ class apply_item_tablestart extends apply_item_base
 
     public function get_analysed($item, $groupid = false, $courseid = false)
     {
-        return '';
+        return null;
     }
 
 
@@ -156,6 +157,7 @@ class apply_item_tablestart extends apply_item_base
 
     public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false)
     {
+        return $itemnr;
     }
 
 
@@ -164,23 +166,6 @@ class apply_item_tablestart extends apply_item_base
                              $groupid, $courseid = false)
     {
 
-        $analysed_item = $this->get_analysed($item, $groupid, $courseid);
-
-        $worksheet->write_string($row_offset, 0, $item->label, $xls_formats->head2);
-        $worksheet->write_string($row_offset, 1, $item->name, $xls_formats->head2);
-        $data = $analysed_item->data;
-        if (is_array($data)) {
-            if (isset($data[0])) {
-                $worksheet->write_string($row_offset, 2, $data[0], $xls_formats->value_bold);
-            }
-            $row_offset++;
-            $sizeofdata = count($data);
-            for ($i = 1; $i < $sizeofdata; $i++) {
-                $worksheet->write_string($row_offset, 2, $data[$i], $xls_formats->default);
-                $row_offset++;
-            }
-        }
-        $row_offset++;
         return $row_offset;
     }
 
