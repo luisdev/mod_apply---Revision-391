@@ -139,7 +139,7 @@ $string['email_user_other']  = '管理者が申請 「{$a->apply}」 を処理�
 $string['email_noreply'] = 'このメールは自動送信メールです．このメールには返信しないでください．';
 //
 $string['only_acked_accept'] = '受領のみ';
-$string['only_acked_accept_help'] = '書類を受理するのみの場合．処理を行う必要がない場合に指定する．';  
+$string['only_acked_accept_help'] = '書類受理のみ．処理を行う必要がない場合に指定する．';  
 $string['enable_deletemode'] = '削除モード';
 $string['enable_deletemode_help'] = '承認者が申請書を削除できるようにします．<br />通常は安全のため，必ず "No" に設定しておいてください．';
 $string['entries_list_title'] = '申請書類一覧';
