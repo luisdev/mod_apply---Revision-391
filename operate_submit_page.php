@@ -7,7 +7,7 @@ require_once('jbxl/jbxl_moodle_tools.php');
 if ($submit) {
 	//
     echo '<form action="operate_submit.php" method="post">';
-    echo '<fieldset>';
+    //echo '<fieldset>';
     echo '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
     echo '<input type="hidden" name="operate" value="operate" />';
 
@@ -129,7 +129,7 @@ if ($submit) {
 	echo '</table>';
 	echo '</div>';
 
-	echo '</fieldset>';
+	//echo '</fieldset>';
     echo '</form>';
 }
 

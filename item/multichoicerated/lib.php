@@ -521,9 +521,9 @@ class apply_item_multichoicerated extends apply_item_base {
                         ?>
                     </span>
                     <span class="apply_item_radiolabel_<?php echo $hv.'_'.$align;?>">
-                        <label for="<?php echo $item->typ . '_' . $item->id.'_xxx';?>">
+                        <!--  <label for="<?php echo $item->typ . '_' . $item->id.'_xxx';?>"> -->
                         <?php print_string('not_selected', 'apply');?>&nbsp;
-                        </label>
+                        <!-- </label> -->
                     </span>
                 </li>
             <?php
@@ -548,7 +548,7 @@ class apply_item_multichoicerated extends apply_item_base {
                 ?>
                 </span>
                 <span class="apply_item_radiolabel_<?php echo $hv.'_'.$align;?>">
-                    <label for="<?php echo $inputid;?>">
+                    <!-- <label for="<?php echo $inputid;?>"> -->
                         <?php
                             if ($showrating) {
                                 $str_rating_value = '('.$radio_value[0].') '.$radio_value[1];
@@ -557,7 +557,7 @@ class apply_item_multichoicerated extends apply_item_base {
                                 echo text_to_html($radio_value[1], true, false, false);
                             }
                         ?>
-                    </label>
+                    <!-- </label> -->
                 </span>
             </li>
         <?php

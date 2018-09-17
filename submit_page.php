@@ -4,7 +4,7 @@
 echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 {
 	echo '<form action="submit.php" method="post" onsubmit=" ">';
-	echo '<fieldset>';
+	//echo '<fieldset>'; // for mobile viewer
 	echo '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
 
 	$params = array('apply_id' => $apply->id, 'required' => 1);
@@ -65,6 +65,7 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 			$last_break_position = $item->position; //last item-pos (item or pagebreak)
 			if ($item->typ!='pagebreak') {
 				if ($item->label!=APPLY_ADMIN_REPLY_TAG and $item->label!=APPLY_ADMIN_ONLY_TAG) {
+                    echo '<div style="padding-bottom:10px"></div>';
 					echo $OUTPUT->box_start('apply_print_item');
 					apply_print_item_submit($item, $value, $highlightrequired);
 					echo $OUTPUT->box_end();
@@ -126,7 +127,7 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 		echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 	}
 
-	echo '</fieldset>';
+	//echo '</fieldset>'; // for mobile viewer
 	echo '</form>';
 
 	//
