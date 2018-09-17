@@ -292,7 +292,7 @@ class apply_item_numeric extends apply_item_base {
         $output .= '</div>';
         echo $output;
 
-        apply__table_item_tag($output);
+        apply_open_table_item_tag($output);
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';

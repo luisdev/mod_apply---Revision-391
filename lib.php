@@ -725,3 +725,10 @@ function apply_close_table_item_tag()
 }
 
 
+function apply_print_line_space()
+{
+    global $Table_in;
+
+    if (!$Table_in) echo '<div style="padding-bottom:10px"></div>';
+}
+
