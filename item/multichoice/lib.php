@@ -549,32 +549,33 @@ class apply_item_multichoice extends apply_item_base
         $index = 1;
         if ($info->subtype == 'c') {
             echo $OUTPUT->box_start('generalbox boxalign'.$align);
+            if (!$Table_in) echo '<div style="border:1px solid; padding:1px 2px 1px 2px;">';
             foreach ($presentation as $pres) {
                 foreach ($values as $val) {
                     if ($val == $index) {
                         echo '<div class="apply_item_multianswer">';
-                        if (!$Table_in) echo '<span style="border:1px solid; padding:1px 2px 1px 2px;">';
                         echo text_to_html($pres, true, false, false);
-                        if (!$Table_in) echo '</span>';
                         echo '</div>';
                         break;
                     }
                 }
                 $index++;
             }
+            if (!$Table_in) echo '</div>';
             echo $OUTPUT->box_end();
-        } else {
+        } 
+        else {
+            if (!$Table_in) echo '<div style="border:1px solid; padding:1px 2px 1px 2px;">';
             foreach ($presentation as $pres) {
                 if ($value == $index) {
                     echo $OUTPUT->box_start('generalbox boxalign'.$align);
-                    if (!$Table_in) echo '<span style="border:1px solid; padding:1px 2px 1px 2px;">';
                     echo text_to_html($pres, true, false, false);
-                    if (!$Table_in) echo '</span>';
                     echo $OUTPUT->box_end();
                     break;
                 }
                 $index++;
             }
+            if (!$Table_in) echo '</div>';
         }
         echo '</div>';
 

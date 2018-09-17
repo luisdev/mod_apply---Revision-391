@@ -388,9 +388,7 @@ class apply_item_info extends apply_item_base
 
         //print the presentation
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
-        if (!$Table_in) echo '<span style="border:1px solid; padding:1px 2px 1px 2px;">';
         echo $value;
-        if (!$Table_in) echo '</span>';
         echo $OUTPUT->box_end();
 
         apply_close_table_item_tag();

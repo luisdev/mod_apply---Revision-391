@@ -469,15 +469,16 @@ class apply_item_numeric extends apply_item_base
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
+
+        if (!$Table_in) echo '<div style="border:1px solid; padding:1px 2px 1px 2px;">';
         if (is_numeric($value)) {
             $str_num_value = number_format($value, 2, $this->sep_dec, $this->sep_thous);
         } else {
             $str_num_value = '&nbsp;';
         }
-
-        if (!$Table_in) echo '<span style="border:1px solid; padding:1px 2px 1px 2px;">';
         echo $str_num_value;
-        if (!$Table_in) echo '</span>';
+        if (!$Table_in) echo '</div>';
+
         echo $OUTPUT->box_end();
         echo '</div>';
 
