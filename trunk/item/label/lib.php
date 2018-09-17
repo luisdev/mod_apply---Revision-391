@@ -178,26 +178,30 @@ class apply_item_label extends apply_item_base {
      * @param object $item
      * @return void
      */
-
     public function print_item_preview($item)
 	{
         global $OUTPUT, $DB;
 
 		$align = right_to_left() ? 'right' : 'left';
-		echo '<div class="apply_item_label_'.$align.'">';
-		echo '('.$item->label.') ';
 
+        $output  = '';
+		$output .= '<div class="apply_item_label_'.$align.'">';
+		$output .= '('.$item->label.') ';
         if ($item->dependitem) {
             if ($dependitem = $DB->get_record('apply_item', array('id'=>$item->dependitem))) {
-                echo ' <span class="apply_depend">';
-                echo '('.$dependitem->label.'-&gt;'.$item->dependvalue.')';
-                echo '</span>';
+                $output .= ' <span class="apply_depend">';
+                $output .= '('.$dependitem->label.'-&gt;'.$item->dependvalue.')';
+                $output .= '</span>';
             }
         }
-		echo '</div>';
+		$output .= '</div>';
+        echo $output;
 
+        apply_open_table_item_tag($output);
         $this->print_item($item);
+        apply_close_table_item_tag();
     }
+
 
     /**
      * print the item at the complete-page of apply
@@ -208,9 +212,13 @@ class apply_item_label extends apply_item_base {
      * @param bool $highlightrequire
      * @return void
      */
-    public function print_item_submit($item, $value = '', $highlightrequire = false) {
+    public function print_item_submit($item, $value = '', $highlightrequire = false)
+    {
+        apply_open_table_item_tag();
         $this->print_item($item);
+        apply_close_table_item_tag();
     }
+
 
     /**
      * print the item at the complete-page of apply
@@ -220,9 +228,13 @@ class apply_item_label extends apply_item_base {
      * @param string $value
      * @return void
      */
-    public function print_item_show_value($item, $value = '') {
+    public function print_item_show_value($item, $value = '')
+    {
+        apply_open_table_item_tag();
         $this->print_item($item);
+        apply_close_table_item_tag();
     }
+
 
     public function create_value($data) {
         return false;

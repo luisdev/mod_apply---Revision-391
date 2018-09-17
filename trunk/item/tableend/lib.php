@@ -26,9 +26,10 @@ class apply_item_tableend extends apply_item_base
     private $item;
 
 
-    public function init() {
-
+    public function init()
+    {
     }
+
 
     public function build_editform($item, $apply, $cm)
     {
@@ -69,21 +70,28 @@ class apply_item_tableend extends apply_item_base
         $this->item_form = new apply_tableend_form('edit_item.php', $customdata);
     }
 
+
     //this function only can used after the call of build_editform()
-    public function show_editform() {
+    public function show_editform()
+    {
         $this->item_form->display();
     }
 
-    public function is_cancelled() {
+
+    public function is_cancelled()
+    {
         return $this->item_form->is_cancelled();
     }
 
-    public function get_data() {
+
+    public function get_data()
+    {
         if ($this->item = $this->item_form->get_data()) {
             return true;
         }
         return false;
     }
+
 
     public function save_item()
     {
@@ -111,56 +119,30 @@ class apply_item_tableend extends apply_item_base
     }
 
 
-    //liefert eine Struktur ->name, ->data = array(mit Antworten)
-    public function get_analysed($item, $groupid = false, $courseid = false) {
-        global $DB;
-
-        $analysed_val = new stdClass();
-        $analysed_val->data = array();
-        $analysed_val->name = $item->name;
-
-        $values = apply_get_group_values($item, $groupid, $courseid);
-        if ($values) {
-            $data = array();
-            foreach ($values as $value) {
-                $data[] = str_replace("\n", '<br />', $value->value);
-            }
-            $analysed_val->data = $data;
-        }
-        return $analysed_val;
+    public function get_analysed($item, $groupid = false, $courseid = false)
+    {
+        return '';
     }
 
-    public function get_printval($item, $value) {
 
+    public function get_printval($item, $value)
+    {
         if (!isset($value->value)) {
             return '';
         }
-
         return $value->value;
     }
 
-    public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false) {
-        $values = apply_get_group_values($item, $groupid, $courseid);
-        if ($values) {
-            echo '<tr><th colspan="2" align="left">';
-            echo $itemnr.'&nbsp;('.$item->label.') '.$item->name;
-            echo '</th></tr>';
-            foreach ($values as $value) {
-                echo '<tr>';
-                echo '<td valign="top" align="left">';
-                echo '-&nbsp;&nbsp;';
-                echo '</td>';
-                echo '<td align="left" valign="top">';
-                echo str_replace("\n", '<br />', $value->value);
-                echo '</td>';
-                echo '</tr>';
-            }
-        }
+
+    public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false)
+    {
     }
+
 
     public function excelprint_item(&$worksheet, $row_offset,
                              $xls_formats, $item,
-                             $groupid, $courseid = false) {
+                             $groupid, $courseid = false)
+    {
 
         $analysed_item = $this->get_analysed($item, $groupid, $courseid);
 
@@ -245,40 +227,55 @@ class apply_item_tableend extends apply_item_base
     }
 
 
-    public function check_value($value, $item) {
+    public function check_value($value, $item)
+    {
     }
 
-    public function create_value($data) {
+
+    public function create_value($data)
+    {
         $data = s($data);
         return $data;
     }
 
+
     //compares the dbvalue with the dependvalue
     //dbvalue is the value put in by the user
     //dependvalue is the value that is compared
-    public function compare_value($item, $dbvalue, $dependvalue) {
+    public function compare_value($item, $dbvalue, $dependvalue)
+    {
         if ($dbvalue == $dependvalue) {
             return true;
         }
         return false;
     }
 
-    public function get_presentation($data) {
+
+    public function get_presentation($data)
+    {
     }
 
-    public function get_hasvalue() {
+
+    public function get_hasvalue()
+    {
         return 0;
     }
 
-    public function can_switch_require() {
+
+    public function can_switch_require()
+    {
         return false;
     }
 
-    public function value_type() {
+
+    public function value_type()
+    {
         return PARAM_RAW;
     }
 
-    public function clean_input_value($value) {
+
+    public function clean_input_value($value)
+    {
         return s($value);
     }
 }

@@ -297,6 +297,7 @@ class apply_item_multichoice extends apply_item_base
         return $row_offset;
     }
 
+
     /**
      * print the item at the edit-page of apply
      *
@@ -304,7 +305,8 @@ class apply_item_multichoice extends apply_item_base
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item) {
+    public function print_item_preview($item)
+    {
         global $OUTPUT, $DB;
         $info = $this->get_info($item);
         $align = right_to_left() ? 'right' : 'left';
@@ -317,17 +319,21 @@ class apply_item_multichoice extends apply_item_base
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
 
         //print the question and label
-        echo '<div class="apply_item_label_'.$align.'">';
-        echo '('.$item->label.') ';
-        echo format_text($item->name.$requiredmark, true, false, false);
+        $output  = '';
+        $output .= '<div class="apply_item_label_'.$align.'">';
+        $output .= '('.$item->label.') ';
+        $output .= format_text($item->name.$requiredmark, true, false, false);
         if ($item->dependitem) {
             if ($dependitem = $DB->get_record('apply_item', array('id'=>$item->dependitem))) {
-                echo ' <span class="apply_depend">';
-                echo '('.$dependitem->label.'-&gt;'.$item->dependvalue.')';
-                echo '</span>';
+                $output .= ' <span class="apply_depend">';
+                $output .= '('.$dependitem->label.'-&gt;'.$item->dependvalue.')';
+                $output .= '</span>';
             }
         }
-        echo '</div>';
+        $output .= '</div>';
+        echo $output;
+
+        apply_open_table_item_tag($output);
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
@@ -374,7 +380,10 @@ class apply_item_multichoice extends apply_item_base
         }
         echo '</ul>';
         echo '</div>';
+
+        apply_close_table_item_tag();
     }
+
 
     /**
      * print the item at the complete-page of apply
@@ -385,7 +394,8 @@ class apply_item_multichoice extends apply_item_base
      * @param bool $highlightrequire
      * @return void
      */
-    public function print_item_submit($item, $value = null, $highlightrequire = false) {
+    public function print_item_submit($item, $value = null, $highlightrequire = false)
+    {
         global $OUTPUT;
         $info = $this->get_info($item);
         $align = right_to_left() ? 'right' : 'left';
@@ -419,6 +429,8 @@ class apply_item_multichoice extends apply_item_base
             // }
             // $requiredmark = ($item->required == 1) ? $str_required_mark : '';
         // }
+
+        apply_open_table_item_tag();
 
         //print the question and label
         echo '<div class="apply_item_label_'.$align.$highlight.'">';
@@ -475,7 +487,10 @@ class apply_item_multichoice extends apply_item_base
         }
         echo '</ul>';
         echo '</div>';
+
+        apply_close_table_item_tag();
     }
+
 
     /**
      * print the item at the complete-page of apply
@@ -485,7 +500,8 @@ class apply_item_multichoice extends apply_item_base
      * @param string $value
      * @return void
      */
-    public function print_item_show_value($item, $value = null) {
+    public function print_item_show_value($item, $value = null)
+    {
         global $OUTPUT;
         $info = $this->get_info($item);
         $align = right_to_left() ? 'right' : 'left';
@@ -509,6 +525,8 @@ class apply_item_multichoice extends apply_item_base
         if ($item->required == 1) {
             $requiredmark = '<span class="apply_required_mark">*</span>';
         }
+
+        apply_open_table_item_tag();
 
         //print the question and label
         echo '<div class="apply_item_label_'.$align.'">';
@@ -545,7 +563,10 @@ class apply_item_multichoice extends apply_item_base
             }
         }
         echo '</div>';
+
+        apply_close_table_item_tag();
     }
+
 
     public function check_value($value, $item) {
         $info = $this->get_info($item);

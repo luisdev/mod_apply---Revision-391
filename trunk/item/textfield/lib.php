@@ -20,17 +20,20 @@ require_once($CFG->dirroot.'/mod/apply/item/apply_item_class.php');
 define('APPLY_TEXTFIELD_SEP', '|');
 
 
-class apply_item_textfield extends apply_item_base {
+class apply_item_textfield extends apply_item_base
+{
     protected $type = "textfield";
     private $commonparams;
     private $item_form;
     private $item;
 
-    public function init() {
-
+    public function init()
+    {
     }
 
-    public function build_editform($item, $apply, $cm) {
+
+    public function build_editform($item, $apply, $cm)
+    {
         global $DB, $CFG;
         require_once('textfield_form.php');
 
@@ -80,23 +83,31 @@ class apply_item_textfield extends apply_item_base {
         $this->item_form = new apply_textfield_form('edit_item.php', $customdata);
     }
 
+
     //this function only can used after the call of build_editform()
-    public function show_editform() {
+    public function show_editform()
+    {
         $this->item_form->display();
     }
 
-    public function is_cancelled() {
+
+    public function is_cancelled() 
+    {
         return $this->item_form->is_cancelled();
     }
 
-    public function get_data() {
+
+    public function get_data()
+    {
         if ($this->item = $this->item_form->get_data()) {
             return true;
         }
         return false;
     }
 
-    public function save_item() {
+
+    public function save_item()
+    {
         global $DB;
 
         if (!$item = $this->item_form->get_data()) {
@@ -120,7 +131,8 @@ class apply_item_textfield extends apply_item_base {
 
 
     //liefert eine Struktur ->name, ->data = array(mit Antworten)
-    public function get_analysed($item, $groupid = false, $courseid = false) {
+    public function get_analysed($item, $groupid = false, $courseid = false)
+    {
         global $DB;
 
         $analysed_val = new stdClass();
@@ -138,15 +150,18 @@ class apply_item_textfield extends apply_item_base {
         return $analysed_val;
     }
 
-    public function get_printval($item, $value) {
 
+    public function get_printval($item, $value)
+    {
         if (!isset($value->value)) {
             return '';
         }
         return $value->value;
     }
 
-    public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false) {
+
+    public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false)
+    {
         $values = apply_get_group_values($item, $groupid, $courseid);
         if ($values) {
             echo '<tr><th colspan="2" align="left">';
@@ -160,9 +175,11 @@ class apply_item_textfield extends apply_item_base {
         }
     }
 
+
     public function excelprint_item(&$worksheet, $row_offset,
                              $xls_formats, $item,
-                             $groupid, $courseid = false) {
+                             $groupid, $courseid = false)
+    {
 
         $analysed_item = $this->get_analysed($item, $groupid, $courseid);
 
@@ -182,6 +199,7 @@ class apply_item_textfield extends apply_item_base {
         return $row_offset;
     }
 
+
     /**     
      * print the item at the edit-page of apply
      *
@@ -189,25 +207,31 @@ class apply_item_textfield extends apply_item_base {
      * @param object $item
      * @return void
      */
-    public function print_item_preview($item) {
+    public function print_item_preview($item)
+    {
         global $OUTPUT, $DB;
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
         $presentation = explode(APPLY_TEXTFIELD_SEP, $item->presentation);
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
+
         //print the question and label
-        echo '<div class="apply_item_label_'.$align.'">';
-        echo '('.$item->label.') ';
-        echo format_text($item->name.$requiredmark, true, false, false);
+        $output  = '';
+        $output .= '<div class="apply_item_label_'.$align.'">';
+        $output .= '('.$item->label.') ';
+        $output .= format_text($item->name.$requiredmark, true, false, false);
         if ($item->dependitem) {
             if ($dependitem = $DB->get_record('apply_item', array('id'=>$item->dependitem))) {
-                echo ' <span class="apply_depend">';
-                echo '('.$dependitem->label.'-&gt;'.$item->dependvalue.')';
-                echo '</span>';
+                $output .= ' <span class="apply_depend">';
+                $output .= '('.$dependitem->label.'-&gt;'.$item->dependvalue.')';
+                $output .= '</span>';
             }
         }
-        echo '</div>';
+        $output .= '</div>';
+        echo $output;
+
+        apply_open_table_item_tga($output);
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
@@ -219,7 +243,10 @@ class apply_item_textfield extends apply_item_base {
                     'value="" />';
         echo '</span>';
         echo '</div>';
+
+        apply_close_table_item_tga();
     }
+
 
     /**     
      * print the item at the complete-page of apply
@@ -230,7 +257,8 @@ class apply_item_textfield extends apply_item_base {
      * @param bool $highlightrequire
      * @return void
      */
-    public function print_item_submit($item, $value = '', $highlightrequire = false) {
+    public function print_item_submit($item, $value = '', $highlightrequire = false)
+    {
         global $OUTPUT;
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
@@ -242,6 +270,8 @@ class apply_item_textfield extends apply_item_base {
             $highlight = '';
         }
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
+
+        apply_open_table_item_tga();
 
         //print the question and label
         echo '<div class="apply_item_label_'.$align.$highlight.'">';
@@ -258,7 +288,10 @@ class apply_item_textfield extends apply_item_base {
                     'value="'.$value.'" />';
         echo '</span>';
         echo '</div>';
+
+        apply_close_table_item_tga();
     }
+
 
     /**     
      * print the item at the complete-page of apply
@@ -277,17 +310,24 @@ class apply_item_textfield extends apply_item_base {
         $presentation = explode(APPLY_TEXTFIELD_SEP, $item->presentation);
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
 
+        apply_open_table_item_tga();
+
         //print the question and label
         echo '<div class="apply_item_label_'.$align.'">';
-        //    echo '('.$item->label.') ';
-            echo format_text($item->name . $requiredmark, true, false, false);
+        //echo '('.$item->label.') ';
+        echo format_text($item->name . $requiredmark, true, false, false);
         echo '</div>';
+
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
         echo $value ? $value : '&nbsp;';
         echo $OUTPUT->box_end();
+
+        apply_close_table_item_tga();
     }
 
-    public function check_value($value, $item) {
+
+    public function check_value($value, $item)
+    {
         //if the item is not required, so the check is true if no value is given
         if ((!isset($value) OR $value == '') AND $item->required != 1) {
             return true;
@@ -298,38 +338,52 @@ class apply_item_textfield extends apply_item_base {
         return true;
     }
 
-    public function create_value($data) {
+
+    public function create_value($data)
+    {
         $data = s($data);
         return $data;
     }
 
+
     //compares the dbvalue with the dependvalue
     //dbvalue is the value put in by the user
     //dependvalue is the value that is compared
-    public function compare_value($item, $dbvalue, $dependvalue) {
+    public function compare_value($item, $dbvalue, $dependvalue)
+    {
         if ($dbvalue == $dependvalue) {
             return true;
         }
         return false;
     }
 
-    public function get_presentation($data) {
+
+    public function get_presentation($data)
+    {
         return $data->itemsize.APPLY_TEXTFIELD_SEP.$data->itemmaxlength;
     }
 
-    public function get_hasvalue() {
+
+    public function get_hasvalue()
+    {
         return 1;
     }
 
-    public function can_switch_require() {
+
+    public function can_switch_require()
+    {
         return true;
     }
 
-    public function value_type() {
+
+    public function value_type()
+    {
         return PARAM_RAW;
     }
 
-    public function clean_input_value($value) {
+
+    public function clean_input_value($value)
+    {
         return s($value);
     }
 }
