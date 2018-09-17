@@ -227,9 +227,9 @@ class apply_item_tablestart extends apply_item_base
             $highlight = '';
         }
         //print the question and label
-        echo '<div class="apply_item_label_'.$align.$highlight.'">';
-        echo format_text($item->name, true, false, false);
-        echo '</div>';
+        //echo '<div class="apply_item_label_'.$align.$highlight.'">';
+        //echo format_text($item->name, true, false, false);
+        //echo '</div>';
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.$highlight.'">';
