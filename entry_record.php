@@ -21,7 +21,7 @@ if ($student) {
     ///////////////////////////////////////
     //
     if (!$req_own_data) {
-        $data[] = $OUTPUT->user_picture($student, array('courseid'=>$courseid));
+        $data[] = $OUTPUT->user_picture($student, array('courseid'=>$courseid, 'size'=>20));
         $data[] = '<strong><a href="'.$user_url.'">'.$user_name.'</a></strong>';
     }
     //
