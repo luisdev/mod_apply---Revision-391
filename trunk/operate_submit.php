@@ -98,7 +98,7 @@ $sbmtted = false;
 if (isset($formdata->radiobtn_accept)) $accept  = $formdata->radiobtn_accept;
 if (isset($formdata->checkbox_execd))  $execd   = 'done';
 if (isset($formdata->operate_values))  $sbmtted = true;
-
+if ($apply->only_acked_accept and $accept=='accept') $execd = 'done';
 
 ////////////////////////////////////////////////////////
 /// Print the page header
