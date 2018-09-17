@@ -325,7 +325,6 @@ class apply_item_textarea extends apply_item_base
         if (!$Table_in) {
             $str_required_mark = '<span class="apply_required_mark">*</span>';
             $requiredmark = ($item->required == 1) ? $str_required_mark : '';
-
             //print the question and label
             echo '<div class="apply_item_label_'.$align.'">';
             echo format_text($item->name . $requiredmark, true, false, false);
@@ -336,9 +335,9 @@ class apply_item_textarea extends apply_item_base
 
         //print the presentation
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
-        if (!$Table_in) echo '<span style="border:1px solid; padding:1px 2px 1px 2px;">';
+        if (!$Table_in) echo '<div style="border:1px solid; padding:1px 2px 1px 2px;">';
         echo $value ? str_replace("\n", '<br />', $value) : '&nbsp;';
-        if (!$Table_in) echo '</span>';
+        if (!$Table_in) echo '</div>';
         echo $OUTPUT->box_end();
 
         apply_close_table_item_tag();

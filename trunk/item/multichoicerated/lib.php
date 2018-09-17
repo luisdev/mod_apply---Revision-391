@@ -430,6 +430,7 @@ class apply_item_multichoicerated extends apply_item_base
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
         $index = 1;
+        if (!$Table_in) echo '<div style="border:1px solid; padding:1px 2px 1px 2px;">';
         foreach ($lines as $line) {
             if ($value == $index) {
                 $item_value = explode(APPLY_MULTICHOICERATED_VALUE_SEP, $line);
@@ -440,6 +441,7 @@ class apply_item_multichoicerated extends apply_item_base
             }
             $index++;
         }
+        if (!$Table_in) echo '</div>';
         echo '</div>';
 
         apply_close_table_item_tag();
