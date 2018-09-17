@@ -97,6 +97,11 @@ class mod_apply_mod_form extends moodleform_mod
 		$mform->setDefault('name_pattern', 'fullname');
 
 		//
+		$mform->addElement('selectyesno', 'only_acked_accept', get_string('only_acked_accept', 'apply')); 
+		$mform->addHelpButton('only_acked_accept', 'only_acked_accept', 'apply');
+		$mform->setDefault('only_acked_accept', 0);
+
+		//
 		$mform->addElement('selectyesno', 'enable_deletemode', get_string('enable_deletemode', 'apply')); 
 		$mform->addHelpButton('enable_deletemode', 'enable_deletemode', 'apply');
 		$mform->setDefault('enable_deletemode', 0);

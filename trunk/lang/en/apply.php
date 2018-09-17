@@ -27,9 +27,9 @@ $string['messageprovider:message']    = 'Message';
 $string['messageprovider:processed']  = 'Operation was Processed';
 
 $string['accept_entry'] = 'accept';
-$string['acked_accept']  = 'Accept';
-$string['acked_notyet']  = 'Not Yet';
-$string['acked_reject']  = 'Reject';
+$string['acked_accept'] = 'Accept';
+$string['acked_notyet'] = 'Not Yet';
+$string['acked_reject'] = 'Reject';
 $string['add_item']  = 'Add entry item to activity';
 $string['add_items'] = 'Add entry items to activity';
 $string['add_pagebreak'] = 'Add a page break';
@@ -132,6 +132,8 @@ $string['email_user_reject'] = 'Your application was rejected';
 $string['email_user_other']  = 'The administrator has processed your application';
 $string['email_noreply'] = 'This email is automatically. Please do not reply to this email.';
 //
+$string['only_acked_accept'] = 'Reception Only';
+$string['only_acked_accept_help'] = 'Enable to only accept reception. Specify when processing is not required.'; 
 $string['enable_deletemode'] = 'Delete Mode';
 $string['enable_deletemode_help'] = 'This enables a teacher to delete all applications.<br />Usually, please set to "No" for safety.'; 
 $string['entries_list_title'] = 'List of Entries';
