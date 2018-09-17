@@ -545,6 +545,7 @@ class apply_item_multichoice extends apply_item_base
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
+
         $index = 1;
         if ($info->subtype == 'c') {
             echo $OUTPUT->box_start('generalbox boxalign'.$align);
@@ -552,7 +553,9 @@ class apply_item_multichoice extends apply_item_base
                 foreach ($values as $val) {
                     if ($val == $index) {
                         echo '<div class="apply_item_multianswer">';
+                        if (!$Table_in) echo '<span style="border:1px solid; padding:1px 2px 1px 2px;">';
                         echo text_to_html($pres, true, false, false);
+                        if (!$Table_in) echo '</span>';
                         echo '</div>';
                         break;
                     }
@@ -564,7 +567,9 @@ class apply_item_multichoice extends apply_item_base
             foreach ($presentation as $pres) {
                 if ($value == $index) {
                     echo $OUTPUT->box_start('generalbox boxalign'.$align);
+                    if (!$Table_in) echo '<span style="border:1px solid; padding:1px 2px 1px 2px;">';
                     echo text_to_html($pres, true, false, false);
+                    if (!$Table_in) echo '</span>';
                     echo $OUTPUT->box_end();
                     break;
                 }
