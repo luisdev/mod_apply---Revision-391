@@ -195,18 +195,13 @@ class apply_item_captcha extends apply_item_base
 
         if (!$Table_in) {
             $requiredmark = '<span class="apply_required_mark">*</span>';
-            if (isset($SESSION->apply->captchacheck) AND
-                    $SESSION->apply->captchacheck == $USER->sesskey AND
-                    $value == $USER->sesskey) {
-                //print the question and label
-                echo '<div class="apply_item_label_'.$align.'">';
-                echo '('.$item->label.') ';
-                echo format_text($item->name.$requiredmark, true, false, false);
-                $inputname = 'name="'.$item->typ.'_'.$item->id.'"';
-                echo '<input type="hidden" value="'.$USER->sesskey.'" '.$inputname.' />';
-                echo '</div>';
-                return;
-            }
+            //print the question and label
+            echo '<div class="apply_item_label_'.$align.'">';
+            echo '('.$item->label.') ';
+            echo format_text($item->name.$requiredmark, true, false, false);
+            $inputname = 'name="'.$item->typ.'_'.$item->id.'"';
+            echo '<input type="hidden" value="'.$USER->sesskey.'" '.$inputname.' />';
+            echo '</div>';
         }
 
         $strincorrectpleasetryagain = get_string('incorrectpleasetryagain', 'auth');
@@ -274,7 +269,7 @@ class apply_item_captcha extends apply_item_base
             echo '</div>';
         }
 
-        apply_open_table_item_tag($output);
+        apply_open_table_item_tag();
         apply_close_table_item_tag();
     }
 
