@@ -29,7 +29,7 @@ require_once($CFG->libdir.'/tablelib.php');
 
 ////////////////////////////////////////////////////////
 //get the params
-$id            = required_param('id', PARAM_INT);
+$id         = required_param('id', PARAM_INT);
 $do_show    = optional_param('do_show', 'view_entries', PARAM_ALPHAEXT);
 $courseid   = optional_param('courseid',  0, PARAM_INT);
 $user_id    = optional_param('user_id',   0, PARAM_INT);
@@ -39,13 +39,13 @@ $show_all   = optional_param('show_all',  0, PARAM_INT);
 $perpage    = optional_param('perpage', APPLY_DEFAULT_PAGE_COUNT, PARAM_INT);  // how many per page
 
 //
-//$sifirst     = optional_param('sifirst', '', PARAM_ALPHA);
-//$silast      = optional_param('silast',  '', PARAM_ALPHA);
+//$sifirst    = optional_param('sifirst', '', PARAM_ALPHA);
+//$silast     = optional_param('silast',  '', PARAM_ALPHA);
 //$ssort      = optional_param('ssort',   '', PARAM_ALPHAEXT);
-//$spage    = optional_param('spage', 0, PARAM_INT);
+//$spage      = optional_param('spage', 0, PARAM_INT);
 
-$sort          = optional_param('sort',  '', PARAM_ALPHAEXT);
-$order         = optional_param('order', 'DESC', PARAM_ALPHAEXT);
+$sort  = optional_param('sort',  '', PARAM_ALPHAEXT);
+$order = optional_param('order', 'DESC', PARAM_ALPHAEXT);
 if ($sort and $order) $sort = $sort.' '.$order;
 
 $current_tab = $do_show;
