@@ -184,7 +184,7 @@ class apply_item_captcha extends apply_item_base
         global $SESSION, $CFG, $DB, $USER;
         global $Table_in;
 
-        require_once($CFG->libdir.'/recaptchalib.php');
+        require_once($CFG->libdir.'/recaptchalib_v2.php');
 
         $align = right_to_left() ? 'right' : 'left';
         if ($highlightrequire AND !$this->check_value($value, $item)) {
@@ -192,18 +192,6 @@ class apply_item_captcha extends apply_item_base
         } else {
             $highlight = '';
         }
-
-/*
-        $cmid = 0;
-        $apply_id = $item->apply_id;
-        if ($apply_id>0) {
-            $apply = $DB->get_record('apply', array('id'=>$apply_id));
-            $cm = get_coursemodule_from_instance('apply', $apply->id, $apply->course);
-            if ($cm) {
-                $cmid = $cm->id;
-            }
-        }
-*/
 
         if (!$Table_in) {
             $requiredmark = '<span class="apply_required_mark">*</span>';
@@ -229,6 +217,7 @@ class apply_item_captcha extends apply_item_base
         $strgetanimagecaptcha = get_string('getanimagecaptcha', 'auth');
 
         $recaptureoptions = Array('theme'=>'custom', 'custom_theme_widget'=>'recaptcha_widget');
+
         $html = html_writer::script(js_writer::set_variable('RecaptchaOptions', $recaptureoptions));
         $html .= '
         <div  class="'.$highlight.'" id="recaptcha_widget" style="display:none">
@@ -242,9 +231,7 @@ class apply_item_captcha extends apply_item_base
         <span class="recaptcha_only_if_audio">
         <label for="recaptcha_response_field">'.$strenterthenumbersyouhear.'</label>
         </span>
-
         <input type="text" id="recaptcha_response_field" name="'.$item->typ.'_'.$item->id.'" />
-
         <div><a href="javascript:Recaptcha.reload()">' . $strgetanothercaptcha . '</a></div>
         <div class="recaptcha_only_if_image">
         <a href="javascript:Recaptcha.switch_type(\'audio\')">' . $strgetanaudiocaptcha . '</a>
@@ -255,12 +242,12 @@ class apply_item_captcha extends apply_item_base
         </div>';
 
         //we have to rename the challengefield
+        apply_open_table_item_tag();
         if (!empty($CFG->recaptchaprivatekey) AND !empty($CFG->recaptchapublickey)) {
-            apply_open_table_item_tag();
-            $captchahtml = recaptcha_get_html($CFG->recaptchapublickey, null);
+            $captchahtml = recaptcha_get_challenge_html(RECAPTCHA_API_URL, $CFG->recaptchapublickey);
             echo $html.$captchahtml;
-            apply_close_table_item_tag();
         }
+        apply_close_table_item_tag();
     }
 
 
@@ -278,16 +265,6 @@ class apply_item_captcha extends apply_item_base
         global $Table_in;
 
         $align = right_to_left() ? 'right' : 'left';
-/*
-        $cmid = 0;
-        $apply_id = $item->apply_id;
-        if ($apply_id>0) {
-            $apply = $DB->get_record('apply', array('id'=>$apply_id));
-            if ($cm = get_coursemodule_from_instance('apply', $apply->id, $apply->course)) {
-                $cmid = $cm->id;
-            }
-        }
-*/
 
         if (!$Table_in) {
             $requiredmark = '<span class="apply_required_mark">*</span>';
@@ -305,20 +282,22 @@ class apply_item_captcha extends apply_item_base
     public function check_value($value, $item)
     {
         global $SESSION, $CFG, $USER;
-        require_once($CFG->libdir.'/recaptchalib.php');
+
+        require_once($CFG->libdir.'/recaptchalib_v2.php');
 
         //is recaptcha configured in moodle?
         if (empty($CFG->recaptchaprivatekey) OR empty($CFG->recaptchapublickey)) {
             return true;
         }
-        $challenge = optional_param('recaptcha_challenge_field', '', PARAM_RAW);
+        $challenge = required_param('g-recaptcha-response', PARAM_RAW);
 
         if ($value == $USER->sesskey AND $challenge == '') {
             return true;
         }
         $remoteip = getremoteaddr(null);
-        $response = recaptcha_check_answer($CFG->recaptchaprivatekey, $remoteip, $challenge, $value);
-        if ($response->is_valid) {
+        //
+        $response = recaptcha_check_response(RECAPTCHA_VERIFY_URL, $CFG->recaptchaprivatekey, $remoteip, $challenge);
+        if ($response['isvalid']) {
             $SESSION->apply->captchacheck = $USER->sesskey;
             return true;
         }
