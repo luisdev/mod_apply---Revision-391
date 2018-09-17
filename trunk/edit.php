@@ -391,6 +391,7 @@ if ($do_show=='edit') {
 			echo '</span>';
 			echo $OUTPUT->box_end();
 			if ($applyitem->typ != 'pagebreak') {
+                echo '<div style="padding-bottom:10px"></div>';
 				apply_print_item_preview($applyitem);
 			}
 			else {

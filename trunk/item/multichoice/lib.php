@@ -353,9 +353,9 @@ class apply_item_multichoice extends apply_item_base
                 ?>
             </span>
             <span class="apply_item_radiolabel_<?php echo $hv.'_'.$align;?>">
-                <label for="<?php echo $item->typ . '_' . $item->id.'_xxx';?>">
+                <!-- <label for="<?php echo $item->typ . '_' . $item->id.'_xxx';?>"> -->
                     <?php print_string('not_selected', 'apply');?>&nbsp;
-                </label>
+                <!-- </label> -->
             </span>
         </li>
         <?php
@@ -454,9 +454,9 @@ class apply_item_multichoice extends apply_item_base
                     ?>
                 </span>
                 <span class="apply_item_radiolabel_<?php echo $hv.'_'.$align;?>">
-                    <label for="<?php echo $item->typ.'_'.$item->id.'_xxx';?>">
+                    <!-- <label for="<?php echo $item->typ.'_'.$item->id.'_xxx';?>"> -->
                         <?php print_string('not_selected', 'apply');?>&nbsp;
-                    </label>
+                    <!--< /label> -->
                 </span>
             </li>
         <?php
@@ -692,9 +692,9 @@ class apply_item_multichoice extends apply_item_base
                     ?>
                 </span>
                 <span class="apply_item_radiolabel_<?php echo $hv.'_'.$align;?>">
-                    <label for="<?php echo $inputid;?>">
+                    <!-- <label for="<?php echo $inputid;?>"> -->
                         <?php echo text_to_html($radio, true, false, false);?>&nbsp;
-                    </label>
+                    <!-- </label> -->
                 </span>
             </li>
         <?php
@@ -740,9 +740,9 @@ class apply_item_multichoice extends apply_item_base
                     ?>
                 </span>
                 <span class="apply_item_radiolabel_<?php echo $hv.'_'.$align;?>">
-                    <label for="<?php echo $inputid;?>">
+                    <!-- <label for="<?php echo $inputid;?>"> -->
                         <?php echo text_to_html($check, true, false, false);?>&nbsp;
-                    </label>
+                    <!-- </label> -->
                 </span>
             </li>
         <?php
