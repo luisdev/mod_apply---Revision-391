@@ -20,14 +20,17 @@ require_once($CFG->dirroot.'/mod/apply/item/apply_item_class.php');
 define('APPLY_NUMERIC_SEP', '|');
 
 
-class apply_item_numeric extends apply_item_base {
+class apply_item_numeric extends apply_item_base
+{
     protected $type = "numeric";
     public $sep_dec, $sep_thous;
     private $commonparams;
     private $item_form;
     private $item;
 
-    public function init() {
+
+    public function init()
+    {
         $this->sep_dec = get_string('separator_decimal', 'apply');
         if (substr($this->sep_dec, 0, 2) == '[[') {
             $this->sep_dec = APPLY_DECIMAL;
@@ -39,7 +42,9 @@ class apply_item_numeric extends apply_item_base {
         }
     }
 
-    public function build_editform($item, $apply, $cm) {
+
+    public function build_editform($item, $apply, $cm)
+    {
         global $DB, $CFG;
         require_once('numeric_form.php');
 
@@ -86,33 +91,39 @@ class apply_item_numeric extends apply_item_base {
                              'typ'=>$item->typ,
                              'items'=>$applyitems,
                              'apply_id'=>$apply->id);
-
         //build the form
         $customdata = array('item' => $item,
                             'common' => $commonparams,
                             'positionlist' => $positionlist,
                             'position' => $position);
-
         $this->item_form = new apply_numeric_form('edit_item.php', $customdata);
     }
 
+
     //this function only can used after the call of build_editform()
-    public function show_editform() {
+    public function show_editform()
+    {
         $this->item_form->display();
     }
 
-    public function is_cancelled() {
+
+    public function is_cancelled()
+    {
         return $this->item_form->is_cancelled();
     }
 
-    public function get_data() {
+
+    public function get_data()
+    {
         if ($this->item = $this->item_form->get_data()) {
             return true;
         }
         return false;
     }
 
-    public function save_item() {
+
+    public function save_item()
+    {
         global $DB;
 
         if (!$item = $this->item_form->get_data()) {
@@ -136,7 +147,8 @@ class apply_item_numeric extends apply_item_base {
 
 
     //liefert eine Struktur ->name, ->data = array(mit Antworten)
-    public function get_analysed($item, $groupid = false, $courseid = false) {
+    public function get_analysed($item, $groupid = false, $courseid = false)
+    {
         global $DB;
 
         $analysed = new stdClass();
@@ -162,7 +174,9 @@ class apply_item_numeric extends apply_item_base {
         return $analysed;
     }
 
-    public function get_printval($item, $value) {
+
+    public function get_printval($item, $value)
+    {
         if (!isset($value->value)) {
             return '';
         }
@@ -170,10 +184,10 @@ class apply_item_numeric extends apply_item_base {
         return $value->value;
     }
 
-    public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false) {
 
+    public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false)
+    {
         $values = $this->get_analysed($item, $groupid, $courseid);
-
         if (isset($values->data) AND is_array($values->data)) {
             echo '<tr><th colspan="2" align="left">';
             echo $itemnr.'&nbsp;('.$item->label.') '.$item->name;
@@ -196,10 +210,11 @@ class apply_item_numeric extends apply_item_base {
         }
     }
 
+
     public function excelprint_item(&$worksheet, $row_offset,
                              $xls_formats, $item,
-                             $groupid, $courseid = false) {
-
+                             $groupid, $courseid = false)
+    {
         $analysed_item = $this->get_analysed($item, $groupid, $courseid);
 
         $worksheet->write_string($row_offset, 0, $item->label, $xls_formats->head2);
@@ -322,8 +337,14 @@ class apply_item_numeric extends apply_item_base {
     public function print_item_submit($item, $value = '', $highlightrequire = false)
     {
         global $OUTPUT;
+        global $Table_in;
+
         $align = right_to_left() ? 'right' : 'left';
-        $str_required_mark = '<span class="apply_required_mark">*</span>';
+        if ($highlightrequire AND (!$this->check_value($value, $item))) {
+            $highlight = ' missingrequire';
+        } else {
+            $highlight = '';
+        }
 
         //get the range
         $range_from_to = explode(APPLY_NUMERIC_SEP, $item->presentation);
@@ -342,37 +363,35 @@ class apply_item_numeric extends apply_item_base {
             $range_to = 0;
         }
 
-        if ($highlightrequire AND (!$this->check_value($value, $item))) {
-            $highlight = ' missingrequire';
-        } else {
-            $highlight = '';
+        if (!$Table_in) {
+            $str_required_mark = '<span class="apply_required_mark">*</span>';
+            $requiredmark = ($item->required == 1) ? $str_required_mark : '';
+            //print the question and label
+            echo '<div class="apply_item_label_'.$align.$highlight.'">';
+            echo format_text($item->name . $requiredmark, true, false, false);
+            echo '<span class="apply_item_numinfo">';
+
+            switch(true) {
+                case ($range_from === '-' AND is_numeric($range_to)):
+                    echo ' ('.get_string('maximal', 'apply').
+                            ': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
+                    break;
+                case (is_numeric($range_from) AND $range_to === '-'):
+                    echo ' ('.get_string('minimal', 'apply').
+                            ': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).')';
+                    break;
+                case ($range_from === '-' AND $range_to === '-'):
+                    break;
+                default:
+                    echo ' ('.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).
+                            ' - '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
+                    break;
+            }
+            echo '</span>';
+            echo '</div>';
         }
-        $requiredmark = ($item->required == 1) ? $str_required_mark : '';
 
         apply_open_table_item_tag();
-
-        //print the question and label
-        echo '<div class="apply_item_label_'.$align.$highlight.'">';
-        echo format_text($item->name . $requiredmark, true, false, false);
-        echo '<span class="apply_item_numinfo">';
-        switch(true) {
-            case ($range_from === '-' AND is_numeric($range_to)):
-                echo ' ('.get_string('maximal', 'apply').
-                        ': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
-                break;
-            case (is_numeric($range_from) AND $range_to === '-'):
-                echo ' ('.get_string('minimal', 'apply').
-                        ': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).')';
-                break;
-            case ($range_from === '-' AND $range_to === '-'):
-                break;
-            default:
-                echo ' ('.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).
-                        ' - '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
-                break;
-        }
-        echo '</span>';
-        echo '</div>';
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.$highlight.'">';
@@ -382,7 +401,6 @@ class apply_item_numeric extends apply_item_base {
                      'size="10" '.
                      'maxlength="10" '.
                      'value="'.$value.'" />';
-
         echo '</span>';
         echo '</div>';
 
@@ -401,8 +419,9 @@ class apply_item_numeric extends apply_item_base {
     public function print_item_show_value($item, $value = '')
     {
         global $OUTPUT;
+        global $Table_in;
+
         $align = right_to_left() ? 'right' : 'left';
-        $str_required_mark = '<span class="apply_required_mark">*</span>';
 
         //get the range
         $range_from_to = explode(APPLY_NUMERIC_SEP, $item->presentation);
@@ -418,31 +437,34 @@ class apply_item_numeric extends apply_item_base {
         } else {
             $range_to = 0;
         }
-        $requiredmark = ($item->required == 1) ? $str_required_mark : '';
+
+        if (!$Table_in) {
+            $str_required_mark = '<span class="apply_required_mark">*</span>';
+            $requiredmark = ($item->required == 1) ? $str_required_mark : '';
+            //print the question and label
+            echo '<div class="apply_item_label_'.$align.'">';
+            echo format_text($item->name . $requiredmark, true, false, false);
+
+            switch(true) {
+                case ($range_from === '-' AND is_numeric($range_to)):
+                    echo ' ('.get_string('maximal', 'apply').
+                        ': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
+                    break;
+                case (is_numeric($range_from) AND $range_to === '-'):
+                    echo ' ('.get_string('minimal', 'apply').
+                        ': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).')';
+                    break;
+                case ($range_from === '-' AND $range_to === '-'):
+                    break;
+                default:
+                    echo ' ('.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).
+                        ' - '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
+                    break;
+            }
+            echo '</div>';
+        }
 
         apply_open_table_item_tag();
-
-        //print the question and label
-        echo '<div class="apply_item_label_'.$align.'">';
-        //echo '('.$item->label.') ';
-        echo format_text($item->name . $requiredmark, true, false, false);
-        switch(true) {
-            case ($range_from === '-' AND is_numeric($range_to)):
-                echo ' ('.get_string('maximal', 'apply').
-                    ': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
-                break;
-            case (is_numeric($range_from) AND $range_to === '-'):
-                echo ' ('.get_string('minimal', 'apply').
-                    ': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).')';
-                break;
-            case ($range_from === '-' AND $range_to === '-'):
-                break;
-            default:
-                echo ' ('.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).
-                    ' - '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
-                break;
-        }
-        echo '</div>';
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
@@ -460,7 +482,8 @@ class apply_item_numeric extends apply_item_base {
     }
 
 
-    public function check_value($value, $item) {
+    public function check_value($value, $item)
+    {
         $value = str_replace($this->sep_dec, APPLY_DECIMAL, $value);
         //if the item is not required, so the check is true if no value is given
         if ((!isset($value) OR $value == '') AND $item->required != 1) {
@@ -502,11 +525,12 @@ class apply_item_numeric extends apply_item_base {
                 }
                 break;
         }
-
         return false;
     }
 
-    public function create_value($data) {
+
+    public function create_value($data)
+    {
         $data = str_replace($this->sep_dec, APPLY_DECIMAL, $data);
 
         if (is_numeric($data)) {
@@ -517,17 +541,21 @@ class apply_item_numeric extends apply_item_base {
         return $data;
     }
 
+
     //compares the dbvalue with the dependvalue
     //dbvalue is the number put in by the user
     //dependvalue is the value that is compared
-    public function compare_value($item, $dbvalue, $dependvalue) {
+    public function compare_value($item, $dbvalue, $dependvalue)
+    {
         if ($dbvalue == $dependvalue) {
             return true;
         }
         return false;
     }
 
-    public function get_presentation($data) {
+
+    public function get_presentation($data)
+    {
         $num1 = str_replace($this->sep_dec, APPLY_DECIMAL, $data->numericrangefrom);
         if (is_numeric($num1)) {
             $num1 = floatval($num1);
@@ -553,19 +581,27 @@ class apply_item_numeric extends apply_item_base {
         }
     }
 
-    public function get_hasvalue() {
+
+    public function get_hasvalue()
+    {
         return 1;
     }
 
-    public function can_switch_require() {
+
+    public function can_switch_require()
+    {
         return true;
     }
 
-    public function value_type() {
+
+    public function value_type()
+    {
         return PARAM_FLOAT;
     }
 
-    public function clean_input_value($value) {
+
+    public function clean_input_value($value)
+    {
         $value = str_replace($this->sep_dec, APPLY_DECIMAL, $value);
         if (!is_numeric($value)) {
             if ($value == '') {

@@ -31,11 +31,14 @@ class apply_item_multichoice extends apply_item_base
     private $item_form;
     private $item;
 
-    public function init() {
 
+    public function init()
+    {
     }
 
-    public function build_editform($item, $apply, $cm) {
+
+    public function build_editform($item, $apply, $cm)
+    {
         global $DB, $CFG;
         require_once('multichoice_form.php');
 
@@ -66,34 +69,40 @@ class apply_item_multichoice extends apply_item_base
                              'typ'=>$item->typ,
                              'items'=>$applyitems,
                              'apply_id'=>$apply->id);
-
         //build the form
         $customdata = array('item' => $item,
                             'common' => $commonparams,
                             'positionlist' => $positionlist,
                             'position' => $position,
                             'info' => $info);
-
         $this->item_form = new apply_multichoice_form('edit_item.php', $customdata);
     }
 
+
     //this function only can used after the call of build_editform()
-    public function show_editform() {
+    public function show_editform() 
+    {
         $this->item_form->display();
     }
 
-    public function is_cancelled() {
+
+    public function is_cancelled()
+    {
         return $this->item_form->is_cancelled();
     }
 
-    public function get_data() {
+
+    public function get_data()
+    {
         if ($this->item = $this->item_form->get_data()) {
             return true;
         }
         return false;
     }
 
-    public function save_item() {
+
+    public function save_item() 
+    {
         global $DB;
 
         if (!$item = $this->item_form->get_data()) {
@@ -121,7 +130,8 @@ class apply_item_multichoice extends apply_item_base
 
     //gets an array with three values(typ, name, XXX)
     //XXX is an object with answertext, answercount and quotient
-    public function get_analysed($item, $groupid = false, $courseid = false) {
+    public function get_analysed($item, $groupid = false, $courseid = false)
+    {
         $info = $this->get_info($item);
 
         $analysed_item = array();
@@ -181,7 +191,9 @@ class apply_item_multichoice extends apply_item_base
         return $analysed_item;
     }
 
-    public function get_printval($item, $value) {
+
+    public function get_printval($item, $value)
+    {
         $info = $this->get_info($item);
 
         $printval = '';
@@ -217,7 +229,9 @@ class apply_item_multichoice extends apply_item_base
         return $printval;
     }
 
-    public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false) {
+
+    public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false)
+    {
         global $OUTPUT;
         $sep_dec = get_string('separator_decimal', 'apply');
         if (substr($sep_dec, 0, 2) == '[[') {
@@ -261,10 +275,11 @@ class apply_item_multichoice extends apply_item_base
         }
     }
 
+
     public function excelprint_item(&$worksheet, $row_offset,
                              $xls_formats, $item,
-                             $groupid, $courseid = false) {
-
+                             $groupid, $courseid = false)
+    {
         $analysed_item = $this->get_analysed($item, $groupid, $courseid);
 
         $data = $analysed_item[2];
@@ -397,6 +412,8 @@ class apply_item_multichoice extends apply_item_base
     public function print_item_submit($item, $value = null, $highlightrequire = false)
     {
         global $OUTPUT;
+        global $Table_in;
+
         $info = $this->get_info($item);
         $align = right_to_left() ? 'right' : 'left';
 
@@ -406,46 +423,38 @@ class apply_item_multichoice extends apply_item_base
         $presentation = explode(APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
-        //test if required and no value is set so we have to mark this item
-        //we have to differ check and the other subtypes
-        // if ($info->subtype == 'c') {
-            if (is_array($value)) {
-                $values = $value;
-            } else {
-                $values = explode(APPLY_MULTICHOICE_LINE_SEP, $value);
+        if (is_array($value)) {
+            $values = $value;
+        } else {
+            $values = explode(APPLY_MULTICHOICE_LINE_SEP, $value);
+        }
+        $highlight = '';
+        if ($highlightrequire AND $item->required) {
+            if (count($values) == 0 OR $values[0] == '' OR $values[0] == 0) {
+                $highlight = ' missingrequire';
             }
-            $highlight = '';
-            if ($highlightrequire AND $item->required) {
-                if (count($values) == 0 OR $values[0] == '' OR $values[0] == 0) {
-                    $highlight = ' missingrequire';
-                }
-            }
+        }
+
+        if (!$Table_in) {
             $requiredmark = ($item->required == 1) ? $str_required_mark : '';
-        // } else {
-            // if ($highlightrequire AND $item->required AND intval($value) <= 0) {
-                // $highlight = ' missingrequire';
-            // } else {
-                // $highlight = '';
-            // }
-            // $requiredmark = ($item->required == 1) ? $str_required_mark : '';
-        // }
+            //print the question and label
+            echo '<div class="apply_item_label_'.$align.$highlight.'">';
+            echo format_text($item->name.$requiredmark, true, false, false);
+            echo '</div>';
+        }
 
         apply_open_table_item_tag();
 
-        //print the question and label
-        echo '<div class="apply_item_label_'.$align.$highlight.'">';
-        echo format_text($item->name.$requiredmark, true, false, false);
-        echo '</div>';
-
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.$highlight.'">';
-
         echo '<ul>';
+
         if ($info->horizontal) {
             $hv = 'h';
         } else {
             $hv = 'v';
         }
+
         //print the "not_selected" item on radiobuttons
         if ($info->subtype == 'r' AND !$this->hidenoselect($item)) {
         ?>
@@ -453,9 +462,6 @@ class apply_item_multichoice extends apply_item_base
                 <span class="apply_item_radio_<?php echo $hv.'_'.$align;?>">
                     <?php
                     $checked = '';
-                    // if (!$value) {
-                        // $checked = 'checked="checked"';
-                    // }
                     if (count($values) == 0 OR $values[0] == '' OR $values[0] == 0) {
                         $checked = 'checked="checked"';
                     }
@@ -503,13 +509,14 @@ class apply_item_multichoice extends apply_item_base
     public function print_item_show_value($item, $value = null)
     {
         global $OUTPUT;
+        global $Table_in;
+
         $info = $this->get_info($item);
         $align = right_to_left() ? 'right' : 'left';
 
         if ($value == null) {
             $value = array();
         }
-
         $presentation = explode(APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
 
         //test if required and no value is set so we have to mark this item
@@ -521,18 +528,20 @@ class apply_item_multichoice extends apply_item_base
                 $values = explode(APPLY_MULTICHOICE_LINE_SEP, $value);
             }
         }
-        $requiredmark = '';
-        if ($item->required == 1) {
-            $requiredmark = '<span class="apply_required_mark">*</span>';
+
+        if (!$Table_in) {
+            $requiredmark = '';
+            if ($item->required == 1) {
+                $requiredmark = '<span class="apply_required_mark">*</span>';
+            }
+
+            //print the question and label
+            echo '<div class="apply_item_label_'.$align.'">';
+            echo format_text($item->name . $requiredmark, true, false, false);
+            echo '</div>';
         }
 
         apply_open_table_item_tag();
-
-        //print the question and label
-        echo '<div class="apply_item_label_'.$align.'">';
-        //echo '('.$item->label.') ';
-        echo format_text($item->name . $requiredmark, true, false, false);
-        echo '</div>';
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
@@ -568,7 +577,8 @@ class apply_item_multichoice extends apply_item_base
     }
 
 
-    public function check_value($value, $item) {
+    public function check_value($value, $item)
+    {
         $info = $this->get_info($item);
 
         if ($item->required != 1) {
@@ -582,7 +592,9 @@ class apply_item_multichoice extends apply_item_base
         return true;
     }
 
-    public function create_value($data) {
+
+    public function create_value($data)
+    {
         $vallist = $data;
         if (is_array($vallist)) {
             $vallist = array_unique($vallist);
@@ -590,11 +602,12 @@ class apply_item_multichoice extends apply_item_base
         return trim($this->item_array_to_string($vallist));
     }
 
+
     //compares the dbvalue with the dependvalue
     //dbvalue is the number of one selection
     //dependvalue is the presentation of one selection
-    public function compare_value($item, $dbvalue, $dependvalue) {
-
+    public function compare_value($item, $dbvalue, $dependvalue)
+    {
         if (is_array($dbvalue)) {
             $dbvalues = $dbvalue;
         } else {
@@ -615,7 +628,9 @@ class apply_item_multichoice extends apply_item_base
         return false;
     }
 
-    public function get_presentation($data) {
+
+    public function get_presentation($data)
+    {
         $present = str_replace("\n", APPLY_MULTICHOICE_LINE_SEP, trim($data->itemvalues));
         if (!isset($data->subtype)) {
             $subtype = 'r';
@@ -628,11 +643,15 @@ class apply_item_multichoice extends apply_item_base
         return $subtype.APPLY_MULTICHOICE_TYPE_SEP.$present;
     }
 
-    public function get_hasvalue() {
+
+    public function get_hasvalue()
+    {
         return 1;
     }
 
-    public function get_info($item) {
+
+    public function get_info($item)
+    {
         $presentation = empty($item->presentation) ? '' : $item->presentation;
 
         $info = new stdClass();
@@ -660,7 +679,9 @@ class apply_item_multichoice extends apply_item_base
         return $info;
     }
 
-    private function item_array_to_string($value) {
+
+    private function item_array_to_string($value)
+    {
         if (!is_array($value)) {
             return $value;
         }
@@ -675,7 +696,9 @@ class apply_item_multichoice extends apply_item_base
         return $retval;
     }
 
-    private function print_item_radio($presentation, $item, $value, $info, $align) {
+
+    private function print_item_radio($presentation, $item, $value, $info, $align)
+    {
         $index = 1;
         $checked = '';
 
@@ -723,8 +746,9 @@ class apply_item_multichoice extends apply_item_base
         }
     }
 
-    private function print_item_check($presentation, $item, $value, $info, $align) {
 
+    private function print_item_check($presentation, $item, $value, $info, $align)
+    {
         if (is_array($value)) {
             $values = $value;
         } else {
@@ -771,7 +795,9 @@ class apply_item_multichoice extends apply_item_base
         }
     }
 
-    private function print_item_dropdown($presentation, $item, $value, $info, $align) {
+
+    private function print_item_dropdown($presentation, $item, $value, $info, $align)
+    {
         if (is_array($value)) {
             $values = $value;
         } else {
@@ -814,47 +840,63 @@ class apply_item_multichoice extends apply_item_base
         <?php
     }
 
-    public function set_ignoreempty($item, $ignoreempty=true) {
+
+    public function set_ignoreempty($item, $ignoreempty=true) 
+    {
         $item->options = str_replace(APPLY_MULTICHOICE_IGNOREEMPTY, '', $item->options);
         if ($ignoreempty) {
             $item->options .= APPLY_MULTICHOICE_IGNOREEMPTY;
         }
     }
 
-    public function ignoreempty($item) {
+
+    public function ignoreempty($item)
+    {
         if (strstr($item->options, APPLY_MULTICHOICE_IGNOREEMPTY)) {
             return true;
         }
         return false;
     }
 
-    public function set_hidenoselect($item, $hidenoselect=true) {
+
+    public function set_hidenoselect($item, $hidenoselect=true)
+    {
         $item->options = str_replace(APPLY_MULTICHOICE_HIDENOSELECT, '', $item->options);
         if ($hidenoselect) {
             $item->options .= APPLY_MULTICHOICE_HIDENOSELECT;
         }
     }
 
-    public function hidenoselect($item) {
+
+    public function hidenoselect($item)
+    {
         if (strstr($item->options, APPLY_MULTICHOICE_HIDENOSELECT)) {
             return true;
         }
         return false;
     }
 
-    public function can_switch_require() {
+
+    public function can_switch_require()
+    {
         return true;
     }
 
-    public function value_type() {
+    
+    public function value_type()
+    {
         return PARAM_INT;
     }
 
-    public function value_is_array() {
+    
+    public function value_is_array()
+    {
         return true;
     }
 
-    public function clean_input_value($value) {
+
+    public function clean_input_value($value)
+    {
         return clean_param_array($value, $this->value_type());
     }
 }

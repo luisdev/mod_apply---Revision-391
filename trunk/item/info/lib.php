@@ -17,17 +17,22 @@
 defined('MOODLE_INTERNAL') OR die('not allowed');
 require_once($CFG->dirroot.'/mod/apply/item/apply_item_class.php');
 
-class apply_item_info extends apply_item_base {
+class apply_item_info extends apply_item_base
+{
     protected $type = "info";
     private $commonparams;
     private $item_form;
     private $item;
 
-    public function init() {
+
+    public function init()
+    {
 
     }
 
-    public function build_editform($item, $apply, $cm) {
+
+    public function build_editform($item, $apply, $cm)
+    {
         global $DB, $CFG;
         require_once('info_form.php');
 
@@ -64,23 +69,31 @@ class apply_item_info extends apply_item_base {
                                                   'position' => $position));
     }
 
+
     //this function only can used after the call of build_editform()
-    public function show_editform() {
+    public function show_editform()
+    {
         $this->item_form->display();
     }
 
-    public function is_cancelled() {
+
+    public function is_cancelled()
+    {
         return $this->item_form->is_cancelled();
     }
 
-    public function get_data() {
+
+    public function get_data()
+    {
         if ($this->item = $this->item_form->get_data()) {
             return true;
         }
         return false;
     }
 
-    public function save_item() {
+
+    public function save_item()
+    {
         global $DB;
 
         if (!$item = $this->item_form->get_data()) {
@@ -102,9 +115,10 @@ class apply_item_info extends apply_item_base {
         return $DB->get_record('apply_item', array('id'=>$item->id));
     }
 
-    //liefert eine Struktur ->name, ->data = array(mit Antworten)
-    public function get_analysed($item, $groupid = false, $courseid = false) {
 
+    //liefert eine Struktur ->name, ->data = array(mit Antworten)
+    public function get_analysed($item, $groupid = false, $courseid = false)
+    {
         $presentation = $item->presentation;
         $analysed_val = new stdClass();;
         $analysed_val->data = null;
@@ -137,15 +151,18 @@ class apply_item_info extends apply_item_base {
         return $analysed_val;
     }
 
-    public function get_printval($item, $value) {
 
+    public function get_printval($item, $value)
+    {
         if (!isset($value->value)) {
             return '';
         }
         return userdate($value->value);
     }
 
-    public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false) {
+
+    public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false)
+    {
         $analysed_item = $this->get_analysed($item, $groupid, $courseid);
         $data = $analysed_item->data;
         if (is_array($data)) {
@@ -161,9 +178,11 @@ class apply_item_info extends apply_item_base {
         }
     }
 
+
     public function excelprint_item(&$worksheet, $row_offset,
                              $xls_formats, $item,
-                             $groupid, $courseid = false) {
+                             $groupid, $courseid = false)
+    {
         $analysed_item = $this->get_analysed($item, $groupid, $courseid);
 
         $worksheet->write_string($row_offset, 0, $item->label, $xls_formats->head2);
@@ -181,6 +200,7 @@ class apply_item_info extends apply_item_base {
         $row_offset++;
         return $row_offset;
     }
+
 
     /**
      * print the item at the edit-page of apply
@@ -218,19 +238,13 @@ class apply_item_info extends apply_item_base {
                 break;
             case 2:
                 $coursecontext = context_course::instance($course->id);
-                $itemvalue = format_string($course->shortname,
-                                           true,
-                                           array('context' => $coursecontext));
-
+                $itemvalue = format_string($course->shortname, true, array('context' => $coursecontext));
                 $itemshowvalue = $itemvalue;
                 break;
             case 3:
                 if ($coursecategory) {
                     $category_context = context_coursecat::instance($coursecategory->id);
-                    $itemvalue = format_string($coursecategory->name,
-                                               true,
-                                               array('context' => $category_context));
-
+                    $itemvalue = format_string($coursecategory->name, true, array('context' => $category_context));
                     $itemshowvalue = $itemvalue;
                 } else {
                     $itemvalue = '';
@@ -278,6 +292,7 @@ class apply_item_info extends apply_item_base {
     public function print_item_submit($item, $value = '', $highlightrequire = false)
     {
         global $USER, $DB, $OUTPUT;
+        global $Table_in;
 
         $align = right_to_left() ? 'right' : 'left';
 
@@ -287,16 +302,13 @@ class apply_item_info extends apply_item_base {
         } else {
             $highlight = '';
         }
-        $requiredmark =  ($item->required == 1)?'<span class="apply_required_mark">*</span>':'';
 
         $apply = $DB->get_record('apply', array('id'=>$item->apply_id));
-
         if ($courseid = optional_param('courseid', 0, PARAM_INT)) {
             $course = $DB->get_record('course', array('id'=>$courseid));
         } else {
             $course = $DB->get_record('course', array('id'=>$apply->course));
         }
-
         if ($course->id !== SITEID) {
             $coursecategory = $DB->get_record('course_categories', array('id'=>$course->category));
         } else {
@@ -310,19 +322,13 @@ class apply_item_info extends apply_item_base {
                 break;
             case 2:
                 $coursecontext = context_course::instance($course->id);
-                $itemvalue = format_string($course->shortname,
-                                           true,
-                                           array('context' => $coursecontext));
-
+                $itemvalue = format_string($course->shortname, true, array('context' => $coursecontext));
                 $itemshowvalue = $itemvalue;
                 break;
             case 3:
                 if ($coursecategory) {
                     $category_context = context_coursecat::instance($coursecategory->id);
-                    $itemvalue = format_string($coursecategory->name,
-                                               true,
-                                               array('context' => $category_context));
-
+                    $itemvalue = format_string($coursecategory->name, true, array('context' => $category_context));
                     $itemshowvalue = $itemvalue;
                 } else {
                     $itemvalue = '';
@@ -331,12 +337,15 @@ class apply_item_info extends apply_item_base {
                 break;
         }
 
-        apply_open_table_item_tag();
+        if (!$Table_in) {
+            $requiredmark =  ($item->required == 1)?'<span class="apply_required_mark">*</span>':'';
+            //print the question and label
+            echo '<div class="apply_item_label_'.$align.$highlight.'">';
+            echo format_text($item->name.$requiredmark, true, false, false);
+            echo '</div>';
+        }
 
-        //print the question and label
-        echo '<div class="apply_item_label_'.$align.$highlight.'">';
-        echo format_text($item->name.$requiredmark, true, false, false);
-        echo '</div>';
+        apply_open_table_item_tag();
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
@@ -359,22 +368,23 @@ class apply_item_info extends apply_item_base {
     public function print_item_show_value($item, $value = '')
     {
         global $USER, $DB, $OUTPUT;
+        global $Table_in;
+
         $align = right_to_left() ? 'right' : 'left';
-
         $presentation = $item->presentation;
-        $requiredmark =  ($item->required == 1)?'<span class="apply_required_mark">*</span>':'';
-
         if ($presentation == 1) {
             $value = $value ? userdate($value) : '&nbsp;';
         }
 
-        apply_open_table_item_tag();
+        if (!$Table_in) {
+            $requiredmark =  ($item->required == 1)?'<span class="apply_required_mark">*</span>':'';
+            //print the question and label
+            echo '<div class="apply_item_label_'.$align.'">';
+            echo format_text($item->name . $requiredmark, true, false, false);
+            echo '</div>';
+        }
 
-        //print the question and label
-        echo '<div class="apply_item_label_'.$align.'">';
-        //echo '('.$item->label.') ';
-        echo format_text($item->name . $requiredmark, true, false, false);
-        echo '</div>';
+        apply_open_table_item_tag();
 
         //print the presentation
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
@@ -385,42 +395,57 @@ class apply_item_info extends apply_item_base {
     }
 
 
-    public function check_value($value, $item) {
+    public function check_value($value, $item)
+    {
         return true;
     }
 
-    public function create_value($data) {
+
+    public function create_value($data)
+    {
         $data = clean_text($data);
         return $data;
     }
 
+
     //compares the dbvalue with the dependvalue
     //the values can be the shortname of a course or the category name
     //the date is not compareable :(.
-    public function compare_value($item, $dbvalue, $dependvalue) {
+    public function compare_value($item, $dbvalue, $dependvalue)
+    {
         if ($dbvalue == $dependvalue) {
             return true;
         }
         return false;
     }
 
-    public function get_presentation($data) {
+
+    public function get_presentation($data)
+    {
         return $data->infotype;
     }
 
-    public function get_hasvalue() {
+
+    public function get_hasvalue()
+    {
         return 1;
     }
 
-    public function can_switch_require() {
+
+    public function can_switch_require()
+    {
         return false;
     }
 
-    public function value_type() {
+
+    public function value_type()
+    {
         return PARAM_TEXT;
     }
 
-    public function clean_input_value($value) {
+
+    public function clean_input_value($value)
+    {
         return clean_param($value, $this->value_type());
     }
 }

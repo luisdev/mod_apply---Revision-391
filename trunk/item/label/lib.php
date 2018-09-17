@@ -18,7 +18,8 @@ defined('MOODLE_INTERNAL') OR die('not allowed');
 require_once($CFG->dirroot.'/mod/apply/item/apply_item_class.php');
 require_once($CFG->libdir.'/formslib.php');
 
-class apply_item_label extends apply_item_base {
+class apply_item_label extends apply_item_base
+ {
     protected $type = "label";
     private $presentationoptions = null;
     private $commonparams;
@@ -26,14 +27,16 @@ class apply_item_label extends apply_item_base {
     private $context;
     private $item;
 
-    public function init() {
-        global $CFG;
-        $this->presentationoptions = array('maxfiles' => EDITOR_UNLIMITED_FILES,
-                                           'trusttext'=>true);
 
+    public function init()
+    {
+        global $CFG;
+        $this->presentationoptions = array('maxfiles' => EDITOR_UNLIMITED_FILES, 'trusttext'=>true);
     }
 
-    public function build_editform($item, $apply, $cm) {
+
+    public function build_editform($item, $apply, $cm)
+    {
         global $DB, $CFG;
         require_once('label_form.php');
 
@@ -58,7 +61,6 @@ class apply_item_label extends apply_item_base {
                              'typ'=>$item->typ,
                              'items'=>$applyitems,
                              'apply_id'=>$apply->id);
-
         $this->context = context_module::instance($cm->id);
 
         //preparing the editor for new file-api
@@ -68,7 +70,6 @@ class apply_item_label extends apply_item_base {
         // Append editor context to presentation options, giving preference to existing context.
         $this->presentationoptions = array_merge(array('context' => $this->context),
                                                  $this->presentationoptions);
-
         $item = file_prepare_standard_editor($item,
                                             'presentation', //name of the form element
                                             $this->presentationoptions,
@@ -76,34 +77,40 @@ class apply_item_label extends apply_item_base {
                                             'mod_apply',
                                             'item', //the filearea
                                             $item->id);
-
         //build the form
         $customdata = array('item' => $item,
                             'common' => $commonparams,
                             'positionlist' => $positionlist,
                             'position' => $position,
                             'presentationoptions' => $this->presentationoptions);
-
         $this->item_form = new apply_label_form('edit_item.php', $customdata);
     }
 
+
     //this function only can used after the call of build_editform()
-    public function show_editform() {
+    public function show_editform()
+    {
         $this->item_form->display();
     }
 
-    public function is_cancelled() {
+
+    public function is_cancelled()
+    {
         return $this->item_form->is_cancelled();
     }
 
-    public function get_data() {
+
+    public function get_data()
+    {
         if ($this->item = $this->item_form->get_data()) {
             return true;
         }
         return false;
     }
 
-    public function save_item() {
+
+    public function save_item()
+    {
         global $DB;
 
         if (!$item = $this->item_form->get_data()) {
@@ -137,7 +144,9 @@ class apply_item_label extends apply_item_base {
         return $DB->get_record('apply_item', array('id'=>$item->id));
     }
 
-    public function print_item($item) {
+
+    public function print_item($item)
+    {
         global $DB, $CFG;
 
         require_once($CFG->libdir . '/filelib.php');
@@ -170,6 +179,7 @@ class apply_item_label extends apply_item_base {
         $formatoptions = array('overflowdiv'=>true, 'trusted'=>$CFG->enabletrusttext);
         echo format_text($output, FORMAT_HTML, $formatoptions);
     }
+
 
     /**
      * print the item at the edit-page of apply
@@ -236,20 +246,27 @@ class apply_item_label extends apply_item_base {
     }
 
 
-    public function create_value($data) {
+    public function create_value($data) 
+    {
         return false;
     }
 
-    public function compare_value($item, $dbvalue, $dependvalue) {
+
+    public function compare_value($item, $dbvalue, $dependvalue)
+    {
         return false;
     }
+
 
     //used by create_item and update_item functions,
     //when provided $data submitted from apply_show_edit
-    public function get_presentation($data) {
+    public function get_presentation($data)
+    {
     }
 
-    public function postupdate($item) {
+   
+     public function postupdate($item) 
+     {
         global $DB;
 
         $context = context_module::instance($item->cmid);
@@ -260,40 +277,61 @@ class apply_item_label extends apply_item_base {
                                                 'mod_apply',
                                                 'item',
                                                 $item->id);
-
         $DB->update_record('apply_item', $item);
         return $item->id;
     }
 
-    public function get_hasvalue() {
+
+    public function get_hasvalue()
+    {
         return 0;
     }
 
-    public function can_switch_require() {
+
+    public function can_switch_require()
+    {
         return false;
     }
 
-    public function check_value($value, $item) {
+
+    public function check_value($value, $item)
+    {
     }
+
 
     public function excelprint_item(&$worksheet,
                              $row_offset,
                              $xls_formats,
                              $item,
                              $groupid,
-                             $courseid = false) {
+                             $courseid = false)
+    {
     }
 
-    public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false) {
+
+    public function print_analysed($item, $itemnr = '', $groupid = false, $courseid = false)
+    {
     }
-    public function get_printval($item, $value) {
+   
+
+    public function get_printval($item, $value)
+    {
     }
-    public function get_analysed($item, $groupid = false, $courseid = false) {
+
+
+    public function get_analysed($item, $groupid = false, $courseid = false)
+    {
     }
-    public function value_type() {
+
+
+    public function value_type()
+    {
         return PARAM_BOOL;
     }
-    public function clean_input_value($value) {
+
+
+    public function clean_input_value($value)
+    {
         return '';
     }
 }

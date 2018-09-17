@@ -269,9 +269,9 @@ class apply_item_textarea extends apply_item_base
     public function print_item_submit($item, $value = '', $highlightrequire = false)
     {
         global $OUTPUT;
+        global $Table_in;
 
         $align = right_to_left() ? 'right' : 'left';
-        $str_required_mark = '<span class="apply_required_mark">*</span>';
 
         $presentation = explode(APPLY_TEXTAREA_SEP, $item->presentation);
         if ($highlightrequire AND $item->required AND strval($value) == '') {
@@ -279,14 +279,17 @@ class apply_item_textarea extends apply_item_base
         } else {
             $highlight = '';
         }
-        $requiredmark = ($item->required == 1) ? $str_required_mark :'';
+
+        if (!$Table_in) {
+            $str_required_mark = '<span class="apply_required_mark">*</span>';
+            $requiredmark = ($item->required == 1) ? $str_required_mark :'';
+            //print the question and label
+            echo '<div class="apply_item_label_'.$align.$highlight.'">';
+            echo format_text($item->name . $requiredmark, true, false, false);
+            echo '</div>';
+        }
 
         apply_open_table_item_tag();
-
-        //print the question and label
-        echo '<div class="apply_item_label_'.$align.$highlight.'">';
-        echo format_text($item->name . $requiredmark, true, false, false);
-        echo '</div>';
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.$highlight.'">';
@@ -314,19 +317,22 @@ class apply_item_textarea extends apply_item_base
     public function print_item_show_value($item, $value = '')
     {
         global $OUTPUT;
+        global $Table_in;
 
         $align = right_to_left() ? 'right' : 'left';
-        $str_required_mark = '<span class="apply_required_mark">*</span>';
+        //$presentation = explode(APPLY_TEXTAREA_SEP, $item->presentation);
 
-        $presentation = explode(APPLY_TEXTAREA_SEP, $item->presentation);
-        $requiredmark = ($item->required == 1) ? $str_required_mark : '';
+        if (!$Table_in) {
+            $str_required_mark = '<span class="apply_required_mark">*</span>';
+            $requiredmark = ($item->required == 1) ? $str_required_mark : '';
+
+            //print the question and label
+            echo '<div class="apply_item_label_'.$align.'">';
+            echo format_text($item->name . $requiredmark, true, false, false);
+            echo '</div>';
+        }
 
         apply_open_table_item_tag();
-
-        //print the question and label
-        echo '<div class="apply_item_label_'.$align.'">';
-        echo format_text($item->name . $requiredmark, true, false, false);
-        echo '</div>';
 
         //print the presentation
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
