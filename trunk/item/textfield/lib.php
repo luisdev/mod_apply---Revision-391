@@ -231,7 +231,7 @@ class apply_item_textfield extends apply_item_base
         $output .= '</div>';
         echo $output;
 
-        apply_open_table_item_tga($output);
+        apply_open_table_item_tag($output);
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
@@ -244,7 +244,7 @@ class apply_item_textfield extends apply_item_base
         echo '</span>';
         echo '</div>';
 
-        apply_close_table_item_tga();
+        apply_close_table_item_tag();
     }
 
 
@@ -271,7 +271,7 @@ class apply_item_textfield extends apply_item_base
         }
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
 
-        apply_open_table_item_tga();
+        apply_open_table_item_tag();
 
         //print the question and label
         echo '<div class="apply_item_label_'.$align.$highlight.'">';
@@ -289,7 +289,7 @@ class apply_item_textfield extends apply_item_base
         echo '</span>';
         echo '</div>';
 
-        apply_close_table_item_tga();
+        apply_close_table_item_tag();
     }
 
 
@@ -310,7 +310,7 @@ class apply_item_textfield extends apply_item_base
         $presentation = explode(APPLY_TEXTFIELD_SEP, $item->presentation);
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
 
-        apply_open_table_item_tga();
+        apply_open_table_item_tag();
 
         //print the question and label
         echo '<div class="apply_item_label_'.$align.'">';
@@ -322,7 +322,7 @@ class apply_item_textfield extends apply_item_base
         echo $value ? $value : '&nbsp;';
         echo $OUTPUT->box_end();
 
-        apply_close_table_item_tga();
+        apply_close_table_item_tag();
     }
 
 

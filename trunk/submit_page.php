@@ -65,7 +65,7 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 			$last_break_position = $item->position; //last item-pos (item or pagebreak)
 			if ($item->typ!='pagebreak') {
 				if ($item->label!=APPLY_ADMIN_REPLY_TAG and $item->label!=APPLY_ADMIN_ONLY_TAG) {
-                    echo '<div style="padding-bottom:10px"></div>';
+                    apply_print_line_space();
 					echo $OUTPUT->box_start('apply_print_item');
 					apply_print_item_submit($item, $value, $highlightrequired);
 					echo $OUTPUT->box_end();
