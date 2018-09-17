@@ -430,6 +430,7 @@ class apply_item_multichoicerated extends apply_item_base
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
         $index = 1;
+        $match = false;
         if (!$Table_in) echo '<div style="border:1px solid; padding:1px 2px 1px 2px;">';
         foreach ($lines as $line) {
             if ($value == $index) {
@@ -437,10 +438,12 @@ class apply_item_multichoicerated extends apply_item_base
                 echo $OUTPUT->box_start('generalbox boxalign'.$align);
                 echo text_to_html($item_value[1], true, false, false);
                 echo $OUTPUT->box_end();
+                $match = true;
                 break;
             }
             $index++;
         }
+        if (!$match) echo '&nbsp';
         if (!$Table_in) echo '</div>';
         echo '</div>';
 
