@@ -41,6 +41,7 @@ class apply_tablestart_form extends apply_item_form
         $mform->addElement('select', 'columns', get_string('table_columns', 'apply').'&nbsp;', array_slice(range(0, 20), 1, 20, true));
         $mform->addElement('select', 'border',  get_string('table_border',  'apply').'&nbsp;', range(0, 10));
         $mform->addElement('select', 'border_style',  get_string('table_border_style', 'apply').'&nbsp;', $border_styles);
+        $mform->addElement('text', 'th_sizes', get_string('table_th_sizes', 'apply').'&nbsp;', 'wrap="virtual" cols="20"');
         $mform->addElement('textarea', 'th_strings', get_string('table_th_strings', 'apply').'&nbsp;', 'wrap="virtual" rows="3" cols="20"');
 
         parent::definition();
@@ -54,7 +55,8 @@ class apply_tablestart_form extends apply_item_form
         }
 
         // その他の値を格納する変数
-        $item->presentation = $item->columns.APPLY_TABLESTART_SEP.$item->border.APPLY_TABLESTART_SEP.$item->border_style.APPLY_TABLESTART_SEP.$item->th_strings;
+        $item->presentation = $item->columns.APPLY_TABLESTART_SEP.$item->border.APPLY_TABLESTART_SEP.
+                              $item->border_style.APPLY_TABLESTART_SEP.$item->th_sizes.APPLY_TABLESTART_SEP.$item->th_strings;
         return $item;
     }
 }

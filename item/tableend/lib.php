@@ -212,6 +212,7 @@ class apply_item_tableend extends apply_item_base
 
     public function check_value($value, $item)
     {
+        return true;
     }
 
 
