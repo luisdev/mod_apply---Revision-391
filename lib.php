@@ -729,6 +729,6 @@ function apply_print_line_space()
 {
     global $Table_in;
 
-    if (!$Table_in) echo '<div style="padding-bottom:10px"></div>';
+    if (!$Table_in) echo '<div style="padding-bottom:15px"></div>';
 }
 

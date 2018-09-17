@@ -132,6 +132,7 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 
 	//
 	//
+    echo '<br />';
 	echo $OUTPUT->box_start('apply_submit_cancel');
 	{
 		$action = 'action="'.$CFG->wwwroot.'/mod/apply/view.php?id='.$id.'"';
