@@ -55,6 +55,7 @@ class apply_item_tablestart extends apply_item_base
         $columns = '';
         $border = '';
         $border_style = '';
+        $th_sizes = '';
         $th_strings = '';
 
         $item->presentation = empty($item->presentation) ? '' : $item->presentation;
@@ -62,18 +63,19 @@ class apply_item_tablestart extends apply_item_base
         $columns = $presentation[0];
         if (array_key_exists(1, $presentation)) $border = $presentation[1];
         if (array_key_exists(2, $presentation)) $border_style = $presentation[2];
-        if (array_key_exists(3, $presentation)) $th_strings = $presentation[3];
+        if (array_key_exists(3, $presentation)) $th_sizes = $presentation[3];
+        if (array_key_exists(4, $presentation)) $th_strings = $presentation[4];
 
         if ($columns==0 OR $columns=='') $columns = 3;
         if ($border=='') $border = 0;
         if ($border_style=='') $border_style = 'none';
-        if ($th_strings=='') $th_strings = '';
 
         if (!property_exists($item, 'label')) $item->label = '';
         if ($item->label=='') $item->label = 'table_start';
         $item->columns = $columns;
         $item->border = $border;
         $item->border_style = $border_style;
+        $item->th_sizes = $th_sizes;
         $item->th_strings = $th_strings;
 
         //all items for dependitem
@@ -83,7 +85,6 @@ class apply_item_tablestart extends apply_item_base
                              'typ'=>$item->typ,
                              'items'=>$applyitems,
                              'apply_id'=>$apply->id);
-
         //build the form
         $customdata = array('item' => $item,
                             'common' => $commonparams,
@@ -261,14 +262,16 @@ class apply_item_tablestart extends apply_item_base
 
         //print the presentation
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
-        echo $value ? str_replace("\n", '<br />', $value) : '&nbsp;';
+        echo $value;
         echo $OUTPUT->box_end();
 
         apply_open_table_tag($item);
     }
 
 
-    public function check_value($value, $item) {
+    public function check_value($value, $item)
+    {
+        return true;
     }
 
 
@@ -293,7 +296,7 @@ class apply_item_tablestart extends apply_item_base
     public function get_presentation($data)
     {
         $presen = $data->columns.APPLY_TABLESTART_SEP.$data->border.APPLY_TABLESTART_SEP.
-                                 $data->border_style.APPLY_TABLESTART_SEP.$data->th_strings;
+                  $data->border_style.APPLY_TABLESTART_SEP.$data->th_sizes.APPLY_TABLESTART_SEP.$data->th_strings;
         return $presen;
     }
 

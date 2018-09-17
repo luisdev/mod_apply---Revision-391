@@ -652,15 +652,19 @@ function apply_open_table_tag($item)
     $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
     $columns = $presentation[0];
     $border  = $presentation[1];
-    $border_style= $presentation[2];
-    $th_strings  = $presentation[3];
+    $border_style = $presentation[2];
+    $th_sizes = $presentation[3];
+    $th_strings = $presentation[4];
+
+    $th_size = explode(',', $th_sizes);
     $th_elements = explode("\n", $th_strings);
     $table_border = $border + 1;
 
     $style = '';
-    if ($border>=0) $style = 'border-width:'.$border.'px;';
-    if ($border_style!='') $style .= 'border-style:'.$border_style.';';
-    if ($style!='') $style = 'style="'.$style.'"';
+    $style_value = '';
+    if ($border>=0) $style_value = 'border-width:'.$border.'px;';
+    if ($border_style!='') $style_value .= 'border-style:'.$border_style.';';
+    if ($style_value!='') $style = 'style="'.$style_value.'"';
 
     $Table_in = true;
     $Table_params->position = 0;
@@ -668,11 +672,19 @@ function apply_open_table_tag($item)
     $Table_params->style = $style;
 
     echo "\n";
-    echo '<table style="border:'.$table_border.'px;border-style:solid;"><tr>';
+    echo '<table style="border:'.$table_border.'px; border-style:solid; table-layout:fixed;"><tr>';
 
     // th
     if ($th_strings!='') {
         for ($col=0; $col<$columns; $col++) {
+            if (array_key_exists($col, $th_size)) {
+                $size = intval($th_size[$col]);
+                if ($size>0) {
+                    $style_value .= 'width:'.$size.'px;';
+                    if ($style_value!='') $style = 'style="'.$style_value.'"';
+                }
+            }
+
             echo '<th '.$style.'>';
             if (array_key_exists($col, $th_elements)) echo $th_elements[$col];
             else echo ' ';
