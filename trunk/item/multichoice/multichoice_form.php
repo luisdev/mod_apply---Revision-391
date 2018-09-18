@@ -21,8 +21,8 @@ class apply_multichoice_form extends apply_item_form
     protected $type = "multichoice";
 
     public function definition()
-	{
-		global $OUTPUT;
+    {
+        global $OUTPUT;
 
         $item = $this->_customdata['item'];
         $common = $this->_customdata['common'];
@@ -34,7 +34,7 @@ class apply_multichoice_form extends apply_item_form
         $mform->addElement('header', 'general', get_string($this->type, 'apply'));
         $mform->addElement('advcheckbox', 'required', get_string('required', 'apply'), '' , null , array(0, 1));
         $mform->addElement('text', 'name',  get_string('item_name',  'apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE,  'maxlength'=>255));
-		$label_help = ' '.$OUTPUT->help_icon('item_label', 'apply');
+        $label_help = ' '.$OUTPUT->help_icon('item_label', 'apply');
         $mform->addElement('text', 'label', get_string('item_label', 'apply').$label_help, array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE, 'maxlength'=>255));
         $params = array(0=>get_string('vertical', 'apply'), 1=>get_string('horizontal', 'apply'));
         $mform->addElement('select', 'horizontal', get_string('adjustment', 'apply').'&nbsp;', $params);
@@ -50,7 +50,7 @@ class apply_multichoice_form extends apply_item_form
     }
 
     public function set_data($item)
-	{
+    {
         $info = $this->_customdata['info'];
 
         $item->horizontal = $info->horizontal;
@@ -64,7 +64,7 @@ class apply_multichoice_form extends apply_item_form
     }
 
     public function get_data()
-	{
+    {
         if (!$item = parent::get_data()) {
             return false;
         }
@@ -73,7 +73,7 @@ class apply_multichoice_form extends apply_item_form
         if (!isset($item->subtype)) {
             $subtype = 'r';
         }
-		else {
+        else {
             $subtype = substr($item->subtype, 0, 1);
         }
         if (isset($item->horizontal) AND $item->horizontal == 1 AND $subtype != 'd') {

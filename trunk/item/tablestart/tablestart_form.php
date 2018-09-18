@@ -21,8 +21,8 @@ class apply_tablestart_form extends apply_item_form
     protected $type = "tablestart";
 
     public function definition()
-	{
-		global $OUTPUT;
+    {
+        global $OUTPUT;
 
         $border_styles = array('none'=>'none', 'hidden'=>'hidden', 'solid'=>'solid', 'double'=>'double', 'dashed'=>'dashed', 
                                'dotted'=>'dotted', 'groove'=>'groove', 'ridge'=>'ridge', 'inset'=>'inset', 'outset'=>'outset');
@@ -47,6 +47,8 @@ class apply_tablestart_form extends apply_item_form
         $mform->addElement('text', 'th_sizes', get_string('table_th_sizes', 'apply').$th_sz_help, 'wrap="virtual" cols="20"');
         $th_str_help = $OUTPUT->help_icon('table_th_strings', 'apply');
         $mform->addElement('textarea', 'th_strings', get_string('table_th_strings', 'apply').$th_str_help, 'wrap="virtual" rows="3" cols="20"');
+        $th_sz_help = $OUTPUT->help_icon('table_item_name', 'apply');
+        $mform->addElement('text', 'table_item_name', get_string('table_item_name', 'apply').$th_sz_help, 'wrap="virtual" cols="20"');
 
         parent::definition();
         $this->set_data($item);
