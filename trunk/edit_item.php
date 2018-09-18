@@ -119,6 +119,7 @@ $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));
 echo $OUTPUT->header();
 
+$current_tab = 'edit';
 require('tabs.php');
 
 /// Print the main part of the page
