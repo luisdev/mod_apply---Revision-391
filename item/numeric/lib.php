@@ -305,9 +305,8 @@ class apply_item_numeric extends apply_item_base
         }
         $output .= '</span>';
         $output .= '</div>';
-        echo $output;
 
-        apply_open_table_item_tag($output);
+        apply_open_table_item_tag($output, true);
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
@@ -337,7 +336,6 @@ class apply_item_numeric extends apply_item_base
     public function print_item_submit($item, $value = '', $highlightrequire = false)
     {
         global $OUTPUT;
-        global $Table_in;
 
         $align = right_to_left() ? 'right' : 'left';
         if ($highlightrequire AND (!$this->check_value($value, $item))) {
@@ -363,35 +361,31 @@ class apply_item_numeric extends apply_item_base
             $range_to = 0;
         }
 
-        if (!$Table_in) {
-            $str_required_mark = '<span class="apply_required_mark">*</span>';
-            $requiredmark = ($item->required == 1) ? $str_required_mark : '';
-            //print the question and label
-            echo '<div class="apply_item_label_'.$align.$highlight.'">';
-            echo format_text($item->name . $requiredmark, true, false, false);
-            echo '<span class="apply_item_numinfo">';
+        $str_required_mark = '<span class="apply_required_mark">*</span>';
+        $requiredmark = ($item->required == 1) ? $str_required_mark : '';
+        //print the question and label
+        $output  = ''; 
+        $output .= '<div class="apply_item_label_'.$align.$highlight.'">';
+        $output .= format_text($item->name . $requiredmark, true, false, false);
+        $output .= '<span class="apply_item_numinfo">';
 
-            switch(true) {
-                case ($range_from === '-' AND is_numeric($range_to)):
-                    echo ' ('.get_string('maximal', 'apply').
-                            ': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
-                    break;
-                case (is_numeric($range_from) AND $range_to === '-'):
-                    echo ' ('.get_string('minimal', 'apply').
-                            ': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).')';
-                    break;
-                case ($range_from === '-' AND $range_to === '-'):
-                    break;
-                default:
-                    echo ' ('.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).
-                            ' - '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
-                    break;
-            }
-            echo '</span>';
-            echo '</div>';
+        switch(true) {
+          case ($range_from === '-' AND is_numeric($range_to)):
+            $output .= ' ('.get_string('maximal', 'apply').': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
+            break;
+          case (is_numeric($range_from) AND $range_to === '-'):
+            $output .= ' ('.get_string('minimal', 'apply').': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).')';
+            break;
+          case ($range_from === '-' AND $range_to === '-'):
+            break;
+          default:
+            $output .= ' ('.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).' - '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
+            break;
         }
+        $output .= '</span>';
+        $output .= '</div>';
 
-        apply_open_table_item_tag();
+        apply_open_table_item_tag($output);
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.$highlight.'">';
@@ -419,7 +413,6 @@ class apply_item_numeric extends apply_item_base
     public function print_item_show_value($item, $value = '')
     {
         global $OUTPUT;
-        global $Table_in;
 
         $align = right_to_left() ? 'right' : 'left';
 
@@ -438,33 +431,29 @@ class apply_item_numeric extends apply_item_base
             $range_to = 0;
         }
 
-        if (!$Table_in) {
-            $str_required_mark = '<span class="apply_required_mark">*</span>';
-            $requiredmark = ($item->required == 1) ? $str_required_mark : '';
-            //print the question and label
-            echo '<div class="apply_item_label_'.$align.'">';
-            echo format_text($item->name . $requiredmark, true, false, false);
+        $str_required_mark = '<span class="apply_required_mark">*</span>';
+        $requiredmark = ($item->required == 1) ? $str_required_mark : '';
+        //print the question and label
+        $output  = '';
+        $output .= '<div class="apply_item_label_'.$align.'">';
+        $output .= format_text($item->name . $requiredmark, true, false, false);
 
-            switch(true) {
-                case ($range_from === '-' AND is_numeric($range_to)):
-                    echo ' ('.get_string('maximal', 'apply').
-                        ': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
-                    break;
-                case (is_numeric($range_from) AND $range_to === '-'):
-                    echo ' ('.get_string('minimal', 'apply').
-                        ': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).')';
-                    break;
-                case ($range_from === '-' AND $range_to === '-'):
-                    break;
-                default:
-                    echo ' ('.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).
-                        ' - '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
-                    break;
-            }
-            echo '</div>';
+        switch(true) {
+          case ($range_from === '-' AND is_numeric($range_to)):
+            $output .= ' ('.get_string('maximal', 'apply').': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
+            break;
+          case (is_numeric($range_from) AND $range_to === '-'):
+            $output .= ' ('.get_string('minimal', 'apply').': '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).')';
+            break;
+          case ($range_from === '-' AND $range_to === '-'):
+             break;
+          default:
+             $output .= ' ('.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_from).' - '.str_replace(APPLY_DECIMAL, $this->sep_dec, $range_to).')';
+             break;
         }
+        $output .= '</div>';
 
-        apply_open_table_item_tag();
+        apply_open_table_item_tag($output);
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';

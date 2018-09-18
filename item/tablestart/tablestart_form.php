@@ -40,7 +40,7 @@ class apply_tablestart_form extends apply_item_form
         $mform->setType('label', PARAM_TEXT);
 
         $mform->addElement('select', 'columns', get_string('table_columns', 'apply'), array_slice(range(0, 20), 1, 20, true));
-        $mform->setType('columns', PARAM_ALPHA);
+        $mform->setType('columns', PARAM_INT);
 
         $mform->addElement('select', 'border',  get_string('table_border',  'apply'), range(0, 10));
         $mform->addHelpButton('border', 'table_border', 'apply');
@@ -59,9 +59,9 @@ class apply_tablestart_form extends apply_item_form
         $mform->addHelpButton('th_strings', 'table_th_strings', 'apply');
         $mform->setType('th_strings', PARAM_RAW);
 
-        $mform->addElement('selectyesno', 'item_name', get_string('table_item_name', 'apply'), 'wrap="virtual" cols="20"');
-        $mform->addHelpButton('item_name', 'table_item_name', 'apply');
-        $mform->setType('item_name', PARAM_INT);
+        $mform->addElement('selectyesno', 'disp_iname', get_string('table_disp_iname', 'apply'), 'wrap="virtual" cols="20"');
+        $mform->addHelpButton('disp_iname', 'table_disp_iname', 'apply');
+        $mform->setType('disp_iname', PARAM_INT);
 
         parent::definition();
         $this->set_data($item);
@@ -76,7 +76,7 @@ class apply_tablestart_form extends apply_item_form
 
         // その他の値を格納する変数
         $item->presentation = $item->columns.APPLY_TABLESTART_SEP.$item->border.APPLY_TABLESTART_SEP.$item->border_style.APPLY_TABLESTART_SEP.
-                              $item->th_sizes.APPLY_TABLESTART_SEP.$item->th_strings.APPLY_TABLESTART_SEP.$item->item_name;
+                              $item->th_sizes.APPLY_TABLESTART_SEP.$item->th_strings.APPLY_TABLESTART_SEP.$item->disp_iname;
         return $item;
     }
 }

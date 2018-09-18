@@ -48,8 +48,8 @@ class apply_edit_add_question_form extends moodleform
         $mform->addElement('hidden', 'position');
         $mform->setType('position', PARAM_INT);
 
-        // buttons
-        $mform->addElement('submit', 'add_item', get_string('add_item', 'apply'));
+        // buttons ボタンが無くとも移動する
+        //$mform->addElement('submit', 'add_item', get_string('add_item', 'apply'));
     }
 }
 

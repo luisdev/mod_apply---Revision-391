@@ -163,9 +163,8 @@ class apply_item_captcha extends apply_item_base
         $output .= '('.$item->label.') ';
         $output .= format_text($item->name.$requiredmark, true, false, false);
         $output .= '</div>';
-        echo $output;
 
-        apply_open_table_item_tag($output);
+        apply_open_table_item_tag($output, true);
         apply_close_table_item_tag();
     }
 
@@ -182,7 +181,6 @@ class apply_item_captcha extends apply_item_base
     public function print_item_submit($item, $value = '', $highlightrequire = false)
     {
         global $SESSION, $CFG, $DB, $USER;
-        global $Table_in;
 
         require_once($CFG->libdir.'/recaptchalib_v2.php');
 
@@ -193,16 +191,15 @@ class apply_item_captcha extends apply_item_base
             $highlight = '';
         }
 
-        if (!$Table_in) {
-            $requiredmark = '<span class="apply_required_mark">*</span>';
-            //print the question and label
-            echo '<div class="apply_item_label_'.$align.'">';
-            echo '('.$item->label.') ';
-            echo format_text($item->name.$requiredmark, true, false, false);
-            $inputname = 'name="'.$item->typ.'_'.$item->id.'"';
-            echo '<input type="hidden" value="'.$USER->sesskey.'" '.$inputname.' />';
-            echo '</div>';
-        }
+        $requiredmark = '<span class="apply_required_mark">*</span>';
+        //print the question and label
+        $output  = '';
+        $output .= '<div class="apply_item_label_'.$align.'">';
+        $output .= '('.$item->label.') ';
+        $output .= format_text($item->name.$requiredmark, true, false, false);
+        $inputname = 'name="'.$item->typ.'_'.$item->id.'"';
+        $output .= '<input type="hidden" value="'.$USER->sesskey.'" '.$inputname.' />';
+        $output .= '</div>';
 
         $strincorrectpleasetryagain = get_string('incorrectpleasetryagain', 'auth');
         $strenterthewordsabove = get_string('enterthewordsabove', 'auth');
@@ -237,7 +234,7 @@ class apply_item_captcha extends apply_item_base
         </div>';
 
         //we have to rename the challengefield
-        apply_open_table_item_tag();
+        apply_open_table_item_tag($output);
         if (!empty($CFG->recaptchaprivatekey) AND !empty($CFG->recaptchapublickey)) {
             $captchahtml = recaptcha_get_challenge_html(RECAPTCHA_API_URL, $CFG->recaptchapublickey);
             echo $html.$captchahtml;
@@ -257,19 +254,17 @@ class apply_item_captcha extends apply_item_base
     public function print_item_show_value($item, $value = '')
     {
         global $DB;
-        global $Table_in;
 
         $align = right_to_left() ? 'right' : 'left';
 
-        if (!$Table_in) {
-            $requiredmark = '<span class="apply_required_mark">*</span>';
-            //print the question and label
-            echo '<div class="apply_item_label_'.$align.'">';
-            echo format_text($item->name.$requiredmark, true, false, false);
-            echo '</div>';
-        }
+        $requiredmark = '<span class="apply_required_mark">*</span>';
+        //print the question and label
+        $output  = '';
+        $output .= '<div class="apply_item_label_'.$align.'">';
+        $output .= format_text($item->name.$requiredmark, true, false, false);
+        $output .= '</div>';
 
-        apply_open_table_item_tag();
+        apply_open_table_item_tag($output);
         apply_close_table_item_tag();
     }
 

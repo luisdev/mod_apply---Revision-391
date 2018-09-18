@@ -57,7 +57,7 @@ class apply_item_tablestart extends apply_item_base
         $border_style = '';
         $th_sizes = '';
         $th_strings = '';
-        $item_name = '';
+        $disp_iname = '';
 
         $item->presentation = empty($item->presentation) ? '' : $item->presentation;
         $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
@@ -66,12 +66,12 @@ class apply_item_tablestart extends apply_item_base
         if (array_key_exists(2, $presentation)) $border_style = $presentation[2];
         if (array_key_exists(3, $presentation)) $th_sizes     = $presentation[3];
         if (array_key_exists(4, $presentation)) $th_strings   = $presentation[4];
-        if (array_key_exists(5, $presentation)) $item_name    = $presentation[5];
+        if (array_key_exists(5, $presentation)) $disp_iname   = $presentation[5];
 
         if ($columns==0 OR $columns=='') $columns = 3;
         if ($border=='') $border = 1;
         if ($border_style=='') $border_style = 'solid';
-        if ($item_name=='') $item_name = 0;
+        if ($disp_iname=='') $disp_iname = 0;
 
         if (!property_exists($item, 'label')) $item->label = '';
         if ($item->label=='') $item->label = 'table_start';
@@ -80,7 +80,7 @@ class apply_item_tablestart extends apply_item_base
         $item->border_style = $border_style;
         $item->th_sizes     = $th_sizes;
         $item->th_strings   = $th_strings;
-        $item->item_name    = $item_name;
+        $item->disp_iname   = $disp_iname;
 
         //all items for dependitem
         $applyitems = apply_get_depend_candidates_for_item($apply, $item);
@@ -300,7 +300,7 @@ class apply_item_tablestart extends apply_item_base
     public function get_presentation($data)
     {
         $presen = $data->columns.APPLY_TABLESTART_SEP.$data->border.APPLY_TABLESTART_SEP.$data->border_style.APPLY_TABLESTART_SEP.
-                  $data->th_sizes.APPLY_TABLESTART_SEP.$data->th_strings.APPLY_TABLESTART_SEP.$data->item_name;
+                  $data->th_sizes.APPLY_TABLESTART_SEP.$data->th_strings.APPLY_TABLESTART_SEP.$data->disp_iname;
         return $presen;
     }
 

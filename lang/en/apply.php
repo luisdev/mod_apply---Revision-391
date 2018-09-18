@@ -301,6 +301,6 @@ $string['table_th_sizes'] = 'Width(px) of each column';
 $string['table_th_sizes_help'] = 'Specify the width (px unit) of each column separated by commas. But if next "Title of each column" is empty, this values are ignored.';
 $string['table_th_strings'] = 'Title of each column';
 $string['table_th_strings_help'] = 'Describe the title of each column separated by line feed. That is, one title is written on one line.';
-$string['table_item_name'] = 'Display item name';
-$string['table_item_name_help'] = 'Display the name of the item in table.';
+$string['table_disp_iname'] = 'Display item name';
+$string['table_disp_iname_help'] = 'Display the name of the item in table.';
 

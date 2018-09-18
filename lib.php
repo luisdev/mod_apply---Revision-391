@@ -655,7 +655,7 @@ function apply_open_table_tag($item)
     $border_style = $presentation[2];
     $th_sizes     = $presentation[3];
     $th_strings   = $presentation[4];
-    $item_name    = $presentation[5];
+    $disp_iname   = $presentation[5];
 
     $th_size = explode(',', $th_sizes);
     $th_elements = explode("\n", $th_strings);
@@ -671,6 +671,7 @@ function apply_open_table_tag($item)
     $Table_params->position = 0;
     $Table_params->columns = $columns;
     $Table_params->style = $style;
+    $Table_params->disp_iname = $disp_iname;
 
     echo "\n";
     echo '<table style="border:'.$table_border.'px; border-style:solid; table-layout:fixed;"><tr>';
@@ -712,15 +713,21 @@ function apply_close_table_tag()
 }
 
 
-function apply_open_table_item_tag($header='')
+function apply_open_table_item_tag($title='', $preview=false)
 {
     global $Table_in, $Table_params;
 
-    if (!$Table_in) return;
+    if (!$Table_in or $preview) {
+        if ($title!='') echo $title;   // outside of table
+        if (!$Table_in) return;
+    }    
 
     if ($Table_params->position==0) echo '<tr>';
     echo '<td '.$Table_params->style.'>';
-    if ($header!='') echo $header;
+
+    if ($Table_params->disp_iname) {
+        if ($title!='') echo $title;   // inside of table
+    }    
 }
 
 
