@@ -737,6 +737,9 @@ function apply_close_table_item_tag()
 }
 
 
+//
+// for layout
+//
 function apply_print_line_space($size='')
 {
     global $Table_in;
@@ -744,5 +747,24 @@ function apply_print_line_space($size='')
     $size = intval($size);
     if ($size<=0) $size = '15';
     if (!$Table_in) echo '<div style="padding-bottom:'.$size.'px"></div>';
+}
+
+
+function apply_box_start($size='1', $type='solid')
+{
+    global $Table_in;
+
+    if (!$Table_in) {
+        $size = intval($size);
+        echo '<table style="border:'.$size.'px '.$type.';"><tr><td style="padding:0px 5px 0px 5px;">';
+    }
+}
+
+
+function apply_box_end()
+{
+    global $Table_in;
+
+    if (!$Table_in) echo '</td></tr></table>';
 }
 
