@@ -169,7 +169,7 @@ It is used for an administrator\'s memo etc.</li></ul>
 </li>
 </ul>';
 
-$string['item_name'] = 'Title';
+$string['item_name'] = 'Item Name';
 $string['items_are_required'] = 'Answers are required to starred items.';
 $string['label'] = 'Label';
 $string['maximal'] = 'maximal';
@@ -276,7 +276,7 @@ $string['update_item'] = 'Save changes to question';
 $string['use_calendar'] = 'Use Calendar';
 $string['use_calendar_help'] = 'The period for submission of an application is registered into a calendar.';
 $string['use_item'] = 'use {$a}';
-$string['use_one_line_for_each_value'] = '<br />Use one line for each answer!';
+$string['use_one_line_for_each_value'] = 'Use one line for each value!';
 $string['use_this_template'] = 'Use this template';
 $string['user_pic']  	 = 'Picture';
 $string['username_manage'] = 'Manage of Username';
@@ -301,4 +301,6 @@ $string['table_th_sizes'] = 'Width(px) of each column';
 $string['table_th_sizes_help'] = 'Specify the width (px unit) of each column separated by commas. But if next "Title of each column" is empty, this values are ignored.';
 $string['table_th_strings'] = 'Title of each column';
 $string['table_th_strings_help'] = 'Describe the title of each column separated by line feed. That is, one title is written on one line.';
+$string['table_item_name'] = 'Display item name';
+$string['table_item_name_help'] = 'Display the name of the item in table.';
 

@@ -650,11 +650,12 @@ function apply_open_table_tag($item)
     if ($Table_in) return;
 
     $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
-    $columns = $presentation[0];
-    $border  = $presentation[1];
+    $columns      = $presentation[0];
+    $border       = $presentation[1];
     $border_style = $presentation[2];
-    $th_sizes = $presentation[3];
-    $th_strings = $presentation[4];
+    $th_sizes     = $presentation[3];
+    $th_strings   = $presentation[4];
+    $item_name    = $presentation[5];
 
     $th_size = explode(',', $th_sizes);
     $th_elements = explode("\n", $th_strings);

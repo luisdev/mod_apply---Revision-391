@@ -157,7 +157,8 @@ $string['import_templates'] = 'テンプレートをインポートする';
 $string['info'] = '情報';
 $string['infotype'] = '情報タイプ';
 $string['item_label'] = 'ラベル';
-$string['item_label_help'] = '特殊なラベル<br />
+$string['item_label_help'] = 'ラベルを英数字で指定する．<br /><br />
+特殊なラベル<br />
 <ul>
 <li><strong>submit_title</strong>
 <ul><li>テキストフィールド（短文回答）にこのラベルが付いた場合，申請書のタイトルとして扱われる．</li></ul>
@@ -173,7 +174,7 @@ $string['item_label_help'] = '特殊なラベル<br />
 </li>
 </ul>';
 
-$string['item_name'] = '申請書の項目名';
+$string['item_name'] = '項目名';
 $string['items_are_required'] = 'アスタリスクが付けられた項目は入力必須項目です．';
 $string['label'] = 'ラベル';
 $string['maximal'] = '最大';
@@ -278,7 +279,7 @@ $string['update_item'] = '質問の変更を保存する';
 $string['use_calendar'] = 'カレンダーに登録';
 $string['use_calendar_help'] = '申請書の提出期間をカレンダーに登録できます';
 $string['use_item'] = '{$a} を使用する';
-$string['use_one_line_for_each_value'] = '<br />1行に1つの回答を入力してください!';
+$string['use_one_line_for_each_value'] = '1行に1つの値を入力してください!';
 $string['use_this_template'] = 'このテンプレートを使用する';
 $string['user_pic']      = '画像';
 $string['username_manage'] = 'ユーザ名管理';
@@ -303,4 +304,5 @@ $string['table_th_sizes'] = '各カラムの横幅 (px)';
 $string['table_th_sizes_help'] = '各カラムの横幅(px単位) をカンマで区切って記述する. ただし，次の "各カラムのタイトル" が指定されない場合は無視される．';
 $string['table_th_strings'] = '各カラムのタイトル';
 $string['table_th_strings_help'] = '各カラムのタイトルを改行で区切って記述する．つまり，一行に一つタイトルを記述する．';
-
+$string['table_item_name'] = '項目名の表示';
+$string['table_item_name_help'] = 'テーブル内の項目の名前を表示する．';

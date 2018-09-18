@@ -37,22 +37,36 @@ class apply_tablestart_form extends apply_item_form
         $mform->addElement('header', 'general', get_string($this->type, 'apply'));
         $mform->addElement('text', 'name',  get_string('item_name', 'apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE, 'maxlength'=>255));
         $mform->addElement('text', 'label', get_string('item_label','apply'), array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
-        $mform->addElement('select', 'columns', get_string('table_columns', 'apply'), array_slice(range(0, 20), 1, 20, true));
+        $mform->setType('label', PARAM_TEXT);
 
-        $border_help = $OUTPUT->help_icon('table_border', 'apply');
-        $mform->addElement('select', 'border',  get_string('table_border',  'apply').$border_help, range(0, 10));
-        $style_help = $OUTPUT->help_icon('table_border_style', 'apply');
-        $mform->addElement('select', 'border_style',  get_string('table_border_style', 'apply').$style_help, $border_styles);
-        $th_sz_help = $OUTPUT->help_icon('table_th_sizes', 'apply');
-        $mform->addElement('text', 'th_sizes', get_string('table_th_sizes', 'apply').$th_sz_help, 'wrap="virtual" cols="20"');
-        $th_str_help = $OUTPUT->help_icon('table_th_strings', 'apply');
-        $mform->addElement('textarea', 'th_strings', get_string('table_th_strings', 'apply').$th_str_help, 'wrap="virtual" rows="3" cols="20"');
-        $th_sz_help = $OUTPUT->help_icon('table_item_name', 'apply');
-        $mform->addElement('text', 'table_item_name', get_string('table_item_name', 'apply').$th_sz_help, 'wrap="virtual" cols="20"');
+        $mform->addElement('select', 'columns', get_string('table_columns', 'apply'), array_slice(range(0, 20), 1, 20, true));
+        $mform->setType('columns', PARAM_ALPHA);
+
+        $mform->addElement('select', 'border',  get_string('table_border',  'apply'), range(0, 10));
+        $mform->addHelpButton('border', 'table_border', 'apply');
+        $mform->setType('border', PARAM_INT);
+
+        $mform->addElement('select', 'border_style',  get_string('table_border_style', 'apply'), $border_styles);
+        $mform->addHelpButton('border_style', 'table_border_style', 'apply');
+        $mform->setType('border_style', PARAM_ALPHA);
+
+        $mform->addElement('text', 'th_sizes', get_string('table_th_sizes', 'apply'), 'wrap="virtual" cols="20"');
+        $mform->addHelpButton('th_sizes', 'table_th_sizes', 'apply');
+        $mform->setType('th_sizes', PARAM_TEXT);
+
+        $mform->addElement('static', 'hint', get_string('table_th_strings', 'apply'), get_string('use_one_line_for_each_value', 'apply'));
+        $mform->addElement('textarea', 'th_strings', '', 'wrap="virtual" rows="3" cols="20"');
+        $mform->addHelpButton('th_strings', 'table_th_strings', 'apply');
+        $mform->setType('th_strings', PARAM_RAW);
+
+        $mform->addElement('selectyesno', 'item_name', get_string('table_item_name', 'apply'), 'wrap="virtual" cols="20"');
+        $mform->addHelpButton('item_name', 'table_item_name', 'apply');
+        $mform->setType('item_name', PARAM_INT);
 
         parent::definition();
         $this->set_data($item);
     }
+
 
     public function get_data()
     {
@@ -61,8 +75,8 @@ class apply_tablestart_form extends apply_item_form
         }
 
         // その他の値を格納する変数
-        $item->presentation = $item->columns.APPLY_TABLESTART_SEP.$item->border.APPLY_TABLESTART_SEP.
-                              $item->border_style.APPLY_TABLESTART_SEP.$item->th_sizes.APPLY_TABLESTART_SEP.$item->th_strings;
+        $item->presentation = $item->columns.APPLY_TABLESTART_SEP.$item->border.APPLY_TABLESTART_SEP.$item->border_style.APPLY_TABLESTART_SEP.
+                              $item->th_sizes.APPLY_TABLESTART_SEP.$item->th_strings.APPLY_TABLESTART_SEP.$item->item_name;
         return $item;
     }
 }
