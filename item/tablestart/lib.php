@@ -256,6 +256,9 @@ class apply_item_tablestart extends apply_item_base
     public function print_item_show_value($item, $value = '') 
     {
         global $OUTPUT;
+        global $Table_in;
+
+        if ($Table_in) return;
 
         $align = right_to_left() ? 'right' : 'left';
 
