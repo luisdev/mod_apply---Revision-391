@@ -169,7 +169,7 @@ It is used for an administrator\'s memo etc.</li></ul>
 </li>
 </ul>';
 
-$string['item_name'] = 'Question';
+$string['item_name'] = 'Title';
 $string['items_are_required'] = 'Answers are required to starred items.';
 $string['label'] = 'Label';
 $string['maximal'] = 'maximal';
@@ -288,3 +288,17 @@ $string['wiki_url'] = 'http://www.nsl.tuis.ac.jp/xoops/modules/xpwiki/?mod_apply
 $string['yes_button'] = ' Yes ';
 
 $string['submit_num'] = 'Submitted number';
+
+// for Table
+$string['tablestart'] = 'Table Start';
+$string['tableend']   = 'Table End';
+$string['table_columns'] = 'Number of columns';
+$string['table_border'] = 'Border size of inside table';
+$string['table_border_help'] = 'The border size of the frame of table is incremented by 1';
+$string['table_border_style'] = 'Border style of inside table';
+$string['table_border_style_help'] = 'The border style of outside table is solid (fix)';
+$string['table_th_sizes'] = 'Width(px) of each column';
+$string['table_th_sizes_help'] = 'Specify the width (px unit) of each column separated by commas. But if next "Title of each column" is empty, this values are ignored.';
+$string['table_th_strings'] = 'Title of each column';
+$string['table_th_strings_help'] = 'Describe the title of each column separated by line feed. That is, one title is written on one line.';
+
