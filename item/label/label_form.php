@@ -22,7 +22,7 @@ class apply_label_form extends apply_item_form
     private $area;
 
     public function definition()
-	{
+    {
         global $CFG, $OUTPUT;
 
         $item = $this->_customdata['item'];
@@ -43,7 +43,7 @@ class apply_label_form extends apply_item_form
         $mform->addElement('editor', 'presentation_editor', '', null, $presentationoptions);
         $mform->setType('presentation_editor', PARAM_RAW);
 
-		$label_help = ' '.$OUTPUT->help_icon('item_label', 'apply');
+        $label_help = ' '.$OUTPUT->help_icon('item_label', 'apply');
         $mform->addElement('text', 'label', get_string('item_label','apply').$label_help, array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
 
         parent::definition();

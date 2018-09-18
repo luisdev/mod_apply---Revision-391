@@ -21,8 +21,8 @@ class apply_tableend_form extends apply_item_form
     protected $type = "tableend";
 
     public function definition()
-	{
-		global $OUTPUT;
+    {
+        global $OUTPUT;
 
         $item = $this->_customdata['item'];
         $common = $this->_customdata['common'];

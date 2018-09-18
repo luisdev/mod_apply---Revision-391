@@ -21,8 +21,8 @@ class apply_textfield_form extends apply_item_form
     protected $type = "textfield";
 
     public function definition()
-	{
-		global $OUTPUT;
+    {
+        global $OUTPUT;
 
         $item = $this->_customdata['item'];
         $common = $this->_customdata['common'];
@@ -46,7 +46,7 @@ class apply_textfield_form extends apply_item_form
     }
 
     public function get_data()
-	{
+    {
         if (!$item = parent::get_data()) {
             return false;
         }
