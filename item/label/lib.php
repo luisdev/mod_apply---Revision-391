@@ -205,9 +205,8 @@ class apply_item_label extends apply_item_base
             }
         }
 		$output .= '</div>';
-        echo $output;
 
-        apply_open_table_item_tag($output);
+        apply_open_table_item_tag($output, true);
         $this->print_item($item);
         apply_close_table_item_tag();
     }
