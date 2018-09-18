@@ -37,7 +37,7 @@ class apply_tablestart_form extends apply_item_form
         $mform->addElement('header', 'general', get_string($this->type, 'apply'));
         $mform->addElement('text', 'name',  get_string('item_name', 'apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE, 'maxlength'=>255));
         $mform->addElement('text', 'label', get_string('item_label','apply'), array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
-        $mform->addElement('select', 'columns', get_string('table_columns', 'apply').'&nbsp;', array_slice(range(0, 20), 1, 20, true));
+        $mform->addElement('select', 'columns', get_string('table_columns', 'apply'), array_slice(range(0, 20), 1, 20, true));
 
         $border_help = $OUTPUT->help_icon('table_border', 'apply');
         $mform->addElement('select', 'border',  get_string('table_border',  'apply').$border_help, range(0, 10));
