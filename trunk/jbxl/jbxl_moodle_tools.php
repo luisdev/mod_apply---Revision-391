@@ -9,6 +9,7 @@
 //               2015/11/26
 //               2016/04/18
 //               2016/05/30
+//               2018/09/16
 //
 
 //
@@ -20,7 +21,8 @@ defined('MOODLE_INTERNAL') || die();
 
 //$jbxl_moodle_tools_ver = 2015112600;
 //$jbxl_moodle_tools_ver = 2016041800;
-$jbxl_moodle_tools_ver   = 2016053000;
+//$jbxl_moodle_tools_ver = 2016053000;
+$jbxl_moodle_tools_ver   = 2018091600;
 
 //
 if (defined('JBXL_MOODLE_TOOLS_VER') or defined('_JBXL_MOODLE_TOOLS')) {
@@ -521,7 +523,11 @@ function  jbxl_get_moodle_version()
 {
     global $CFG;
 
-    if      ($CFG->version>=2016052300) return 3.1;
+    if      ($CFG->version>=2018051700) return 3.5;
+    else if ($CFG->version>=2017111300) return 3.4;
+    else if ($CFG->version>=2017051500) return 3.3;
+    else if ($CFG->version>=2016120500) return 3.2;
+    else if ($CFG->version>=2016052300) return 3.1;
     else if ($CFG->version>=2015111600) return 3.0;
     else if ($CFG->version>=2015051100) return 2.9;
     else if ($CFG->version>=2014111000) return 2.8;
