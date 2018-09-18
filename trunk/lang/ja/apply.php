@@ -290,3 +290,17 @@ $string['wiki_url'] = 'http://www.nsl.tuis.ac.jp/xoops/modules/xpwiki/?mod_apply
 $string['yes_button'] = ' はい ';
 
 $string['submit_num'] = '申請数';
+
+// for Table
+$string['tablestart'] = 'テーブルの開始';
+$string['tableend']   = 'テーブルの終了';
+$string['table_columns'] = 'テーブルのカラム数';
+$string['table_border'] = 'テーブル内部の罫線のサイズ';
+$string['table_border_help'] = 'テーブルの枠の罫線サイズはこの値に +1 される';
+$string['table_border_style'] = 'テーブル内部の罫線のタイプ';
+$string['table_border_style_help'] = 'テーブルの枠の罫線のタイプは solid 固定';
+$string['table_th_sizes'] = '各カラムの横幅 (px)';
+$string['table_th_sizes_help'] = '各カラムの横幅(px単位) をカンマで区切って記述する. ただし，次の "各カラムのタイトル" が指定されない場合は無視される．';
+$string['table_th_strings'] = '各カラムのタイトル';
+$string['table_th_strings_help'] = '各カラムのタイトルを改行で区切って記述する．つまり，一行に一つタイトルを記述する．';
+

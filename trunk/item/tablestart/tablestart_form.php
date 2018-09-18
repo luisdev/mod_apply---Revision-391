@@ -37,12 +37,16 @@ class apply_tablestart_form extends apply_item_form
         $mform->addElement('header', 'general', get_string($this->type, 'apply'));
         $mform->addElement('text', 'name',  get_string('item_name', 'apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE, 'maxlength'=>255));
         $mform->addElement('text', 'label', get_string('item_label','apply'), array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
-
         $mform->addElement('select', 'columns', get_string('table_columns', 'apply').'&nbsp;', array_slice(range(0, 20), 1, 20, true));
-        $mform->addElement('select', 'border',  get_string('table_border',  'apply').'&nbsp;', range(0, 10));
-        $mform->addElement('select', 'border_style',  get_string('table_border_style', 'apply').'&nbsp;', $border_styles);
-        $mform->addElement('text', 'th_sizes', get_string('table_th_sizes', 'apply').'&nbsp;', 'wrap="virtual" cols="20"');
-        $mform->addElement('textarea', 'th_strings', get_string('table_th_strings', 'apply').'&nbsp;', 'wrap="virtual" rows="3" cols="20"');
+
+        $border_help = $OUTPUT->help_icon('table_border', 'apply');
+        $mform->addElement('select', 'border',  get_string('table_border',  'apply').$border_help, range(0, 10));
+        $style_help = $OUTPUT->help_icon('table_border_style', 'apply');
+        $mform->addElement('select', 'border_style',  get_string('table_border_style', 'apply').$style_help, $border_styles);
+        $th_sz_help = $OUTPUT->help_icon('table_th_sizes', 'apply');
+        $mform->addElement('text', 'th_sizes', get_string('table_th_sizes', 'apply').$th_sz_help, 'wrap="virtual" cols="20"');
+        $th_str_help = $OUTPUT->help_icon('table_th_strings', 'apply');
+        $mform->addElement('textarea', 'th_strings', get_string('table_th_strings', 'apply').$th_str_help, 'wrap="virtual" rows="3" cols="20"');
 
         parent::definition();
         $this->set_data($item);
