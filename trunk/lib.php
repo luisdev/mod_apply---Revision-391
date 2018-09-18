@@ -725,7 +725,7 @@ function apply_open_table_item_tag($title='', $preview=false)
     if ($Table_params->position==0) echo '<tr>';
     echo '<td '.$Table_params->style.'>';
 
-    if ($Table_params->disp_iname) {
+    if ($Table_params->disp_iname or $preview) {
         if ($title!='') echo $title;   // inside of table
     }    
 }
