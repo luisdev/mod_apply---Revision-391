@@ -550,7 +550,7 @@ class apply_item_multichoice extends apply_item_base
         if ($info->subtype == 'c') {
             $match = false;
             echo $OUTPUT->box_start('generalbox boxalign'.$align);
-            if (!$Table_in) echo '<div style="border:1px solid; padding:1px 2px 1px 2px;">';
+            apply_box_start();
             foreach ($presentation as $pres) {
                 foreach ($values as $val) {
                     if ($val == $index) {
@@ -564,25 +564,26 @@ class apply_item_multichoice extends apply_item_base
                 $index++;
             }
             if (!$match) echo '&nbsp;';
-            if (!$Table_in) echo '</div>';
+            apply_box_end();
             echo $OUTPUT->box_end();
         } 
         else {
             $match = false;
-            if (!$Table_in) echo '<div style="border:1px solid; padding:1px 2px 1px 2px;">';
+            echo $OUTPUT->box_start('generalbox boxalign'.$align);
+            apply_box_start();
             foreach ($presentation as $pres) {
                 if ($value == $index) {
-                    echo $OUTPUT->box_start('generalbox boxalign'.$align);
                     echo $html = text_to_html($pres, true, false, false);
-                    echo $OUTPUT->box_end();
                     $match = true;
                     break;
                 }
                 $index++;
             }
             if (!$match) echo '&nbsp;';
-            if (!$Table_in) echo '</div>';
+            apply_box_end();
+            echo $OUTPUT->box_end();
         }
+
         echo '</div>';
 
         apply_close_table_item_tag();

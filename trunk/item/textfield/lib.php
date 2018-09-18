@@ -325,9 +325,9 @@ class apply_item_textfield extends apply_item_base
         apply_open_table_item_tag();
 
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
-        if (!$Table_in) echo '<div style="border:1px solid; padding:1px 2px 1px 2px;">';
+        apply_box_start();
         echo $value ? $value : '&nbsp;';
-        if (!$Table_in) echo '</div>';
+        apply_box_end();
         echo $OUTPUT->box_end();
 
         apply_close_table_item_tag();

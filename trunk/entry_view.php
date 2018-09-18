@@ -17,7 +17,7 @@ if      ($submit->class==APPLY_CLASS_DRAFT)  $title .= '&nbsp;<font color="#e22"
 else if ($submit->class==APPLY_CLASS_CANCEL) $title .= '&nbsp;<font color="#e22">'.get_string('class_cancel','apply').'</font>';
 if ($submit->version!=$submit_ver) $title .= '&nbsp;<font color="#22e"> Ver.'.$submit_ver.'</font>';
 
-//
+// preview icon
 if ($this_action!='preview') {
     $preview_img = $OUTPUT->pix_icon('t/preview', get_string('preview'));
     $preview_url = new moodle_url('/mod/apply/preview.php');
