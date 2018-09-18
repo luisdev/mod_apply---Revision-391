@@ -66,7 +66,6 @@ class mod_apply_mod_form extends moodleform_mod
         $enable_close_group[] =& $mform->createElement('checkbox', 'close_enable', get_string('time_close', 'apply')); 
         $enable_close_group[] =& $mform->createElement('date_time_selector', 'time_close', '');
         $mform->addGroup($enable_close_group, 'enable_close_group', get_string('time_close', 'apply'), ' ', false);
-
         $mform->addHelpButton('enable_close_group', 'time_close', 'apply');
         $mform->disabledIf('enable_close_group', 'close_enable', 'notchecked');
 
@@ -75,18 +74,22 @@ class mod_apply_mod_form extends moodleform_mod
         //
         $mform->addElement('selectyesno', 'email_notification', get_string('email_notification', 'apply'));
         $mform->addHelpButton('email_notification', 'email_notification', 'apply');
+        $mform->setType('email_notification', PARAM_INT);
         $mform->setDefault('email_notification', 0);
         //
         $mform->addElement('selectyesno', 'email_notification_user', get_string('email_notification_user', 'apply'));
         $mform->addHelpButton('email_notification_user', 'email_notification_user', 'apply');
+        $mform->setType('email_notification_user', PARAM_INT);
         $mform->setDefault('email_notification_user', 0);
         //
         $mform->addElement('selectyesno', 'multiple_submit', get_string('multiple_submit', 'apply')); 
         $mform->addHelpButton('multiple_submit', 'multiple_submit', 'apply');
+        $mform->setType('multiple_submit', PARAM_INT);
         $mform->setDefault('multiple_submit', 1);
         //
         $mform->addElement('selectyesno', 'use_calendar', get_string('use_calendar', 'apply')); 
         $mform->addHelpButton('use_calendar', 'use_calendar', 'apply');
+        $mform->setType('use_calendar', PARAM_INT);
         $mform->setDefault('use_calendar', 0);
 
         $choices['fullname']  = get_string('use_item', 'apply', get_string('fullnameuser'));
@@ -94,16 +97,19 @@ class mod_apply_mod_form extends moodleform_mod
         $choices['lastname']  = get_string('use_item', 'apply', get_string('lastname'));
         $mform->addElement('select', 'name_pattern', get_string('username_manage', 'apply'), $choices); 
         $mform->addHelpButton('name_pattern', 'username_manage', 'apply');
+        $mform->setType('name_pattern', PARAM_ALPHA);
         $mform->setDefault('name_pattern', 'fullname');
 
         //
         $mform->addElement('selectyesno', 'only_acked_accept', get_string('only_acked_accept', 'apply')); 
         $mform->addHelpButton('only_acked_accept', 'only_acked_accept', 'apply');
+        $mform->setType('only_acked_accept', PARAM_INT);
         $mform->setDefault('only_acked_accept', 0);
 
         //
         $mform->addElement('selectyesno', 'enable_deletemode', get_string('enable_deletemode', 'apply')); 
         $mform->addHelpButton('enable_deletemode', 'enable_deletemode', 'apply');
+        $mform->setType('enable_deletemode', PARAM_INT);
         $mform->setDefault('enable_deletemode', 0);
 
         //

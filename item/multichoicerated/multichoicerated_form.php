@@ -33,23 +33,35 @@ class apply_multichoicerated_form extends apply_item_form
 
         $mform->addElement('header', 'general', get_string($this->type, 'apply'));
         $mform->addElement('advcheckbox', 'required', get_string('required', 'apply'), '' , null , array(0, 1));
+        $mform->setType('required', PARAM_INT);
+
         $mform->addElement('text', 'name',  get_string('item_name',  'apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE,  'maxlength'=>255));
-        $label_help = ' '.$OUTPUT->help_icon('item_label', 'apply');
-        $mform->addElement('text', 'label', get_string('item_label', 'apply').$label_help, array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE, 'maxlength'=>255));
+        $mform->addElement('text', 'label', get_string('item_label', 'apply'), array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE, 'maxlength'=>255));
+        $mform->addHelpButton('label', 'item_label', 'apply');
+        $mform->setType('label', PARAM_TEXT);
+
         $params = array(0=>get_string('vertical', 'apply'), 1=>get_string('horizontal', 'apply'));
         $mform->addElement('select', 'horizontal', get_string('adjustment', 'apply').'&nbsp;', $params);
+        $mform->setType('horizontal', PARAM_INT);
+
         $params = array('r'=>get_string('radio', 'apply'), 'd'=>get_string('dropdown', 'apply'));
         $mform->addElement('select', 'subtype', get_string('multichoicetype', 'apply').'&nbsp;', $params);
-        $mform->addElement('selectyesno', 'ignoreempty', get_string('do_not_analyse_empty_submits', 'apply'));
-        $mform->addElement('selectyesno', 'hidenoselect', get_string('hide_no_select_option', 'apply'));
-        $mform->addElement('static', 'hint', get_string('multichoice_values', 'apply'), get_string('use_one_line_for_each_value', 'apply'));
+        $mform->setType('subtype', PARAM_ALPHA);
 
+        $mform->addElement('selectyesno', 'ignoreempty', get_string('do_not_analyse_empty_submits', 'apply'));
+        $mform->setType('ignoreempty', PARAM_INT);
+
+        $mform->addElement('selectyesno', 'hidenoselect', get_string('hide_no_select_option', 'apply'));
+        $mform->setType('hidenoselect', PARAM_INT);
+
+        $mform->addElement('static', 'hint', get_string('multichoice_values', 'apply'), get_string('use_one_line_for_each_value', 'apply'));
         $this->values = $mform->addElement('textarea', 'values', '', 'wrap="virtual" rows="10" cols="65"');
 
         parent::definition();
         $this->set_data($item);
 
     }
+
 
     public function set_data($item)
     {
@@ -61,6 +73,7 @@ class apply_multichoicerated_form extends apply_item_form
 
         return parent::set_data($item);
     }
+
 
     public function get_data()
     {

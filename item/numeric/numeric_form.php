@@ -33,11 +33,17 @@ class apply_numeric_form extends apply_item_form
 
         $mform->addElement('header', 'general', get_string($this->type, 'apply'));
         $mform->addElement('advcheckbox', 'required', get_string('required', 'apply'), '' , null , array(0, 1));
-        $mform->addElement('text', 'name', get_string('item_name', 'apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE, 'maxlength'=>255));
-		$label_help = ' '.$OUTPUT->help_icon('item_label', 'apply');
-        $mform->addElement('text', 'label', get_string('item_label', 'apply').$label_help, array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE, 'maxlength'=>255));
+        $mform->setType('required', PARAM_INT);
+
+        $mform->addElement('text', 'name',  get_string('item_name',  'apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE,  'maxlength'=>255));
+        $mform->addElement('text', 'label', get_string('item_label', 'apply'), array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE, 'maxlength'=>255));
+        $mform->addHelpButton('label', 'item_label', 'apply');
+        $mform->setType('label', PARAM_TEXT);
+
         $mform->addElement('text', 'rangefrom', get_string('numeric_range_from', 'apply'), array('size'=>10, 'maxlength'=>10));
-        $mform->addElement('text', 'rangeto', get_string('numeric_range_to', 'apply'), array('size'=>10, 'maxlength'=>10));
+        $mform->setType('rangefrom', PARAM_INT);
+        $mform->addElement('text', 'rangeto',   get_string('numeric_range_to',   'apply'), array('size'=>10, 'maxlength'=>10));
+        $mform->setType('rangeto',   PARAM_INT);
 
         parent::definition();
         $this->set_data($item);
