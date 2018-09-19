@@ -138,6 +138,9 @@ $string['enable_deletemode'] = 'Delete Mode';
 $string['enable_deletemode_help'] = 'This enables a teacher to delete all applications.<br />Usually, please set to "No" for safety.'; 
 $string['can_discard'] = 'Can Discard';
 $string['can_discard_help'] = 'Enable cancellation of application.'; 
+$string['date_format']      = 'Display format of date(time)';
+$string['date_format_default'] = '%m/%d/%y %H:%M';
+$string['date_format_help'] = 'Specify display format of date and time. Default is '.$string['date_format_default'];
 $string['entries_list_title'] = 'List of Entries';
 $string['entry_saved'] = 'Your applocation has been saved. Thank you.';
 $string['entry_saved_draft'] = 'Your applocation has been saved as <strong>Draft</strong>.';
@@ -309,4 +312,3 @@ $string['table_th_strings'] = 'Title of each column';
 $string['table_th_strings_help'] = 'Describe the title of each column separated by line feed. That is, one title is written on one line.';
 $string['table_disp_iname'] = 'Display item name';
 $string['table_disp_iname_help'] = 'Display the name of the item in table.';
-

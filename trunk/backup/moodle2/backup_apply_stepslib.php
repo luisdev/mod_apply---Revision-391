@@ -41,7 +41,7 @@ class backup_apply_activity_structure_step extends backup_activity_structure_ste
         // Define each element separated
         $apply = new backup_nested_element('apply', array('id'), array(        // no course
             'name', 'intro', 'introformat', 'email_notification', 'email_notification_user', 'multiple_submit', 'use_calendar', 
-            'name_pattern', 'only_acked_accept', 'enable_deletemode', 'can_discard', 'time_open', 'time_close', 'time_modified'));
+            'name_pattern', 'only_acked_accept', 'enable_deletemode', 'can_discard', 'date_format', 'time_open', 'time_close', 'time_modified'));
 
         //$template = new backup_nested_element('template', array('id'), array('name', 'ispublic')); // no course
 
