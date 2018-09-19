@@ -17,22 +17,22 @@ if ($req_own_data) {
 
     $table_columns = array('title',    'time_modified', 'version', 'class',      'draft',      'acked');
     $table_headers = array($title_ttl, $title_date,     $title_ver, $title_clss, $title_draft, $title_ack);
-    $table_widths  = array(10,         10,              10,         10,          10,           10);
+    $table_widths  = array('320px',    '$120px',        '30px',    '40px',       '60px',       '60px');
 
     if (!$apply->only_acked_accept) {
         $table_columns = array_merge($table_columns, array('execd'));
         $table_headers = array_merge($table_headers, array($title_exec));
-        $table_widths  = array_merge($table_widths,  array(10));
+        $table_widths  = array_merge($table_widths,  array('60px'));
     }
 
     $table_columns = array_merge($table_columns, array('before',   'edit'));
     $table_headers = array_merge($table_headers, array($title_bfr, '-'));
-    $table_widths  = array_merge($table_widths,  array(10,         10));
+    $table_widths  = array_merge($table_widths,  array('120x',      ''));
 
     if ($apply->can_discard) {
         $table_columns = array_merge($table_columns, array('discard'));
         $table_headers = array_merge($table_headers, array('-'));
-        $table_widths  = array_merge($table_widths,  array(10));
+        $table_widths  = array_merge($table_widths,  array(''));
     }
 }
 else {
@@ -70,7 +70,7 @@ else {
 
     $table_columns = array_merge($table_columns, array('title',    'time_modified', 'version',  'class',     'acked'));
     $table_headers = array_merge($table_headers, array($title_ttl, $title_date,     $title_ver, $title_clss, $title_ack));
-    $table_widths  = array_merge($table_widths,  array('320px',    '120px',         '30px',     '40px',      '40px'));
+    $table_widths  = array_merge($table_widths,  array('320px',    '120px',         '30px',     '40px',      '60px'));
 
     if (!$apply->only_acked_accept) {
         $table_columns = array_merge($table_columns, array('execd'));

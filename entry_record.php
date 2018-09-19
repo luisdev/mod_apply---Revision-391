@@ -49,7 +49,9 @@ if ($student) {
     //$data[] = '<strong><a href="'.$entry_url->out().'" target="_blank">'.$title.'</a></strong>';
     $data[] = '<strong><a href="'.$entry_url->out().'">'.$title.'</a></strong>';
     //
-    $data[] = userdate($submit->time_modified, '%y/%m/%d %H:%M');
+    if ($apply->date_format=='') $apply->date_format = get_string('date_format_default', 'apply');
+    $data[] = userdate($submit->time_modified, $apply->date_format);
+    //$data[] = userdate($submit->time_modified, '%y/%m/%d %H:%M');
     //
     $data[] = $submit->version;
 

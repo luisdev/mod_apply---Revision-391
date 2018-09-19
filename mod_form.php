@@ -92,7 +92,7 @@ class mod_apply_mod_form extends moodleform_mod
         $mform->setType('use_calendar', PARAM_INT);
         $mform->setDefault('use_calendar', 0);
 
-        //$choices['fullname']   = get_string('use_item', 'apply', get_string('fullnameuser'));
+        $choices['fullname']   = get_string('use_item', 'apply', get_string('fullnameuser'));
         $choices['firstlastname'] = get_string('use_item', 'apply', get_string('firstlastname', 'apply'));
         $choices['lastfirstname'] = get_string('use_item', 'apply', get_string('lastfirstname', 'apply'));
         $choices['firstname'] = get_string('use_item', 'apply', get_string('firstname'));
@@ -119,6 +119,12 @@ class mod_apply_mod_form extends moodleform_mod
         $mform->addHelpButton('can_discard', 'can_discard', 'apply');
         $mform->setType('can_discard', PARAM_INT);
         $mform->setDefault('can_discard', 1);
+
+        //
+        $mform->addElement('text', 'date_format', get_string('date_format', 'apply')); 
+        $mform->addHelpButton('date_format', 'date_format', 'apply');
+        $mform->setType('date_format', PARAM_TEXT);
+        $mform->setDefault('date_format', get_string('date_format_default', 'apply'));
         //
         //-------------------------------------------------------------------------------
         // for Group
