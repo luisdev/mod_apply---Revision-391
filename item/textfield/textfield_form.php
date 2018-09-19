@@ -41,13 +41,25 @@ class apply_textfield_form extends apply_item_form
         $mform->setType('label', PARAM_TEXT);
 
         $mform->addElement('select', 'itemsize', get_string('textfield_size', 'apply').'&nbsp;',  array_slice(range(0, 255), 5, 255, true));
+        $mform->setDefault('itemsize', 30);
         $mform->setType('itemsize', PARAM_INT);
+
         $mform->addElement('select', 'itemmaxlength', get_string('textfield_maxlength', 'apply'), array_slice(range(0, 255), 5, 255, true));
+        $mform->setDefault('itemmaxlength', 30);
         $mform->setType('itemmaxlength', PARAM_INT);
+
+        $mform->addElement('text', 'outside_style',  get_string('outside_style', 'apply'), array('size'=>APPLY_ITEM_STYLE_TEXTBOX_SIZE, 'maxlength'=>255));
+        $mform->addHelpButton('outside_style', 'outside_style', 'apply');
+        $mform->setDefault('outside_style', get_string('outside_style_default', 'apply'));
+        $mform->setType('outside_style', PARAM_TEXT);
+
+        $mform->addElement('text', 'item_style',  get_string('item_style', 'apply'), array('size'=>APPLY_ITEM_STYLE_TEXTBOX_SIZE, 'maxlength'=>255));
+        $mform->addHelpButton('item_style', 'item_style', 'apply');
+        $mform->setDefault('item_style', get_string('item_style_default', 'apply'));
+        $mform->setType('item_style', PARAM_TEXT);
 
         parent::definition();
         $this->set_data($item);
-
     }
 
 
@@ -57,7 +69,8 @@ class apply_textfield_form extends apply_item_form
             return false;
         }
 
-        $item->presentation = $item->itemsize.APPLY_TEXTFIELD_SEP.$item->itemmaxlength;
+        $item->presentation = $item->itemsize.APPLY_TEXTFIELD_SEP.$item->itemmaxlength.
+                                              APPLY_TEXTFIELD_SEP.$item->outside_style.APPLY_TEXTFIELD_SEP.$item->item_style;
         return $item;
     }
 }

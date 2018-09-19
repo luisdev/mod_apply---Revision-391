@@ -40,27 +40,33 @@ class apply_tablestart_form extends apply_item_form
         $mform->setType('label', PARAM_TEXT);
 
         $mform->addElement('select', 'columns', get_string('table_columns', 'apply'), array_slice(range(0, 20), 1, 20, true));
+        $mform->setDefault('columns', 3);
         $mform->setType('columns', PARAM_INT);
 
         $mform->addElement('select', 'border',  get_string('table_border',  'apply'), range(0, 10));
         $mform->addHelpButton('border', 'table_border', 'apply');
+        $mform->setDefault('border', 1);
         $mform->setType('border', PARAM_INT);
 
         $mform->addElement('select', 'border_style',  get_string('table_border_style', 'apply'), $border_styles);
         $mform->addHelpButton('border_style', 'table_border_style', 'apply');
+        $mform->setDefault('border_style', 'solid');
         $mform->setType('border_style', PARAM_ALPHA);
 
         $mform->addElement('text', 'th_sizes', get_string('table_th_sizes', 'apply'), 'wrap="virtual" cols="20"');
         $mform->addHelpButton('th_sizes', 'table_th_sizes', 'apply');
+        $mform->setDefault('th_sizes', '');
         $mform->setType('th_sizes', PARAM_TEXT);
 
         $mform->addElement('static', 'hint', get_string('table_th_strings', 'apply'), get_string('use_one_line_for_each_value', 'apply'));
         $mform->addElement('textarea', 'th_strings', '', 'wrap="virtual" rows="3" cols="20"');
         $mform->addHelpButton('th_strings', 'table_th_strings', 'apply');
+        $mform->setDefault('th_strings', '');
         $mform->setType('th_strings', PARAM_RAW);
 
         $mform->addElement('selectyesno', 'disp_iname', get_string('table_disp_iname', 'apply'), 'wrap="virtual" cols="20"');
         $mform->addHelpButton('disp_iname', 'table_disp_iname', 'apply');
+        $mform->setDefault('disp_iname', 0);
         $mform->setType('disp_iname', PARAM_INT);
 
         parent::definition();

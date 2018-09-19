@@ -17,6 +17,9 @@
 defined('MOODLE_INTERNAL') OR die('not allowed');
 require_once($CFG->dirroot.'/mod/apply/item/apply_item_class.php');
 
+define('APPLY_INFO_SEP', '|');
+
+
 class apply_item_info extends apply_item_base
 {
     protected $type = "info";
@@ -27,7 +30,6 @@ class apply_item_info extends apply_item_base
 
     public function init()
     {
-
     }
 
 
@@ -40,18 +42,25 @@ class apply_item_info extends apply_item_base
         $position = $item->position;
         $lastposition = $DB->count_records('apply_item', array('apply_id'=>$apply->id));
         if ($position == -1) {
-            $i_formselect_last = $lastposition + 1;
+            $i_formselect_last  = $lastposition + 1;
             $i_formselect_value = $lastposition + 1;
             $item->position = $lastposition + 1;
         } else {
-            $i_formselect_last = $lastposition;
+            $i_formselect_last  = $lastposition;
             $i_formselect_value = $item->position;
         }
         //the elements for position dropdownlist
         $positionlist = array_slice(range(0, $i_formselect_last), 1, $i_formselect_last, true);
 
-        $item->presentation = empty($item->presentation) ? 1 : $item->presentation;
+        $item->presentation = empty($item->presentation) ? '' : $item->presentation;
+        $presentation = explode(APPLY_INFO_SEP, $item->presentation);
+
         $item->required = 0;
+        $item->infotype = (intval($presentation[0])!=0) ? $presentation[0] : 1;
+        $outside_style  = isset($presentation[1]) ? $presentation[1]: get_string('outside_style_default', 'apply');
+        $item_style     = isset($presentation[2]) ? $presentation[2]: get_string('item_style_default',    'apply');
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
 
         //all items for dependitem
         $applyitems = apply_get_depend_candidates_for_item($apply, $item);
@@ -119,7 +128,7 @@ class apply_item_info extends apply_item_base
     //liefert eine Struktur ->name, ->data = array(mit Antworten)
     public function get_analysed($item, $groupid = false, $courseid = false)
     {
-        $presentation = $item->presentation;
+        $infotype = $item->infotype;
         $analysed_val = new stdClass();;
         $analysed_val->data = null;
         $analysed_val->name = $item->name;
@@ -129,7 +138,7 @@ class apply_item_info extends apply_item_base
             foreach ($values as $value) {
                 $datavalue = new stdClass();
 
-                switch($presentation) {
+                switch($infotype) {
                     case 1:
                         $datavalue->value = $value->value;
                         $datavalue->show = userdate($datavalue->value);
@@ -233,9 +242,11 @@ class apply_item_info extends apply_item_base
     {
         global $USER, $DB, $OUTPUT;
 
-        $align = right_to_left() ? 'right' : 'left';
-        $presentation = $item->presentation;
+        $presentation = explode(APPLY_INFO_SEP, $item->presentation);
+        $infotype = $presentation[0];
+        $item->infotype = $infotype;
 
+        $align = right_to_left() ? 'right' : 'left';
         if ($item->apply_id) {
             $courseid = $DB->get_field('apply', 'course', array('id'=>$item->apply_id));
         } else { // the item must be a template item
@@ -250,7 +261,7 @@ class apply_item_info extends apply_item_base
         } else {
             $coursecategory = false;
         }
-        switch($presentation) {
+        switch($infotype) {
             case 1:
                 $itemvalue = time();
                 $itemshowvalue = userdate($itemvalue);
@@ -331,9 +342,11 @@ class apply_item_info extends apply_item_base
     {
         global $USER, $DB, $OUTPUT;
 
-        $align = right_to_left() ? 'right' : 'left';
+        $presentation = explode(APPLY_INFO_SEP, $item->presentation);
+        $infotype = $presentation[0];
+        $item->infotype = $infotype;
 
-        $presentation = $item->presentation;
+        $align = right_to_left() ? 'right' : 'left';
         if ($highlightrequire AND $item->required AND strval($value) == '') {
             $highlight = ' missingrequire';
         } else {
@@ -352,7 +365,7 @@ class apply_item_info extends apply_item_base
             $coursecategory = false;
         }
 
-        switch($presentation) {
+        switch($infotype) {
             case 1:
                 $itemvalue = time();
                 $itemshowvalue = userdate($itemvalue);
@@ -423,12 +436,12 @@ class apply_item_info extends apply_item_base
     {
         global $USER, $DB, $OUTPUT;
 
-        $align = right_to_left() ? 'right' : 'left';
-        $presentation = $item->presentation;
-        if ($presentation == 1) {
-            $value = $value ? userdate($value) : '&nbsp;';
-        }
+        $presentation = explode(APPLY_INFO_SEP, $item->presentation);
+        $infotype = $presentation[0];
+        $item->infotype = $infotype;
+        if ($infotype == 1) $value = $value ? userdate($value) : '&nbsp;';
 
+        $align = right_to_left() ? 'right' : 'left';
         $output  = '';
         $output .= '<div class="apply_item_label_'.$align.'">';
         $output .= format_text($item->name, true, false, false);
@@ -472,7 +485,7 @@ class apply_item_info extends apply_item_base
 
     public function get_presentation($data)
     {
-        return $data->infotype;
+        return $data->infotype.APPLY_INFO_SEP.$data->outside_style.APPLY_INFO_SEP.$data->item_style;;
     }
 
 

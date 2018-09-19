@@ -41,30 +41,32 @@ class apply_item_textfield extends apply_item_base
         $position = $item->position;
         $lastposition = $DB->count_records('apply_item', array('apply_id'=>$apply->id));
         if ($position == -1) {
-            $i_formselect_last = $lastposition + 1;
+            $i_formselect_last  = $lastposition + 1;
             $i_formselect_value = $lastposition + 1;
             $item->position = $lastposition + 1;
         } else {
-            $i_formselect_last = $lastposition;
+            $i_formselect_last  = $lastposition;
             $i_formselect_value = $item->position;
         }
         //the elements for position dropdownlist
         $positionlist = array_slice(range(0, $i_formselect_last), 1, $i_formselect_last, true);
 
         $item->presentation = empty($item->presentation) ? '' : $item->presentation;
+        $presentation = explode(APPLY_TEXTFIELD_SEP, $item->presentation);
 
-        $size_and_length = explode(APPLY_TEXTFIELD_SEP, $item->presentation);
-
-        if (isset($size_and_length[0]) AND $size_and_length[0] >= 5) {
-            $itemsize = $size_and_length[0];
+        if (isset($presentation[0]) AND $presentation[0] >= 5) {
+            $itemsize = $presentation[0];
         } else {
             $itemsize = 30;
         }
-
-        $itemlength = isset($size_and_length[1]) ? $size_and_length[1] : 30;
-
+        $itemlength = isset($presentation[1]) ? $presentation[1] : 30;
         $item->itemsize = $itemsize;
         $item->itemmaxlength = $itemlength;
+
+        $outside_style = isset($presentation[2]) ? $presentation[2]: get_string('outside_style_default', 'apply');
+        $item_style    = isset($presentation[3]) ? $presentation[3]: get_string('item_style_default',    'apply');
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
 
         //all items for dependitem
         $applyitems = apply_get_depend_candidates_for_item($apply, $item);
@@ -363,7 +365,8 @@ class apply_item_textfield extends apply_item_base
 
     public function get_presentation($data)
     {
-        return $data->itemsize.APPLY_TEXTFIELD_SEP.$data->itemmaxlength;
+        return $data->itemsize.APPLY_TEXTFIELD_SEP.$data->itemmaxlength.
+                               APPLY_TEXTFIELD_SEP.$data->outside_style.APPLY_TEXTFIELD_SEP.$data->item_style;
     }
 
 

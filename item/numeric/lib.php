@@ -66,23 +66,23 @@ class apply_item_numeric extends apply_item_base
 
         $range_from_to = explode(APPLY_NUMERIC_SEP, $item->presentation);
         if (isset($range_from_to[0]) AND is_numeric($range_from_to[0])) {
-            $range_from = str_replace(APPLY_DECIMAL,
-                                $this->sep_dec,
-                                floatval($range_from_to[0]));
+            $range_from = str_replace(APPLY_DECIMAL, $this->sep_dec, floatval($range_from_to[0]));
         } else {
             $range_from = '-';
         }
-
         if (isset($range_from_to[1]) AND is_numeric($range_from_to[1])) {
-            $range_to = str_replace(APPLY_DECIMAL,
-                                $this->sep_dec,
-                                floatval($range_from_to[1]));
+            $range_to = str_replace(APPLY_DECIMAL, $this->sep_dec, floatval($range_from_to[1]));
         } else {
             $range_to = '-';
         }
-
         $item->rangefrom = $range_from;
-        $item->rangeto = $range_to;
+        $item->rangeto   = $range_to;
+
+        //
+        $outside_style = isset($presentation[2]) ? $presentation[2]: get_string('outside_style_default', 'apply');
+        $item_style    = isset($presentation[3]) ? $presentation[3]: get_string('item_style_default',    'apply');
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
 
         //all items for dependitem
         $applyitems = apply_get_depend_candidates_for_item($apply, $item);
@@ -563,15 +563,20 @@ class apply_item_numeric extends apply_item_base
             $num2 = '-';
         }
 
+        $num = '';
         if ($num1 === '-' OR $num2 === '-') {
-            return $num1.APPLY_NUMERIC_SEP.$num2;
+            $num = $num1.APPLY_NUMERIC_SEP.$num2;
         }
+        else {
+            if ($num1 > $num2) {
+                $num = $num2.APPLY_NUMERIC_SEP.$num1;
+            } else {
+                $num = $num1.APPLY_NUMERIC_SEP.$num2;
+            }
+        }       
 
-        if ($num1 > $num2) {
-            return $num2.APPLY_NUMERIC_SEP.$num1;
-        } else {
-            return $num1.APPLY_NUMERIC_SEP.$num2;
-        }
+        $num .= APPLY_NUMERIC_SEP.$data->outside_style.APPLY_NUMERIC_SEP.$data->item_style; 
+        return $num;
     }
 
 

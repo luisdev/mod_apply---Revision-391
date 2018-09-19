@@ -41,33 +41,36 @@ class apply_item_textarea extends apply_item_base
         $position = $item->position;
         $lastposition = $DB->count_records('apply_item', array('apply_id'=>$apply->id));
         if ($position == -1) {
-            $i_formselect_last = $lastposition + 1;
+            $i_formselect_last  = $lastposition + 1;
             $i_formselect_value = $lastposition + 1;
             $item->position = $lastposition + 1;
         } else {
-            $i_formselect_last = $lastposition;
+            $i_formselect_last  = $lastposition;
             $i_formselect_value = $item->position;
         }
         //the elements for position dropdownlist
         $positionlist = array_slice(range(0, $i_formselect_last), 1, $i_formselect_last, true);
 
         $item->presentation = empty($item->presentation) ? '' : $item->presentation;
+        $presentation = explode(APPLY_TEXTAREA_SEP, $item->presentation);
 
-        $width_and_height = explode(APPLY_TEXTAREA_SEP, $item->presentation);
-
-        if (isset($width_and_height[0]) AND $width_and_height[0] >= 5) {
-            $itemwidth = $width_and_height[0];
+        if (isset($presentation[0]) AND $presentation[0] >= 5) {
+            $itemwidth = $presentation[0];
         } else {
             $itemwidth = 30;  // default
         }
-
-        if (isset($width_and_height[1])) {
-            $itemheight = $width_and_height[1];
+        if (isset($presentation[1])) {
+            $itemheight = $presentation[1];
         } else {
             $itemheight = 5;  // default
         }
-        $item->itemwidth = $itemwidth;
+        $item->itemwidth  = $itemwidth;
         $item->itemheight = $itemheight;
+
+        $outside_style = isset($presentation[2]) ? $presentation[2]: get_string('outside_style_default', 'apply');
+        $item_style    = isset($presentation[3]) ? $presentation[3]: get_string('item_style_default',    'apply');
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
 
         //all items for dependitem
         $applyitems = apply_get_depend_candidates_for_item($apply, $item);
@@ -225,7 +228,7 @@ class apply_item_textarea extends apply_item_base
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
         $presentation = explode(APPLY_TEXTAREA_SEP, $item->presentation);
-        $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
+        $requiredmark = ($item->required == 1) ? $str_required_mark : '';
 
         //print the question and label
         $output  = '<div class="apply_item_label_'.$align.'">';
@@ -373,7 +376,8 @@ class apply_item_textarea extends apply_item_base
 
     public function get_presentation($data)
     {
-        return $data->itemwidth.APPLY_TEXTAREA_SEP.$data->itemheight;
+        return $data->itemwidth.APPLY_TEXTAREA_SEP.$data->itemheight.
+                                APPLY_TEXTAREA_SEP.$data->outside_style.APPLY_TEXTAREA_SEP.$data->item_style;
     }
 
 
