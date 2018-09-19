@@ -266,7 +266,7 @@ $string['outside_style_default'] = 'border:1px solid';
 $string['outside_style_help'] = 'The style of the border around the item. It is ignored in the table. The default is '.$string['outside_style_default'];
 $string['item_style'] = 'Style of item';
 $string['item_style_default'] = '';
-$string['item_style_help'] = 'The style of the item. The default is '.$string['item_style_default'];
+$string['item_style_help'] = 'The style of the item. '.$string['item_style_default'];
 
 $string['time_close'] = 'Time to close';
 $string['time_close_help'] = 'You can specify times when the apply is accessible for people to answer the applications. 
