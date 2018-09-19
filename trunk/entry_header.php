@@ -17,46 +17,75 @@ if ($req_own_data) {
 
     $table_columns = array('title',    'time_modified', 'version', 'class',      'draft',      'acked');
     $table_headers = array($title_ttl, $title_date,     $title_ver, $title_clss, $title_draft, $title_ack);
-    //$table_size  = array(10,         10,              10,         10,          10,           10);
+    $table_widths  = array(10,         10,              10,         10,          10,           10);
 
     if (!$apply->only_acked_accept) {
         $table_columns = array_merge($table_columns, array('execd'));
         $table_headers = array_merge($table_headers, array($title_exec));
-        //$table_size  = array_merge($table_size,    array(10));
+        $table_widths  = array_merge($table_widths,  array(10));
     }
 
     $table_columns = array_merge($table_columns, array('before',   'edit'));
     $table_headers = array_merge($table_headers, array($title_bfr, '-'));
-    //$table_size  = array_merge($table_size,    array(10,         10));
+    $table_widths  = array_merge($table_widths,  array(10,         10));
 
     if ($apply->can_discard) {
         $table_columns = array_merge($table_columns, array('discard'));
         $table_headers = array_merge($table_headers, array('-'));
-        //$table_size  = array_merge($table_size,    array(10));
+        $table_widths  = array_merge($table_widths,  array(10));
     }
 }
 else {
-    $title_pic  = get_string('user_pic', 'apply');
-    $title_name = get_string($name_pattern);
+    $user_pic  = get_string('user_pic', 'apply');
 
-    $table_columns = array('userpic', 'fullname',   'title',    'time_modified', 'version', 'class',     'acked');
-    $table_headers = array($title_pic, $title_name, $title_ttl, $title_date,     $title_ver, $title_clss, $title_ack);
-    //$table_size  = array(10,         10,          10,         10,              10,         10,          10);
+    $table_columns = array('userpic');
+    $table_headers = array($user_pic);
+    $table_widths  = array('24px');
+
+    if ($name_pattern=='firstname') {
+        $table_columns = array_merge($table_columns, array('firstname'));
+        $table_headers = array_merge($table_headers, array(get_string('firstname')));
+        $table_widths  = array_merge($table_widths,  array('100px'));
+    }
+    else if ($name_pattern=='lastname') {
+        $table_columns = array_merge($table_columns, array('lastname'));
+        $table_headers = array_merge($table_headers, array(get_string('lastname')));
+        $table_widths  = array_merge($table_widths,  array('100px'));
+    }
+    else if ($name_pattern=='firstlastname') {
+        $table_columns = array_merge($table_columns, array('firstname', 'lastname'));
+        $table_headers = array_merge($table_headers, array(get_string('firstname'), get_string('lastname')));
+        $table_widths  = array_merge($table_widths,  array('80px', '100px'));
+    }
+    else if ($name_pattern=='lastfirstname') {
+        $table_columns = array_merge($table_columns, array('lastname', 'firstname'));
+        $table_headers = array_merge($table_headers, array(get_string('lastname'), get_string('firstname')));
+        $table_widths  = array_merge($table_widths,  array('80px', '100px'));
+    }
+    else {
+        $table_columns = array_merge($table_columns, array('fullname'));
+        $table_headers = array_merge($table_headers, array(get_string('fullname')));
+        $table_widths  = array_merge($table_widths,  array('100px'));
+    }
+
+    $table_columns = array_merge($table_columns, array('title',    'time_modified', 'version',  'class',     'acked'));
+    $table_headers = array_merge($table_headers, array($title_ttl, $title_date,     $title_ver, $title_clss, $title_ack));
+    $table_widths  = array_merge($table_widths,  array('320px',    '120px',         '30px',     '40px',      '40px'));
 
     if (!$apply->only_acked_accept) {
         $table_columns = array_merge($table_columns, array('execd'));
         $table_headers = array_merge($table_headers, array($title_exec));
-        //$table_size  = array_merge($table_size,    array(10));
+        $table_widths  = array_merge($table_widths,  array('60px'));
     }
 
     $table_columns = array_merge($table_columns, array('before',   'operation'));
     $table_headers = array_merge($table_headers, array($title_bfr, '-'));
-    //$table_size  = array_merge($table_size,    array(10,          10));
+    $table_widths  = array_merge($table_widths,  array('120px',    ''));
 
     if ($apply->enable_deletemode) {
         $table_columns = array_merge($table_columns, array('delete'));
         $table_headers = array_merge($table_headers, array('-'));
-        //$table_size  = array_merge($table_size,    array(10));
+        $table_widths  = array_merge($table_widths,  array(''));
     }
 }
 
@@ -64,8 +93,14 @@ else {
 $table->define_columns($table_columns);
 $table->define_headers($table_headers);
 $table->define_baseurl($base_url);
-//$table->size = $table_size; // ?
+// set width
+$num = 0;
+foreach ($table_columns as $column) {
+    $table->column_style[$column]['width'] = $table_widths[$num];
+    $num++;
+}
 
+//
 if ($req_own_data) {
     $table->sortable(true, 'time_modified', SORT_DESC);
     $table->no_sorting('lastname');
@@ -90,7 +125,6 @@ else {
         $table->sortable(true, 'firstname', SORT_ASC);
         $table->sortable(true, 'lastname',  SORT_ASC);
     }
-
     $table->no_sorting('before');
     $table->no_sorting('operation');
     if ($apply->enable_deletemode) $table->no_sorting('delete');
