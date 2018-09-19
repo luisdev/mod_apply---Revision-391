@@ -12,7 +12,7 @@ if (!$req_own_data or $submit->user_id!=$USER->id) {
 
 $student = apply_get_user_info($submit->user_id);
 if ($student) {
-    $user_name = jbxl_get_user_name($student, $name_pattern);
+    //$user_name = jbxl_get_user_name($student, $name_pattern);
     //
     $user_url  = $CFG->wwwroot.'/user/view.php?id='.$student->id.'&amp;course='.$courseid;
     $acked_url = $CFG->wwwroot.'/user/view.php?id='.$submit->acked_user.'&amp;course='.$courseid;
@@ -22,7 +22,24 @@ if ($student) {
     //
     if (!$req_own_data) {
         $data[] = $OUTPUT->user_picture($student, array('courseid'=>$courseid, 'size'=>20));
-        $data[] = '<strong><a href="'.$user_url.'">'.$user_name.'</a></strong>';
+        if ($name_pattern=='firstname') {
+            $data[] = '<strong><a href="'.$user_url.'">'.$student->firstname.'</a></strong>';
+        }
+        else if ($name_pattern=='lasttname') {
+            $data[] = '<strong><a href="'.$user_url.'">'.$student->lastname.'</a></strong>';
+        }
+        else if ($name_pattern=='firstlastname') {
+            $data[] = '<strong><a href="'.$user_url.'">'.$student->firstname.'</a></strong>';
+            $data[] = '<strong><a href="'.$user_url.'">'.$student->lastname.' </a></strong>';
+        }
+        else if ($name_pattern=='lastfirstname') {
+            $data[] = '<strong><a href="'.$user_url.'">'.$student->lastname. '</a></strong>';
+            $data[] = '<strong><a href="'.$user_url.'">'.$student->firstname.'</a></strong>';
+        }
+        else {
+            $user_name =jbxl_get_user_name($student, 'fullname');
+            $data[] = '<strong><a href="'.$user_url.'">'.$user_name.'</a></strong>';
+        }
     }
     //
     $title = $submit->title;
@@ -32,7 +49,7 @@ if ($student) {
     //$data[] = '<strong><a href="'.$entry_url->out().'" target="_blank">'.$title.'</a></strong>';
     $data[] = '<strong><a href="'.$entry_url->out().'">'.$title.'</a></strong>';
     //
-    $data[] = userdate($submit->time_modified, '%Y/%m/%d %H:%M');
+    $data[] = userdate($submit->time_modified, '%y/%m/%d %H:%M');
     //
     $data[] = $submit->version;
 
@@ -69,9 +86,9 @@ if ($student) {
     //
     if (!$apply->only_acked_accept) {
         //
-        if      ($submit->class==APPLY_CLASS_DRAFT)  $execd = '-';
-        else if ($submit->execd==APPLY_EXECD_DONE)   $execd = get_string('execd_done',   'apply');
-        else                                         $execd = get_string('execd_notyet', 'apply');
+        if      ($submit->class==APPLY_CLASS_DRAFT) $execd = '-';
+        else if ($submit->execd==APPLY_EXECD_DONE)  $execd = get_string('execd_done',   'apply');
+        else                                        $execd = get_string('execd_notyet', 'apply');
         if ($submit->execd!=APPLY_EXECD_NOTYET) {
             $execd = '<strong><a href="'.$execd_url.'" target="_blank">'.$execd.'</a></strong>';
         }

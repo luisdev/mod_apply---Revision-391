@@ -9,7 +9,7 @@
 //               2015/11/26
 //               2016/04/18
 //               2016/05/30
-//               2018/09/16
+//               2018/09/19
 //
 
 //
@@ -22,7 +22,7 @@ defined('MOODLE_INTERNAL') || die();
 //$jbxl_moodle_tools_ver = 2015112600;
 //$jbxl_moodle_tools_ver = 2016041800;
 //$jbxl_moodle_tools_ver = 2016053000;
-$jbxl_moodle_tools_ver   = 2018091600;
+$jbxl_moodle_tools_ver   = 2018091900;
 
 //
 if (defined('JBXL_MOODLE_TOOLS_VER') or defined('_JBXL_MOODLE_TOOLS')) {
@@ -479,9 +479,11 @@ function  jbxl_get_user_name($user, $pattern='fullname')
     
     if (!is_object($user)) $user = $DB->get_record('user', array('id'=>$user));
     if ($user) {
-        if      ($pattern=='firstname') $user_name = $user->firstname;
-        else if ($pattern=='lastname')  $user_name = $user->lastname;
-        else                            $user_name = fullname($user);
+        if      ($pattern=='firstname')     $user_name = $user->firstname;
+        else if ($pattern=='lastname')      $user_name = $user->lastname;
+        else if ($pattern=='firstlastname') $user_name = $user->firstname.' '.$user->lastname;
+        else if ($pattern=='lastfirstname') $user_name = $user->lastname.' '.$user->firstname;
+        else $user_name = fullname($user);
     }
 
     return $user_name;

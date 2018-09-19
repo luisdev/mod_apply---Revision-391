@@ -776,3 +776,17 @@ function apply_box_end()
     if (!$Table_in) echo '</td></tr></table>';
 }
 
+
+/*
+function apply_set_column_width($table, $columns, $widths)
+{
+    $num = 0;
+    foreach ($columns as $column) {
+        $table->column_style[$column]['width'] = $widths[$num];
+        $num++;
+    }
+
+    return $table;
+}
+*/
+
