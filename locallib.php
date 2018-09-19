@@ -1460,5 +1460,3 @@ function apply_get_event($cm, $action, $params='', $info='')
     return $event;
 }
 
-
-
