@@ -17,51 +17,46 @@ if ($req_own_data) {
 
     $table_columns = array('title',    'time_modified', 'version', 'class',      'draft',      'acked');
     $table_headers = array($title_ttl, $title_date,     $title_ver, $title_clss, $title_draft, $title_ack);
-    //$table_size    = array(10,         10,              10,         10,          10,           10);
+    //$table_size  = array(10,         10,              10,         10,          10,           10);
 
     if (!$apply->only_acked_accept) {
         $table_columns = array_merge($table_columns, array('execd'));
         $table_headers = array_merge($table_headers, array($title_exec));
-        //$table_size    = array_merge($table_size,    array(10));
+        //$table_size  = array_merge($table_size,    array(10));
     }
 
     $table_columns = array_merge($table_columns, array('before',   'edit'));
     $table_headers = array_merge($table_headers, array($title_bfr, '-'));
-    //$table_size    = array_merge($table_size,    array(10,         10));
+    //$table_size  = array_merge($table_size,    array(10,         10));
 
     if ($apply->can_discard) {
         $table_columns = array_merge($table_columns, array('discard'));
         $table_headers = array_merge($table_headers, array('-'));
-        //$table_size    = array_merge($table_size,    array(10));
+        //$table_size  = array_merge($table_size,    array(10));
     }
 }
 else {
     $title_pic  = get_string('user_pic', 'apply');
     $title_name = get_string($name_pattern);
 
-    if ($apply->enable_deletemode) {
-        if ($apply->only_acked_accept) {
-            $table_columns = array('userpic', 'fullname',   'title',    'time_modified', 'version', 'class',     'acked',     'before',    'operation', 'delete');
-            $table_headers = array($title_pic, $title_name, $title_ttl, $title_date,     $title_ver, $title_clss, $title_ack, $title_bfr, '-',         '-');
-            //$table_size    = array(10,         10,          10,         10,              10,         10,          10,         10,          10,          10);
-        }
-        else {
-            $table_columns = array('userpic', 'fullname',   'title',    'time_modified', 'version', 'class',     'acked',     'execd',    'before',    'operation', 'delete');
-            $table_headers = array($title_pic, $title_name, $title_ttl, $title_date,     $title_ver, $title_clss, $title_ack, $title_exec, $title_bfr, '-',         '-');
-            //$table_size    = array(10,         10,          10,         10,              10,         10,          10,         10,          10,          10,          10);
-        }
+    $table_columns = array('userpic', 'fullname',   'title',    'time_modified', 'version', 'class',     'acked');
+    $table_headers = array($title_pic, $title_name, $title_ttl, $title_date,     $title_ver, $title_clss, $title_ack);
+    //$table_size  = array(10,         10,          10,         10,              10,         10,          10);
+
+    if (!$apply->only_acked_accept) {
+        $table_columns = array_merge($table_columns, array('execd'));
+        $table_headers = array_merge($table_headers, array($title_exec));
+        //$table_size  = array_merge($table_size,    array(10));
     }
-    else {
-        if ($apply->only_acked_accept) {
-            $table_columns = array('userpic', 'fullname',   'title',    'time_modified', 'version', 'class',      'acked',    'before',   'operation');
-            $table_headers = array($title_pic, $title_name, $title_ttl, $title_date,     $title_ver, $title_clss, $title_ack, $title_bfr, '-');
-            //$table_size    = array(10,         10,          10,         10,              10,         10,          10,         10,         10);
-        }
-        else {
-            $table_columns = array('userpic', 'fullname',   'title',    'time_modified', 'version', 'class',      'acked',    'execd',     'before',   'operation');
-            $table_headers = array($title_pic, $title_name, $title_ttl, $title_date,     $title_ver, $title_clss, $title_ack, $title_exec, $title_bfr, '-');
-            //$table_size    = array(10,         10,          10,         10,              10,         10,          10,         10,          10,         10);
-        }
+
+    $table_columns = array_merge($table_columns, array('before',   'operation'));
+    $table_headers = array_merge($table_headers, array($title_bfr, '-'));
+    //$table_size  = array_merge($table_size,    array(10,          10));
+
+    if ($apply->enable_deletemode) {
+        $table_columns = array_merge($table_columns, array('delete'));
+        $table_headers = array_merge($table_headers, array('-'));
+        //$table_size  = array_merge($table_size,    array(10));
     }
 }
 
@@ -76,9 +71,9 @@ if ($req_own_data) {
     $table->no_sorting('lastname');
     $table->no_sorting('firstname');
     $table->no_sorting('edit');
-    $table->no_sorting('discard');
     $table->no_sorting('draft');
     $table->no_sorting('before');
+    if ($apply->can_discard) $table->no_sorting('discard');
 }
 else {
     $table->sortable(true, 'time_modified', SORT_DESC);
@@ -97,8 +92,8 @@ else {
     }
 
     $table->no_sorting('before');
-    if (!$apply->only_acked_accept) $table->no_sorting('operation');
-    if ( $apply->enable_deletemode) $table->no_sorting('delete');
+    $table->no_sorting('operation');
+    if ($apply->enable_deletemode) $table->no_sorting('delete');
 }
 
 //
