@@ -41,13 +41,24 @@ class apply_numeric_form extends apply_item_form
         $mform->setType('label', PARAM_TEXT);
 
         $mform->addElement('text', 'rangefrom', get_string('numeric_range_from', 'apply'), array('size'=>10, 'maxlength'=>10));
-        $mform->setType('rangefrom', PARAM_INT);
+        $mform->setType('rangefrom', PARAM_TEXT);   // and '-'
         $mform->addElement('text', 'rangeto',   get_string('numeric_range_to',   'apply'), array('size'=>10, 'maxlength'=>10));
-        $mform->setType('rangeto',   PARAM_INT);
+        $mform->setType('rangeto',   PARAM_TEXT);   // and '-'
+
+        $mform->addElement('text', 'outside_style',  get_string('outside_style', 'apply'), array('size'=>APPLY_ITEM_STYLE_TEXTBOX_SIZE, 'maxlength'=>255));
+        $mform->addHelpButton('outside_style', 'outside_style', 'apply');
+        $mform->setDefault('outside_style', get_string('outside_style_default', 'apply'));
+        $mform->setType('outside_style', PARAM_TEXT);
+
+        $mform->addElement('text', 'item_style',  get_string('item_style', 'apply'), array('size'=>APPLY_ITEM_STYLE_TEXTBOX_SIZE, 'maxlength'=>255));
+        $mform->addHelpButton('item_style', 'item_style', 'apply');
+        $mform->setDefault('item_style', get_string('item_style_default', 'apply'));
+        $mform->setType('item_style', PARAM_TEXT);
 
         parent::definition();
         $this->set_data($item);
     }
+
 
     public function get_data()
 	{
@@ -84,6 +95,8 @@ class apply_numeric_form extends apply_item_form
 		else {
             $item->presentation = $num1.APPLY_NUMERIC_SEP.$num2;
         }
+
+        $item->presentation .= APPLY_NUMERIC_SEP.$item->outside_style.APPLY_NUMERIC_SEP.$item->item_style;
         return $item;
     }
 }

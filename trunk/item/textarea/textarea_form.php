@@ -45,6 +45,16 @@ class apply_textarea_form extends apply_item_form
         $mform->addElement('select', 'itemheight', get_string('textarea_height', 'apply').'&nbsp;', array_slice(range(0, 40), 1, 40, true));
         $mform->setType('itemheight', PARAM_INT);
 
+        $mform->addElement('text', 'outside_style',  get_string('outside_style', 'apply'), array('size'=>APPLY_ITEM_STYLE_TEXTBOX_SIZE, 'maxlength'=>255));
+        $mform->addHelpButton('outside_style', 'outside_style', 'apply');
+        $mform->setDefault('outside_style', get_string('outside_style_default', 'apply'));
+        $mform->setType('outside_style', PARAM_TEXT);
+
+        $mform->addElement('text', 'item_style',  get_string('item_style', 'apply'), array('size'=>APPLY_ITEM_STYLE_TEXTBOX_SIZE, 'maxlength'=>255));
+        $mform->addHelpButton('item_style', 'item_style', 'apply');
+        $mform->setDefault('item_style', get_string('item_style_default', 'apply'));
+        $mform->setType('item_style', PARAM_TEXT);
+
         parent::definition();
         $this->set_data($item);
     }
@@ -56,7 +66,8 @@ class apply_textarea_form extends apply_item_form
             return false;
         }
 
-        $item->presentation = $item->itemwidth . '|'. $item->itemheight;
+        $item->presentation = $item->itemwidth.APPLY_TEXTAREA_SEP.$item->itemheight.
+                                               APPLY_TEXTAREA_SEP.$item->outside_style.APPLY_TEXTAREA_SEP.$item->item_style;
         return $item;
     }
 }

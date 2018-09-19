@@ -52,26 +52,15 @@ class apply_item_tablestart extends apply_item_base
         //the elements for position dropdownlist
         $positionlist = array_slice(range(0, $i_formselect_last), 1, $i_formselect_last, true);
 
-        $columns = '';
-        $border = '';
-        $border_style = '';
-        $th_sizes = '';
-        $th_strings = '';
-        $disp_iname = '';
-
         $item->presentation = empty($item->presentation) ? '' : $item->presentation;
         $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
-        $columns = $presentation[0];
-        if (array_key_exists(1, $presentation)) $border       = $presentation[1];
-        if (array_key_exists(2, $presentation)) $border_style = $presentation[2];
-        if (array_key_exists(3, $presentation)) $th_sizes     = $presentation[3];
-        if (array_key_exists(4, $presentation)) $th_strings   = $presentation[4];
-        if (array_key_exists(5, $presentation)) $disp_iname   = $presentation[5];
 
-        if ($columns==0 OR $columns=='') $columns = 3;
-        if ($border=='') $border = 1;
-        if ($border_style=='') $border_style = 'solid';
-        if ($disp_iname=='') $disp_iname = 0;
+        $columns      = (intval($presentation[0])!=0) ? $presentation[0] : 3;
+        $border       = isset($presentation[1]) ? $presentation[1]: 1;
+        $border_style = isset($presentation[2]) ? $presentation[2]: 'solid';
+        $th_sizes     = isset($presentation[3]) ? $presentation[3]: '';
+        $th_strings   = isset($presentation[4]) ? $presentation[4]: '';
+        $disp_iname   = isset($presentation[5]) ? $presentation[5]: 0;
 
         if (!property_exists($item, 'label')) $item->label = '';
         if ($item->label=='') $item->label = 'table_start';
