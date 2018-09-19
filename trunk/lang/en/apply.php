@@ -140,7 +140,7 @@ $string['can_discard'] = 'Can Discard';
 $string['can_discard_help'] = 'Enable cancellation of application.'; 
 $string['date_format']      = 'Display format of date(time)';
 $string['date_format_default'] = '%m/%d/%y %H:%M';
-$string['date_format_help'] = 'Specify display format of date and time. Default is '.$string['date_format_default'];
+$string['date_format_help'] = 'Specify display format of date and time. The default is '.$string['date_format_default'];
 $string['entries_list_title'] = 'List of Entries';
 $string['entry_saved'] = 'Your applocation has been saved. Thank you.';
 $string['entry_saved_draft'] = 'Your applocation has been saved as <strong>Draft</strong>.';
@@ -261,6 +261,13 @@ $string['textarea_width'] = 'Width';
 $string['textfield'] = 'Short text answer';
 $string['textfield_maxlength'] = 'Maximum characters accepted';
 $string['textfield_size'] = 'Textfield width';
+$string['outside_style'] = 'Border style of item';
+$string['outside_style_default'] = 'border:1px solid';
+$string['outside_style_help'] = 'The style of the border around the item. It is ignored in the table. The default is '.$string['outside_style_default'];
+$string['item_style'] = 'Style of item';
+$string['item_style_default'] = '';
+$string['item_style_help'] = 'The style of the item. The default is '.$string['item_style_default'];
+
 $string['time_close'] = 'Time to close';
 $string['time_close_help'] = 'You can specify times when the apply is accessible for people to answer the applications. 
 If the checkbox is not ticked there is no limit defined.';

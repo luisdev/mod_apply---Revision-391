@@ -777,16 +777,3 @@ function apply_box_end()
 }
 
 
-/*
-function apply_set_column_width($table, $columns, $widths)
-{
-    $num = 0;
-    foreach ($columns as $column) {
-        $table->column_style[$column]['width'] = $widths[$num];
-        $num++;
-    }
-
-    return $table;
-}
-*/
-
