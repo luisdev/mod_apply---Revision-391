@@ -114,10 +114,12 @@ if ($student) {
                 $change_label   = get_string('update_entry_button', 'apply');
                 $change_params  = array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'courseid'=>$courseid, 'go_page'=>0);
                 $change_action  = 'submit.php';
-                // Cancel
-                $discard_label  = get_string('cancel_entry_button', 'apply');
-                $discard_params = array('id'=>$id, 'submit_id'=>$submit->id);
-                $discard_action = 'delete_submit.php';
+                // Discard
+                if ($apply->can_discard) {
+                    $discard_label  = get_string('cancel_entry_button', 'apply');
+                    $discard_params = array('id'=>$id, 'submit_id'=>$submit->id);
+                    $discard_action = 'delete_submit.php';
+                }
             }
             else {
                 // Edit
@@ -125,8 +127,8 @@ if ($student) {
                 $change_params = array('id'=>$id, 'submit_id'=>$submit->id, 'submit_ver'=>$submit->version, 'courseid'=>$courseid, 'go_page'=>0);
                 $change_action = 'submit.php';
                 
-                if ($submit->version<=1) {
-                    // Delete
+                if ($submit->version<=1 and $apply->can_discard) {
+                    // Discard
                     $discard_label  = get_string('delete_entry_button', 'apply');
                     $discard_params = array('id'=>$id, 'submit_id'=>$submit->id);
                     $discard_action = 'delete_submit.php';
@@ -151,7 +153,9 @@ if ($student) {
                 $data[] = '-';
             }
             else {
-                $data[] = apply_single_button($CFG->wwwroot.'/mod/apply/'.$discard_action, $discard_params, $discard_label);
+                if ($apply->can_discard) {
+                    $data[] = apply_single_button($CFG->wwwroot.'/mod/apply/'.$discard_action, $discard_params, $discard_label);
+                }
             }
         }
     }
