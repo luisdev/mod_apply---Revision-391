@@ -41,10 +41,16 @@ class apply_info_form extends apply_item_form
         $mform->setType('label', PARAM_TEXT);
 
         $options=array();
-        $options[1]  = get_string('responsetime', 'apply');
-        $options[2]  = get_string('course');
-        $options[3]  = get_string('coursecategory');
+        $options[1] = get_string('responsetime', 'apply');
+        $options[2] = get_string('course');
+        $options[3] = get_string('coursecategory');
+        $options[4] = get_string('fullname');
+        $options[5] = get_string('firstlastname', 'apply');
+        $options[6] = get_string('lastfirstname', 'apply');
+        $options[7] = get_string('firstname');
+        $options[8] = get_string('lastname');
         $this->infotype = &$mform->addElement('select', 'presentation', get_string('infotype', 'apply'), $options);
+        $mform->setType('presentation', PARAM_INT);
 
         parent::definition();
         $this->set_data($item);

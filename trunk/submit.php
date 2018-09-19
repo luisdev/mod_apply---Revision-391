@@ -182,7 +182,7 @@ if ($prev_values) {
             //$event = apply_get_event($cm, 'user_submit', $urlparams, 'draft');
             //jbxl_add_to_log($event);
             if ($go_next_page or $go_prev_page) $save_return = 'page';
-            else                                 $prev_values = false;
+            else                                $prev_values = false;
             if ($save_draft) $save_return = 'draft';
         }
         else {

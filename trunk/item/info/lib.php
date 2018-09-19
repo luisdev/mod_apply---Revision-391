@@ -142,6 +142,26 @@ class apply_item_info extends apply_item_base
                         $datavalue->value = $value->value;
                         $datavalue->show = $datavalue->value;
                         break;
+                    case 4:  // fullname
+                        $datavalue->value = $value->value;
+                        $datavalue->show = $datavalue->value;
+                        break;
+                    case 5:  // firstlastname
+                        $datavalue->value = $value->value;
+                        $datavalue->show = $datavalue->value;
+                        break;
+                    case 6:  // lastfirstname
+                        $datavalue->value = $value->value;
+                        $datavalue->show = $datavalue->value;
+                        break;
+                    case 7:  // firstname
+                        $datavalue->value = $value->value;
+                        $datavalue->show = $datavalue->value;
+                        break;
+                    case 8:  // lastname
+                        $datavalue->value = $value->value;
+                        $datavalue->show = $datavalue->value;
+                        break;
                 }
 
                 $data[] = $datavalue;
@@ -215,7 +235,6 @@ class apply_item_info extends apply_item_base
 
         $align = right_to_left() ? 'right' : 'left';
         $presentation = $item->presentation;
-        $requiredmark =  ($item->required == 1)?'<span class="apply_required_mark">*</span>':'';
 
         if ($item->apply_id) {
             $courseid = $DB->get_field('apply', 'course', array('id'=>$item->apply_id));
@@ -251,13 +270,33 @@ class apply_item_info extends apply_item_base
                     $itemshowvalue = '';
                 }
                 break;
+            case 4:  // fullname
+                $itemvalue = fullname($USER);
+                $itemshowvalue = $itemvalue;
+                break;
+            case 5:  // firstlastname
+                $itemvalue = $USER->firstname.' '.$USER->lastname;
+                $itemshowvalue = $itemvalue;
+                break;
+            case 6:  // lastfirstname
+                $itemvalue = $USER->lastname.' '.$USER->firstname;
+                $itemshowvalue = $itemvalue;
+                break;
+            case 7:  // firstname
+                $itemvalue = $USER->firstname;
+                $itemshowvalue = $itemvalue;
+                break;
+            case 8:  // lastname
+                $itemvalue = $USER->lastname;
+                $itemshowvalue = $itemvalue;
+                break;
         }
 
         //print the question and label
         $output  = '';
         $output .= '<div class="apply_item_label_'.$align.'">';
         $output .= '('.$item->label.') ';
-        $output .= format_text($item->name.$requiredmark, true, false, false);
+        $output .= format_text($item->name, true, false, false);
         if ($item->dependitem) {
             if ($dependitem = $DB->get_record('apply_item', array('id'=>$item->dependitem))) {
                 $output .= ' <span class="apply_depend">';
@@ -333,13 +372,31 @@ class apply_item_info extends apply_item_base
                     $itemshowvalue = '';
                 }
                 break;
+            case 4:  // fullname
+                $itemvalue = fullname($USER);
+                $itemshowvalue = $itemvalue;
+                break;
+            case 5:  // firstlastname
+                $itemvalue = $USER->firstname.' '.$USER->lastname;
+                $itemshowvalue = $itemvalue;
+                break;
+            case 6:  // lastfirstname
+                $itemvalue = $USER->lastname.' '.$USER->firstname;
+                $itemshowvalue = $itemvalue;
+                break;
+            case 7:  // firstname
+                $itemvalue = $USER->firstname;
+                $itemshowvalue = $itemvalue;
+                break;
+            case 8:  // lastname
+                $itemvalue = $USER->lastname;
+                $itemshowvalue = $itemvalue;
+                break;
         }
 
-        $requiredmark =  ($item->required == 1)?'<span class="apply_required_mark">*</span>':'';
-        //print the question and label
         $output  = '';
         $output .= '<div class="apply_item_label_'.$align.$highlight.'">';
-        $output .= format_text($item->name.$requiredmark, true, false, false);
+        $output .= format_text($item->name, true, false, false);
         $output .= '</div>';
 
         apply_open_table_item_tag($output);
@@ -372,11 +429,9 @@ class apply_item_info extends apply_item_base
             $value = $value ? userdate($value) : '&nbsp;';
         }
 
-        $requiredmark =  ($item->required == 1)?'<span class="apply_required_mark">*</span>':'';
-        //print the question and label
         $output  = '';
         $output .= '<div class="apply_item_label_'.$align.'">';
-        $output .= format_text($item->name . $requiredmark, true, false, false);
+        $output .= format_text($item->name, true, false, false);
         $output .= '</div>';
 
         apply_open_table_item_tag($output);
@@ -423,7 +478,7 @@ class apply_item_info extends apply_item_base
 
     public function get_hasvalue()
     {
-        return 1;
+        return 0;
     }
 
 
