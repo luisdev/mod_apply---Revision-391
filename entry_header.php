@@ -15,15 +15,24 @@ $title_bfr  = get_string('title_before', 'apply');
 if ($req_own_data) {
     $title_draft   = get_string('title_draft', 'apply');
 
-    if ($apply->only_acked_accept) {
-        $table_columns = array('title',    'time_modified', 'version', 'class',      'draft',      'acked',    'before',    'edit', 'discard');
-        $table_headers = array($title_ttl, $title_date,     $title_ver, $title_clss, $title_draft, $title_ack, $title_bfr, '-',    '-');
-        //$table_size    = array(10,         10,              10,         10,          10,           10,         10,         10,     10);
+    $table_columns = array('title',    'time_modified', 'version', 'class',      'draft',      'acked');
+    $table_headers = array($title_ttl, $title_date,     $title_ver, $title_clss, $title_draft, $title_ack);
+    //$table_size    = array(10,         10,              10,         10,          10,           10);
+
+    if (!$apply->only_acked_accept) {
+        $table_columns = array_merge($table_columns, array('execd'));
+        $table_headers = array_merge($table_headers, array($title_exec));
+        //$table_size    = array_merge($table_size,    array(10));
     }
-    else {
-        $table_columns = array('title',    'time_modified', 'version', 'class',      'draft',      'acked',    'execd',    'before',    'edit', 'discard');
-        $table_headers = array($title_ttl, $title_date,     $title_ver, $title_clss, $title_draft, $title_ack, $title_exec, $title_bfr, '-',    '-');
-        //$table_size    = array(10,         10,              10,         10,          10,           10,         10,          10,         10,     10);
+
+    $table_columns = array_merge($table_columns, array('before',   'edit'));
+    $table_headers = array_merge($table_headers, array($title_bfr, '-'));
+    //$table_size    = array_merge($table_size,    array(10,         10));
+
+    if ($apply->can_discard) {
+        $table_columns = array_merge($table_columns, array('discard'));
+        $table_headers = array_merge($table_headers, array('-'));
+        //$table_size    = array_merge($table_size,    array(10));
     }
 }
 else {

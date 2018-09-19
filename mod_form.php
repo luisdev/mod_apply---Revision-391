@@ -113,6 +113,11 @@ class mod_apply_mod_form extends moodleform_mod
         $mform->setDefault('enable_deletemode', 0);
 
         //
+        $mform->addElement('selectyesno', 'can_discard', get_string('can_discard', 'apply')); 
+        $mform->addHelpButton('can_discard', 'can_discard', 'apply');
+        $mform->setType('can_discard', PARAM_INT);
+        $mform->setDefault('can_discard', 1);
+        //
         //-------------------------------------------------------------------------------
         // for Group
         $this->standard_coursemodule_elements();

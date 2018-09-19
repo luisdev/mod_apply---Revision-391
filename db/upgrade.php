@@ -60,11 +60,21 @@ function xmldb_apply_upgrade($oldversion)
         }
     }
 
-    // 2013042002
+    // 2018091701
     if ($oldversion < 2018091701) {
         $table = new xmldb_table('apply');
         //
         $field = new xmldb_field('only_acked_accept', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0', 'name_pattern');
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+    }
+
+    // 2018091900
+    if ($oldversion < 2018091901) {
+        $table = new xmldb_table('apply');
+        //
+        $field = new xmldb_field('can_discard', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '1', 'enable_deletemode');
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
