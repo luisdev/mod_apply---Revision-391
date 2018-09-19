@@ -478,7 +478,7 @@ class apply_item_info extends apply_item_base
 
     public function get_hasvalue()
     {
-        return 0;
+        return 1;
     }
 
 
