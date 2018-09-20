@@ -3,8 +3,6 @@
 //print the items
 echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 {
-    global $Table_in;
-
     echo '<form action="submit.php" method="post" onsubmit=" ">';
     //echo '<fieldset>'; // for mobile viewer
     echo '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
