@@ -295,14 +295,14 @@ if ($do_show=='edit') {
             }
             echo $OUTPUT->box_start('apply_item_box_'.$align.$dependstyle);
 
-            //
+            /*
             //if ($applyitem->hasvalue==1) {
                 //$itemnr++;
                 echo $OUTPUT->box_start('apply_item_number_'.$align);
                 //echo $itemnr;
                 echo $itempos;
                 echo $OUTPUT->box_end();
-            //}
+            //} */
 
             echo $OUTPUT->box_start('box generalbox boxalign_'.$align);
             echo $OUTPUT->box_start('apply_item_commands_'.$align);
