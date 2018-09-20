@@ -230,6 +230,8 @@ class apply_item_label extends apply_item_base
      */
     public function print_item_submit($item, $value = '', $highlightrequire = false)
     {
+        global $OUTPUT;
+
         $align = right_to_left() ? 'right' : 'left';
 
         $output  = '';
@@ -253,6 +255,8 @@ class apply_item_label extends apply_item_base
      */
     public function print_item_show_value($item, $value = '')
     {
+        global $OUTPUT;
+
         $align = right_to_left() ? 'right' : 'left';
 
         $output  = '';

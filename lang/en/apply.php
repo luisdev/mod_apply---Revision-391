@@ -308,7 +308,8 @@ $string['submit_num'] = 'Submitted number';
 // for Table
 $string['tablestart'] = 'Table Start';
 $string['tableend']   = 'Table End';
-$string['no_table']   = 'Table is not started.';
+$string['no_table']   = 'Table is not started!';
+$string['nested_table'] = 'Table is nested!';
 $string['table_columns'] = 'Number of columns';
 $string['table_border'] = 'Border size of inside table';
 $string['table_border_help'] = 'The border size of the frame of table is incremented by 1';
