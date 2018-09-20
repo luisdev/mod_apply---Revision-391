@@ -310,6 +310,7 @@ $string['tablestart'] = 'Table Start';
 $string['tableend']   = 'Table End';
 $string['no_table']   = 'Table is not started!';
 $string['nested_table'] = 'Table is nested!';
+$string['not_close_table'] = 'The table is not closed';
 $string['table_columns'] = 'Number of columns';
 $string['table_border'] = 'Border size of inside table';
 $string['table_border_help'] = 'The border size of the frame of table is incremented by 1';
