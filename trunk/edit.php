@@ -81,6 +81,7 @@ if ($movehere && isset($SESSION->apply->moving->movingitem)) {
 }
 if ($moveitem) {
     $item = $DB->get_record('apply_item', array('id'=>$moveitem));
+    if (!property_exists($SESSION->apply, 'moving')) $SESSION->apply->moving = new stdClass();
     $SESSION->apply->moving->shouldmoving = 1;
     $SESSION->apply->moving->movingitem = $moveitem;
 } 

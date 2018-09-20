@@ -1533,3 +1533,143 @@ function apply_get_event($cm, $action, $params='', $info='')
 }
 
 
+
+///////////////////////////////////////////////////////////////////////////////////
+//
+// Table function
+//
+
+function apply_open_table_tag($item)
+{
+    global $Table_in, $Table_params;
+  
+    if ($Table_in) return;
+
+    $presentation = explode(APPLY_TABLESTART_SEP, $item->presentation);
+    $columns      = $presentation[0];
+    $border       = $presentation[1];
+    $border_style = $presentation[2];
+    $th_sizes     = $presentation[3];
+    $th_strings   = $presentation[4];
+    $disp_iname   = $presentation[5];
+
+    $th_size = explode(',', $th_sizes);
+    $th_elements = explode("\n", $th_strings);
+    $table_border = $border + 1;
+
+    $style = '';
+    $style_value = '';
+    if ($border>=0) $style_value = 'border-width:'.$border.'px;';
+    if ($border_style!='') $style_value .= 'border-style:'.$border_style.';';
+    if ($style_value!='') $style = 'style="'.$style_value.'"';
+
+    $Table_in = true;
+    $Table_params->position = 0;
+    $Table_params->columns = $columns;
+    $Table_params->style = $style;
+    $Table_params->disp_iname = $disp_iname;
+
+    echo "\n";
+    echo '<table style="border:'.$table_border.'px; border-style:solid; table-layout:fixed;"><tr>';
+
+    // th
+    if ($th_strings!='') {
+        for ($col=0; $col<$columns; $col++) {
+            if (array_key_exists($col, $th_size)) {
+                $size = intval($th_size[$col]);
+                if ($size>0) {
+                    $style_value .= 'width:'.$size.'px;';
+                    if ($style_value!='') $style = 'style="'.$style_value.'"';
+                }
+            }
+
+            echo '<th '.$style.'>';
+            if (array_key_exists($col, $th_elements)) echo $th_elements[$col];
+            else echo ' ';
+            echo '</th>';
+        }
+        echo '</tr>';
+    }
+}
+
+
+function apply_close_table_tag()
+{
+    global $Table_in, $Table_params;
+
+    if (!$Table_in) return;
+
+    if ($Table_params->position!=0) {
+        for ($col=$Table_params->position; $col<$Table_params->columns; $col++) echo '<td '.$Table_params->style.'> </td>';
+        echo '</tr>';
+    }
+
+    echo '</table>';
+    $Table_in = false;
+}
+
+
+function apply_open_table_item_tag($title='', $preview=false)
+{
+    global $Table_in, $Table_params;
+
+    if (!$Table_in or $preview) {
+        if ($title!='') echo $title;   // outside of table
+        if (!$Table_in) return;
+    }    
+
+    if ($Table_params->position==0) echo '<tr>';
+    echo '<td '.$Table_params->style.'>';
+
+    if ($Table_params->disp_iname or $preview) {
+        if ($title!='') echo $title;   // inside of table
+    }    
+}
+
+
+function apply_close_table_item_tag()
+{
+    global $Table_in, $Table_params;
+
+    if (!$Table_in) return;
+
+    $Table_params->position++;
+    $Table_params->position %= $Table_params->columns;
+
+    echo '</td>';
+    if ($Table_params->position==0) echo '</tr>';
+}
+
+
+//
+// for layout
+//
+function apply_print_line_space($size='')
+{
+    global $Table_in;
+
+    $size = intval($size);
+    if ($size<=0) $size = '15';
+    if (!$Table_in) echo '<div style="padding-bottom:'.$size.'px"></div>';
+}
+
+
+function apply_box_start($size='1', $type='solid')
+{
+    global $Table_in;
+
+    if (!$Table_in) {
+        $size = intval($size);
+        echo '<table style="border:'.$size.'px '.$type.';"><tr><td style="padding:0px 5px 0px 5px;">';
+    }
+}
+
+
+function apply_box_end()
+{
+    global $Table_in;
+
+    if (!$Table_in) echo '</td></tr></table>';
+}
+
+
