@@ -312,6 +312,7 @@ $string['tablestart'] = 'テーブルの開始';
 $string['tableend']   = 'テーブルの終了';
 $string['no_table']   = 'テーブルが開始されていません';
 $string['nested_table'] = 'テーブルが入れ子になっています';
+$string['not_close_table'] = 'テーブルが閉じられていない';
 $string['table_columns'] = 'テーブルのカラム数';
 $string['table_border'] = 'テーブル内部の罫線のサイズ';
 $string['table_border_help'] = 'テーブルの枠の罫線サイズはこの値に +1 される';

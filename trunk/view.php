@@ -248,7 +248,7 @@ if ($do_show=='view_one_entry' and $submit_id) {
         echo '<div align="center">';
         echo $OUTPUT->heading(get_string('no_submit_data', 'apply'), 4);
         echo $OUTPUT->single_button($back_url->out(), get_string('back_button', 'apply'));
-           echo '</div>';
+        echo '</div>';
     }
 }
 
