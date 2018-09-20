@@ -71,7 +71,7 @@ if ($Table_in) {   // テーブルはまだ閉じられていない．
     echo $OUTPUT->box_start('apply_print_item');
     apply_close_table_tag();
     echo $OUTPUT->box_end();
-    //echo '<div style="color: #c00000">'.get_string('not_close_table', 'apply').'</div>';
+    //echo '<div style="color:#c00000">['.get_string('not_close_table','apply').']</div>';
 }
 
 require('entry_info.php');
