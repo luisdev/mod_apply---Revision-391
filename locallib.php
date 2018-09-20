@@ -817,6 +817,78 @@ function apply_copy_values($submit_id, $fm_ver, $to_ver)
 }
 
 
+/**
+ * get the values of an item depending on the given groupid.
+ * if the feedback is anonymous so the values are shuffled
+ *
+ * @global object
+ * @global object
+ * @param object $item
+ * @param int $groupid
+ * @param int $courseid
+ * @param bool $ignore_empty if this is set true so empty values are not delivered
+ * @return array the value-records
+ */
+function apply_get_group_values($item, $groupid = false, $courseid = false, $ignore_empty = false)
+{
+    global $CFG, $DB;
+
+    //if the groupid is given?
+    if (intval($groupid) > 0) {
+        $params = array();
+        if ($ignore_empty) {
+            $value = $DB->sql_compare_text('fbv.value');
+            $ignore_empty_select = "AND $value != :emptyvalue AND $value != :zerovalue";
+            $params += array('emptyvalue' => '', 'zerovalue' => '0');
+        }
+        else {
+            $ignore_empty_select = "";
+        }
+
+        $query = 'SELECT fbv .  *
+                    FROM {apply_value} fbv, {apply_completed} fbc, {groups_members} gm
+                   WHERE fbv.item = :itemid
+                         AND fbv.completed = fbc.id
+                         AND fbc.userid = gm.userid
+                         '.$ignore_empty_select.'
+                         AND gm.groupid = :groupid
+                ORDER BY fbc.timemodified';
+        $params += array('itemid' => $item->id, 'groupid' => $groupid);
+        $values = $DB->get_records_sql($query, $params);
+    } 
+    else {
+        $params = array();
+        if ($ignore_empty) {
+            $value = $DB->sql_compare_text('value');
+            $ignore_empty_select = "AND $value != :emptyvalue AND $value != :zerovalue";
+            $params += array('emptyvalue' => '', 'zerovalue' => '0');
+        }
+        else {
+            $ignore_empty_select = "";
+        }
+
+        if ($courseid) {
+            $select = "item = :itemid AND course_id = :courseid ".$ignore_empty_select;
+            $params += array('itemid' => $item->id, 'courseid' => $courseid);
+            $values = $DB->get_records_select('apply_value', $select, $params);
+        }
+        else {
+            $select = "item = :itemid ".$ignore_empty_select;
+            $params += array('itemid' => $item->id);
+            $values = $DB->get_records_select('apply_value', $select, $params);
+        }
+    }
+
+    $params = array('id'=>$item->apply);
+    if ($DB->get_field('apply', 'anonymous', $params) == FEEDBACK_ANONYMOUS_YES) {
+        if (is_array($values)) {
+            shuffle($values);
+        }
+    }
+
+    return $values;
+}
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////
@@ -1459,4 +1531,5 @@ function apply_get_event($cm, $action, $params='', $info='')
    
     return $event;
 }
+
 
