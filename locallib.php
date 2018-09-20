@@ -1661,20 +1661,18 @@ function apply_item_box_start($item)
 {
     global $Table_in;
 
-    $outside_style = '';
-    $item_style = '';
-    if ($item->outside_style!='') $outside_style = 'style="'.$item->outside_style.'"';
-    if ($item->item_style!='')    $item_style    = 'style="'.$item->item_style.'"';
-
     if (!$Table_in) {
+        $outside_style = '';
+        if ($item->outside_style!='') $outside_style = 'style="'.$item->outside_style.'"';
         echo '<table '.$outside_style,'>';
     }
     else {
-        echo '<table style="border:0px none;">';
+        echo '<table style="border: 0px none;">';
     }
+    echo '<tr><td style="padding: 5px 5px 0px 5px;">';
 
-    echo '<tr><td style="padding:0px 5px 0px 5px;">';
-    //echo '<tr><td>';
+    $item_style = '';
+    if ($item->item_style!='')    $item_style    = 'style="'.$item->item_style.'"';
     echo '<div '.$item_style.'>';
 }
 
