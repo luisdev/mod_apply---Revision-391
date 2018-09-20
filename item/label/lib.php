@@ -195,14 +195,15 @@ class apply_item_label extends apply_item_base
      * @return void
      */
     public function print_item_preview($item)
-	{
+    {
         global $OUTPUT, $DB;
 
-		$align = right_to_left() ? 'right' : 'left';
+        $align = right_to_left() ? 'right' : 'left';
 
         $output  = '';
-		$output .= '<div class="apply_item_label_'.$align.'">';
-		$output .= '('.$item->label.') ';
+        $output .= '<div class="apply_item_label_'.$align.'">';
+        $output .= '('.$item->label.') ';
+        $output .= format_text($item->name, true, false, false);
         if ($item->dependitem) {
             if ($dependitem = $DB->get_record('apply_item', array('id'=>$item->dependitem))) {
                 $output .= ' <span class="apply_depend">';
@@ -210,7 +211,7 @@ class apply_item_label extends apply_item_base
                 $output .= '</span>';
             }
         }
-		$output .= '</div>';
+        $output .= '</div>';
 
         apply_open_table_item_tag($output, true);
         $this->print_item($item);
@@ -229,8 +230,15 @@ class apply_item_label extends apply_item_base
      */
     public function print_item_submit($item, $value = '', $highlightrequire = false)
     {
-        apply_open_table_item_tag();
+        $align = right_to_left() ? 'right' : 'left';
+
+        $output  = '';
+        $output .= format_text($item->name, true, false, false);
+
+        apply_open_table_item_tag($output);
+        echo $OUTPUT->box_start('generalbox boxalign'.$align);
         $this->print_item($item);
+        echo $OUTPUT->box_end();
         apply_close_table_item_tag();
     }
 
@@ -245,8 +253,15 @@ class apply_item_label extends apply_item_base
      */
     public function print_item_show_value($item, $value = '')
     {
-        apply_open_table_item_tag();
+        $align = right_to_left() ? 'right' : 'left';
+
+        $output  = '';
+        $output .= format_text($item->name, true, false, false);
+
+        apply_open_table_item_tag($output);
+        echo $OUTPUT->box_start('generalbox boxalign'.$align);
         $this->print_item($item);
+        echo $OUTPUT->box_end();
         apply_close_table_item_tag();
     }
 
