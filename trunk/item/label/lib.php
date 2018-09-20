@@ -18,6 +18,7 @@ defined('MOODLE_INTERNAL') OR die('not allowed');
 require_once($CFG->dirroot.'/mod/apply/item/apply_item_class.php');
 require_once($CFG->libdir.'/formslib.php');
 
+
 class apply_item_label extends apply_item_base
  {
     protected $type = "label";
@@ -38,6 +39,7 @@ class apply_item_label extends apply_item_base
     public function build_editform($item, $apply, $cm)
     {
         global $DB, $CFG;
+
         require_once('label_form.php');
 
         //get the lastposition number of the apply_items
@@ -261,8 +263,6 @@ class apply_item_label extends apply_item_base
     }
 
 
-    //used by create_item and update_item functions,
-    //when provided $data submitted from apply_show_edit
     public function get_presentation($data)
     {
     }
