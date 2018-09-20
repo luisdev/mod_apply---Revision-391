@@ -336,6 +336,7 @@ class apply_item_multichoice extends apply_item_base
     {
         global $OUTPUT, $DB;
 
+        /*
         $presen = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $item->presentation);
         if (isset($presen[1])) {
             $styles = explode(APPLY_MULTICHOICE_STYLE_SEP, $presen[1]);
@@ -345,9 +346,9 @@ class apply_item_multichoice extends apply_item_base
         else {
             $outside_style = get_string('outside_style_default', 'apply');
             $item_style    = get_string('item_style_default',    'apply');
-        }
-        $item->outside_style = $outside_style;
-        $item->item_style    = $item_style;
+        } */
+        $item->outside_style = '';  //$outside_style;
+        $item->item_style    = '';  //$item_style;
 
         //
         $info = $this->get_info($item);
@@ -440,6 +441,7 @@ class apply_item_multichoice extends apply_item_base
 
         if ($value == null) $value = array();
 
+        /*
         $presen = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $item->presentation);
         if (isset($presen[1])) {
             $styles = explode(APPLY_MULTICHOICE_STYLE_SEP, $presen[1]);
@@ -449,9 +451,9 @@ class apply_item_multichoice extends apply_item_base
         else {
             $outside_style = get_string('outside_style_default', 'apply');
             $item_style    = get_string('item_style_default',    'apply');
-        }
-        $item->outside_style = $outside_style;
-        $item->item_style    = $item_style;
+        } */
+        $item->outside_style = '';  //$outside_style;
+        $item->item_style    = '';  //$item_style;
 
         $info = $this->get_info($item);
         $presentation = explode(APPLY_MULTICHOICE_LINE_SEP, $info->presentation);

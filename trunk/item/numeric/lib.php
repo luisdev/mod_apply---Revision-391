@@ -262,24 +262,15 @@ class apply_item_numeric extends apply_item_base
         $presentation = explode(APPLY_NUMERIC_SEP, $item->presentation);
 
         //get the min-value
-        if (isset($presentation[0]) AND is_numeric($presentation[0])) {
-            $range_from = floatval($presentation[0]);
-        }
-        else {
-            $range_from = 0;
-        }
-        //get the max-value
-        if (isset($presentation[1]) AND is_numeric($presentation[1])) {
-            $range_to = floatval($presentation[1]);
-        }
-        else {
-            $range_to = 0;
-        }
+        $range_from = 0;
+        $range_to = 0;
+        if (isset($presentation[0]) and is_numeric($presentation[0])) $range_from = floatval($presentation[0]);
+        if (isset($presentation[1]) and is_numeric($presentation[1])) $range_to   = floatval($presentation[1]);
 
-        $outside_style = isset($presentation[2]) ? $presentation[2]: get_string('outside_style_default', 'apply');
-        $item_style    = isset($presentation[3]) ? $presentation[3]: get_string('item_style_default',    'apply');
-        $item->outside_style = $outside_style;
-        $item->item_style    = $item_style;
+        //$outside_style = isset($presentation[2]) ? $presentation[2]: get_string('outside_style_default', 'apply');
+        //$item_style    = isset($presentation[3]) ? $presentation[3]: get_string('item_style_default',    'apply');
+        $item->outside_style = '';  //$outside_style;
+        $item->item_style    = '';  //$item_style;
 
         //print the question and label
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
@@ -360,24 +351,15 @@ class apply_item_numeric extends apply_item_base
         $presentation = explode(APPLY_NUMERIC_SEP, $item->presentation);
 
         //get the min-value
-        if (isset($presentation[0]) AND is_numeric($presentation[0])) {
-            $range_from = floatval($presentation[0]);
-        }
-        else {
-            $range_from = 0;
-        }
-        //get the max-value
-        if (isset($presentation[1]) AND is_numeric($presentation[1])) {
-            $range_to = floatval($presentation[1]);
-        }
-        else {
-            $range_to = 0;
-        }
+        $range_from = 0;
+        $range_to = 0;
+        if (isset($presentation[0]) AND is_numeric($presentation[0])) $range_from = floatval($presentation[0]);
+        if (isset($presentation[1]) AND is_numeric($presentation[1])) $range_to   = floatval($presentation[1]);
 
-        $outside_style = isset($presentation[2]) ? $presentation[2]: get_string('outside_style_default', 'apply');
-        $item_style    = isset($presentation[3]) ? $presentation[3]: get_string('item_style_default',    'apply');
-        $item->outside_style = $outside_style;
-        $item->item_style    = $item_style;
+        //$outside_style = isset($presentation[2]) ? $presentation[2]: get_string('outside_style_default', 'apply');
+        //$item_style    = isset($presentation[3]) ? $presentation[3]: get_string('item_style_default',    'apply');
+        $item->outside_style = '';  //$outside_style;
+        $item->item_style    = '';  //$item_style;
 
         $str_required_mark = '<span class="apply_required_mark">*</span>';
         $requiredmark = ($item->required == 1) ? $str_required_mark : '';
