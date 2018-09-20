@@ -32,19 +32,21 @@ class apply_label_form extends apply_item_form
         $position = $this->_customdata['position'];
 
         $mform =& $this->_form;
+        $mform->addElement('header', 'general', get_string($this->type, 'apply'));
 
         $mform->addElement('hidden', 'required', 0);
         $mform->setType('required', PARAM_INT);
-        $mform->addElement('hidden', 'name', 'label');
-        $mform->setType('template', PARAM_TEXT);
 
-        $mform->addElement('header', 'general', get_string($this->type, 'apply'));
-        $mform->addElement('editor', 'presentation_editor', '', null, $presentationoptions);
-        $mform->setType('presentation_editor', PARAM_RAW);
+        //$mform->addElement('hidden', 'name', 'label');
+        //$mform->setType('template', PARAM_TEXT);
 
-        $mform->addElement('text', 'label', get_string('item_label','apply'), array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
+        $mform->addElement('text', 'name',  get_string('item_name',  'apply'), array('size'=>APPLY_ITEM_NAME_TEXTBOX_SIZE, 'maxlength'=>255));
+        $mform->addElement('text', 'label', get_string('item_label', 'apply'), array('size'=>APPLY_ITEM_LABEL_TEXTBOX_SIZE,'maxlength'=>255));
         $mform->addHelpButton('label', 'item_label', 'apply');
         $mform->setType('label', PARAM_TEXT);
+
+        $mform->addElement('editor', 'presentation_editor', '', null, $presentationoptions);
+        $mform->setType('presentation_editor', PARAM_RAW);
 
         parent::definition();
         $this->set_data($item);
