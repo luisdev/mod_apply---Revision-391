@@ -232,9 +232,13 @@ class apply_item_textarea extends apply_item_base
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
         $presentation = explode(APPLY_TEXTAREA_SEP, $item->presentation);
-        $requiredmark = ($item->required == 1) ? $str_required_mark : '';
+        $outside_style = isset($presentation[2]) ? $presentation[2]: get_string('outside_style_default', 'apply');
+        $item_style    = isset($presentation[3]) ? $presentation[3]: get_string('item_style_default',    'apply');
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
 
         //print the question and label
+        $requiredmark = ($item->required == 1) ? $str_required_mark : '';
         $output  = '<div class="apply_item_label_'.$align.'">';
         $output .= '('.$item->label.') ';
         $output .= format_text($item->name.$requiredmark, true, false, false);
@@ -252,10 +256,12 @@ class apply_item_textarea extends apply_item_base
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
         echo '<span class="apply_item_textarea">';
+        apply_item_box_start($item);
         echo '<textarea name="'.$item->typ.'_'.$item->id.'" '.
                        'cols="'.$presentation[0].'" '.
                        'rows="'.$presentation[1].'">';
         echo '</textarea>';
+        apply_item_box_end();
         echo '</span>';
         echo '</div>';
         //
@@ -286,6 +292,11 @@ class apply_item_textarea extends apply_item_base
             $highlight = '';
         }
 
+        $outside_style = isset($presentation[2]) ? $presentation[2]: get_string('outside_style_default', 'apply');
+        $item_style    = isset($presentation[3]) ? $presentation[3]: get_string('item_style_default',    'apply');
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
+
         $str_required_mark = '<span class="apply_required_mark">*</span>';
         $requiredmark = ($item->required == 1) ? $str_required_mark :'';
         //print the question and label
@@ -299,11 +310,13 @@ class apply_item_textarea extends apply_item_base
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.$highlight.'">';
         echo '<span class="apply_item_textarea">';
+        apply_item_box_start($item);
         echo '<textarea name="'.$item->typ.'_'.$item->id.'" '.
                        'cols="'.$presentation[0].'" '.
                        'rows="'.$presentation[1].'">';
         echo $value;
         echo '</textarea>';
+        apply_item_box_end();
         echo '</span>';
         echo '</div>';
 

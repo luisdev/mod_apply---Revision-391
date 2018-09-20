@@ -200,6 +200,9 @@ class apply_item_label extends apply_item_base
 
         $align = right_to_left() ? 'right' : 'left';
 
+        $item->outside_style = '';
+        $item->item_style = '';
+
         $output  = '';
         $output .= '<div class="apply_item_label_'.$align.'">';
         $output .= '('.$item->label.') ';
@@ -214,7 +217,11 @@ class apply_item_label extends apply_item_base
         $output .= '</div>';
 
         apply_open_table_item_tag($output, true);
+        echo $OUTPUT->box_start('generalbox boxalign'.$align);
+        apply_item_box_start($item);
         $this->print_item($item);
+        apply_item_box_end();
+        echo $OUTPUT->box_end();
         apply_close_table_item_tag();
     }
 
@@ -232,14 +239,17 @@ class apply_item_label extends apply_item_base
     {
         global $OUTPUT;
 
-        $align = right_to_left() ? 'right' : 'left';
+        $item->outside_style = '';
+        $item->item_style = '';
 
-        $output  = '';
-        $output .= format_text($item->name, true, false, false);
+        $align  = right_to_left() ? 'right' : 'left';
+        $output = format_text($item->name, true, false, false);
 
         apply_open_table_item_tag($output);
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
+        apply_item_box_start($item);
         $this->print_item($item);
+        apply_item_box_end();
         echo $OUTPUT->box_end();
         apply_close_table_item_tag();
     }
@@ -257,14 +267,17 @@ class apply_item_label extends apply_item_base
     {
         global $OUTPUT;
 
-        $align = right_to_left() ? 'right' : 'left';
+        $item->outside_style = '';
+        $item->item_style = '';
 
-        $output  = '';
-        $output .= format_text($item->name, true, false, false);
+        $align  = right_to_left() ? 'right' : 'left';
+        $output = format_text($item->name, true, false, false);
 
         apply_open_table_item_tag($output);
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
+        apply_item_box_start($item);
         $this->print_item($item);
+        apply_item_box_end();
         echo $OUTPUT->box_end();
         apply_close_table_item_tag();
     }

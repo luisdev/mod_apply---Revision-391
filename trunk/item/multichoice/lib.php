@@ -336,6 +336,20 @@ class apply_item_multichoice extends apply_item_base
     {
         global $OUTPUT, $DB;
 
+        $presen = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $item->presentation);
+        if (isset($presen[1])) {
+            $styles = explode(APPLY_MULTICHOICE_STYLE_SEP, $presen[1]);
+            $outside_style = isset($styles[0]) ? $styles[0] : get_string('outside_style_default', 'apply');
+            $item_style    = isset($styles[1]) ? $styles[1] : get_string('item_style_default',    'apply');
+        }
+        else {
+            $outside_style = get_string('outside_style_default', 'apply');
+            $item_style    = get_string('item_style_default',    'apply');
+        }
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
+
+        //
         $info = $this->get_info($item);
         $presentation = explode(APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
         $str_required_mark = '<span class="apply_required_mark">*</span>';
@@ -363,15 +377,13 @@ class apply_item_multichoice extends apply_item_base
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
+        apply_item_box_start($item);
+        echo '<ul>';
+
         $index = 1;
         $checked = '';
-        echo '<ul>';
-        if ($info->horizontal) {
-            $hv = 'h';
-        }
-        else {
-            $hv = 'v';
-        }
+        if ($info->horizontal) $hv = 'h';
+        else                   $hv = 'v';
 
         if ($info->subtype == 'r' AND !$this->hidenoselect($item)) {
         //print the "not_selected" item on radiobuttons
@@ -406,6 +418,7 @@ class apply_item_multichoice extends apply_item_base
                 break;
         }
         echo '</ul>';
+        apply_item_box_end();
         echo '</div>';
 
         apply_close_table_item_tag();
@@ -427,9 +440,23 @@ class apply_item_multichoice extends apply_item_base
 
         if ($value == null) $value = array();
 
+        $presen = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $item->presentation);
+        if (isset($presen[1])) {
+            $styles = explode(APPLY_MULTICHOICE_STYLE_SEP, $presen[1]);
+            $outside_style = isset($styles[0]) ? $styles[0] : get_string('outside_style_default', 'apply');
+            $item_style    = isset($styles[1]) ? $styles[1] : get_string('item_style_default',    'apply');
+        }
+        else {
+            $outside_style = get_string('outside_style_default', 'apply');
+            $item_style    = get_string('item_style_default',    'apply');
+        }
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
+
         $info = $this->get_info($item);
         $presentation = explode(APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
 
+        //
         $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
@@ -458,6 +485,7 @@ class apply_item_multichoice extends apply_item_base
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.$highlight.'">';
+        apply_item_box_start($item);
         echo '<ul>';
 
         if ($info->horizontal) {
@@ -504,6 +532,7 @@ class apply_item_multichoice extends apply_item_base
                 break;
         }
         echo '</ul>';
+        apply_item_box_end();
         echo '</div>';
 
         apply_close_table_item_tag();

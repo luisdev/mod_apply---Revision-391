@@ -268,7 +268,6 @@ class apply_item_numeric extends apply_item_base
         else {
             $range_from = 0;
         }
-
         //get the max-value
         if (isset($presentation[1]) AND is_numeric($presentation[1])) {
             $range_to = floatval($presentation[1]);
@@ -277,9 +276,13 @@ class apply_item_numeric extends apply_item_base
             $range_to = 0;
         }
 
-        $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
-        //print the question and label
+        $outside_style = isset($presentation[2]) ? $presentation[2]: get_string('outside_style_default', 'apply');
+        $item_style    = isset($presentation[3]) ? $presentation[3]: get_string('item_style_default',    'apply');
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
 
+        //print the question and label
+        $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
         $output  = '';
         $output .= '<div class="apply_item_label_'.$align.'">';
         $output .= '('.$item->label.') ';
@@ -318,12 +321,13 @@ class apply_item_numeric extends apply_item_base
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
         echo '<span class="apply_item_textfield">';
+        apply_item_box_start($item);
         echo '<input type="text" '.
                     'name="'.$item->typ.'_'.$item->id.'" '.
                     'size="10" '.
                     'maxlength="10" '.
                     'value="" />';
-
+        apply_item_box_end();
         echo '</span>';
         echo '</div>';
 
@@ -362,7 +366,6 @@ class apply_item_numeric extends apply_item_base
         else {
             $range_from = 0;
         }
-
         //get the max-value
         if (isset($presentation[1]) AND is_numeric($presentation[1])) {
             $range_to = floatval($presentation[1]);
@@ -370,6 +373,11 @@ class apply_item_numeric extends apply_item_base
         else {
             $range_to = 0;
         }
+
+        $outside_style = isset($presentation[2]) ? $presentation[2]: get_string('outside_style_default', 'apply');
+        $item_style    = isset($presentation[3]) ? $presentation[3]: get_string('item_style_default',    'apply');
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
 
         $str_required_mark = '<span class="apply_required_mark">*</span>';
         $requiredmark = ($item->required == 1) ? $str_required_mark : '';
@@ -400,11 +408,13 @@ class apply_item_numeric extends apply_item_base
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.$highlight.'">';
         echo '<span class="apply_item_textfield">';
+        apply_item_box_start($item);
         echo '<input type="text" '.
                      'name="'.$item->typ.'_'.$item->id.'" '.
                      'size="10" '.
                      'maxlength="10" '.
                      'value="'.$value.'" />';
+        apply_item_box_end();
         echo '</span>';
         echo '</div>';
 

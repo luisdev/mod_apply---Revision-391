@@ -321,6 +321,20 @@ class apply_item_multichoicerated extends apply_item_base
     {
         global $OUTPUT, $DB;
 
+        $presen = explode(APPLY_MULTICHOICERATED_STYLE_FIELD_SEP, $item->presentation);
+        if (isset($presen[1])) {
+            $styles = explode(APPLY_MULTICHOICERATED_STYLE_SEP, $presen[1]);
+            $outside_style = isset($styles[0]) ? $styles[0] : get_string('outside_style_default', 'apply');
+            $item_style    = isset($styles[1]) ? $styles[1] : get_string('item_style_default',    'apply');
+        }
+        else {
+            $outside_style = get_string('outside_style_default', 'apply');
+            $item_style    = get_string('item_style_default',    'apply');
+        }
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
+
+        //
         $info = $this->get_info($item);
         $lines = explode(APPLY_MULTICHOICERATED_LINE_SEP, $info->presentation);
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
@@ -346,6 +360,7 @@ class apply_item_multichoicerated extends apply_item_base
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
+        apply_item_box_start($item);
         switch($info->subtype) {
             case 'r':
                 $this->print_item_radio($item, false, $info, $align, true, $lines);
@@ -354,6 +369,7 @@ class apply_item_multichoicerated extends apply_item_base
                 $this->print_item_dropdown($item, false, $info, $align, true, $lines);
                 break;
         }
+        apply_item_box_end();
         echo '</div>';
 
         apply_close_table_item_tag();
@@ -373,6 +389,20 @@ class apply_item_multichoicerated extends apply_item_base
     {
         global $OUTPUT;
 
+        $presen = explode(APPLY_MULTICHOICERATED_STYLE_FIELD_SEP, $item->presentation);
+        if (isset($presen[1])) {
+            $styles = explode(APPLY_MULTICHOICERATED_STYLE_SEP, $presen[1]);
+            $outside_style = isset($styles[0]) ? $styles[0] : get_string('outside_style_default', 'apply');
+            $item_style    = isset($styles[1]) ? $styles[1] : get_string('item_style_default',    'apply');
+        }
+        else {
+            $outside_style = get_string('outside_style_default', 'apply');
+            $item_style    = get_string('item_style_default',    'apply');
+        }
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
+
+        //
         $info = $this->get_info($item);
         $lines = explode(APPLY_MULTICHOICERATED_LINE_SEP, $info->presentation);
 
@@ -396,6 +426,7 @@ class apply_item_multichoicerated extends apply_item_base
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.$highlight.'">';
+        apply_item_box_start($item);
         switch($info->subtype) {
             case 'r':
                 $this->print_item_radio($item, $value, $info, $align, false, $lines);
@@ -404,6 +435,7 @@ class apply_item_multichoicerated extends apply_item_base
                 $this->print_item_dropdown($item, $value, $info, $align, false, $lines);
                 break;
         }
+        apply_item_box_end();
         echo '</div>';
 
         apply_close_table_item_tag();
