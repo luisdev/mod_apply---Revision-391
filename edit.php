@@ -103,7 +103,8 @@ $create_template_form->set_form_elements();
 $create_template_form->set_data(array('id'=>$id, 'do_show'=>'templates'));
 $create_template_formdata = $create_template_form->get_data();
 
-if (isset($create_template_formdata->savetemplate) && $create_template_formdata->savetemplate==1) {
+if (isset($create_template_formdata->savetemplate) && $create_template_formdata->savetemplate==1){
+    //
     //check the capabilities to create templates
     if (!has_capability('mod/apply:createprivatetemplate', $context) AND
         !has_capability('mod/apply:createpublictemplate',  $context)) {
@@ -195,6 +196,7 @@ if ($savereturn == 'failed') {
     echo '<p align="center"><b><font color="red">'.get_string('saving_failed', 'apply').'</font></b></p>';
 }
 
+
 ///////////////////////////////////////////////////////////////////////////
 ///print the template-section
 
@@ -235,16 +237,16 @@ if ($do_show=='templates') {
 ///print the Item-Edit-section
 
 if ($do_show=='edit') {
+    //
     $add_item_form->display();
 
     if (is_array($applyitems)) {
-//        $itemnr = 0;
-
+        //
         $align = right_to_left() ? 'right' : 'left';
 
-        $helpbutton = $OUTPUT->help_icon('preview', 'apply');
+//        $helpbutton = $OUTPUT->help_icon('preview', 'apply');
+//        echo $OUTPUT->heading($helpbutton . get_string('preview', 'apply'), 4);
 
-        echo $OUTPUT->heading($helpbutton . get_string('preview', 'apply'), 4);
         if (isset($SESSION->apply->moving) AND $SESSION->apply->moving->shouldmoving == 1) {
             $anker = '<a href="edit.php?id='.$id.'">';
             $anker .= get_string('cancel_moving', 'apply');
@@ -297,9 +299,7 @@ if ($do_show=='edit') {
 
             /*
             //if ($applyitem->hasvalue==1) {
-                //$itemnr++;
                 echo $OUTPUT->box_start('apply_item_number_'.$align);
-                //echo $itemnr;
                 echo $itempos;
                 echo $OUTPUT->box_end();
             //} */
