@@ -450,6 +450,11 @@ class apply_item_info extends apply_item_base
         $item->infotype = $infotype;
         if ($infotype == 1) $value = $value ? userdate($value) : '&nbsp;';
 
+        $outside_style = isset($presentation[1]) ? $presentation[1]: get_string('outside_style_default', 'apply');
+        $item_style    = isset($presentation[2]) ? $presentation[2]: get_string('item_style_default',    'apply');
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
+
         $align = right_to_left() ? 'right' : 'left';
         $output  = '';
         $output .= '<div class="apply_item_label_'.$align.'">';
@@ -460,7 +465,9 @@ class apply_item_info extends apply_item_base
 
         //print the presentation
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
+        apply_item_box_start($item);
         echo $value;
+        apply_item_box_end();
         echo $OUTPUT->box_end();
 
         apply_close_table_item_tag();

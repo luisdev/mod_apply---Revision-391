@@ -65,15 +65,15 @@ class apply_item_numeric extends apply_item_base
 
         $item->presentation = empty($item->presentation) ? '' : $item->presentation;
 
-        $range_from_to = explode(APPLY_NUMERIC_SEP, $item->presentation);
-        if (isset($range_from_to[0]) AND is_numeric($range_from_to[0])) {
-            $range_from = str_replace(APPLY_DECIMAL, $this->sep_dec, floatval($range_from_to[0]));
+        $presentation = explode(APPLY_NUMERIC_SEP, $item->presentation);
+        if (isset($presentation[0]) AND is_numeric($presentation[0])) {
+            $range_from = str_replace(APPLY_DECIMAL, $this->sep_dec, floatval($presentation[0]));
         }
         else {
             $range_from = '-';
         }
-        if (isset($range_from_to[1]) AND is_numeric($range_from_to[1])) {
-            $range_to = str_replace(APPLY_DECIMAL, $this->sep_dec, floatval($range_from_to[1]));
+        if (isset($presentation[1]) AND is_numeric($presentation[1])) {
+            $range_to = str_replace(APPLY_DECIMAL, $this->sep_dec, floatval($presentation[1]));
         }
         else {
             $range_to = '-';
@@ -259,19 +259,19 @@ class apply_item_numeric extends apply_item_base
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
         //get the range
-        $range_from_to = explode(APPLY_NUMERIC_SEP, $item->presentation);
+        $presentation = explode(APPLY_NUMERIC_SEP, $item->presentation);
 
         //get the min-value
-        if (isset($range_from_to[0]) AND is_numeric($range_from_to[0])) {
-            $range_from = floatval($range_from_to[0]);
+        if (isset($presentation[0]) AND is_numeric($presentation[0])) {
+            $range_from = floatval($presentation[0]);
         }
         else {
             $range_from = 0;
         }
 
         //get the max-value
-        if (isset($range_from_to[1]) AND is_numeric($range_from_to[1])) {
-            $range_to = floatval($range_from_to[1]);
+        if (isset($presentation[1]) AND is_numeric($presentation[1])) {
+            $range_to = floatval($presentation[1]);
         }
         else {
             $range_to = 0;
@@ -353,19 +353,19 @@ class apply_item_numeric extends apply_item_base
         }
 
         //get the range
-        $range_from_to = explode(APPLY_NUMERIC_SEP, $item->presentation);
+        $presentation = explode(APPLY_NUMERIC_SEP, $item->presentation);
 
         //get the min-value
-        if (isset($range_from_to[0]) AND is_numeric($range_from_to[0])) {
-            $range_from = floatval($range_from_to[0]);
+        if (isset($presentation[0]) AND is_numeric($presentation[0])) {
+            $range_from = floatval($presentation[0]);
         }
         else {
             $range_from = 0;
         }
 
         //get the max-value
-        if (isset($range_from_to[1]) AND is_numeric($range_from_to[1])) {
-            $range_to = floatval($range_from_to[1]);
+        if (isset($presentation[1]) AND is_numeric($presentation[1])) {
+            $range_to = floatval($presentation[1]);
         }
         else {
             $range_to = 0;
@@ -427,21 +427,29 @@ class apply_item_numeric extends apply_item_base
         $align = right_to_left() ? 'right' : 'left';
 
         //get the range
-        $range_from_to = explode(APPLY_NUMERIC_SEP, $item->presentation);
+        $presentation = explode(APPLY_NUMERIC_SEP, $item->presentation);
         //get the min-value
-        if (isset($range_from_to[0]) AND is_numeric($range_from_to[0])) {
-            $range_from = floatval($range_from_to[0]);
+        if (isset($presentation[0]) AND is_numeric($presentation[0])) {
+            $range_from = floatval($presentation[0]);
         }
         else {
             $range_from = 0;
         }
         //get the max-value
-        if (isset($range_from_to[1]) AND is_numeric($range_from_to[1])) {
-            $range_to = floatval($range_from_to[1]);
+        if (isset($presentation[1]) AND is_numeric($presentation[1])) {
+            $range_to = floatval($presentation[1]);
         }
         else {
             $range_to = 0;
         }
+        $item->rangefrom = $range_from;
+        $item->rangeto   = $range_to;
+
+        //
+        $outside_style = isset($presentation[2]) ? $presentation[2]: get_string('outside_style_default', 'apply');
+        $item_style    = isset($presentation[3]) ? $presentation[3]: get_string('item_style_default',    'apply');
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
 
         $str_required_mark = '<span class="apply_required_mark">*</span>';
         $requiredmark = ($item->required == 1) ? $str_required_mark : '';
@@ -470,7 +478,7 @@ class apply_item_numeric extends apply_item_base
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
-        apply_box_start();
+        apply_item_box_start($item);
 
         if (is_numeric($value)) {
             $str_num_value = number_format($value, 2, $this->sep_dec, $this->sep_thous);
@@ -480,7 +488,7 @@ class apply_item_numeric extends apply_item_base
         }
         echo $str_num_value;
 
-        apply_box_end();
+        apply_item_box_end();
         echo $OUTPUT->box_end();
         echo '</div>';
 
@@ -499,15 +507,15 @@ class apply_item_numeric extends apply_item_base
             return false;
         }
 
-        $range_from_to = explode(APPLY_NUMERIC_SEP, $item->presentation);
-        if (isset($range_from_to[0]) AND is_numeric($range_from_to[0])) {
-            $range_from = floatval($range_from_to[0]);
+        $presentation = explode(APPLY_NUMERIC_SEP, $item->presentation);
+        if (isset($presentation[0]) AND is_numeric($presentation[0])) {
+            $range_from = floatval($presentation[0]);
         }
         else {
             $range_from = '-';
         }
-        if (isset($range_from_to[1]) AND is_numeric($range_from_to[1])) {
-            $range_to = floatval($range_from_to[1]);
+        if (isset($presentation[1]) AND is_numeric($presentation[1])) {
+            $range_to = floatval($presentation[1]);
         }
         else {
             $range_to = '-';
