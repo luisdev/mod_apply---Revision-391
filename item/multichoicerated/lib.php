@@ -383,7 +383,7 @@ class apply_item_multichoicerated extends apply_item_base
             $highlight = '';
         }
 
-        align = right_to_left() ? 'right' : 'left';
+        $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
         //print the question and label
