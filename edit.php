@@ -294,9 +294,10 @@ if ($do_show=='edit') {
                 $dependstyle = '';
             }
             echo $OUTPUT->box_start('apply_item_box_'.$align.$dependstyle);
-            /**/
+
+            //
             //if ($applyitem->hasvalue==1) {
-                $itemnr++;
+                //$itemnr++;
                 echo $OUTPUT->box_start('apply_item_number_'.$align);
                 //echo $itemnr;
                 echo $itempos;

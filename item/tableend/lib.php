@@ -178,9 +178,10 @@ class apply_item_tableend extends apply_item_base
             }
         }
         echo '</div>';
+        echo '<br />';
         //
         apply_close_table_tag();
-        //echo '<hr style="border: 1px dotted" />';
+        echo '<hr style="border: 1px dotted" />';
     }
 
 
