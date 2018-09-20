@@ -501,7 +501,7 @@ class apply_item_info extends apply_item_base
 
     public function get_presentation($data)
     {
-        return $data->infotype.APPLY_INFO_SEP.$data->outside_style.APPLY_INFO_SEP.$data->item_style;;
+        return $data->infotype.APPLY_INFO_SEP.$data->outside_style.APPLY_INFO_SEP.$data->item_style;
     }
 
 

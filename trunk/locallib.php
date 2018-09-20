@@ -1673,7 +1673,8 @@ function apply_item_box_start($item)
         echo '<table style="border:0px none;">';
     }
 
-    echo '<tr><td style="padding:0px 5px 0px 5px;">';
+    //echo '<tr><td style="padding:0px 5px 0px 5px;">';
+    echo '<tr><td>';
     echo '<div '.$item_style.'>';
 }
 
