@@ -522,6 +522,26 @@ class apply_item_multichoice extends apply_item_base
     {
         global $OUTPUT;
 
+        $presen = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $item->presentation);
+        if (isset($presen[1])) {
+            $styles = explode(APPLY_MULTICHOICE_STYLE_SEP, $presen[1]);
+            $outside_style = isset($styles[0]) ? $styles[0] : get_string('outside_style_default', 'apply');
+            $item_style    = isset($styles[1]) ? $styles[1] : get_string('item_style_default',    'apply');
+        }
+        else {
+            $outside_style = get_string('outside_style_default', 'apply');
+            $item_style    = get_string('item_style_default',    'apply');
+        }
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
+
+        $align = right_to_left() ? 'right' : 'left';
+        $requiredmark = '';
+        if ($item->required == 1) {
+            $requiredmark = '<span class="apply_required_mark">*</span>';
+        }
+
+        //
         if ($value == null) $value = array();
 
         $info = $this->get_info($item);
@@ -536,12 +556,6 @@ class apply_item_multichoice extends apply_item_base
             else {
                 $values = explode(APPLY_MULTICHOICE_LINE_SEP, $value);
             }
-        }
-
-        $align = right_to_left() ? 'right' : 'left';
-        $requiredmark = '';
-        if ($item->required == 1) {
-            $requiredmark = '<span class="apply_required_mark">*</span>';
         }
 
         //print the question and label
@@ -559,7 +573,7 @@ class apply_item_multichoice extends apply_item_base
         if ($info->subtype == 'c') {
             $match = false;
             echo $OUTPUT->box_start('generalbox boxalign'.$align);
-            apply_box_start();
+            apply_item_box_start($item);
             foreach ($presentation as $pres) {
                 foreach ($values as $val) {
                     if ($val == $index) {
@@ -573,13 +587,13 @@ class apply_item_multichoice extends apply_item_base
                 $index++;
             }
             if (!$match) echo '&nbsp;';
-            apply_box_end();
+            apply_item_box_end();
             echo $OUTPUT->box_end();
         } 
         else {
             $match = false;
             echo $OUTPUT->box_start('generalbox boxalign'.$align);
-            apply_box_start();
+            apply_item_box_start($item);
             foreach ($presentation as $pres) {
                 if ($value == $index) {
                     echo $html = text_to_html($pres, true, false, false);
@@ -589,7 +603,7 @@ class apply_item_multichoice extends apply_item_base
                 $index++;
             }
             if (!$match) echo '&nbsp;';
-            apply_box_end();
+            apply_item_box_end();
             echo $OUTPUT->box_end();
         }
 

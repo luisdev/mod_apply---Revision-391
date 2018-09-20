@@ -323,9 +323,13 @@ class apply_item_textarea extends apply_item_base
     {
         global $OUTPUT;
 
-        $align = right_to_left() ? 'right' : 'left';
-        //$presentation = explode(APPLY_TEXTAREA_SEP, $item->presentation);
+        $presentation = explode(APPLY_TEXTAREA_SEP, $item->presentation);
+        $outside_style = isset($presentation[2]) ? $presentation[2]: get_string('outside_style_default', 'apply');
+        $item_style    = isset($presentation[3]) ? $presentation[3]: get_string('item_style_default',    'apply');
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
 
+        $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
         $requiredmark = ($item->required == 1) ? $str_required_mark : '';
         //print the question and label
@@ -338,9 +342,9 @@ class apply_item_textarea extends apply_item_base
 
         //print the presentation
         echo $OUTPUT->box_start('generalbox boxalign'.$align);
-        apply_box_start();
+        apply_item_box_start($item);
         echo $value ? str_replace("\n", '<br />', $value) : '&nbsp;';
-        apply_box_end();
+        apply_item_box_end();
         echo $OUTPUT->box_end();
 
         apply_close_table_item_tag();

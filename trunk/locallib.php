@@ -1641,9 +1641,12 @@ function apply_close_table_item_tag()
 }
 
 
+
+///////////////////////////////////////////////////////////////////////////////////
 //
-// for layout
+// Layout
 //
+
 function apply_print_line_space($size='')
 {
     global $Table_in;
@@ -1654,22 +1657,32 @@ function apply_print_line_space($size='')
 }
 
 
-function apply_box_start($size='1', $type='solid')
+function apply_item_box_start($item)
 {
     global $Table_in;
 
+    $outside_style = '';
+    $item_style = '';
+    if ($item->outside_style!='') $outside_style = 'style="'.$item->outside_style.'"';
+    if ($item->item_style!='')    $item_style    = 'style="'.$item->item_style.'"';
+
     if (!$Table_in) {
-        $size = intval($size);
-        echo '<table style="border:'.$size.'px '.$type.';"><tr><td style="padding:0px 5px 0px 5px;">';
+        echo '<table '.$outside_style,'>';
     }
+    else {
+        echo '<table style="border:0px none;">';
+    }
+
+    echo '<tr><td style="padding:0px 5px 0px 5px;">';
+    echo '<div '.$item_style.'>';
 }
 
 
-function apply_box_end()
+function apply_item_box_end()
 {
     global $Table_in;
 
-    if (!$Table_in) echo '</td></tr></table>';
+    echo '</div></td></tr></table>';
 }
 
 
