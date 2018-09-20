@@ -420,7 +420,12 @@ if ($do_show=='edit') {
             echo '<div class="clearer">&nbsp;</div>';
         }
         // close Table
-        apply_close_table_tag();
+        global $Table_in;
+
+        if ($Table_in) {
+            apply_close_table_tag();
+            echo '<div style="color:#c00000">['.get_string('not_close_table','apply').']</div>';
+        }
 
         echo $OUTPUT->box_end();
     }
