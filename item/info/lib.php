@@ -45,7 +45,8 @@ class apply_item_info extends apply_item_base
             $i_formselect_last  = $lastposition + 1;
             $i_formselect_value = $lastposition + 1;
             $item->position = $lastposition + 1;
-        } else {
+        }
+        else {
             $i_formselect_last  = $lastposition;
             $i_formselect_value = $item->position;
         }
@@ -117,7 +118,8 @@ class apply_item_info extends apply_item_base
         $item->hasvalue = $this->get_hasvalue();
         if (!$item->id) {
             $item->id = $DB->insert_record('apply_item', $item);
-        } else {
+        }
+        else {
             $DB->update_record('apply_item', $item);
         }
 
@@ -249,7 +251,8 @@ class apply_item_info extends apply_item_base
         $align = right_to_left() ? 'right' : 'left';
         if ($item->apply_id) {
             $courseid = $DB->get_field('apply', 'course', array('id'=>$item->apply_id));
-        } else { // the item must be a template item
+        }
+        else { // the item must be a template item
             $cmid = required_param('id', PARAM_INT);
             $courseid = $DB->get_field('course_modules', 'course', array('id'=>$cmid));
         }
@@ -258,7 +261,8 @@ class apply_item_info extends apply_item_base
         }
         if ($course->id !== SITEID) {
             $coursecategory = $DB->get_record('course_categories', array('id'=>$course->category));
-        } else {
+        }
+        else {
             $coursecategory = false;
         }
         switch($infotype) {
@@ -276,7 +280,8 @@ class apply_item_info extends apply_item_base
                     $category_context = context_coursecat::instance($coursecategory->id);
                     $itemvalue = format_string($coursecategory->name, true, array('context' => $category_context));
                     $itemshowvalue = $itemvalue;
-                } else {
+                }
+                else {
                     $itemvalue = '';
                     $itemshowvalue = '';
                 }
@@ -349,19 +354,22 @@ class apply_item_info extends apply_item_base
         $align = right_to_left() ? 'right' : 'left';
         if ($highlightrequire AND $item->required AND strval($value) == '') {
             $highlight = ' missingrequire';
-        } else {
+        }
+        else {
             $highlight = '';
         }
 
         $apply = $DB->get_record('apply', array('id'=>$item->apply_id));
         if ($courseid = optional_param('courseid', 0, PARAM_INT)) {
             $course = $DB->get_record('course', array('id'=>$courseid));
-        } else {
+        }
+        else {
             $course = $DB->get_record('course', array('id'=>$apply->course));
         }
         if ($course->id !== SITEID) {
             $coursecategory = $DB->get_record('course_categories', array('id'=>$course->category));
-        } else {
+        }
+        else {
             $coursecategory = false;
         }
 
@@ -380,7 +388,8 @@ class apply_item_info extends apply_item_base
                     $category_context = context_coursecat::instance($coursecategory->id);
                     $itemvalue = format_string($coursecategory->name, true, array('context' => $category_context));
                     $itemshowvalue = $itemvalue;
-                } else {
+                }
+                else {
                     $itemvalue = '';
                     $itemshowvalue = '';
                 }

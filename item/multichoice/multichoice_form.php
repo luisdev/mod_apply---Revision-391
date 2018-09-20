@@ -105,7 +105,8 @@ class apply_multichoice_form extends apply_item_form
         }
 
         $item->presentation = $subtype.APPLY_MULTICHOICE_TYPE_SEP.$presentation.
-                                       APPLY_MULTICHOICE_STYLE_FIELD_SEP.$item->outside_style.APPLY_MULTICHOICE_STYLE_SEP.$item->item_style;
+                                       APPLY_MULTICHOICE_STYLE_FIELD_SEP.$item->outside_style.
+                                       APPLY_MULTICHOICE_STYLE_SEP.$item->item_style;
         return $item;
     }
 }

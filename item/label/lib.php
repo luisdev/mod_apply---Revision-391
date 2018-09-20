@@ -47,7 +47,8 @@ class apply_item_label extends apply_item_base
             $i_formselect_last = $lastposition + 1;
             $i_formselect_value = $lastposition + 1;
             $item->position = $lastposition + 1;
-        } else {
+        }
+        else {
             $i_formselect_last = $lastposition;
             $i_formselect_value = $item->position;
         }
@@ -127,7 +128,8 @@ class apply_item_label extends apply_item_base
         $item->hasvalue = $this->get_hasvalue();
         if (!$item->id) {
             $item->id = $DB->insert_record('apply_item', $item);
-        } else {
+        }
+        else {
             $DB->update_record('apply_item', $item);
         }
 
@@ -156,11 +158,13 @@ class apply_item_label extends apply_item_base
             $template = $DB->get_record('apply_template', array('id'=>$item->template));
             if ($template->ispublic) {
                 $context = get_system_context();
-            } else {
+            }
+            else {
                 $context = context_course::instance($template->course);
             }
             $filearea = 'template';
-        } else {
+        }
+        else {
             $cm = get_coursemodule_from_instance('apply', $item->apply_id);
             $context = context_module::instance($cm->id);
             $filearea = 'item';
