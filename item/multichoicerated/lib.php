@@ -346,7 +346,7 @@ class apply_item_multichoicerated extends apply_item_base
         $output  = '';
         $output .= '<div class="apply_item_label_'.$align.'">';
         $output .= '('.$item->label.') ';
-        $output .= format_text($item->name.$requiredmark, true, false, false);
+        $output .= format_text($item->name.$requiredmark, true, false, false).' ['.$item->position.']';
         if ($item->dependitem) {
             if ($dependitem = $DB->get_record('apply_item', array('id'=>$item->dependitem))) {
                 $output .= ' <span class="apply_depend">';

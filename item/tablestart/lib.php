@@ -181,7 +181,7 @@ class apply_item_tablestart extends apply_item_base
         $align = right_to_left() ? 'right' : 'left';
         echo '<div class="apply_item_label_'.$align.'">';
         echo '('.$item->label.') ';
-        echo format_text($item->name, true, false, false);
+        echo format_text($item->name, true, false, false).' ['.$item->position.']';
         //
         //Warnning!! Table is nested. This table is ignored.
         if ($Table_in) echo '&nbsp;&nbsp;<span style="color:#c00000">['.get_string('nested_table','apply').']</span>';

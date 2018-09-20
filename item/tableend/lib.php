@@ -165,7 +165,7 @@ class apply_item_tableend extends apply_item_base
         $align = right_to_left() ? 'right' : 'left';
         echo '<div class="apply_item_label_'.$align.'">';
         echo '('.$item->label.') ';
-        echo format_text($item->name, true, false, false);
+        echo format_text($item->name, true, false, false).' ['.$item->position.']';
         //
         //Warnning!! No table is nested. This close is ignored.
         if (!$Table_in) echo '&nbsp;&nbsp;<span style="color:#c00000">['.get_string('no_table','apply').']</span>';

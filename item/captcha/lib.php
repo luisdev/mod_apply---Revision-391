@@ -162,7 +162,7 @@ class apply_item_captcha extends apply_item_base
         $output  = '';
         $output .= '<div class="apply_item_label_'.$align.'">';
         $output .= '('.$item->label.') ';
-        $output .= format_text($item->name.$requiredmark, true, false, false);
+        $output .= format_text($item->name.$requiredmark, true, false, false).' ['.$item->position.']';
         $output .= '</div>';
 
         apply_open_table_item_tag($output, true);
