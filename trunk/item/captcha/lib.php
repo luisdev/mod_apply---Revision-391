@@ -99,7 +99,8 @@ class apply_item_captcha extends apply_item_base
 
         if (empty($this->item->id)) {
             $this->item->id = $DB->insert_record('apply_item', $this->item);
-        } else {
+        }
+        else {
             $DB->update_record('apply_item', $this->item);
         }
 
@@ -187,7 +188,8 @@ class apply_item_captcha extends apply_item_base
         $align = right_to_left() ? 'right' : 'left';
         if ($highlightrequire AND !$this->check_value($value, $item)) {
             $highlight = 'missingrequire';
-        } else {
+        }
+        else {
             $highlight = '';
         }
 

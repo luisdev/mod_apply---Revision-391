@@ -44,7 +44,8 @@ class apply_item_textfield extends apply_item_base
             $i_formselect_last  = $lastposition + 1;
             $i_formselect_value = $lastposition + 1;
             $item->position = $lastposition + 1;
-        } else {
+        }
+        else {
             $i_formselect_last  = $lastposition;
             $i_formselect_value = $item->position;
         }
@@ -56,7 +57,8 @@ class apply_item_textfield extends apply_item_base
 
         if (isset($presentation[0]) AND $presentation[0] >= 5) {
             $itemsize = $presentation[0];
-        } else {
+        }
+        else {
             $itemsize = 30;
         }
         $itemlength = isset($presentation[1]) ? $presentation[1] : 30;
@@ -124,7 +126,8 @@ class apply_item_textfield extends apply_item_base
         $item->hasvalue = $this->get_hasvalue();
         if (!$item->id) {
             $item->id = $DB->insert_record('apply_item', $item);
-        } else {
+        }
+        else {
             $DB->update_record('apply_item', $item);
         }
 
@@ -267,7 +270,8 @@ class apply_item_textfield extends apply_item_base
         $presentation = explode(APPLY_TEXTFIELD_SEP, $item->presentation);
         if ($highlightrequire AND $item->required AND strval($value) == '') {
             $highlight = ' missingrequire';
-        } else {
+        }
+        else {
             $highlight = '';
         }
 

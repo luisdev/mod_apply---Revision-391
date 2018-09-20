@@ -617,7 +617,8 @@ function apply_set_calendar_events($apply)
         $event->visible     = instance_is_visible('apply', $apply);
         if ($apply->time_close>0) {
             $event->timeduration = ($apply->time_close - $apply->time_open);
-        } else {
+        }
+        else {
             $event->timeduration = 0;
         }
 

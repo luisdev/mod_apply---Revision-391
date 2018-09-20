@@ -49,11 +49,12 @@ class apply_item_multichoice extends apply_item_base
         $position = $item->position;
         $lastposition = $DB->count_records('apply_item', array('apply_id'=>$apply->id));
         if ($position == -1) {
-            $i_formselect_last = $lastposition + 1;
+            $i_formselect_last  = $lastposition + 1;
             $i_formselect_value = $lastposition + 1;
             $item->position = $lastposition + 1;
-        } else {
-            $i_formselect_last = $lastposition;
+        }
+        else {
+            $i_formselect_last  = $lastposition;
             $i_formselect_value = $item->position;
         }
         //the elements for position dropdownlist
@@ -138,7 +139,8 @@ class apply_item_multichoice extends apply_item_base
         $item->hasvalue = $this->get_hasvalue();
         if (!$item->id) {
             $item->id = $DB->insert_record('apply_item', $item);
-        } else {
+        }
+        else {
             $DB->update_record('apply_item', $item);
         }
 
@@ -150,24 +152,18 @@ class apply_item_multichoice extends apply_item_base
     //XXX is an object with answertext, answercount and quotient
     public function get_analysed($item, $groupid = false, $courseid = false)
     {
-        $info = $this->get_info($item);
-
         $analysed_item = array();
         $analysed_item[] = $item->typ;
         $analysed_item[] = $item->name;
 
         //get the possible answers
-        //$presen  = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $info->presentation);
+        $info = $this->get_info($item);
         $answers = explode(APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
-        if (!is_array($answers)) {
-            return null;
-        }
+        if (!is_array($answers)) return null;
 
         //get the values
         $values = apply_get_group_values($item, $groupid, $courseid, $this->ignoreempty($item));
-        if (!$values) {
-            return null;
-        }
+        if (!$values) return null;
 
         //get answertext, answercount and quotient for each answer
         $analysed_answer = array();
@@ -179,7 +175,6 @@ class apply_item_multichoice extends apply_item_base
                 $ans->answercount = 0;
                 foreach ($values as $value) {
                     //ist die Antwort gleich dem index der Antworten + 1?
-                    //$vals = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $value->value);
                     $vallist = explode(APPLY_MULTICHOICE_LINE_SEP, $value->value);
                     foreach ($vallist as $val) {
                         if ($val == $i) {
@@ -190,7 +185,8 @@ class apply_item_multichoice extends apply_item_base
                 $ans->quotient = $ans->answercount / count($values);
                 $analysed_answer[] = $ans;
             }
-        } else {
+        }
+        else {
             $sizeofanswers = count($answers);
             for ($i = 1; $i <= $sizeofanswers; $i++) {
                 $ans = new stdClass();
@@ -213,19 +209,13 @@ class apply_item_multichoice extends apply_item_base
 
     public function get_printval($item, $value)
     {
-        $info = $this->get_info($item);
-
         $printval = '';
+        if (!isset($value->value)) return $printval;
 
-        if (!isset($value->value)) {
-            return $printval;
-        }
-
-        //$presen = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $info->presentation);
+        $info = $this->get_info($item);
         $presentation = explode(APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
 
         if ($info->subtype == 'c') {
-            //$vals = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $value->value);
             $vallist = array_values(explode(APPLY_MULTICHOICE_LINE_SEP, $value->value));
             $sizeofvallist = count($vallist);
             $sizeofpresentation = count($presentation);
@@ -237,7 +227,8 @@ class apply_item_multichoice extends apply_item_base
                     }
                 }
             }
-        } else {
+        }
+        else {
             $index = 1;
             foreach ($presentation as $pres) {
                 if ($value->value == $index) {
@@ -344,15 +335,14 @@ class apply_item_multichoice extends apply_item_base
     public function print_item_preview($item)
     {
         global $OUTPUT, $DB;
-        $info = $this->get_info($item);
-        $align = right_to_left() ? 'right' : 'left';
 
-        //$presen = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $info->presentation);
+        $info = $this->get_info($item);
         $presentation = explode(APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
         //test if required and no value is set so we have to mark this item
         //we have to differ check and the other subtypes
+        $align = right_to_left() ? 'right' : 'left';
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
 
         //print the question and label
@@ -378,7 +368,8 @@ class apply_item_multichoice extends apply_item_base
         echo '<ul>';
         if ($info->horizontal) {
             $hv = 'h';
-        } else {
+        }
+        else {
             $hv = 'v';
         }
 
@@ -434,22 +425,21 @@ class apply_item_multichoice extends apply_item_base
     {
         global $OUTPUT;
 
-        $info = $this->get_info($item);
-        $align = right_to_left() ? 'right' : 'left';
+        if ($value == null) $value = array();
 
-        if ($value == null) {
-            $value = array();
-        }
-        //$presen = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $info->presentation);
+        $info = $this->get_info($item);
         $presentation = explode(APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
+
+        $align = right_to_left() ? 'right' : 'left';
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
         if (is_array($value)) {
             $values = $value;
-        } else {
-            //$vals = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $value);
+        }
+        else {
             $values = explode(APPLY_MULTICHOICE_LINE_SEP, $value);
         }
+
         $highlight = '';
         if ($highlightrequire AND $item->required) {
             if (count($values) == 0 OR $values[0] == '' OR $values[0] == 0) {
@@ -472,7 +462,8 @@ class apply_item_multichoice extends apply_item_base
 
         if ($info->horizontal) {
             $hv = 'h';
-        } else {
+        }
+        else {
             $hv = 'v';
         }
 
@@ -531,12 +522,9 @@ class apply_item_multichoice extends apply_item_base
     {
         global $OUTPUT;
 
-        $info = $this->get_info($item);
-        $align = right_to_left() ? 'right' : 'left';
-
         if ($value == null) $value = array();
 
-        //$presen = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $info->presentation);
+        $info = $this->get_info($item);
         $presentation = explode(APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
 
         //test if required and no value is set so we have to mark this item
@@ -544,12 +532,13 @@ class apply_item_multichoice extends apply_item_base
         if ($info->subtype == 'c') {
             if (is_array($value)) {
                 $values = $value;
-            } else {
-                //$vals = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $value);
+            }
+            else {
                 $values = explode(APPLY_MULTICHOICE_LINE_SEP, $value);
             }
         }
 
+        $align = right_to_left() ? 'right' : 'left';
         $requiredmark = '';
         if ($item->required == 1) {
             $requiredmark = '<span class="apply_required_mark">*</span>';
@@ -643,13 +632,12 @@ class apply_item_multichoice extends apply_item_base
     {
         if (is_array($dbvalue)) {
             $dbvalues = $dbvalue;
-        } else {
-            //$vals = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $dbvalue);
+        }
+        else {
             $dbvalues = explode(APPLY_MULTICHOICE_LINE_SEP, $dbvalue);
         }
 
         $info = $this->get_info($item);
-        //$presen = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $info->presentation);
         $presentation = explode(APPLY_MULTICHOICE_LINE_SEP, $info->presentation);
 
         $index = 1;
@@ -670,7 +658,8 @@ class apply_item_multichoice extends apply_item_base
         $present = str_replace("\n", APPLY_MULTICHOICE_LINE_SEP, trim($data->itemvalues));
         if (!isset($data->subtype)) {
             $subtype = 'r';
-        } else {
+        }
+        else {
             $subtype = substr($data->subtype, 0, 1);
         }
         if (isset($data->horizontal) AND $data->horizontal == 1 AND $subtype != 'd') {
@@ -678,7 +667,8 @@ class apply_item_multichoice extends apply_item_base
         }
 
         $presentation = $subtype.APPLY_MULTICHOICE_TYPE_SEP.$present.
-                                 APPLY_MULTICHOICE_STYLE_FIELD_SEP.$data->outside_style.APPLY_MULTICHOICE_STYLE_SEP.$data->item_style;
+                                 APPLY_MULTICHOICE_STYLE_FIELD_SEP.$data->outside_style.
+                                 APPLY_MULTICHOICE_STYLE_SEP.$data->item_style;
         return $presentation;
     }
 
@@ -703,6 +693,7 @@ class apply_item_multichoice extends apply_item_base
         $presen = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $item->presentation);
         $parts  = explode(APPLY_MULTICHOICE_TYPE_SEP, $presen[0]);
         @list($info->subtype, $info->presentation) = $parts;
+
         if (!isset($info->subtype)) {
             $info->subtype = 'r';
         }
@@ -712,7 +703,8 @@ class apply_item_multichoice extends apply_item_base
             @list($info->presentation, $info->horizontal) = $parts;
             if (isset($info->horizontal) AND $info->horizontal == 1) {
                 $info->horizontal = true;
-            } else {
+            }
+            else {
                 $info->horizontal = false;
             }
         }
@@ -744,13 +736,15 @@ class apply_item_multichoice extends apply_item_base
 
         if (is_array($value)) {
             $values = $value;
-        } else {
+        }
+        else {
             $values = array($value);
         }
 
         if ($info->horizontal) {
             $hv = 'h';
-        } else {
+        }
+        else {
             $hv = 'v';
         }
 
@@ -759,7 +753,8 @@ class apply_item_multichoice extends apply_item_base
                 if ($val == $index) {
                     $checked = 'checked="checked"';
                     break;
-                } else {
+                }
+                else {
                     $checked = '';
                 }
             }
@@ -791,14 +786,15 @@ class apply_item_multichoice extends apply_item_base
     {
         if (is_array($value)) {
             $values = $value;
-        } else {
-            //$vals = explode(APPLY_MULTICHOICE_STYLE_FIELD_SEP, $value);
+        }
+        else {
             $values = explode(APPLY_MULTICHOICE_LINE_SEP, $value);
         }
 
         if ($info->horizontal) {
             $hv = 'h';
-        } else {
+        }
+        else {
             $hv = 'v';
         }
 
@@ -809,7 +805,8 @@ class apply_item_multichoice extends apply_item_base
                 if ($val == $index) {
                     $checked = 'checked="checked"';
                     break;
-                } else {
+                }
+                else {
                     $checked = '';
                 }
             }
@@ -841,13 +838,15 @@ class apply_item_multichoice extends apply_item_base
     {
         if (is_array($value)) {
             $values = $value;
-        } else {
+        }
+        else {
             $values = array($value);
         }
 
         if ($info->horizontal) {
             $hv = 'h';
-        } else {
+        }
+        else {
             $hv = 'v';
         }
 
@@ -864,7 +863,8 @@ class apply_item_multichoice extends apply_item_base
                         if ($val == $index) {
                             $selected = 'selected="selected"';
                             break;
-                        } else {
+                        }
+                        else {
                             $selected = '';
                         }
                     }

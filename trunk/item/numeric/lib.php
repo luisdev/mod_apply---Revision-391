@@ -55,7 +55,8 @@ class apply_item_numeric extends apply_item_base
             $i_formselect_last = $lastposition + 1;
             $i_formselect_value = $lastposition + 1;
             $item->position = $lastposition + 1;
-        } else {
+        }
+        else {
             $i_formselect_last = $lastposition;
             $i_formselect_value = $item->position;
         }
@@ -67,12 +68,14 @@ class apply_item_numeric extends apply_item_base
         $range_from_to = explode(APPLY_NUMERIC_SEP, $item->presentation);
         if (isset($range_from_to[0]) AND is_numeric($range_from_to[0])) {
             $range_from = str_replace(APPLY_DECIMAL, $this->sep_dec, floatval($range_from_to[0]));
-        } else {
+        }
+        else {
             $range_from = '-';
         }
         if (isset($range_from_to[1]) AND is_numeric($range_from_to[1])) {
             $range_to = str_replace(APPLY_DECIMAL, $this->sep_dec, floatval($range_from_to[1]));
-        } else {
+        }
+        else {
             $range_to = '-';
         }
         $item->rangefrom = $range_from;
@@ -138,7 +141,8 @@ class apply_item_numeric extends apply_item_base
         $item->hasvalue = $this->get_hasvalue();
         if (!$item->id) {
             $item->id = $DB->insert_record('apply_item', $item);
-        } else {
+        }
+        else {
             $DB->update_record('apply_item', $item);
         }
 
@@ -201,7 +205,8 @@ class apply_item_numeric extends apply_item_base
 
             if (isset($values->avg)) {
                 $avg = number_format($values->avg, 2, $this->sep_dec, $this->sep_thous);
-            } else {
+            }
+            else {
                 $avg = number_format(0, 2, $this->sep_dec, $this->sep_thous);
             }
             echo '<tr><td align="left" colspan="2"><b>';
@@ -259,14 +264,16 @@ class apply_item_numeric extends apply_item_base
         //get the min-value
         if (isset($range_from_to[0]) AND is_numeric($range_from_to[0])) {
             $range_from = floatval($range_from_to[0]);
-        } else {
+        }
+        else {
             $range_from = 0;
         }
 
         //get the max-value
         if (isset($range_from_to[1]) AND is_numeric($range_from_to[1])) {
             $range_to = floatval($range_from_to[1]);
-        } else {
+        }
+        else {
             $range_to = 0;
         }
 
@@ -340,7 +347,8 @@ class apply_item_numeric extends apply_item_base
         $align = right_to_left() ? 'right' : 'left';
         if ($highlightrequire AND (!$this->check_value($value, $item))) {
             $highlight = ' missingrequire';
-        } else {
+        }
+        else {
             $highlight = '';
         }
 
@@ -350,14 +358,16 @@ class apply_item_numeric extends apply_item_base
         //get the min-value
         if (isset($range_from_to[0]) AND is_numeric($range_from_to[0])) {
             $range_from = floatval($range_from_to[0]);
-        } else {
+        }
+        else {
             $range_from = 0;
         }
 
         //get the max-value
         if (isset($range_from_to[1]) AND is_numeric($range_from_to[1])) {
             $range_to = floatval($range_from_to[1]);
-        } else {
+        }
+        else {
             $range_to = 0;
         }
 
@@ -421,13 +431,15 @@ class apply_item_numeric extends apply_item_base
         //get the min-value
         if (isset($range_from_to[0]) AND is_numeric($range_from_to[0])) {
             $range_from = floatval($range_from_to[0]);
-        } else {
+        }
+        else {
             $range_from = 0;
         }
         //get the max-value
         if (isset($range_from_to[1]) AND is_numeric($range_from_to[1])) {
             $range_to = floatval($range_from_to[1]);
-        } else {
+        }
+        else {
             $range_to = 0;
         }
 
@@ -462,7 +474,8 @@ class apply_item_numeric extends apply_item_base
 
         if (is_numeric($value)) {
             $str_num_value = number_format($value, 2, $this->sep_dec, $this->sep_thous);
-        } else {
+        }
+        else {
             $str_num_value = '&nbsp;';
         }
         echo $str_num_value;
@@ -489,12 +502,14 @@ class apply_item_numeric extends apply_item_base
         $range_from_to = explode(APPLY_NUMERIC_SEP, $item->presentation);
         if (isset($range_from_to[0]) AND is_numeric($range_from_to[0])) {
             $range_from = floatval($range_from_to[0]);
-        } else {
+        }
+        else {
             $range_from = '-';
         }
         if (isset($range_from_to[1]) AND is_numeric($range_from_to[1])) {
             $range_to = floatval($range_from_to[1]);
-        } else {
+        }
+        else {
             $range_to = '-';
         }
 
@@ -528,7 +543,8 @@ class apply_item_numeric extends apply_item_base
 
         if (is_numeric($data)) {
             $data = floatval($data);
-        } else {
+        }
+        else {
             $data = '';
         }
         return $data;
@@ -552,14 +568,16 @@ class apply_item_numeric extends apply_item_base
         $num1 = str_replace($this->sep_dec, APPLY_DECIMAL, $data->numericrangefrom);
         if (is_numeric($num1)) {
             $num1 = floatval($num1);
-        } else {
+        }
+        else {
             $num1 = '-';
         }
 
         $num2 = str_replace($this->sep_dec, APPLY_DECIMAL, $data->numericrangeto);
         if (is_numeric($num2)) {
             $num2 = floatval($num2);
-        } else {
+        }
+        else {
             $num2 = '-';
         }
 
@@ -570,7 +588,8 @@ class apply_item_numeric extends apply_item_base
         else {
             if ($num1 > $num2) {
                 $num = $num2.APPLY_NUMERIC_SEP.$num1;
-            } else {
+            }
+            else {
                 $num = $num1.APPLY_NUMERIC_SEP.$num2;
             }
         }       
@@ -604,7 +623,8 @@ class apply_item_numeric extends apply_item_base
         if (!is_numeric($value)) {
             if ($value == '') {
                 return null; //an empty string should be null
-            } else {
+            }
+            else {
                 return clean_param($value, PARAM_TEXT); //we have to know the value if it is wrong
             }
         }
