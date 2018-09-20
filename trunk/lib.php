@@ -136,6 +136,14 @@ function apply_user_complete($course, $user, $mod, $apply)
 }
 
 
+function apply_delete_course($course)
+{
+    global $DB;
+
+    return $DB->delete_records('apply_template', array('course'=>$course->id));
+}
+
+
 function apply_user_outline($course, $user, $mod, $apply)
 {
     return null;
