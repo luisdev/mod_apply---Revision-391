@@ -3,6 +3,8 @@
 //print the items
 echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 {
+    global $Table_in;
+
     echo '<form action="submit.php" method="post" onsubmit=" ">';
     //echo '<fieldset>'; // for mobile viewer
     echo '<input type="hidden" name="sesskey" value="'.sesskey().'" />';
@@ -77,8 +79,11 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
             }
         }
 
-        // close Table
-        apply_close_table_tag();
+        if ($Table_in) {   // テーブルはまだ閉じられていない．
+            echo $OUTPUT->box_start('apply_print_item');
+            apply_close_table_tag();
+            echo $OUTPUT->box_end();
+        }
     }
     echo $OUTPUT->box_end();
 
