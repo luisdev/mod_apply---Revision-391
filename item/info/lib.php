@@ -248,6 +248,11 @@ class apply_item_info extends apply_item_base
         $infotype = $presentation[0];
         $item->infotype = $infotype;
 
+        $outside_style = isset($presentation[1]) ? $presentation[1]: get_string('outside_style_default', 'apply');
+        $item_style    = isset($presentation[2]) ? $presentation[2]: get_string('item_style_default',    'apply');
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
+
         $align = right_to_left() ? 'right' : 'left';
         if ($item->apply_id) {
             $courseid = $DB->get_field('apply', 'course', array('id'=>$item->apply_id));
@@ -326,8 +331,10 @@ class apply_item_info extends apply_item_base
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
+        apply_item_box_start($item);
         echo '<input type="hidden" name="'.$item->typ.'_'.$item->id.'" value="'.$itemvalue.'" />';
         echo '<span class="apply_item_info">'.$itemshowvalue.'</span>';
+        apply_item_box_end();
         echo '</div>';
 
         apply_close_table_item_tag();
@@ -350,6 +357,11 @@ class apply_item_info extends apply_item_base
         $presentation = explode(APPLY_INFO_SEP, $item->presentation);
         $infotype = $presentation[0];
         $item->infotype = $infotype;
+
+        $outside_style = isset($presentation[1]) ? $presentation[1]: get_string('outside_style_default', 'apply');
+        $item_style    = isset($presentation[2]) ? $presentation[2]: get_string('item_style_default',    'apply');
+        $item->outside_style = $outside_style;
+        $item->item_style    = $item_style;
 
         $align = right_to_left() ? 'right' : 'left';
         if ($highlightrequire AND $item->required AND strval($value) == '') {
@@ -425,8 +437,10 @@ class apply_item_info extends apply_item_base
 
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
+        apply_item_box_start($item);
         echo '<input type="hidden" name="'.$item->typ.'_'.$item->id.'" value="'.$itemvalue.'" />';
         echo '<span class="apply_item_info">'.$itemshowvalue.'</span>';
+        apply_item_box_end();
         echo '</div>';
 
         apply_close_table_item_tag();
