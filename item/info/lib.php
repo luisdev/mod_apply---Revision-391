@@ -248,10 +248,10 @@ class apply_item_info extends apply_item_base
         $infotype = $presentation[0];
         $item->infotype = $infotype;
 
-        $outside_style = isset($presentation[1]) ? $presentation[1]: get_string('outside_style_default', 'apply');
-        $item_style    = isset($presentation[2]) ? $presentation[2]: get_string('item_style_default',    'apply');
-        $item->outside_style = $outside_style;
-        $item->item_style    = $item_style;
+        //$outside_style = isset($presentation[1]) ? $presentation[1]: get_string('outside_style_default', 'apply');
+        //$item_style    = isset($presentation[2]) ? $presentation[2]: get_string('item_style_default',    'apply');
+        $item->outside_style = '';  //$outside_style;
+        $item->item_style    = '';  //$item_style;
 
         $align = right_to_left() ? 'right' : 'left';
         if ($item->apply_id) {
@@ -358,10 +358,10 @@ class apply_item_info extends apply_item_base
         $infotype = $presentation[0];
         $item->infotype = $infotype;
 
-        $outside_style = isset($presentation[1]) ? $presentation[1]: get_string('outside_style_default', 'apply');
-        $item_style    = isset($presentation[2]) ? $presentation[2]: get_string('item_style_default',    'apply');
-        $item->outside_style = $outside_style;
-        $item->item_style    = $item_style;
+        //$outside_style = isset($presentation[1]) ? $presentation[1]: get_string('outside_style_default', 'apply');
+        //$item_style    = isset($presentation[2]) ? $presentation[2]: get_string('item_style_default',    'apply');
+        $item->outside_style = '';  //$outside_style;
+        $item->item_style    = '';  //$item_style;
 
         $align = right_to_left() ? 'right' : 'left';
         if ($highlightrequire AND $item->required AND strval($value) == '') {

@@ -220,10 +220,10 @@ class apply_item_textfield extends apply_item_base
         $str_required_mark = '<span class="apply_required_mark">*</span>';
 
         $presentation = explode(APPLY_TEXTFIELD_SEP, $item->presentation);
-        $outside_style = isset($presentation[2]) ? $presentation[2]: get_string('outside_style_default', 'apply');
-        $item_style    = isset($presentation[3]) ? $presentation[3]: get_string('item_style_default',    'apply');
-        $item->outside_style = $outside_style;
-        $item->item_style    = $item_style;
+        //$outside_style = isset($presentation[2]) ? $presentation[2]: get_string('outside_style_default', 'apply');
+        //$item_style    = isset($presentation[3]) ? $presentation[3]: get_string('item_style_default',    'apply');
+        $item->outside_style = '';  //$outside_style;
+        $item->item_style    = '';  //$item_style;
 
         //print the question and label
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';
@@ -272,20 +272,15 @@ class apply_item_textfield extends apply_item_base
     {
         global $OUTPUT;
 
-        $align = right_to_left() ? 'right' : 'left';
-
         $presentation = explode(APPLY_TEXTFIELD_SEP, $item->presentation);
-        if ($highlightrequire AND $item->required AND strval($value) == '') {
-            $highlight = ' missingrequire';
-        }
-        else {
-            $highlight = '';
-        }
-
         $outside_style = isset($presentation[2]) ? $presentation[2]: get_string('outside_style_default', 'apply');
         $item_style    = isset($presentation[3]) ? $presentation[3]: get_string('item_style_default',    'apply');
-        $item->outside_style = $outside_style;
-        $item->item_style    = $item_style;
+        $item->outside_style = '';  //$outside_style;
+        $item->item_style    = '';  //$item_style;
+
+        $align = right_to_left() ? 'right' : 'left';
+        if ($highlightrequire AND $item->required AND strval($value) == '') $highlight = ' missingrequire';
+        else                                                                $highlight = '';
 
         $str_required_mark = '<span class="apply_required_mark">*</span>';
         $requiredmark =  ($item->required == 1) ? $str_required_mark : '';

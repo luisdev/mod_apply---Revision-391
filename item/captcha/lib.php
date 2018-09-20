@@ -186,12 +186,8 @@ class apply_item_captcha extends apply_item_base
         require_once($CFG->libdir.'/recaptchalib_v2.php');
 
         $align = right_to_left() ? 'right' : 'left';
-        if ($highlightrequire AND !$this->check_value($value, $item)) {
-            $highlight = 'missingrequire';
-        }
-        else {
-            $highlight = '';
-        }
+        if ($highlightrequire AND !$this->check_value($value, $item)) $highlight = 'missingrequire';
+        else                                                          $highlight = '';
 
         $requiredmark = '<span class="apply_required_mark">*</span>';
         //print the question and label
