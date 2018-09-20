@@ -378,7 +378,7 @@ class apply_item_multichoice extends apply_item_base
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.'">';
         apply_item_box_start($item);
-        echo '<ul>';
+        //echo '<ul>';
 
         $index = 1;
         $checked = '';
@@ -417,7 +417,7 @@ class apply_item_multichoice extends apply_item_base
                 $this->print_item_dropdown($presentation, $item, false, $info, $align);
                 break;
         }
-        echo '</ul>';
+        //echo '</ul>';
         apply_item_box_end();
         echo '</div>';
 
@@ -486,7 +486,7 @@ class apply_item_multichoice extends apply_item_base
         //print the presentation
         echo '<div class="apply_item_presentation_'.$align.$highlight.'">';
         apply_item_box_start($item);
-        echo '<ul>';
+        //echo '<ul>';
 
         if ($info->horizontal) {
             $hv = 'h';
@@ -531,7 +531,7 @@ class apply_item_multichoice extends apply_item_base
                 $this->print_item_dropdown($presentation, $item, $value, $info, $align);
                 break;
         }
-        echo '</ul>';
+        //echo '</ul>';
         apply_item_box_end();
         echo '</div>';
 
@@ -635,7 +635,6 @@ class apply_item_multichoice extends apply_item_base
             apply_item_box_end();
             echo $OUTPUT->box_end();
         }
-
         echo '</div>';
 
         apply_close_table_item_tag();

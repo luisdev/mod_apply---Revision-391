@@ -276,6 +276,7 @@ if ($do_show=='edit') {
                   </a>';
             echo $OUTPUT->box_end();
         }
+
         //print the inserted items
         $itempos = 0;
         foreach ($applyitems as $applyitem) {
@@ -293,15 +294,15 @@ if ($do_show=='edit') {
                 $dependstyle = '';
             }
             echo $OUTPUT->box_start('apply_item_box_'.$align.$dependstyle);
-            //items without value only are labels
-            /*
-            if ($applyitem->hasvalue==1) {
+            /**/
+            //if ($applyitem->hasvalue==1) {
                 $itemnr++;
                 echo $OUTPUT->box_start('apply_item_number_'.$align);
-                echo $itemnr;
+                //echo $itemnr;
+                echo $itempos;
                 echo $OUTPUT->box_end();
-            }
-            */
+            //}
+
             echo $OUTPUT->box_start('box generalbox boxalign_'.$align);
             echo $OUTPUT->box_start('apply_item_commands_'.$align);
             echo '<span class="apply_item_commands">';
