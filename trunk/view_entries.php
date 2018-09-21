@@ -169,7 +169,7 @@ if ($do_show=='view_entries') {
     $submits = apply_get_submits_select($apply->id, 0, $where, $params, $sort, $start_page, $page_count);
 
     if (!$submits) {
-        echo '<br />';
+        //echo '<br />';
         $table->print_html();
     } 
     else {
@@ -183,7 +183,7 @@ if ($do_show=='view_entries') {
             }
         }
         //
-        echo '<br />';
+        //echo '<br />';
         $table->print_html();
 
         $allurl = new moodle_url($base_url);

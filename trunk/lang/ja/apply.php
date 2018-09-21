@@ -307,7 +307,8 @@ $string['yes_button'] = ' はい ';
 
 $string['submit_num'] = '申請数';
 
-// for Table
+// for new added items (1.3.0)
+$string['fixedtitle'] = '固定タイトル';
 $string['tablestart'] = 'テーブルの開始';
 $string['tableend']   = 'テーブルの終了';
 $string['no_table']   = 'テーブルが開始されていません';

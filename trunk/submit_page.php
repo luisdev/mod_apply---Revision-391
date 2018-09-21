@@ -1,5 +1,10 @@
 <?php
 
+//
+// submit用のページを生成
+//
+
+
 //print the items
 echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 {
@@ -24,6 +29,7 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
         $last_break_position = 0;
 
         foreach ($items as $item) {
+            //
             if (!isset($start_item)) {
                 if ($item->typ=='pagebreak') continue;
                 $start_item = $item;
@@ -64,7 +70,7 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
             //
             $last_break_position = $item->position; //last item-pos (item or pagebreak)
             if ($item->typ!='pagebreak') {
-                if ($item->label!=APPLY_ADMIN_REPLY_TAG and $item->label!=APPLY_ADMIN_ONLY_TAG) {
+                if ($item->label!=APPLY_ADMIN_REPLY_TAG and $item->label!=APPLY_ADMIN_ONLY_TAG and $item->typ!='fixedtitle') {
                     apply_print_line_space();
                     echo $OUTPUT->box_start('apply_print_item');
                     apply_print_item_submit($item, $value, $highlightrequired);

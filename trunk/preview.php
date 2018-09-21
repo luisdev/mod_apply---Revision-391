@@ -93,7 +93,7 @@ echo $OUTPUT->header();
 echo '<div align="center">';
 echo $OUTPUT->heading(format_text($apply->name), 3);
 echo '</div>';
-echo '<br />';
+//echo '<br />';
 
 //$submit = $DB->get_record('apply_submit', array('id'=>$submit_id, 'version'=>$submit_ver, 'user_id'=>$user_id));
 $submit = $DB->get_record('apply_submit', array('id'=>$submit_id, 'user_id'=>$user_id));

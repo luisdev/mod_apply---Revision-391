@@ -305,7 +305,8 @@ $string['yes_button'] = ' Yes ';
 
 $string['submit_num'] = 'Submitted number';
 
-// for Table
+// for new added items (1.3.0)
+$string['fixedtitle'] = 'Fixed Title';
 $string['tablestart'] = 'Table Start';
 $string['tableend']   = 'Table End';
 $string['no_table']   = 'Table is not started!';

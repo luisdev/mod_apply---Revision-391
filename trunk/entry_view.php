@@ -23,14 +23,13 @@ if ($this_action!='preview') {
     $preview_url = new moodle_url('/mod/apply/preview.php');
     $preview_url->params(array('id'=>$cm->id, 'courseid'=>$courseid, 'action'=>$this_action));
     $preview_url->params(array('submit_id'=>$submit->id, 'submit_ver'=>$submit_ver, 'user_id'=>$user_id));
-    //$title .= '&nbsp;&nbsp;<a href="'.$preview_url->out().'" '.'target="_blank">'.$preview_img.'</a>';
-    $title .= '&nbsp;&nbsp;<a href="'.$preview_url->out().'">'.$preview_img.'</a>';
+    $title .= '&nbsp;&nbsp;<a href="'.$preview_url->out().'" '.'target="_blank">'.$preview_img.'</a>';
 }
 
 echo '<div align="center">';
 echo $OUTPUT->heading(format_text($title), 4);
 echo '</div>';
-echo '<br />';
+//echo '<br />';
 
 //
 echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide entry_view');
@@ -39,7 +38,7 @@ foreach ($items as $item) {
     $params = array('submit_id'=>$submit->id, 'item_id'=>$item->id, 'version'=>$submit_ver);
     $value  = $DB->get_record('apply_value', $params);
 
-    if ($item->typ!='pagebreak' and $item->label!=APPLY_SUBMIT_ONLY_TAG and $item->label!=APPLY_ADMIN_ONLY_TAG) {
+    if ($item->typ!='pagebreak' and $item->label!=APPLY_SUBMIT_ONLY_TAG and $item->label!=APPLY_ADMIN_ONLY_TAG and $item->typ!='fixedtitle') {
         echo $OUTPUT->box_start('apply_print_item');
         apply_print_line_space();
         if (isset($value->value)) {
@@ -51,7 +50,7 @@ foreach ($items as $item) {
         echo $OUTPUT->box_end();
     }
     //
-    else if ($item->label==APPLY_ADMIN_ONLY_TAG and has_capability('mod/apply:viewreports', $context)) {
+    else if ($item->label==APPLY_ADMIN_ONLY_TAG and has_capability('mod/apply:viewreports', $context) and $item->typ!='fixedtitle') {
         echo $OUTPUT->box_start('apply_print_item');
         apply_print_line_space();
         if (isset($value->value)) {
