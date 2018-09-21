@@ -17,7 +17,7 @@ if ($req_own_data) {
 
     $table_columns = array('title',    'time_modified', 'version', 'class',      'draft',      'acked');
     $table_headers = array($title_ttl, $title_date,     $title_ver, $title_clss, $title_draft, $title_ack);
-    $table_widths  = array('320px',    '$120px',        '30px',    '40px',       '60px',       '60px');
+    $table_widths  = array('240px',    '$120px',        '30px',    '40px',       '60px',       '60px');
 
     if (!$apply->only_acked_accept) {
         $table_columns = array_merge($table_columns, array('execd'));
@@ -70,7 +70,7 @@ else {
 
     $table_columns = array_merge($table_columns, array('title',    'time_modified', 'version',  'class',     'acked'));
     $table_headers = array_merge($table_headers, array($title_ttl, $title_date,     $title_ver, $title_clss, $title_ack));
-    $table_widths  = array_merge($table_widths,  array('320px',    '120px',         '30px',     '40px',      '60px'));
+    $table_widths  = array_merge($table_widths,  array('240px',    '120px',         '30px',     '40px',      '60px'));
 
     if (!$apply->only_acked_accept) {
         $table_columns = array_merge($table_columns, array('execd'));
