@@ -48,6 +48,7 @@ $string['apply:operatesubmit'] = 'Operation of Entry';
 $string['apply:preview'] = 'Preview';
 $string['apply:receivemail'] = 'Receive email notification';
 $string['apply:submit'] = 'Submit a Entry';
+$string['apply:preview_submit'] = 'Submit Screen Preview';
 $string['apply:view'] = 'View a Apply';
 $string['apply:viewentries'] = 'List of Entries';
 $string['apply:viewanalysepage'] = 'View the analysis page after submit';

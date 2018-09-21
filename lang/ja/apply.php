@@ -48,6 +48,7 @@ $string['apply:operatesubmit'] = '認証操作';
 $string['apply:preview'] = 'プレビュー';
 $string['apply:receivemail'] = 'メール通知を受信する';
 $string['apply:submit'] = '申請書の提出';
+$string['apply:preview_submit'] = '申請画面のプレビュー';
 $string['apply:view'] = '概要';
 $string['apply:viewentries'] = '申請書の表示';
 $string['apply:viewanalysepage'] = '回答送信後，分析ページを表示する';
