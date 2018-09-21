@@ -4,7 +4,6 @@
 // submit用のページを生成
 //
 
-
 //print the items
 echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 {
