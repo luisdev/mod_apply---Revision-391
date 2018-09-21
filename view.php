@@ -225,6 +225,7 @@ if ($do_show=='view') {
 
         echo $OUTPUT->box_end();
         echo $OUTPUT->box_end();
+        echo '<br />';
     }
 }
 
@@ -257,9 +258,9 @@ if ($do_show=='view_one_entry' and $submit_id) {
 if (empty($plugin)) $plugin = new stdClass();
 include('version.php');
 //
-echo '<div align="center"><br />';
+echo '<div align="center">';
 echo '<a href="'.get_string('wiki_url', 'apply').'" target="_blank"><i>mod_apply '.$plugin->release.'</i></a>';
-echo '<br /><br />';
+echo '<br />';
 echo '</div>';
 
 
