@@ -32,9 +32,7 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
                 }
             }
             else {
-                echo '<br />';
-                echo '<hr style="border:1px solid" />';
-                echo '<br />';
+                echo '<hr class="apply_pagebreak" />';
             }
         }
 
