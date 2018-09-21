@@ -291,7 +291,7 @@ else if (isset($save_return) and $save_return=='draft') {
     echo $OUTPUT->continue_button($back_url);
 }
 
-// Error
+// 
 else {
     if (isset($save_return)) {
         if ($save_return=='failed') {

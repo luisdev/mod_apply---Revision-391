@@ -240,7 +240,7 @@ if ($do_show=='edit') {
     //
     // preview icon
     $preview_img = $OUTPUT->pix_icon('t/preview', get_string('preview'));
-    $preview_url = new moodle_url('/mod/apply/preview.php');
+    $preview_url = new moodle_url('/mod/apply/preview_submit.php');
     $preview_url->params(array('id'=>$cm->id, 'courseid'=>$courseid, 'action'=>'preview'));
     echo '<a href="'.$preview_url->out().'" '.'target="_blank">'.$preview_img.'</a>';
 
