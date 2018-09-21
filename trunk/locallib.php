@@ -600,6 +600,7 @@ function apply_update_draft_values($submit)
     $time_modified = time();
 
     foreach ($items as $item) {
+        //
         if (!$item->hasvalue) continue;
         //
         $itemobj = apply_get_item_class($item->typ);
@@ -633,8 +634,7 @@ function apply_update_draft_values($submit)
         }
         //
         if ($exist) $DB->update_record('apply_value', $newvalue);
-        else         $DB->insert_record('apply_value', $newvalue);
-
+        else        $DB->insert_record('apply_value', $newvalue);
 
         // for Title of Draft (version=0)
         if ($title=='') {
@@ -677,6 +677,7 @@ function apply_update_admin_values($submit)
     $time_modified = time();
 
     foreach ($items as $item) {
+        //
         if ($item->hasvalue and ($item->label==APPLY_ADMIN_REPLY_TAG or $item->label==APPLY_ADMIN_ONLY_TAG)) {
             //
             $itemobj = apply_get_item_class($item->typ);
@@ -710,7 +711,7 @@ function apply_update_admin_values($submit)
             }
             //
             if ($exist) $DB->update_record('apply_value', $newvalue);
-            else         $DB->insert_record('apply_value', $newvalue);
+            else        $DB->insert_record('apply_value', $newvalue);
         }
     }
 
@@ -758,6 +759,7 @@ function apply_flush_draft_values($submit_id, $version, &$title)
     $time_modified = time();
 
     foreach($values as $value) {
+        //
         $val = $DB->get_record('apply_value', array('submit_id'=>$submit_id, 'item_id'=>$value->item_id, 'version'=>$version));
         if ($val) {
             $value->id = $val->id;
