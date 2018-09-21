@@ -238,6 +238,13 @@ if ($do_show=='templates') {
 
 if ($do_show=='edit') {
     //
+    // preview icon
+    $preview_img = $OUTPUT->pix_icon('t/preview', get_string('preview'));
+    $preview_url = new moodle_url('/mod/apply/preview.php');
+    $preview_url->params(array('id'=>$cm->id, 'courseid'=>$courseid, 'action'=>'preview'));
+    echo '<a href="'.$preview_url->out().'" '.'target="_blank">'.$preview_img.'</a>';
+
+    // Item Add Menu
     $add_item_form->display();
 
     if (is_array($applyitems)) {
@@ -279,9 +286,15 @@ if ($do_show=='edit') {
             echo $OUTPUT->box_end();
         }
 
+
         //print the inserted items
         $itempos = 0;
         foreach ($applyitems as $applyitem) {
+            //
+            if ($applyitem->typ=='tablestart') {
+                echo '<hr style="border: 1px dotted" />';
+            }
+
             $itempos++;
             //hiding the item to move
             if (isset($SESSION->apply->moving)) {
