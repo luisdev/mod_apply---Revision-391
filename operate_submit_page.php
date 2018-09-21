@@ -23,7 +23,7 @@ if ($submit) {
     echo '<div align="center">';
     echo $OUTPUT->heading($title, 3);
     echo '</div>';
-    echo '<br />';
+    //echo '<br />';
 
     //
     if ($err_message!='') {
@@ -42,7 +42,7 @@ if ($submit) {
 
         echo $OUTPUT->box_start('apply_print_item');
         if ($item->typ!='pagebreak' and $item->label!=APPLY_SUBMIT_ONLY_TAG 
-                                    and $item->label!=APPLY_ADMIN_REPLY_TAG and $item->label!=APPLY_ADMIN_ONLY_TAG) {
+                                    and $item->label!=APPLY_ADMIN_REPLY_TAG and $item->label!=APPLY_ADMIN_ONLY_TAG and $item->typ!='fixedtitle') {
             apply_print_line_space();
             if (isset($value->value)) {
                 apply_print_item_show_value($item, $value->value);
@@ -51,7 +51,7 @@ if ($submit) {
                 apply_print_item_show_value($item, false);
             }
         }
-        else if ($item->label==APPLY_ADMIN_REPLY_TAG or $item->label==APPLY_ADMIN_ONLY_TAG) {
+        else if ($item->label==APPLY_ADMIN_REPLY_TAG or $item->label==APPLY_ADMIN_ONLY_TAG and $item->typ!='fixedtitle') {
             apply_print_line_space();
             if (isset($value->value)) {
                 apply_print_item_submit($item, $value->value);

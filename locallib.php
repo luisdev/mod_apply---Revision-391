@@ -408,9 +408,19 @@ function apply_exec_submit($submit_id)
 
     $submit = $DB->get_record('apply_submit', array('id'=>$submit_id));
     if (!$submit) return false;
-
-    $title = '';
     if ($submit->acked==APPLY_ACKED_ACCEPT or $submit->version==0) $submit->version++;
+
+    // 固定タイトル
+    $title = '';
+    $items = $DB->get_records('apply_item',  array('apply_id'=>$submit->apply_id));
+    if ($items) {
+        foreach ($items as $item) {
+            if ($item->typ=='fixedtitle' and $item->label==APPLY_SUBMIT_TITLE_TAG) {
+                $title = $item->name;
+                break;
+            }
+        }
+    }
 
     //
     $ret = apply_flush_draft_values($submit->id, $submit->version, $title);
@@ -596,7 +606,15 @@ function apply_update_draft_values($submit)
     if (!$items) return 0;
     $values = $DB->get_records('apply_value', array('submit_id'=>$submit->id, 'version'=>0));
 
+    // 固定タイトル
     $title = '';
+    foreach ($items as $item) {
+        if ($item->typ=='fixedtitle' and $item->label==APPLY_SUBMIT_TITLE_TAG) {
+            $title = $item->name;
+            break;
+        }
+    }
+
     $time_modified = time();
 
     foreach ($items as $item) {
@@ -754,8 +772,7 @@ function apply_flush_draft_values($submit_id, $version, &$title)
     $values = $DB->get_records('apply_value', array('submit_id'=>$submit_id, 'version'=>0));
     if (!$values) return false;
 
-    $ret   = false;
-    $title = '';
+    $ret = false;
     $time_modified = time();
 
     foreach($values as $value) {

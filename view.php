@@ -235,7 +235,7 @@ if ($do_show=='view_one_entry' and $submit_id) {
     $params = array('apply_id'=>$apply->id, 'user_id'=>$USER->id, 'id'=>$submit_id);
     $submit = $DB->get_record('apply_submit', $params);
 
-    echo '<br />';
+    //echo '<br />';
     if ($submit) {
         $items = $DB->get_records('apply_item', array('apply_id'=>$submit->apply_id), 'position');
         if (is_array($items)) {
