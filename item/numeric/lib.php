@@ -52,12 +52,12 @@ class apply_item_numeric extends apply_item_base
         $position = $item->position;
         $lastposition = $DB->count_records('apply_item', array('apply_id'=>$apply->id));
         if ($position == -1) {
-            $i_formselect_last = $lastposition + 1;
+            $i_formselect_last  = $lastposition + 1;
             $i_formselect_value = $lastposition + 1;
-            $item->position = $lastposition + 1;
+            $item->position     = $lastposition + 1;
         }
         else {
-            $i_formselect_last = $lastposition;
+            $i_formselect_last  = $lastposition;
             $i_formselect_value = $item->position;
         }
         //the elements for position dropdownlist

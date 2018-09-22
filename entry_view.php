@@ -1,5 +1,9 @@
 <?php
 
+//
+// 申請書を１枚表示する
+//
+
 // needs  $submit, $items, $name_pattern, $user
 
 require_once('jbxl/jbxl_moodle_tools.php');
