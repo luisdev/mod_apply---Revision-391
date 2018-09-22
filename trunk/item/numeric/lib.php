@@ -613,7 +613,8 @@ class apply_item_numeric extends apply_item_base
 
     public function value_type()
     {
-        return PARAM_FLOAT;
+        //return PARAM_FLOAT;
+        return PARAM_TEXT;      // POST されたデータをこの型で受け取る (submit.php)
     }
 
 
