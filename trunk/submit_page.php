@@ -57,7 +57,8 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
                     $value = apply_clean_input_value($item, $value);
                 }
                 else {
-                    $value = apply_get_item_value($submit_id, $item->id, 0);    // from draft
+                    //$value = apply_get_item_value($submit_id, $item->id, 0);    // from draft
+                    $value = apply_get_item_value($submit_id, $item->id, $submit_ver);
                 }
             }
             else {
@@ -125,9 +126,9 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
 
     //
     //if ($last_break_position>=$max_item_count) { //last page
-     $input_value = 'value="'.get_string('save_entry_button', 'apply').'"';
-     echo '<input name="save_values" type="submit" '.$input_value.' />';
-     echo '&nbsp;&nbsp;&nbsp;&nbsp;';
+    $input_value = 'value="'.get_string('save_entry_button', 'apply').'"';
+    echo '<input name="save_values" type="submit" '.$input_value.' />';
+    echo '&nbsp;&nbsp;&nbsp;&nbsp;';
     //echo '&nbsp;&nbsp;&nbsp;&nbsp;';
 
     $input_value = 'value="'.get_string('save_draft_button', 'apply').'"';

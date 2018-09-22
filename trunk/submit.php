@@ -269,7 +269,7 @@ echo '<div align="center">';
 echo $OUTPUT->heading(format_text($apply->name), 3);
 echo '</div>';
 
-//
+// submit: データが保存された
 if (isset($save_return) and $save_return=='saved') {
     echo '<div align="center">';
     echo '<strong><font color="green">';
@@ -280,7 +280,7 @@ if (isset($save_return) and $save_return=='saved') {
     echo $OUTPUT->continue_button($back_url);
 }
 
-// Draft
+// submit: Draftにデータが保存された
 else if (isset($save_return) and $save_return=='draft') {
     echo '<div align="center">';
     echo '<strong><font color="green">';
@@ -293,6 +293,7 @@ else if (isset($save_return) and $save_return=='draft') {
 
 // 
 else {
+    // submit: 失敗
     if (isset($save_return)) {
         if ($save_return=='failed') {
             echo $OUTPUT->box_start('mform error boxaligncenter boxwidthwide');
@@ -305,7 +306,8 @@ else {
             echo $OUTPUT->box_end();
         }
     }
-    //
+
+    // 最初に表示するページ
     if (is_array($items)) {
         //
         if ($submit_id) {

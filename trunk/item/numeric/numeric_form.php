@@ -41,9 +41,11 @@ class apply_numeric_form extends apply_item_form
         $mform->setType('label', PARAM_TEXT);
 
         $mform->addElement('text', 'rangefrom', get_string('numeric_range_from', 'apply'), array('size'=>10, 'maxlength'=>10));
-        $mform->setType('rangefrom', PARAM_TEXT);   // and '-'
+        $mform->setDefault('rangefrom', '-');
+        $mform->setType('rangefrom', PARAM_TEXT);
         $mform->addElement('text', 'rangeto',   get_string('numeric_range_to',   'apply'), array('size'=>10, 'maxlength'=>10));
-        $mform->setType('rangeto',   PARAM_TEXT);   // and '-'
+        $mform->setDefault('rangeto', '-');
+        $mform->setType('rangeto',   PARAM_TEXT);
 
         $mform->addElement('text', 'outside_style',  get_string('outside_style', 'apply'), array('size'=>APPLY_ITEM_STYLE_TEXTBOX_SIZE, 'maxlength'=>255));
         $mform->addHelpButton('outside_style', 'outside_style', 'apply');
