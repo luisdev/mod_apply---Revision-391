@@ -291,9 +291,7 @@ if ($do_show=='edit') {
         $itempos = 0;
         foreach ($applyitems as $applyitem) {
             //
-            if ($applyitem->typ=='tablestart') {
-                echo '<hr style="border: 1px dotted" />';
-            }
+            if ($applyitem->typ=='tablestart') echo '<hr style="border: 1px dashed" />';
 
             $itempos++;
             //hiding the item to move
@@ -418,6 +416,9 @@ if ($do_show=='edit') {
             echo $OUTPUT->box_end();
             echo $OUTPUT->box_end();
 
+            //
+            if ($applyitem->typ=='tableend') echo '<hr style="border: 1px dotted" />';
+
             if (isset($SESSION->apply->moving) AND $SESSION->apply->moving->shouldmoving == 1) {
                 $moveposition++;
                 $movehereurl->param('movehere', $moveposition);
@@ -436,6 +437,7 @@ if ($do_show=='edit') {
         if ($Table_in) {
             apply_close_table_tag();
             echo '<div style="color:#c00000">['.get_string('not_close_table','apply').']</div>';
+            echo '<hr style="border: 1px dotted" />';
         }
 
         echo $OUTPUT->box_end();
