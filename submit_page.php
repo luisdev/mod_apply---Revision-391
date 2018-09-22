@@ -108,23 +108,7 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
     // Button
     echo '<br />';
 
-    if ($last_break_position>=$max_item_count) { //last page
-        $input_value = 'value="'.get_string('save_entry_button', 'apply').'"';
-        echo '<input name="save_values" type="submit" '.$input_value.' />';
-        echo '&nbsp;&nbsp;&nbsp;&nbsp;';
-    }
-    //echo '&nbsp;&nbsp;&nbsp;&nbsp;';
-
-    $input_value = 'value="'.get_string('save_draft_button', 'apply').'"';
-    echo '<input name="save_draft"  type="submit" '.$input_value.' />';
-    echo '&nbsp;&nbsp;&nbsp;&nbsp;';
-    //
-    echo '<input type="reset" value="'.get_string('clear').'" />';
-
-    //
-    if (($is_pagebreak and $last_break_position>$first_pagebreak->position) or $last_break_position<$max_item_count) {
-        echo '<br /><br />';
-    }
+    // Previus and Next Button
     if ($is_pagebreak and $last_break_position>$first_pagebreak->position) {
         $input_value = 'value="'.get_string('previous_page_button', 'apply').'"';
         echo '<input name="go_prev_page" type="submit" '.$input_value.' />';
@@ -135,6 +119,22 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
         echo '<input name="go_next_page" type="submit" '.$input_value.' />';
         echo '&nbsp;&nbsp;&nbsp;&nbsp;';
     }
+    if (($is_pagebreak and $last_break_position>$first_pagebreak->position) or $last_break_position<$max_item_count) {
+        echo '<br /><br />';
+    }
+
+    //
+    //if ($last_break_position>=$max_item_count) { //last page
+     $input_value = 'value="'.get_string('save_entry_button', 'apply').'"';
+     echo '<input name="save_values" type="submit" '.$input_value.' />';
+     echo '&nbsp;&nbsp;&nbsp;&nbsp;';
+    //echo '&nbsp;&nbsp;&nbsp;&nbsp;';
+
+    $input_value = 'value="'.get_string('save_draft_button', 'apply').'"';
+    echo '<input name="save_draft"  type="submit" '.$input_value.' />';
+    echo '&nbsp;&nbsp;&nbsp;&nbsp;';
+    //
+    echo '<input type="reset" value="'.get_string('clear').'" />';
 
     //echo '</fieldset>'; // for mobile viewer
     echo '</form>';
