@@ -1572,40 +1572,44 @@ function apply_open_table_tag($item)
     $th_strings   = $presentation[4];
     $disp_iname   = $presentation[5];
 
-    $th_size = explode(',', $th_sizes);
-    $th_elements = explode("\n", $th_strings);
+    $th_widths = explode(',', $th_sizes);
+    $th_titles = explode("\n", $th_strings);
     $table_border = $border + 1;
 
     $style = '';
     $style_value = '';
-    if ($border>=0) $style_value = 'border-width:'.$border.'px;';
-    if ($border_style!='') $style_value .= 'border-style:'.$border_style.';';
-    if ($style_value!='') $style = 'style="'.$style_value.'"';
+    if ($border>=0)        $style_value .= 'border-width:'.$border.'px;';
+    if ($border_style!='') $style_value .= 'border-style:'.$border_style.'; ';
 
     $Table_in = true;
-    $Table_params->position = 0;
-    $Table_params->columns = $columns;
-    $Table_params->style = $style;
+    $Table_params->col        = 0;
+    $Table_params->columns    = $columns;
+    //$Table_params->widths     = $th_widths;
+    $Table_params->titles     = $th_titles;
     $Table_params->disp_iname = $disp_iname;
+    $Table_params->style      = array();
+
+    // th widths
+    for ($col=0; $col<$columns; $col++) {
+        $value = $style_value;
+        if (array_key_exists($col, $th_widths)) {
+            $width = intval($th_widths[$col]);
+            if ($width>0) $value .= 'width:'.$width.'px;';
+        }
+        if ($value!='') $Table_params->style[$col] = 'style="'.$value.'"';
+        else            $Table_params->style[$col] = '';
+    }
 
     echo "\n";
-    echo '<table style="border:'.$table_border.'px; border-style:solid; table-layout:fixed;"><tr>';
+    echo '<table style="border:'.$table_border.'px; border-style:solid; table-layout:fixed;">';
 
-    // th
+    // th titles
     if ($th_strings!='') {
+        echo '<tr>';
         for ($col=0; $col<$columns; $col++) {
-            if (array_key_exists($col, $th_size)) {
-                $size = intval($th_size[$col]);
-                if ($size>0) {
-                    $style_value .= 'width:'.$size.'px;';
-                    if ($style_value!='') $style = 'style="'.$style_value.'"';
-                }
-            }
-
-            echo '<th '.$style.'>';
-            if (array_key_exists($col, $th_elements)) echo $th_elements[$col];
-            else echo ' ';
-            echo '</th>';
+            $title = ' ';
+            if (array_key_exists($col, $Table_params->titles)) $title = $Table_params->titles[$col];
+            echo '<th '.$Table_params->style[$col].'>'.$title.'</th>';
         }
         echo '</tr>';
     }
@@ -1618,8 +1622,10 @@ function apply_close_table_tag()
 
     if (!$Table_in) return;
 
-    if ($Table_params->position!=0) {
-        for ($col=$Table_params->position; $col<$Table_params->columns; $col++) echo '<td '.$Table_params->style.'> </td>';
+    if ($Table_params->col!=0) {
+        for ($col=$Table_params->col; $col<$Table_params->columns; $col++) {
+            echo '<td '.$Table_params->style[$col].'> </td>';
+        }
         echo '</tr>';
     }
 
@@ -1628,19 +1634,19 @@ function apply_close_table_tag()
 }
 
 
-function apply_open_table_item_tag($title='', $preview=false)
+function apply_open_table_item_tag($title='', $view=false)
 {
     global $Table_in, $Table_params;
 
-    if (!$Table_in or $preview) {
+    if (!$Table_in or $view) {
         if ($title!='') echo $title;   // outside of table
         if (!$Table_in) return;
     }    
 
-    if ($Table_params->position==0) echo '<tr>';
-    echo '<td '.$Table_params->style.'>';
+    if ($Table_params->col==0) echo '<tr>';
+    echo '<td '.$Table_params->style[$Table_params->col].'>';
 
-    if ($Table_params->disp_iname or $preview) {
+    if ($Table_params->disp_iname or $view) {
         if ($title!='') echo $title;   // inside of table
     }    
 }
@@ -1652,11 +1658,11 @@ function apply_close_table_item_tag()
 
     if (!$Table_in) return;
 
-    $Table_params->position++;
-    $Table_params->position %= $Table_params->columns;
+    $Table_params->col++;
+    $Table_params->col %= $Table_params->columns;
 
     echo '</td>';
-    if ($Table_params->position==0) echo '</tr>';
+    if ($Table_params->col==0) echo '</tr>';
 }
 
 
