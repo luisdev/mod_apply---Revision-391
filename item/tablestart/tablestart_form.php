@@ -53,18 +53,18 @@ class apply_tablestart_form extends apply_item_form
         $mform->setDefault('border_style', 'solid');
         $mform->setType('border_style', PARAM_ALPHA);
 
-        $mform->addElement('text', 'th_sizes', get_string('table_th_sizes', 'apply'), 'wrap="virtual" cols="20"');
+        $mform->addElement('text', 'th_sizes', get_string('table_th_sizes', 'apply'), 'wrap="virtual" cols="40"');
         $mform->addHelpButton('th_sizes', 'table_th_sizes', 'apply');
         $mform->setDefault('th_sizes', '');
         $mform->setType('th_sizes', PARAM_TEXT);
 
         $mform->addElement('static', 'hint', get_string('table_th_strings', 'apply'), get_string('use_one_line_for_each_value', 'apply'));
-        $mform->addElement('textarea', 'th_strings', '', 'wrap="virtual" rows="3" cols="20"');
+        $mform->addElement('textarea', 'th_strings', '', 'wrap="virtual" rows="5" cols="30"');
         $mform->addHelpButton('th_strings', 'table_th_strings', 'apply');
         $mform->setDefault('th_strings', '');
         $mform->setType('th_strings', PARAM_RAW);
 
-        $mform->addElement('selectyesno', 'disp_iname', get_string('table_disp_iname', 'apply'), 'wrap="virtual" cols="20"');
+        $mform->addElement('selectyesno', 'disp_iname', get_string('table_disp_iname', 'apply'), 'wrap="virtual" cols="0"');
         $mform->addHelpButton('disp_iname', 'table_disp_iname', 'apply');
         $mform->setDefault('disp_iname', 0);
         $mform->setType('disp_iname', PARAM_INT);
