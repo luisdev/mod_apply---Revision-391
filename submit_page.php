@@ -34,7 +34,7 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
                 $start_item = $item;
             }
             if ($item->dependitem>0) {
-                $compare_value = apply_compare_item_value($submit_id, $item->dependitem, $item->dependvalue, true);
+                $compare_value = apply_compare_item_value($submit_id, $item->dependitem, $item->dependvalue);
                 if (!isset($submit_id) OR !$compare_value) {
                     $last_item = $item;
                     $last_break_position = $item->position;
