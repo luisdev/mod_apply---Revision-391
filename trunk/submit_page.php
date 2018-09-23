@@ -41,12 +41,6 @@ echo $OUTPUT->box_start('generalbox boxaligncenter boxwidthwide');
                     continue;
                 }
             }
-            if ($item->dependitem>0) {
-                $depend_style = ' apply_submit_depend';
-            }
-            else {
-                $depend_style = '';
-            }
 
             // restore value
             $value = '';
