@@ -52,10 +52,10 @@ $context = context_module::instance($cm->id);
 // Check 1
 require_login($course, true, $cm);
 //
-if (!has_capability('mod/apply:submit', $context)) {
-    apply_print_error_messagebox('apply_is_disable', $id);
-    exit;
-}
+//if (!has_capability('mod/apply:submit', $context)) {
+//    apply_print_error_messagebox('apply_is_disable', $id);
+//    exit;
+//}
 
 
 ///////////////////////////////////////////////////////////////////////////
