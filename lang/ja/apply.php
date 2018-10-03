@@ -328,7 +328,7 @@ $string['table_disp_iname'] = '項目名の表示';
 $string['table_disp_iname_help'] = 'テーブル内の項目の名前を表示する．';
 
 //
-$string['printpagebreak']  = '印刷改ページを追加する';
+$string['printpagebreak']  = '印刷用改ページを追加する';
 $string['pagebreak_title'] = '印刷用改ページ';
 $string['pagebreak_style'] = '印刷用ラインのスタイル';
 $string['pagebreak_style_default'] = '1px solid';
