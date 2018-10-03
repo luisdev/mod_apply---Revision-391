@@ -1697,7 +1697,7 @@ function apply_item_box_start($item)
     echo '<tr><td style="padding: 5px 5px 0px 5px;">';
 
     $item_style = '';
-    if ($item->item_style!='')    $item_style    = 'style="'.$item->item_style.'"';
+    if ($item->item_style!='')  $item_style = 'style="'.$item->item_style.'"';
     echo '<div '.$item_style.'>';
 }
 

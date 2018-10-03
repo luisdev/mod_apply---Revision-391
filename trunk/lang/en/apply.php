@@ -32,7 +32,7 @@ $string['acked_notyet'] = 'Not Yet';
 $string['acked_reject'] = 'Reject';
 $string['add_item']  = 'Add entry item to activity';
 $string['add_items'] = 'Add entry items to activity';
-$string['add_pagebreak'] = 'Add a page break';
+$string['add_pagebreak'] = 'Add a page break for depending';
 $string['adjustment'] = 'Adjustment';
 $string['apply_is_not_ready'] = 'Apply is not ready yet. Please edit items first.';
 $string['apply:addinstance'] = 'Add a new apply';
@@ -92,13 +92,13 @@ $string['depending_help'] = 'It is possible to show an item depending on the val
 <strong>Here is an example.</strong><br />
 <ul>
 <li>First, create an item on which another item will depend on.</li>
-<li>Next, add a pagebreak.</li>
+<li>Next, add a pagebreak for depending.</li>
 <li>Then add the items dependant on the value of the item created before. Choose the item from the list labelled "Dependence item" and write the required value in the textbox labelled "Dependence value".</li>
 </ul>
 <strong>The item structure should look like this.</strong>
 <ol>
 <li>Item Q: Do you have a car? A: yes/no</li>
-<li>Pagebreak</li>
+<li>Pagebreak for depending</li>
 <li>Item Q: What colour is your car?<br />
 (this item depends on item 1 with value = yes)</li>
 <li>Item Q: Why don\'t you have a car?<br />
@@ -213,7 +213,7 @@ $string['operate_submit'] = 'Operate';
 $string['operate_submit_button'] = ' Process ';
 $string['operation_error_execd'] = 'When you do not accept entry, you can not checke "done"';
 $string['overview'] = 'Overview and Submit';
-$string['pagebreak'] = 'Page break';
+$string['pagebreak'] = 'Page break for depending';
 $string['pluginadministration'] = 'Apply administration';
 $string['pluginname'] = 'Application Form';
 $string['position'] = 'Position';
@@ -324,3 +324,11 @@ $string['table_th_strings'] = 'Title of each column';
 $string['table_th_strings_help'] = 'Describe the title of each column separated by line feed. That is, one title is written on one line.';
 $string['table_disp_iname'] = 'Display item name';
 $string['table_disp_iname_help'] = 'Display the name of the item in table.';
+
+//
+$string['printpagebreak']  = 'Add a page break for printing';
+$string['pagebreak_title'] = 'Page Break for Printing';
+$string['pagebreak_style'] = 'Style of page break line';
+$string['pagebreak_style_default'] = '1px solid';
+$string['pagebreak_style_help'] = 'The style of the page break line (&lt; hr /&gt;). The Default is ( '.$string['pagebreak_style_default'].' ). In case of empty, the line is not drawn on print screen. The page break line is not displayed on the submit screen and the preview of the submit screen.';
+
