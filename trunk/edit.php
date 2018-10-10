@@ -279,7 +279,7 @@ if ($do_show=='edit') {
             echo $OUTPUT->box_start('apply_item_box_'.$align.' clipboard');
             $buttonlink = $movehereurl->out();
             $strbutton = get_string('move_here', 'apply');
-            $src = $OUTPUT->pix_url('movehere');
+            $src = $OUTPUT->image_url('movehere');
             echo '<a title="'.$strbutton.'" href="'.$buttonlink.'">
                     <img class="movetarget" alt="'.$strbutton.'" src="'.$src.'" />
                   </a>';
@@ -327,7 +327,7 @@ if ($do_show=='edit') {
                 $buttonlink = $moveupurl->out();
                 $strbutton = get_string('moveup_item', 'apply');
                 echo '<a class="icon up" title="'.$strbutton.'" href="'.$buttonlink.'">
-                        <img alt="'.$strbutton.'" src="'.$OUTPUT->pix_url('t/up') . '" />
+                        <img alt="'.$strbutton.'" src="'.$OUTPUT->image_url('t/up') . '" />
                       </a>';
                 echo '</span>';
             }
@@ -339,7 +339,7 @@ if ($do_show=='edit') {
                 $buttonlink = $movedownurl->out();
                 $strbutton = get_string('movedown_item', 'apply');
                 echo '<a class="icon down" title="'.$strbutton.'" href="'.$buttonlink.'">
-                        <img alt="'.$strbutton.'" src="'.$OUTPUT->pix_url('t/down') . '" />
+                        <img alt="'.$strbutton.'" src="'.$OUTPUT->image_url('t/down') . '" />
                       </a>';
                 echo '</span>';
             }
@@ -349,7 +349,7 @@ if ($do_show=='edit') {
             $buttonlink = $moveurl->out();
             $strbutton = get_string('move_item', 'apply');
             echo '<a class="editing_move" title="'.$strbutton.'" href="'.$buttonlink.'">
-                    <img alt="'.$strbutton.'" src="'.$OUTPUT->pix_url('t/move') . '" />
+                    <img alt="'.$strbutton.'" src="'.$OUTPUT->image_url('t/move') . '" />
                   </a>';
             echo '</span>';
             //print the button to edit the item
@@ -363,7 +363,7 @@ if ($do_show=='edit') {
                 $buttonlink = $editurl->out();
                 $strbutton = get_string('edit_item', 'apply');
                 echo '<a class="editing_update" title="'.$strbutton.'" href="'.$buttonlink.'">
-                        <img alt="'.$strbutton.'" src="'.$OUTPUT->pix_url('t/edit') . '" />
+                        <img alt="'.$strbutton.'" src="'.$OUTPUT->image_url('t/edit') . '" />
                       </a>';
                 echo '</span>';
             }
@@ -373,11 +373,11 @@ if ($do_show=='edit') {
                 echo '<span class="apply_item_command_toggle">';
                 if ($applyitem->required == 1) {
                     $buttontitle = get_string('switch_item_to_not_required', 'apply');
-                    $buttonimg = $OUTPUT->pix_url('required', 'apply');
+                    $buttonimg = $OUTPUT->image_url('required', 'apply');
                 }
                 else {
                     $buttontitle = get_string('switch_item_to_required', 'apply');
-                    $buttonimg = $OUTPUT->pix_url('notrequired', 'apply');
+                    $buttonimg = $OUTPUT->image_url('notrequired', 'apply');
                 }
                 $urlparams = array('switchitemrequired'=>$applyitem->id);
                 $requiredurl = new moodle_url($this_url, $urlparams);
@@ -398,7 +398,7 @@ if ($do_show=='edit') {
 
             $buttonlink = $deleteitemurl->out();
             $strbutton = get_string('delete_item', 'apply');
-            $src = $OUTPUT->pix_url('t/delete');
+            $src = $OUTPUT->image_url('t/delete');
             echo '<a class="icon delete" title="'.$strbutton.'" href="'.$buttonlink.'">
                     <img alt="'.$strbutton.'" src="'.$src.'" />
                   </a>';
@@ -425,7 +425,7 @@ if ($do_show=='edit') {
                 echo $OUTPUT->box_start('clipboard'); //only shown if shouldmoving = 1
                 $buttonlink = $movehereurl->out();
                 $strbutton = get_string('move_here', 'apply');
-                $src = $OUTPUT->pix_url('movehere');
+                $src = $OUTPUT->image_url('movehere');
                 echo '<a title="'.$strbutton.'" href="'.$buttonlink.'">
                         <img class="movetarget" alt="'.$strbutton.'" src="'.$src.'" />
                       </a>';

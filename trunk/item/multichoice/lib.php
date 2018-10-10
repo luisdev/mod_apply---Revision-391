@@ -266,7 +266,7 @@ class apply_item_multichoice extends apply_item_base
             $pixnr = 0;
             foreach ($analysed_vals as $val) {
                 $intvalue = $pixnr % 10;
-                $pix = $OUTPUT->pix_url('multichoice/' . $intvalue, 'apply');
+                $pix = $OUTPUT->image_url('multichoice/' . $intvalue, 'apply');
                 $pixnr++;
                 $pixwidth = intval($val->quotient * APPLY_MAX_PIX_LENGTH);
                 $quotient = number_format(($val->quotient * 100), 2, $sep_dec, $sep_thous);
