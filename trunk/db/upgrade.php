@@ -84,7 +84,7 @@ function xmldb_apply_upgrade($oldversion)
     if ($oldversion < 2018091903) {
         $table = new xmldb_table('apply');
         //
-        $field = new xmldb_field('date_format', XMLDB_TYPE_CHAR, '32', null, XMLDB_NOTNULL, null, '', 'can_discard');
+        $field = new xmldb_field('date_format', XMLDB_TYPE_CHAR, '32', null, XMLDB_NOTNULL, null, ' ', 'can_discard');
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
