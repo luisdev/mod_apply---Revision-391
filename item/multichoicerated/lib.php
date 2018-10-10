@@ -240,7 +240,7 @@ class apply_item_multichoicerated extends apply_item_base
             $avg = 0.0;
             foreach ($analysed_vals as $val) {
                 $intvalue = $pixnr % 10;
-                $pix = $OUTPUT->pix_url('multichoice/' . $intvalue, 'apply');
+                $pix = $OUTPUT->image_url('multichoice/' . $intvalue, 'apply');
                 $pixnr++;
                 $pixwidth = intval($val->quotient * APPLY_MAX_PIX_LENGTH);
 
