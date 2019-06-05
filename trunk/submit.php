@@ -170,7 +170,7 @@ if (!$SESSION->apply->is_started) {
 if ($prev_values) {
     //
     if (!$SESSION->apply->is_started) {
-        print_error('error', '', $CFG->wwwroot.'/mod/apply/view.php?id='.$id);
+        //print_error('error', '', $CFG->wwwroot.'/mod/apply/view.php?id='.$id);
     }
 
 //    if (apply_check_values($start_itempos, $last_itempos) or $save_draft or $go_next_page or $go_prev_page) {
