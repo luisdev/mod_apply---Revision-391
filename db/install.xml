@@ -19,7 +19,7 @@
         <FIELD NAME="only_acked_accept" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="name_pattern" NEXT="enable_deletemode"/>
         <FIELD NAME="enable_deletemode" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="only_acked_accept" NEXT="can_discard"/>
         <FIELD NAME="can_discard" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="enable_deletemode" NEXT="date_format"/>
-        <FIELD NAME="date_format" TYPE="char" LENGTH="32" NOTNULL="true" DEFAULT=" " SEQUENCE="false" PREVIOUS="can_discard" NEXT="time_open"/>
+        <FIELD NAME="date_format" TYPE="char" LENGTH="32" NOTNULL="true" DEFAULT="%m/%d/%y %H:%M" SEQUENCE="false" PREVIOUS="can_discard" NEXT="time_open"/>
         <FIELD NAME="time_open" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="date_format" NEXT="time_close"/>
         <FIELD NAME="time_close" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="time_open" NEXT="time_modified"/>
         <FIELD NAME="time_modified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="time_close"/>
@@ -65,7 +65,7 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true" NEXT="apply_id"/>
         <FIELD NAME="apply_id" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="template"/>
         <FIELD NAME="template" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="apply_id" NEXT="name"/>
-        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="template" NEXT="label"/>
+        <FIELD NAME="name"  TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="template" NEXT="label"/>
         <FIELD NAME="label" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="name" NEXT="presentation"/>
         <FIELD NAME="presentation" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="label" NEXT="typ"/>
         <FIELD NAME="typ" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="presentation" NEXT="hasvalue"/>
