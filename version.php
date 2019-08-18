@@ -33,7 +33,7 @@ $plugin->maturity  = MATURITY_STABLE;
 
 $plugin->release   = '1.3.6';       // update messages
 
-$plugin->version   = 2018101002;    // minor change for 3.7.1
+$plugin->version   = 2019081800;    // minor change for 3.7.1
 //$plugin->version = 2018101000;    // support table
 //$plugin->version = 2018100300;    //
 //$plugin->version = 2016062800;    // 
