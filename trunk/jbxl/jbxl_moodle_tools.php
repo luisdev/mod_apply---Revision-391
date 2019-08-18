@@ -22,7 +22,8 @@ defined('MOODLE_INTERNAL') || die();
 //$jbxl_moodle_tools_ver = 2015112600;
 //$jbxl_moodle_tools_ver = 2016041800;
 //$jbxl_moodle_tools_ver = 2016053000;
-$jbxl_moodle_tools_ver   = 2018091900;
+//$jbxl_moodle_tools_ver = 2018091900;
+$jbxl_moodle_tools_ver   = 2019081800;
 
 //
 if (defined('JBXL_MOODLE_TOOLS_VER') or defined('_JBXL_MOODLE_TOOLS')) {
@@ -57,6 +58,7 @@ define('JBXL_MOODLE_TOOLS_VER', $jbxl_moodle_tools_ver);
 
 // function  jbxl_db_exist_table($table, $lower_case=true)
 
+// function  jbxl_set_excel_version($ver)
 // function  jbxl_download_data($format, $datas, $filename='')
 // function  jbxl_save_csv_file($datas, $filename, $tocode='sjis-win')
 
@@ -345,9 +347,23 @@ function jbxl_db_exist_table($table, $lower_case=false)
 //
 // $datas: 2次元のデータ配列
 //
+
+$jbxl_moodle_excel_ver = 'Excel5';
+
+
+function  jbxl_set_excel_version($ver='Excel5') 
+{
+    global $jbxl_moodle_excel_ver;
+
+    if (strtolower($ver)==='excel5') $jbxl_moodle_excel_ver = 'Excel5';
+    else                             $jbxl_moodle_excel_ver = 'Excel2007';
+}
+
+
 function  jbxl_download_data($format, $datas, $filename='')
 {
     global $CFG;
+    global $jbxl_moodle_excel_ver;
 
     if (empty($datas->data)) return;
     if (empty($filename)) {
@@ -375,7 +391,7 @@ function  jbxl_download_data($format, $datas, $filename='')
     
         /// Creating a workbook
         if ($excellib_version==2) {
-            $workbook = new MoodleExcelWorkbook('-', 'Excel5');
+            $workbook = new MoodleExcelWorkbook('-', $jbxl_moodle_excel_ver);
             $workbook->send($filename);
         }    
         else {
