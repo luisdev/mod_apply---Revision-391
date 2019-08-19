@@ -58,7 +58,7 @@ define('JBXL_MOODLE_TOOLS_VER', $jbxl_moodle_tools_ver);
 
 // function  jbxl_db_exist_table($table, $lower_case=true)
 
-// function  jbxl_set_excel_version($ver)
+// function  jbxl_set_excel_version($ver='Excel5') 
 // function  jbxl_download_data($format, $datas, $filename='')
 // function  jbxl_save_csv_file($datas, $filename, $tocode='sjis-win')
 
