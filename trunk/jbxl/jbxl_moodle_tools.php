@@ -23,7 +23,7 @@ defined('MOODLE_INTERNAL') || die();
 //$jbxl_moodle_tools_ver = 2016041800;
 //$jbxl_moodle_tools_ver = 2016053000;
 //$jbxl_moodle_tools_ver = 2018091900;
-$jbxl_moodle_tools_ver   = 2019081800;
+$jbxl_moodle_tools_ver   = 2019082000;
 
 //
 if (defined('JBXL_MOODLE_TOOLS_VER') or defined('_JBXL_MOODLE_TOOLS')) {
@@ -371,7 +371,9 @@ function  jbxl_download_data($format, $datas, $filename='')
     }
 
     //
-    if ($format==='xls') {
+    if ($format==='xls' or $format==='xlsx') {
+        $filename .= '.'.$format;
+        //
         $excellib_version = 0;
         if (file_exists ($CFG->dirroot.'/lib/excellib.class.php')) {
             $excellib_version = 2;
@@ -387,7 +389,7 @@ function  jbxl_download_data($format, $datas, $filename='')
 
         //
         header("Content-type: application/vnd.ms-excel");
-        header("Content-Disposition: attachment; filename=\"$filename.xls\"");
+        header("Content-Disposition: attachment; filename=\"$filename\"");
     
         /// Creating a workbook
         if ($excellib_version==2) {
@@ -420,8 +422,9 @@ function  jbxl_download_data($format, $datas, $filename='')
     else if ($format==='txt') {
         $tocode = 'UTF-8';
         //
+        $filename .= '.'.$format;
         header("Content-Type: application/download\n"); 
-        header("Content-Disposition: attachment; filename=\"$filename.txt\"");
+        header("Content-Disposition: attachment; filename=\"$filename\"");
 
         foreach ($datas->data as $data) {
             foreach ($data as $val) {
@@ -541,7 +544,9 @@ function  jbxl_get_moodle_version()
 {
     global $CFG;
 
-    if      ($CFG->version>=2018051700) return 3.5;
+    if      ($CFG->version>=2019052000) return 3.7;
+    else if ($CFG->version>=2018123000) return 3.6;
+    else if ($CFG->version>=2018051700) return 3.5;
     else if ($CFG->version>=2017111300) return 3.4;
     else if ($CFG->version>=2017051500) return 3.3;
     else if ($CFG->version>=2016120500) return 3.2;
