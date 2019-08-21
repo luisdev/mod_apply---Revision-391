@@ -6,9 +6,10 @@
 //                2013/09/21
 //                2014/11/28
 //                2016/05/26
+//                2019/08/21
 //
 
-$jbxl_tools_ver = 2016052600;
+$jbxl_tools_ver = 2019082100;
 
 
 //
@@ -26,8 +27,9 @@ define('JBXL_TOOLS_VER', $jbxl_tools_ver);
 //
 // function  jbxl_get_ipresolv_url($ip)
 //
+// function  jbxl_get_url_params_array($urlstr)
 // function  jbxl_get_url_params_str($params, $amp=false)
-// function  jbxl_make_url($serverURI, $portnum=80)
+// function  jbxl_make_url($serverURI, $portnum=0)
 //
 *****************************************************************************************/
 
@@ -185,8 +187,29 @@ function  jbxl_get_ipresolv_url($ip, $region='APNIC')
 }
 
 
+function  jbxl_get_url_params_array($urlstr)
+{
+    $strs = explode('?', $urlstr);
+    $parmstr = $strs[0];
+    if (array_key_exists(1, $strs)) $paramstr = $strs[1];
+
+    $ret = array();
+    $params = explode('&', $paramstr);
+    foreach($params as $param) {
+        if (substr($param, 0, 4)=='amp;') $param = substr($param, 5);
+        $temps = explode('=', $param);
+        $ret[$temps[0]] = '';
+        if (array_key_exists(1, $temps)) $ret[$temps[0]] = $temps[1];
+    }
+    
+    return $ret;
+}
+
+
 //
-// amp: トップが & であるか？
+// $params: パラメータの入っている配列
+// $amp:    先頭文字を '&' にするか？ false の場合は 先頭文字は '?'
+//
 function  jbxl_get_url_params_str($params, $amp=false)
 {
     $ret = '';
@@ -207,34 +230,77 @@ function  jbxl_get_url_params_str($params, $amp=false)
 
 
 //
-// http(s)://ABC.EFG:#/ の形を生成する
+// 入力された FSDN, URL に対して http(s)://ABC.EFG:#/ の形を生成する
 //
-function  jbxl_make_url($serverURI, $portnum=80)
+function  jbxl_make_url($serverURI, $portnum=0)
 {
     $url  = '';
-    $host = '';
-    $port = '';
+    $host = 'localhost';
+    $port = 80;
+    $protocol = 'http';
 
     if ($serverURI!=null) {
         $uri = preg_split("/[:\/]/", $serverURI);
-        //
-        if (array_key_exists(3, $uri)) {    // with http:// or https://
+
+        // with http:// or https://
+        if (array_key_exists(3, $uri)) {
+            $protocol = $uri[0];
             $host = $uri[3];
-            if (array_key_exists(4, $uri)) $port = $uri[4];
-            else                           $port = $portnum;
-            $url = $uri[0].'://'.$host.':'.$port.'/';
+            //
+            if (array_key_exists(4, $uri)) {
+                $port = $uri[4];
+            }
+            else {
+                if ($portnum!=0) {
+                    $port = $portnum;
+                }
+                else {
+                    if      ($uri[0]=='http')  $port = 80;
+                    else if ($uri[0]=='https') $port = 443;
+                    else if ($uri[0]=='ftp')   $port = 21;
+                    // else if ....
+                }
+            }
         }
-        else {                                // with no http:// and https://
+
+        // with no http:// and https:// 
+        else {
             $host = $uri[0];
-            if (array_key_exists(1, $uri)) $port = $uri[1];
-            else                           $port = $portnum;
-            $url = 'http://'.$host.':'.$port.'/';
+            if (array_key_exists(1, $uri)) {
+                $port = $uri[1];
+            }
+            else {
+                if ($portnum!=0) { 
+                    $port = $portnum;
+                }
+                else {
+                    $port = 80;
+               }
+            }
+        }
+
+        //
+        if ($port==443) {
+            $url = 'https://'.$host.':'.$port.'/';
+            $protocol = 'https';
+        }
+        else if ($port==80) {
+            $url = 'http://'.$host.'/';
+            $protocol = 'http';
+        }
+        else if ($port==21) {
+            $url = 'ftp://'.$host.'/';
+            $protocol = 'ftp';
+        }
+        else {
+            $url = $protocol.'://'.$host.':'.$port.'/';
         }
     }
 
     $server['url']  = $url;
     $server['host'] = $host;
     $server['port'] = $port;
+    $server['porotocol'] = $protocol;
     
     return $server;
 }
