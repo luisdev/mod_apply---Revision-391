@@ -22,6 +22,13 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['pluginname'] = 'Application Form';
+$string['pluginadministration'] = 'Apply administration';
+
+$string['modulename'] = 'Application Form';
+$string['modulename_help'] = 'You can make simple Application Forms and make a user submit it.';
+$string['modulenameplural'] = 'Application Forms';
+
 $string['messageprovider:submission'] = 'Operation of Entry';
 $string['messageprovider:message']    = 'Message';
 $string['messageprovider:processed']  = 'Operation was Processed';
@@ -179,9 +186,6 @@ $string['item_name'] = 'Item Name';
 $string['items_are_required'] = 'Answers are required to starred items.';
 $string['label'] = 'Label';
 $string['maximal'] = 'maximal';
-$string['modulename'] = 'Application Form';
-$string['modulename_help'] = 'You can make simple Application Forms and make a user submit it.';
-$string['modulenameplural'] = 'Application Forms';
 $string['move_here'] = 'Move here';
 $string['move_item'] = 'Move this question';
 $string['movedown_item'] = 'Move this question down';
@@ -214,8 +218,6 @@ $string['operate_submit_button'] = ' Process ';
 $string['operation_error_execd'] = 'When you do not accept entry, you can not checke "done"';
 $string['overview'] = 'Overview and Submit';
 $string['pagebreak'] = 'Page break for depending';
-$string['pluginadministration'] = 'Apply administration';
-$string['pluginname'] = 'Application Form';
 $string['position'] = 'Position';
 $string['preview'] = 'Preview';
 $string['preview_help'] = 'In the preview you can change the order of questions.';
