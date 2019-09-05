@@ -22,6 +22,13 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['pluginname'] = '申請フォーム';
+$string['pluginadministration'] = '申請フォーム管理';
+
+$string['modulename'] = '申請フォーム';
+$string['modulename_help'] = '各種の簡単な申請書を作成し，ユーザに提出させることができます．';
+$string['modulenameplural'] = '申請フォーム';
+
 $string['messageprovider:submission'] = '申請書の提出';
 $string['messageprovider:message']    = 'メッセージ';
 $string['messageprovider:processed']  = '処理完了';
@@ -184,9 +191,6 @@ $string['item_name'] = '項目名';
 $string['items_are_required'] = 'アスタリスクが付けられた項目は入力必須項目です．';
 $string['label'] = 'ラベル';
 $string['maximal'] = '最大';
-$string['modulename'] = '申請フォーム';
-$string['modulename_help'] = '各種の簡単な申請書を作成し，ユーザに提出させることができます．';
-$string['modulenameplural'] = '申請フォーム';
 $string['move_here'] = 'ここに移動する';
 $string['move_item'] = 'この質問を移動する';
 $string['movedown_item'] = 'この質問を下げる';
@@ -219,8 +223,6 @@ $string['operate_submit_button'] = ' 実行 ';
 $string['operation_error_execd'] = '書類を受理しなければ，処理済にすることはできません';
 $string['overview'] = '概要と申請';
 $string['pagebreak'] = '依存用改ページ';
-$string['pluginadministration'] = '申請フォーム管理';
-$string['pluginname'] = '申請フォーム';
 $string['position'] = 'ポジション';
 $string['preview'] = 'プレビュー';
 $string['preview_help'] = 'このプレビューにて，あなたは質問の順番を変更することができます．';
