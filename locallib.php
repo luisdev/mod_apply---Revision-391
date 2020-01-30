@@ -1013,7 +1013,9 @@ function apply_send_email($cm, $apply, $course, $user_id)
                     $posthtml = apply_send_email_html($info, $course, $cm);
                 }
 
-                $eventdata = new stdClass();
+                //$eventdata = new stdClass();
+                $eventdata = new \core\message\message();
+                $eventdata->courseid          = $course->id;
                 $eventdata->name              = 'submission';
                 $eventdata->component         = 'mod_apply';
                 $eventdata->userfrom          = $user;
@@ -1113,7 +1115,9 @@ function apply_send_email_user($cm, $apply, $course, $submit, $accept, $execd, $
         $posthtml = apply_send_email_html_user($info, $course, $cm, $accept, $execd);
     }
 
-    $eventdata = new stdClass();
+    //$eventdata = new stdClass();
+    $eventdata = new \core\message\message();
+    $eventdata->courseid          = $course->id;
     $eventdata->name              = 'processed';
     $eventdata->component         = 'mod_apply';
     $eventdata->userfrom          = $fuser;
