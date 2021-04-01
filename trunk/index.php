@@ -46,6 +46,10 @@ $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(get_string('modulename', 'apply').'&nbsp;'.get_string('activities'));
 echo $OUTPUT->header();
 
+echo '<style type="text/css">';
+include('./html/html.css');
+echo '</style>';
+
 /// Get all the appropriate data
 if (! $applys = get_all_instances_in_course('apply', $course)) {
     $url = new moodle_url('/course/view.php', array('id'=>$course->id));

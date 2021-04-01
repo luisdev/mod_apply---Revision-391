@@ -269,6 +269,10 @@ echo '<div align="center">';
 echo $OUTPUT->heading(format_text($apply->name), 3);
 echo '</div>';
 
+echo '<style type="text/css">';
+include('./html/html.css');
+echo '</style>';
+
 // submit: データが保存された
 if (isset($save_return) and $save_return=='saved') {
     echo '<div align="center">';
