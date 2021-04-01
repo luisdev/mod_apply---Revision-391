@@ -1,4 +1,13 @@
 
+/* for v3.10 */
+.py-3 {
+    padding-top: 0rem !important;
+    padding-bottom: 0rem !important;
+}
+
+
+/************************************/
+
 table {
     margin-bottom: 0.3em;
 }

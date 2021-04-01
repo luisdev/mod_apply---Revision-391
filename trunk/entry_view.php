@@ -8,6 +8,10 @@
 
 require_once('jbxl/jbxl_moodle_tools.php');
 
+echo '<style type="text/css">';
+include('./html/html.css');
+echo '</style>';
+
 if ($submit->user_id!=$USER->id) {
     require_capability('mod/apply:viewreports', $context);
 }
