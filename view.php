@@ -173,6 +173,7 @@ if ($apply_can_submit) {
     $url_params  = array('id'=>$id, 'courseid'=>$courseid, 'go_page'=>0);
     $submit_url  = new moodle_url('/mod/apply/submit.php', $url_params);
     $submit_link = '<div align="center">'.$OUTPUT->single_button($submit_url->out(), get_string('submit_form_button', 'apply')).'</div>';
+    echo '<br />';
     apply_print_messagebox('submit_new_apply', $submit_link, 'green');
     echo '<br />';
 }

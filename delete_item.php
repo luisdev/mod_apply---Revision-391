@@ -73,6 +73,10 @@ $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_title(format_string($apply->name));
 echo $OUTPUT->header();
 
+echo '<style type="text/css">';
+include('./html/html.css');
+echo '</style>';
+
 
 ///////////////////////////////////////////////////////////////////////////
 /// Print the main part of the page

@@ -76,6 +76,10 @@ echo '<h3>'.get_string('apply:preview_submit', 'apply').'</h3><hr />';
 echo $OUTPUT->heading(format_text($apply->name), 3);
 echo '</div>';
 
+echo '<style type="text/css">';
+include('./html/html.css');
+echo '</style>';
+
 
 ///////////////////////////////////////////////////////////////////////////
 // Check 2
